@@ -10,7 +10,8 @@
   - I am a 20 year old Computer Engineering Undergradute Student at the University of California San Diego! I am currently on my second year at UC San Diego, but I have learned a thing or two about Computer Science and Programming by this time. Here is the link to my GitHub Page: [https://waynarbocangel.github.io/CSE110Lab01/](https://waynarbocangel.github.io/CSE110Lab01/)
 
 - Liu He
-  - About yourself. Here is the link to my GitHub Page: [https://partimevillain.github.io/lab1/](https://partimevillain.github.io/lab1/)
+  - I'm a junior cs major and more than likely the coolest member on this team. I like girls, video games, naps and coding.<br>
+    [Here is the link to my GitHub Page](https://partimevillain.github.io/lab1/)
 
 - Trisa Leung
   - I am a second year Computer Science undergraduate from the University of California, San Diego. Here is the link to my GitHub Page: [https://trisaleung.github.io/cse110lab1/](https://trisaleung.github.io/cse110lab1/)
