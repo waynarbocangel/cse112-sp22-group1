@@ -17,6 +17,8 @@ attendence:
 <pre>
 meeting details:
     Introduction of each members.   
+</pre>
+Note taker: Liu He  
 
 
 
