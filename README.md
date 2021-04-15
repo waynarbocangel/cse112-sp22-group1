@@ -1,13 +1,13 @@
 # cse110-sp21-group11
 This is the repository for team 11's CSE 110 project.  
-team name: It's a feature, not a bug  
-team members:  
-- Liu He  
+Team name: It's not a bug, it's a feature
+Team members:   
 - Carlos Guerrero
 - Chang Liu
 - Claudia Handoyo
 - Likith Palabindela
--  Samuel Reda
+- Liu He 
+- Samuel Reda
 - Sanat Bhandarkar (TA)
 - Thomas Fischer
 - Trisa Leung
