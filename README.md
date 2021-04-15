@@ -18,5 +18,6 @@ Agile is an organization technique used by teams in industries.
 Here are details for each meeting:  
 - [meeting #1: the kick off](/admin/meetings/041021-kickoff.md)
 - [meeting #2: first turn in](admin/meetings/041421-meeting2.md)
-<hr>
-[README.md](/admin/team.md)
+<hr></hr>
+
+[team.md](/admin/team.md)
