@@ -12,10 +12,14 @@ team members:
 - Thomas Fischer
 - Trisa Leung
 - Waynar Bocangel  
+<hr></hr>
+
 project goal :  
 &emsp; &emsp;The project is to create a virtual bulletin board that will help users organize tasks and projects in agile fashion.
-Agile is an organization technique used by teams in industries.  
-Here are details for each meeting:  
+Agile is an organization technique used by teams in industries. 
+<hr></hr> 
+
+notes for each meeting:    
 - [meeting #1: the kick off](/admin/meetings/041021-kickoff.md)
 - [meeting #2: first turn in](admin/meetings/041421-meeting2.md)
 <hr></hr>
