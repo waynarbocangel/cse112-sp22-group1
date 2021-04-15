@@ -10,7 +10,8 @@
   - About yourself. Here is the link to my GitHub Page: [https://waynarbocangel.github.io/CSE110Lab01/](https://waynarbocangel.github.io/CSE110Lab01/)
 
 - Liu He
-  - About yourself. Here is the link to my GitHub Page: [https://partimevillain.github.io/lab1/](https://partimevillain.github.io/lab1/)
+  - I'm a junior cs major and the coolest member on this team. I like girls, video games, naps and coding.<br>
+    [Here is the link to my GitHub Page](https://partimevillain.github.io/lab1/)
 
 - Trisa Leung
   - About yourself. Here is the link to my GitHub Page: [https://trisaleung.github.io/cse110lab1/](https://trisaleung.github.io/cse110lab1/)
