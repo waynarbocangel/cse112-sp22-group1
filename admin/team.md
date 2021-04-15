@@ -1,6 +1,8 @@
 # <img src="./bugP3.png" width=100> Team 11 **It's Not a Bug It's a Feature**
 
 ## Our Values
+### Mision Statement
+We debug all bugs one bullet at the time.
 
 ## Team Members
 - Likith Palabindela
