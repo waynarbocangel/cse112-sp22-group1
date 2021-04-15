@@ -23,6 +23,3 @@ All tasks for a given week will be created during the team's weekly meeting. All
 Deadlines will be flexible during the project, although all members are expected to report a delay to the team leads as soon as they identify a possible delay in the development process. Daily Standups will focus on idetifying these weaknesses and assessing possible solutions, making Daily Standups **extremely important** for the development of the project.
 ### In case a Team Member does not work on their respective Tasks
 A Team Member is expected to work on their respective tasks as much as possible, and as such if any Team Member fails to address a large portion of tasks without reporting delays the TA Sanat Bhandarkar will be notified and they will have to report an explanation during the next weekly meeting.
-
-## 5. Signatures
-Waynar Bocangel Calderon April 15th, 2021
