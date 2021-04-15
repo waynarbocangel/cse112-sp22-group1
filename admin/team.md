@@ -23,7 +23,7 @@
   - Hello, I am a student from the University of California, San Diego and I am on my 3rd year of my computer science bacehlors of science. I have no main area of interest however I am beginning to take a slight interest in cryptography and computer security. Here is the link to my GitHub Page: [https://cguerrer4612.github.io/GHPages/](https://cguerrer4612.github.io/GHPages/)
 
 - Claudia Handoyo
-  - I am a Math-CS major at UCSD. I am in my second third year. I learned about cs and programming for the first time on the spring quarter of my first year in UCSD. I am looking forward to learning about software engineering in CSE 110 Here is the link to my GitHub Page: [https://chandoyo.github.io/Lab-1/](https://chandoyo.github.io/Lab-1/)
+  - I am a Math-CS major at UCSD. I am in my third year. I learned about cs and programming for the first time on the spring quarter of my first year in UCSD. I am looking forward to learning about software engineering in CSE 110 Here is the link to my GitHub Page: [https://chandoyo.github.io/Lab-1/](https://chandoyo.github.io/Lab-1/)
 
 - Samuel Reda
   - I am a junior student at University of California, San Diego, who's majoring in Computer Engineering. In the future I would like to see my self working in the industry. 
