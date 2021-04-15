@@ -2,7 +2,7 @@
 This is the repository for team 11's CSE 110 project.  
 team name: It's a feature, not a bug  
 team members:  
-- Liu He (self)
+- Liu He  
 - Carlos Guerrero
 - Chang Liu
 - Claudia Handoyo
