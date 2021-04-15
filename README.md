@@ -14,8 +14,8 @@ team members:
 - Waynar Bocangel  
 <hr></hr>
 
-project goal :  
-&emsp; &emsp;The project is to create a virtual bulletin board that will help users organize tasks and projects in agile fashion.
+Project goal :  
+The project is to create a virtual bullet journal that will help users organize tasks and projects in agile fashion.
 Agile is an organization technique used by teams in industries. 
 <hr></hr> 
 
