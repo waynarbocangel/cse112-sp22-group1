@@ -5,7 +5,7 @@ Created: May 3, 2021 5:14 PM
 Kind: Daily
 Tasks: https://www.notion.so/Implementing-Database-a9635d88967a43a98f953cdb6832df94
 
-# Apr 16, 2021
+# May 3, 2021
 
 ## Notes
 
