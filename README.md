@@ -5,7 +5,6 @@ Team members:
 - Carlos Guerrero
 - Chang Liu
 - Claudia Handoyo
-- Likith Palabindela
 - Liu He 
 - Samuel Reda
 - Sanat Bhandarkar (TA)
@@ -19,9 +18,7 @@ The project is to create a virtual bullet journal that will help users organize 
 Agile is an organization technique used by teams in industries. 
 <hr></hr> 
 
-notes for each meeting:    
-- [meeting #1: the kick off](/admin/meetings/041021-kickoff.md)
-- [meeting #2: first turn in](admin/meetings/041421-meeting2.md)
+[Meeting notes](/admin/meetings)
 <hr></hr>
 
 [team.md](/admin/team.md)
