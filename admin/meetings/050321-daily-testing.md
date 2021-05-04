@@ -4,7 +4,7 @@ Attendants: Waynar Bocangel Calderon, Claudia Handoyo
 Created: May 4, 2021 2:03 AM
 Kind: Daily
 
-# Apr 16, 2021
+# May 3, 2021
 
 ## Notes
 
