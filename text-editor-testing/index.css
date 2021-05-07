@@ -1,0 +1,24 @@
+html, body, section, .full-height {
+    height: 100%;
+} 
+
+#text {
+    font-family: monospace;
+    border: none;
+    overflow: auto;
+    outline: none;
+    resize: none;
+    width: 47vw;
+    padding: 3%;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+#markdown {
+    overflow: auto;
+    border-left: 1px solid black;
+    padding: 3%;
+}
