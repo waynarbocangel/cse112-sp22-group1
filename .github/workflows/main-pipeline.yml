@@ -42,10 +42,12 @@ jobs:
       working-directory: ./codebase/back-end
     - run: npm test --if-present
       working-directory: ./codebase/back-end
-    - name: Install modules
-      run: yarn
-    - name: Run tests
-      run: yarn test
+    - name: JEST Report
+      uses: RedaktionsNetzwerk-Deutschland/action-jest-reporter@v1.0.0
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        json-glob: ./codebase/back-end/testOutput.json
+        workdir: ./codebase/back-end
   
   
   eslint:
