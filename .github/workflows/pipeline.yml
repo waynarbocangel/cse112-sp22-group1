@@ -9,7 +9,7 @@ on:
       - back-end_drop
       - front-end_drop
       - ci/cd-pipeline-1
-    
+
   pull_request:
     branches:
       - main
@@ -34,7 +34,8 @@ jobs:
         recurse: true
         # The path to a Markdown file to be used as a the front page
         front_page: ./codebase/CI-CD-pipeline.md
-        
+
+
   lint-codebase:
     runs-on: ubuntu-latest
     steps:
@@ -50,8 +51,8 @@ jobs:
           annotations: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    
-    
+
+
   back-end-build:
     runs-on: ubuntu-latest
     strategy:
@@ -75,8 +76,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         json-glob: ./codebase/back-end/testOutput.json
         workdir: ./codebase/back-end
-  
-  
+
+
   front-end-build:
     runs-on: ubuntu-latest
     steps:
