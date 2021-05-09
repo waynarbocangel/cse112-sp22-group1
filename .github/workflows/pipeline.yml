@@ -5,6 +5,9 @@ name: CI/CD Pipeline
 
 on:
   push:
+    branches:
+      - back-end_drop
+      - front-end_drop
   pull_request:
     branches:
       - main
@@ -12,7 +15,7 @@ on:
       - front-end_drop
 
 jobs:
-  build:
+  back-end-build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -44,10 +47,20 @@ jobs:
         front_page: ./codebase/CI-CD-pipeline.md
     - name: Install modules
       run: yarn
+      working-directory: ./codebase/back-end
     - name: Run tests
       run: yarn test
+      working-directory: ./codebase/back-end
   
-  
+  front-end-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install modules
+        run: yarn
+        working-directory: ./codebase/front-end
+      - name: Run tests
+        run: yarn test
+        working-directory: ./codebase/front-end
   eslint:
     runs-on: ubuntu-latest
     steps:
