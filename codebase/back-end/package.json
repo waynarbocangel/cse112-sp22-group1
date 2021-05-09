@@ -4,7 +4,7 @@
   "description": "This is the server for the CSE 110 Team 11 project for spring 2021",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\""
   },
   "author": "CSE 110 Team 11 Spring 2021",
   "license": "ISC",
