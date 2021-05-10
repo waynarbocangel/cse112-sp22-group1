@@ -8,6 +8,8 @@ on:
     branches:
       - back-end_drop
       - front-end_drop
+      - ci/cd-pipeline-1
+
   pull_request:
     branches:
       - main
@@ -15,6 +17,24 @@ on:
       - front-end_drop
 
 jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: JSDoc Action
+      # You may pin to the exact commit or the version.
+      # uses: andstor/jsdoc-action@2fb2b536605bdebace2b92abb0601155d5ddc688
+      uses: andstor/jsdoc-action@v1.2.0
+      with:
+        # Source directory to build documentation from
+        source_dir: ./codebase
+        # Output folder for the generated documentation
+        output_dir: ./codebaseDocs
+        # Recurse into subdirectories when scanning for source files
+        recurse: true
+        # The path to a Markdown file to be used as a the front page
+        front_page: ./codebase/CI-CD-pipeline.md
+
   back-end-build:
     runs-on: ubuntu-latest
     strategy:
@@ -30,49 +50,34 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
       working-directory: ./codebase/back-end
-    - run: npm test
+    - run: npm test --if-present
       working-directory: ./codebase/back-end
-    - name: JSDoc Action
-      # You may pin to the exact commit or the version.
-      # uses: andstor/jsdoc-action@2fb2b536605bdebace2b92abb0601155d5ddc688
-      uses: andstor/jsdoc-action@v1.2.0
+    - name: JEST Report
+      uses: RedaktionsNetzwerk-Deutschland/action-jest-reporter@v1.0.0
       with:
-        # Source directory to build documentation from
-        source_dir: ./codebase
-        # Output folder for the generated documentation
-        output_dir: ./codebaseDocs
-        # Recurse into subdirectories when scanning for source files
-        recurse: true
-        # The path to a Markdown file to be used as a the front page
-        front_page: ./codebase/CI-CD-pipeline.md
-    - name: Install modules
-      run: yarn
-      working-directory: ./codebase/back-end
-    - name: Run tests
-      run: yarn test
-      working-directory: ./codebase/back-end
-  
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        json-glob: ./codebase/back-end/testOutput.json
+        workdir: ./codebase/back-end
+
+
   front-end-build:
     runs-on: ubuntu-latest
     steps:
-      - name: Install modules
-        run: yarn
-        working-directory: ./codebase/front-end
-      - name: Run tests
-        run: yarn test
-        working-directory: ./codebase/front-end
-  eslint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-      - run: yarn install
-      - uses: sibiraj-s/action-eslint@v1
-        with:
-          eslintArgs: '--ignore-path=.gitignore --quiet'
-          extensions: 'js,jsx,ts,tsx'
-          annotations: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - uses: actions/checkout@v2
+    - name: JEST Report
+      uses: RedaktionsNetzwerk-Deutschland/action-jest-reporter@v1.0.0
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        json-glob: ./codebase/front-end/testOutput.json
+        workdir: ./codebase/front-end
+
+  lint-codebase:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+        - run: yarn install
+        - uses: stefanoeb/eslint-action@1.0.2
+          with:
+            files: ./codebase/
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
