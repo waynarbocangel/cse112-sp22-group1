@@ -78,7 +78,8 @@ jobs:
         - uses: actions/setup-node@v2
           with:
             node-version: '14'
-        - run: yarn install
+        - run: npm install
+          working-directory: ./codebase/back-end
         - uses: sibiraj-s/action-eslint@v1
           with:
             eslintArgs: '--ignore-path=.gitignore --quiet'
