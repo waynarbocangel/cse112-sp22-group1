@@ -78,7 +78,7 @@ jobs:
         - uses: actions/setup-node@v2
           with:
             node-version: '14'
-        - run: npm install
+        - run: yarn install
           working-directory: ./codebase/back-end
         - uses: sibiraj-s/action-eslint@v1
           with:
