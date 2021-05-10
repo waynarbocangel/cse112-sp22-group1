@@ -14,11 +14,12 @@ let clientSchema = new mongoose.Schema({
 
 const Client = new mongoose.model("Client", clientSchema);
 
+console.log(Client);
+
 app.get("/", (request, response) => {
 	let man = {
 		age: 50
 	}
-	let newClient = new Client();
 	response.send(man);
 });
 
