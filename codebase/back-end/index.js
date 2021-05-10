@@ -18,17 +18,12 @@ app.get("/", (request, response) => {
 	let man = {
 		age: 50
 	}
-
+	let newClient = new Client();
 	response.send(man);
 });
 
 app.get("/ohboy", (req, res) =>{
 	res.redirect("/");
-});
-
-
-app.post("/", (req, res) =>{
-
 });
 
 app.listen(3000, () => {
