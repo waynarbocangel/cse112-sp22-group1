@@ -79,7 +79,6 @@ jobs:
           with:
             node-version: '14'
         - run: yarn install
-          working-directory: ./codebase/back-end
         - uses: sibiraj-s/action-eslint@v1
           with:
             eslintArgs: '--ignore-path=.gitignore --quiet'
