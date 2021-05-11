@@ -50,7 +50,6 @@ module.exports = {
         "func-call-spacing": "error",
         "func-name-matching": "error",
         "func-names": "error",
-        "func-style": "error",
         "function-paren-newline": "error",
         "generator-star-spacing": "error",
         "grouped-accessor-pairs": "error",
@@ -67,7 +66,8 @@ module.exports = {
         "line-comment-position": "error",
         "linebreak-style": [
             "error",
-            "unix"
+            "unix",
+            "windows"
         ],
         "lines-around-comment": "error",
         "lines-between-class-members": "error",
@@ -196,7 +196,6 @@ module.exports = {
         "prefer-regex-literals": "error",
         "prefer-rest-params": "error",
         "prefer-spread": "error",
-        "prefer-template": "error",
         "quote-props": "off",
         "quotes": [
             "error",
