@@ -76,12 +76,9 @@ jobs:
       steps:
         - uses: actions/checkout@v2
         - run: yarn install
-        - name: Run linters
-          uses: wearerequired/lint-action@v1
-          with:
-            eslint: true
         - uses: stefanoeb/eslint-action@1.0.2
           with:
             files: ./codebase/
+            fix: true
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
