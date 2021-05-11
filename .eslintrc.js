@@ -65,7 +65,9 @@ module.exports = {
         "key-spacing": "error",
         "keyword-spacing": "error",
         "line-comment-position": "error",
-        "linebreak-style": [],
+        "linebreak-style": [
+            "off"
+        ],
         "lines-around-comment": "error",
         "lines-between-class-members": "error",
         "max-classes-per-file": "error",
@@ -164,7 +166,7 @@ module.exports = {
         "no-useless-backreference": "error",
         "no-useless-call": "error",
         "no-useless-computed-key": "error",
-        "no-useless-concat": "",
+        "no-useless-concat": "off",
         "no-useless-constructor": "error",
         "no-useless-rename": "error",
         "no-useless-return": "error",
@@ -193,7 +195,7 @@ module.exports = {
         "prefer-regex-literals": "error",
         "prefer-rest-params": "error",
         "prefer-spread": "error",
-        "prefer-template": "",
+        "prefer-template": "off",
         "quote-props": "off",
         "quotes": [
             "error",
