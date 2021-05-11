@@ -70,15 +70,3 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         json-glob: ./codebase/front-end/testOutput.json
         workdir: ./codebase/front-end
-
-  lint-codebase:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v2
-        - run: yarn install
-        - uses: stefanoeb/eslint-action@1.0.2
-          with:
-            files: ./codebase/
-            args: "fix"
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
