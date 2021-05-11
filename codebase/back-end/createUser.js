@@ -1,26 +1,29 @@
 require("dotenv").config();
-const express = require("express");
 const mongoose = require("mongoose");
 
 const schema = require(__dirname + "/schema.js");
-const app = express();
 
 mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
 mongoose.set("useCreateIndex", true);
 
-function makeUser(userName, email, pwd){
-	//hash emailthingy and pwdthingy
-
+function makeUser (email, pwd) {
 	const userObject = {
-    	email: "hashed email", 
-    	pwd: "hashed pwd"
+		email: email,
+		pwd: pwd
 	};
 
-	const newUser= new schema.User({
-    	userData: user_object
+	const newUser = new schema.User({
+		userData: userObject
 	});
 
 	newUser.save((err, us) => {
-    	if (err) return console.error(err);
+		if (err) {
+			return console.error(err);
+		}
+		return us;
 	});
+}
+
+module.exports = {
+	makeUser: makeUser
 }
