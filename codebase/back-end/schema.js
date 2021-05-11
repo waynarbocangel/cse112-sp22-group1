@@ -4,12 +4,12 @@ const mongoose = require("mongoose");
 mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
 mongoose.set("useCreateIndex", true);
 
-const user_schema = {
-    user_data: {
+const userSchema = {
+    userData: {
 	    email: String, 
 	    pwd: String
     },
-    daily_log: {
+    dailyLog: {
         pid: String, 
         date: Date, 
         parent: String, 
@@ -17,7 +17,7 @@ const user_schema = {
         days: [String], 
         trackers: [String]
     },
-    monthly_log: {
+    monthlyLog: {
         pid: String, 
         parent: String, 
         date: Date, 
@@ -25,7 +25,7 @@ const user_schema = {
         days: [String], 
         trackers: [String]
     },
-    future_log: {
+    futureLog: {
         pid: String, 
         startdate: Date, 
         enddate: Date, 
@@ -43,21 +43,21 @@ const user_schema = {
         parent: String, 
         content: [String]
     },
-    textblocks: {
+    textBlocks: {
         pid: String, 
         parent: String, 
         kind: String, 
         text: String, 
         signifier: String
     },
-    eventblocks: {
+    eventBlocks: {
         pid: String, 
         parent: String, 
         text: String, 
         date: Date, 
         signifier: String
     },
-    taskblocks: {
+    taskBlocks: {
         pid: String, 
         parent: String, 
         text: String, 
@@ -71,7 +71,7 @@ const user_schema = {
     }
 };
 
-const User = new mongoose.Schema(user_schema);
+const User = new mongoose.Schema(userSchema);
 module.exports = {
-	User: mongoose.model('User', User)
+	User: mongoose.model('Users', User)
 };
