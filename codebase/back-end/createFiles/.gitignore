@@ -7,3 +7,4 @@ createSignifier.js
 createTaskBlock.js
 createTextBlock.js
 createTracker.js
+.env

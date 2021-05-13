@@ -12,6 +12,20 @@ const app = express();
 mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
 mongoose.set("useCreateIndex", true);
 
+const pouch ="node_modules/pouchdb/dist/pouchdb.min.js"
+var db = new pouch.PouchDB("Users");
+
+//to see basic db info
+db.info().then(function (info) {
+	console.log(info);
+})
+
+//to store document with provided id
+db.put(nameOfDocObj);
+
+//create doc and automatically give random id to it
+db.post(nameOfDocObj);
+
 app.listen("3000", () => {
 	console.log("server has started listening to port 3000");
 });
