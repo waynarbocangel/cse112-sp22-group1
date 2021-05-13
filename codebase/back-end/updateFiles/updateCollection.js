@@ -22,7 +22,7 @@ function updateCollection(userObject, callback){
 			});
 		}
 	});
-};
+}
 
 module.exports = {
 	updateCollection: updateCollection

@@ -31,7 +31,7 @@ function updateUser(userObject, callback){
 			});
 		}
 	});
-};
+}
 
 module.exports = {
 	updateUser: updateUser

@@ -22,8 +22,8 @@ function updateSignifier(userObject, callback){
 			});
 		}
 	});
-};
+}
 
 module.exports = {
-	updateSignifier = updateSignifier
+	updateSignifier: updateSignifier
 };

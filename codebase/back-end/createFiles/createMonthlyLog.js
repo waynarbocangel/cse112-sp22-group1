@@ -14,7 +14,7 @@ function makeMonthlyLog (userID, parent, [content], dailyLength, [trackers]) {
 	};
 
 	if (Users.exists({ _id: userID })) {
-		const user = process.env.DB.Users.find({_id: userId}).monthlyLogs.push(monthlyObject);
+		process.env.DB.Users.find({_id: userId}).monthlyLogs.push(monthlyObject);
 	} else {
 		return console.log("error: the user does not exist!");
 	}

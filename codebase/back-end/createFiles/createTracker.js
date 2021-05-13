@@ -5,8 +5,6 @@ mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: tru
 mongoose.set("useCreateIndex", true);
 
 function makeTracker (userID, parent, [content]) {
-	//encrypt content
-	
 	const trackerObject = {
 		parent: parent,
 		content: content

@@ -25,5 +25,5 @@ function updateTracker (userObject, callback) {
 }
 
 module.exports = {
-	updateFutureLog: updateFutureLog
+	updateTracker: updateTracker
 }

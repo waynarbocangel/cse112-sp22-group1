@@ -22,8 +22,8 @@ function updateEventBlock(userObject, callback){
 			});
 		}
 	});
-};
+}
 
 module.exports = {
-	updateEventBlock = updateEventBlock
+	updateEventBlock: updateEventBlock
 };

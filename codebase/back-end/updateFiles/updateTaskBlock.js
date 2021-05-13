@@ -22,8 +22,8 @@ function updateTaskBlock(userObject, callback){
 			});
 		}
 	});
-};
+}
 
 module.exports = {
-	updateTaskBlock = updateTaskBlock
+	updateTaskBlock: updateTaskBlock
 };

@@ -22,7 +22,7 @@ function updateTextBlock(userObject, callback){
 			});
 		}
 	});
-};
+}
 
 module.exports = {
 	updateTextBlock: updateTextBlock
