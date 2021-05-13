@@ -7,13 +7,10 @@ mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: tru
 mongoose.set("useCreateIndex", true);
 
 function createUser (email, pwd, callback) {
-	const userObject = {
-		email: email,
-		pwd: pwd
-	};
 
 	const newUser = new schema.User({
-		userData: userObject,
+		email: email,
+		pwd: pwd,
 		dailyLogs: [],
 		monthlyLogs: [],
 		futureLogs: [],

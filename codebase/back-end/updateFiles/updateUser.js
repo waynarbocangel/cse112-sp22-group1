@@ -11,7 +11,8 @@ function updateUser(userObject, callback){
 		if (error) {
 			callback(error);
 		} else {
-			user.userData = userObject.userData;
+			user.email = userObject.email;
+			user.pwd = userObject.pwd;
 			user.dailyLogs = userObject.dailyLogs;
 			user.monthlyLogs = userObject.monthlyLogs;
 			user.futureLogs = userObject.futureLogs;

@@ -4,10 +4,8 @@ mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: tru
 mongoose.set("useCreateIndex", true);
 
 const userSchema = {
-    userData: {
-		email: String,
-		pwd: String
-    },
+	email: String,
+	pwd: String,
 	dailyLogs: [{
 		id: String,
 		date: Date,
