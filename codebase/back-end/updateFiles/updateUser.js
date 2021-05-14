@@ -6,6 +6,24 @@ const schema = require(__dirname + "/../schema.js");
 mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
 mongoose.set("useCreateIndex", true);
 
+function  updateUserPouch(db, userObject, callback){
+	db.get("0000").then(function (doc) {
+		return db.put({
+			_id: "0000",
+			_rev: "doc._rev",
+			pwd: "superdupernewbd"
+		}) 
+	}).then(function(response) {
+		//handle response
+	}).catch(function (err) {
+		console.log(err)
+	});
+
+	updateUser(userObject, (res) => {
+		callback(res);
+	})
+}
+
 function updateUser(userObject, callback){
 	schema.User.findOne({email: userObject.email}, (error, user) => {
 		if (error) {
@@ -35,5 +53,6 @@ function updateUser(userObject, callback){
 }
 
 module.exports = {
-	updateUser: updateUser
+	updateUser: updateUser,
+	updateUserPouch: updateUserPouch
 };

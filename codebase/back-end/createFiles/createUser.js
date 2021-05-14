@@ -1,4 +1,5 @@
 require("dotenv").config();
+const e = require("express");
 const mongoose = require("mongoose");
 
 const schema = require(__dirname + "/../schema.js");
@@ -6,36 +7,29 @@ const schema = require(__dirname + "/../schema.js");
 mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
 mongoose.set("useCreateIndex", true);
 
-const pouch ="node_modules/pouchdb/dist/pouchdb.min.js"
-
-function createUserPouch (email, pwd, callback) {
-	const newUser = new schema.User({
-		email: email,
-		pwd: pwd,
-		dailyLogs: [],
-		monthlyLogs: [],
-		futureLogs: [],
-		trackers: [],
-		collections: [],
-		textBlocks: [],
-		eventBlocks: [],
-		taskBlocks: [],
-		signifiers: []
-	});
-
-	db.post(newUser);
-	createUser(email, pwd, (erorr, user) => {
-		if (error) {
-			callback(error);
+function createUserPouch (db, userObject, callback) {
+	db.post(userObject, (err, res) => {
+		if (err) {
+			return callback(err);
 		} else {
-			callback(user);
+			/*db.get(res.id, (err, doc) => {
+				if (err) {
+					callback(err);
+				} else {
+					db.put({
+						_id: "0000",
+						_rev: doc._rev
+					})
+					callback(doc);
+				}
+			})*/
+			return callback(res);
 		}
 	});
 }
 
-function createUser (email, pwd, callback) {
-
-	const newUser = new schema.User({
+function createUser (db, email, pwd, callback) {
+	const newUser = {
 		email: email,
 		pwd: pwd,
 		dailyLogs: [],
@@ -47,9 +41,14 @@ function createUser (email, pwd, callback) {
 		eventBlocks: [],
 		taskBlocks: [],
 		signifiers: []
+	};
+	newUserSchema = new schema.User(newUser);
+	createUserPouch(db, newUser, (res) => {
+		callback(res);
 	});
+	//	newUser.pwd = hash(newUser.pwd);
 
-	newUser.save((err, user) => {
+	newUserSchema.save((err, user) => {
 		if (err) {
 			callback(err);
 		} else {
@@ -59,5 +58,6 @@ function createUser (email, pwd, callback) {
 }
 
 module.exports = {
-	createUser: createUser
+	createUser: createUser,
+	createUserPouch: createUserPouch
 }
