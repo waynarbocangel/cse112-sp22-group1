@@ -50,8 +50,8 @@ ul {
 
  #navBarIcon{
 	position:fixed;
-	top: 0px;
-	left: 0px;
+	top: 1px;
+	left: 1px;
 	margin-left: 40px;
 	margin-top: 25px;
 	
@@ -139,8 +139,8 @@ ul {
 	}
 	#navBarIcon{
 		float: left;
-		top: 0px;
-		left: 0px;
+		top: 1px;
+		left: 1px;
 		margin-left: 40px;
 		margin-top: 25px;
 		
