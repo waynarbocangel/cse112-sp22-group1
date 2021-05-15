@@ -19,8 +19,7 @@ body {
 	
  }
 
-
-#Index h1 {
+#month h1 {
 	text-align: center;
 	
 }
@@ -28,41 +27,30 @@ body {
 form {
 
    margin: none;
-   width: 100%;
+   width:100%;
 }
 
 ul {
-	width: 100%;
+	width: 50%;
 	text-align: left;
 	float: left;
-	margin-left: 75px;
+	margin-left: 50px;
 }
 
-/* ul {
-	
-	margin-left:350px;
-   	margin-right: auto;
-	width: 400px;
-	
-}
- */
-
-
- #navBarIcon{
-	position:fixed;
+#navBarIcon{
+	float: left;
 	top: 0px;
 	left: 0px;
 	margin-left: 40px;
 	margin-top: 25px;
 	
 }
+
 #plusSign{
 	float: right;
 	margin-right: 40px;
 	margin-top: 25px;
 }
-
-
 .arrow {
 	
 	border: solid black;
@@ -120,7 +108,7 @@ ul {
 	   
 	}
 
-	#Index h1 {
+	#month h1 {
 		text-align: center;
 		
 	}
@@ -132,7 +120,7 @@ ul {
 	}
  
 	ul {
-		width: 100%;
+		width: 50%;
 		text-align: left;
 		float: left;
 		margin-left: 50px;

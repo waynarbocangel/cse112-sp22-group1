@@ -1,0 +1,91 @@
+@charset "utf-8";
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+}
+body {
+	background-color:white;
+    overflow: hidden;
+}
+#wrapper {
+   width: 1000px;
+   margin-left:auto;
+   margin-right: auto;
+   display: block;
+
+   
+}
+.toggle {
+	font-size:30px;
+	list-style-type: none;
+	color: crimson;
+	margin-left: auto;
+	margin-right: auto;
+	width: 300px;
+}
+#month h1 {
+	text-align: center;
+	
+}
+/* .scrollRight img {
+	width: 20px;
+	height: 20px;
+	display: inline-block;
+	float:right;
+	margin-right: 450px;
+	margin-top: -28px;
+} */
+form {
+
+   margin: 0 auto;
+   width:300px;
+}
+Input  {
+	background-image:image("img.jpg");
+}
+ul {
+	
+	margin-left:350px;
+   	margin-right: auto;
+	width: 400px;
+	
+}
+
+
+.arrow {
+	
+	border: solid black;
+	border-width: 0 3px 3px 0;
+	display: inline-block;
+	padding: 3px;
+	width : 5px;
+	height: 5px
+  }
+  
+  .right {
+	transform: rotate(-45deg);
+	-webkit-transform: rotate(-45deg);
+  }
+  
+  .left {
+	transform: rotate(135deg);
+	-webkit-transform: rotate(135deg);
+  }
+  
+  .up {
+	transform: rotate(-135deg);
+	-webkit-transform: rotate(-135deg);
+  }
+  
+  .down {
+	transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+  }
+
+  .input-group{
+    display: flex;
+    align-items : center;
+}
