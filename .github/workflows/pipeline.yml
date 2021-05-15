@@ -35,24 +35,6 @@ jobs:
         # The path to a Markdown file to be used as a the front page
         front_page: ./codebase/CI-CD-pipeline.md
 
-
-  lint-codebase:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-      - run: yarn install
-      - uses: sibiraj-s/action-eslint@v1
-        with:
-          eslintArgs: '--ignore-path=.gitignore --quiet'
-          extensions: 'js,jsx,ts,tsx'
-          annotations: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
   back-end-build:
     runs-on: ubuntu-latest
     strategy:
