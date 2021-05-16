@@ -1,0 +1,251 @@
+
+body {
+    background: rgb(248, 244, 244);
+}
+
+/* main form box */
+#main-holder {
+    width: 30%;
+    height: 50%;
+    position: absolute;
+    left: 63%;
+    top: 25%;
+    
+    background: #FFFFFF;
+    box-shadow: -3px 2px 10px 3px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+}
+  
+#login-error-msg-holder {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    justify-items: center;
+    align-items: center;
+}
+  
+#login-error-msg {
+    width: 23%;
+    text-align: center;
+    margin: 0;
+    padding: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #8a0000;
+    border: 1px solid #8a0000;
+    background-color: #e58f8f;
+    opacity: 0;
+}
+
+#error-msg-second-line {
+    display: block;
+}
+
+/* font for email and password */
+.login-form-field::placeholder {
+
+    font-family:'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1.5vw;
+    line-height: 2vw;
+    display: flex;
+    align-items: center;
+    text-indent: 3%;
+
+    color: #C1C1C1;
+}
+
+#email-field {
+
+    width: 80%;
+    height: 13%;
+    position: absolute;
+    left: 10%;
+    right: 11.35%;
+    top: 15%;
+
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    margin-bottom: 41.78px;
+    border-radius: 5px;
+}
+  
+#password-field {
+
+    width: 80%;
+    height: 13%;
+    position: absolute;
+    left: 10%;
+    right: 11.35%;
+    top: 40%;
+    
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+}
+#login-form-submit {
+    width: 28%;
+    height: 13%;
+    position: absolute;
+    left: 10%;
+    right: 23.59%;
+    bottom: 19%;
+
+    background: #EF233C;
+    border: 1px solid white;
+    border-radius: 5px;
+    
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 2vw;
+    color:white;
+    text-align: center;
+    
+}
+
+#login-form-create {
+    width: 47%;
+    height: 13%;
+    position: absolute;
+    left: 43%;
+    bottom: 19%;
+    
+    border: 1px solid white;
+    border-radius: 5px;
+    background-color: black;
+
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 2vw;
+    color:white;
+    text-align: center;
+
+}
+
+/* my journal style */
+#name {
+
+    position: absolute;
+    left: 10%;
+    top: 50%;
+
+    font-family: 'Satisfy', cursive;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 9vw;
+
+    color: #000000;
+}
+
+/* contact us */
+a {
+    /* Contact us */
+
+
+    position:absolute;
+    top:140%;
+    left:33%;
+
+    font-family:'Tajawal', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1.5vw;
+    color:black;
+}
+
+img {
+    position: absolute;
+    left: 15%;
+    top: 10%;
+    max-width: 25%;
+    height:auto;
+
+ }
+
+
+@media only screen and (max-width:1000px) {
+    a {
+        display: none;
+    }
+
+    body {
+        background-color: white;
+    }
+
+
+    #name {
+        position: absolute;
+        top:0%;
+        left: 30vw;
+        font-size: 10vw;
+        margin:0;
+    }
+
+    #main-holder {
+        width:100%;
+        left:0%;
+        top:50%;
+        height:50%;
+        box-shadow: none;
+    }
+
+    .login-form-field::placeholder {
+
+        font-size: 3.5vw;
+        text-indent: 3%;
+        line-height: 100%;
+
+    }
+
+    #email-field{
+        height: 17%;
+    }
+
+    #password-field{
+        height: 17%;
+    }
+
+
+    div.logo {
+        position: absolute;
+        display:block;
+        top:20%;
+        left:20%;
+        width:90vw;
+        height:auto;
+
+    }
+
+    #login-form-submit {
+        font-size: 4vw;
+        height:17%;
+        top: 70%;
+        
+    }
+    
+    #login-form-create {
+        height:17%;
+        top: 70%;
+        font-size: 4vw;
+    }
+}
+
+
+@media only screen and (max-width:600px) {
+    div.logo {
+        position: absolute;
+        display:block;
+        top:17%;
+        left:3%;
+        width:175%;
+        height:auto;
+
+    }
+
+    #name {
+        position: absolute;
+        top:0%;
+        left: 25vw;
+        font-size: 13vw;
+        margin:0;
+    }
+}
