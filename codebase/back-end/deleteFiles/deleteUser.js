@@ -6,11 +6,11 @@ mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: tru
 mongoose.set("useCreateIndex", true);
 
 function deleteUserPouch(db, userObject, callback) {
-	db.get(userObject.id, (err, doc) => {
+	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
-			db.remove( doc, function(err, response) {
+			db.remove(doc, function(err, response) {
 				if (err) {
 					callback(err);
 				} else {

@@ -1,5 +1,5 @@
-2021/05/13-18:16:24.194 3f7c Recovering log #15
-2021/05/13-18:16:24.195 3f7c Level-0 table #18: started
-2021/05/13-18:16:24.198 3f7c Level-0 table #18: 680 bytes OK
-2021/05/13-18:16:24.205 3f7c Delete type=0 #15
-2021/05/13-18:16:24.206 3f7c Delete type=3 #13
+2021/05/15-18:05:04.899 82f0 Recovering log #145
+2021/05/15-18:05:04.899 82f0 Level-0 table #148: started
+2021/05/15-18:05:04.903 82f0 Level-0 table #148: 237 bytes OK
+2021/05/15-18:05:04.911 82f0 Delete type=0 #145
+2021/05/15-18:05:04.912 82f0 Delete type=3 #143

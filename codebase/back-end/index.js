@@ -1,5 +1,7 @@
 require("dotenv").config();
+const e = require("express");
 const express = require("express");
+const mongoose = require("mongoose");
 const deleteUser = require(__dirname + "/deleteFiles/deleteUser");
 const createUser = require(__dirname + "/createFiles/createUser.js");
 const updateUser = require(__dirname + "/updateFiles/updateUser.js");
@@ -19,18 +21,40 @@ app.listen("3000", () => {
 	console.log("server has started listening to port 3000");
 });
 
-app.get("/createUser", (req, res) =>{
+app.get("/deleteDB", (req, response) => {
+	db.destroy( (err, res) => {
+		if (err) {
+			console.log(err);
+		} else {
+			console.log(res);
+		}
+	});
+	db.info( (err, res) => {
+		if (err) {
+			console.log(err);
+		} else {
+			console.log(res);
+		}
+	});
+})
 
+app.get("/createUser", (req, res) =>{
 	createUser.createUser(db, req.query.email, req.query.pwd, (user) => {
 		res.send(user);
 	});
 });
 
 app.post("/updateUser", express.json({type: '*/*'}), (req, res) =>{
-	updateUser.updateUser(req.body, (user) => {
+	updateUser.updateUserPouch(db, req.body, (user) => {
 		return res.send(user);
 	});
 });
+
+app.get("/updateUser", (req, res) => {
+	updateUser.updateUserPouch(db, (user) => {
+		res.send(user);
+	})
+})
 
 app.post("/readUser", express.json({type: '*/*'}), (req, res) => {
 	readUser.readUser(req.body, (user) => {
@@ -39,7 +63,7 @@ app.post("/readUser", express.json({type: '*/*'}), (req, res) => {
 });
 
 app.post("/deleteUser", express.json({type: '*/*'}), (req, res) => {
-	deleteUser.deleteUser(db, req.body, (user) => {
+	deleteUser.deleteUser(db, (user) => {
 		return res.send(user);
 	});
 });

@@ -7,22 +7,11 @@ mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: tru
 mongoose.set("useCreateIndex", true);
 
 function createUserPouch (db, userObject, callback) {
-	db.post(userObject, (err, res) => {
+	db.put({_id: "0000", userObject}, (err, res) => {
 		if (err) {
-			return callback(err);
+			console.log(err);//err when i use callback
 		} else {
-			/*db.get(res.id, (err, doc) => {
-				if (err) {
-					callback(err);
-				} else {
-					db.put({
-						_id: "0000",
-						_rev: doc._rev
-					})
-					callback(doc);
-				}
-			})*/
-			return callback(res);
+			console.log(res);//err when i use callback
 		}
 	});
 }
@@ -42,11 +31,6 @@ function createUser (db, email, pwd, callback) {
 		signifiers: []
 	};
 	newUserSchema = new schema.User(newUser);
-	createUserPouch(db, newUser, (res) => {
-		callback(res);
-	});
-	//	newUser.pwd = hash(newUser.pwd);
-
 	newUserSchema.save((err, user) => {
 		if (err) {
 			callback(err);
@@ -54,6 +38,16 @@ function createUser (db, email, pwd, callback) {
 			callback(user);
 		}
 	});
+	schema.User.findOne({email: email}, (error, user) => {
+		if (error) {
+			return callback(error);
+		} else {
+			createUserPouch(db, user, (res) => {
+				callback(res);
+			});
+		}
+	});
+	//	newUser.pwd = hash(newUser.pwd);
 }
 
 module.exports = {

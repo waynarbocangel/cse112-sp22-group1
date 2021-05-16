@@ -5,40 +5,37 @@ const schema = require(__dirname + "/../schema.js");
 mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
 mongoose.set("useCreateIndex", true);
 
-function  updateUserPouch(db, userObject, callback){
-	db.get("0000").then(function (doc) {
-		return db.put({
-			_id: "0000",
-			_rev: "doc._rev",
-			pwd: "superdupernewbd"
-		}) 
-	}).then(function(response) {
-		//handle response
-	}).catch(function (err) {
-		console.log(err)
+function  updateUserPouch(db, callback){
+	db.get("0000", (err, doc) => {
+		if (err) {
+			callback(err);
+		} else {
+			console.log(doc);
+			updateUser(doc, (res) => {
+				callback(res);
+			});
+		}
 	});
-
-	updateUser(userObject, (res) => {
-		callback(res);
-	})
 }
 
-function updateUser(userObject, callback){
-	schema.User.findOne({email: userObject.email}, (error, user) => {
+function updateUser(userObject2, callback){
+	console.log(userObject2);
+	schema.User.findOne({email: userObject2.userObject.email}, (error, user) => {
 		if (error) {
 			callback(error);
 		} else {
-			user.email = userObject.email;
-			user.pwd = userObject.pwd;
-			user.dailyLogs = userObject.dailyLogs;
-			user.monthlyLogs = userObject.monthlyLogs;
-			user.futureLogs = userObject.futureLogs;
-			user.collections = userObject.collections;
-			user.trackers = userObject.trackers;
-			user.textBlocks = userObject.textBlocks;
-			user.taskBlocks = userObject.taskBlocks;
-			user.eventBlocks = userObject.eventBlocks;
-			user.signifiers = userObject.signifiers;
+			console.log(user);
+			user.email = userObject2.email;
+			user.pwd = userObject2.pwd;
+			user.dailyLogs = userObject2.dailyLogs;
+			user.monthlyLogs = userObject2.monthlyLogs;
+			user.futureLogs = userObject2.futureLogs;
+			user.collections = userObject2.collections;
+			user.trackers = userObject2.trackers;
+			user.textBlocks = userObject2.textBlocks;
+			user.taskBlocks = userObject2.taskBlocks;
+			user.eventBlocks = userObject2.eventBlocks;
+			user.signifiers = userObject2.signifiers;
 
 			user.save((err, userObject) => {
 				if (err) {
