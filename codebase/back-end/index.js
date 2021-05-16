@@ -45,8 +45,10 @@ app.get("/createUser", (req, res) =>{
 	});
 });
 app.get("/createDailyLog", (req, res) => {
-	createDailyLog.createDailyLogPouch(db, userID, parent, content, dailyLength, trackers);
-})
+	createDailyLog.createDailyLogPouch(db, req.query.parent, req.query.content, req.query.dailyLength, req.query.trackers, (user) => {
+		res.send(user);
+	});
+});
 
 app.post("/updateUser", express.json({type: '*/*'}), (req, res) =>{
 	updateUser.updateUserPouch(db, req.body, (user) => {
@@ -60,9 +62,9 @@ app.get("/updateUser", (req, res) => {
 	})
 })
 
-app.post("/readUser", express.json({type: '*/*'}), (req, res) => {
-	readUser.readUser(req.body, (user) => {
-		return res.send(user);
+app.get("/readUser", (req, res) => {
+	readUser.readUserPouch(db, (user) => {
+		res.send(user);
 	});
 });
 

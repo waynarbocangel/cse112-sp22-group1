@@ -7,7 +7,17 @@ mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: tru
 mongoose.set("useCreateIndex", true);
 
 function createUserPouch (db, userObject, callback) {
-	db.put({_id: "0000", userObject}, (err, res) => {
+	console.log(userObject);
+	db.put({_id: "0000", _rev: userObject._rev,
+		dailyLogs: userObject.dailyLogs, 
+		monthlyLogs: userObject.monthlyLogs,
+		futureLogs: userObject.futureLogs,
+		collections: userObject.collections,
+		trackers: userObject.trackers,
+		textBlocks: userObject.textBlocks,
+		taskBlocks: userObject.taskBlocks,
+		eventBlocks: userObject.eventBlocks,
+		signifiers: userObject.signifiers}, (err, res) => {
 		if (err) {
 			console.log(err);//err when i use callback
 		} else {
