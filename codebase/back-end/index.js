@@ -6,6 +6,7 @@ const deleteUser = require(__dirname + "/deleteFiles/deleteUser");
 const createUser = require(__dirname + "/createFiles/createUser.js");
 const updateUser = require(__dirname + "/updateFiles/updateUser.js");
 const readUser = require(__dirname + "/readFiles/readUser.js");
+const createDailyLog = require(__dirname + "/createFiles/createDailyLog.js");
 
 const app = express();
 
@@ -43,6 +44,9 @@ app.get("/createUser", (req, res) =>{
 		res.send(user);
 	});
 });
+app.get("/createDailyLog", (req, res) => {
+	createDailyLog.createDailyLogPouch(db, userID, parent, content, dailyLength, trackers);
+})
 
 app.post("/updateUser", express.json({type: '*/*'}), (req, res) =>{
 	updateUser.updateUserPouch(db, req.body, (user) => {
