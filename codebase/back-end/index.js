@@ -13,7 +13,7 @@ const app = express();
 mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
 mongoose.set("useCreateIndex", true);
 
-const pouch ="node_modules/pouchdb/dist/pouchdb.min.js"
+//const pouch ="node_modules/pouchdb/dist/pouchdb.min.js"
 var PouchDB = require("pouchdb");
 var db = new PouchDB("Users");
 
@@ -22,13 +22,14 @@ app.listen("3000", () => {
 });
 
 app.get("/deleteDB", (req, response) => {
-	db.destroy( (err, res) => {
+	/*db.destroy( (err, res) => {
 		if (err) {
 			console.log(err);
 		} else {
 			console.log(res);
 		}
-	});
+	});*/
+
 	db.info( (err, res) => {
 		if (err) {
 			console.log(err);
@@ -49,11 +50,11 @@ app.get("/createDailyLog", (req, res) => {
 	});
 });
 
-app.post("/updateUser", express.json({type: '*/*'}), (req, res) =>{
-	updateUser.updateUserPouch(db, req.body, (user) => {
+//app.post("/updateUser", express.json({type: '*/*'}), (req, res) =>{
+/*	updateUser.updateUserPouch(db, req.body, (user) => {
 		return res.send(user);
 	});
-});
+});*/
 
 app.get("/updateUser", (req, res) => {
 	updateUser.updateUserPouch(db, (user) => {
