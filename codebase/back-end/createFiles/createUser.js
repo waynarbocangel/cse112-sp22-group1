@@ -7,7 +7,6 @@ mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: tru
 mongoose.set("useCreateIndex", true);
 
 function createUser (email, pwd, callback) {
-
 	const newUser = new schema.User({
 		email: email,
 		pwd: security.passHash(pwd),
