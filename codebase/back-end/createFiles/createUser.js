@@ -1,16 +1,19 @@
 require("dotenv").config();
 const e = require("express");
 const mongoose = require("mongoose");
+<<<<<<< HEAD
 const crypto = require("../cryptotest.js");back-end_drop
+=======
+const security = require(__dirname + "/../security/securityFunctions.js");
+>>>>>>> back-end_drop
 const schema = require(__dirname + "/../schema.js");
 
 mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
 mongoose.set("useCreateIndex", true);
 function createUser (email, pwd, callback) {
-	let hashedPwd = crypto.passHash(pwd);
 	const newUser = new schema.User({
 		email: email,
-		pwd: hashedPwd,
+		pwd: security.passHash(pwd),
 		dailyLogs: [],
 		monthlyLogs: [],
 		futureLogs: [],
@@ -26,7 +29,7 @@ function createUser (email, pwd, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			return(user);
+			callback(user);
 		}
 	});
 	schema.User.findOne({email: email}, (error, user) => {
@@ -45,5 +48,3 @@ module.exports = {
 	createUser: createUser,
 	createUserPouch: createUserPouch
 }
-
-createUser('abc','hhh');
