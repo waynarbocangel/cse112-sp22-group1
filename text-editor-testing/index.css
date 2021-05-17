@@ -2,15 +2,46 @@ html, body, section, .full-height {
     height: 100%;
 } 
 
-#text {
+div{
+    font-size: 15px;
+}
+
+#textBlock {
     font-family: monospace;
     border: none;
     overflow: auto;
     outline: none;
     resize: none;
-    width: 47vw;
+    width: 94%;
     padding: 3%;
 }
+
+#textBlock:empty:before{
+    content: attr(placeholder);
+    color: gray;
+}
+
+.notesList:empty::before{
+    content: attr(placeholder);
+    color: gray;
+}
+
+.notesList{
+    color: black;
+}
+
+.header1{
+    font-size: 42px;
+    font-weight: bold;
+    color: black;
+}
+
+.header2{
+    font-size: 24px;
+    font-weight: bold;
+    color: black;
+}
+
 
 .row {
     display: flex;
