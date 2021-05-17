@@ -1,75 +1,69 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
-const deleteUser = require(__dirname + "/deleteFiles/deleteUser.js");
+const deleteUser = require("./deleteFiles/deleteUser");
 const createUser = require(__dirname + "/createFiles/createUser.js");
 const updateUser = require(__dirname + "/updateFiles/updateUser.js");
 const readUser = require(__dirname + "/readFiles/readUser.js");
-const createDailyLog = require(__dirname + "/createFiles/createDailyLog.js");
+const security = require(__dirname + "/security/securityFunctions.js");
 
 const app = express();
 
+app.use(express.static(__dirname + "/front-end"));
 
 mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
 mongoose.set("useCreateIndex", true);
-
-//const pouch ="node_modules/pouchdb/dist/pouchdb.min.js"
-var PouchDB = require("pouchdb");
-var db = new PouchDB("Users");
 
 app.listen("3000", () => {
 	console.log("server has started listening to port 3000");
 });
 
-app.get("/deleteDB", (req, response) => {
-	/*db.destroy( (err, res) => {
-		if (err) {
-			console.log(err);
-		} else {
-			console.log(res);
-		}
-	});*/
-
-	db.info( (err, res) => {
-		if (err) {
-			console.log(err);
-		} else {
-			console.log(res);
-		}
-	});
-})
-
-app.get("/createUser", (req, res) =>{
-	createUser.createUser(db, req.query.email, req.query.pwd, (user) => {
-		res.send(user);
-	});
+app.get("/login", (req, res) => {
+	res.sendFile(__dirname + "/front-end/login/login.html");
 });
-app.get("/createDailyLog", (req, res) => {
-	createDailyLog.createDailyLogPouch(db, req.query.parent, req.query.content, req.query.dailyLength, req.query.trackers, (user) => {
+
+app.get("/success", (req, res) => {
+	res.send("success");
+});
+
+app.post("/createUser", express.json({type: '*/*'}), (req, res) =>{
+	createUser.createUser(req.body.email, req.body.pwd, (user) => {
 		res.send(user);
 	});
 });
 
-//app.post("/updateUser", express.json({type: '*/*'}), (req, res) =>{
-/*	updateUser.updateUserPouch(db, req.body, (user) => {
-		return res.send(user);
+app.post("/updateUser", express.json({type: '*/*'}), (req, res) =>{
+	security.authenticate(req.body, (success) => {
+		if (success){
+			updateUser.updateUser(req.body, (user) => {
+				res.send(user);
+			});
+		} else {
+			res.send("failed authentication");
+		}
 	});
-});*/
+});
 
-app.get("/updateUser", (req, res) => {
-	updateUser.updateUserPouch(db, (user) => {
-		res.send(user);
-	})
-})
-
-app.get("/readUser", (req, res) => {
-	readUser.readUserPouch(db, (user) => {
-		res.send(user);
+app.post("/readUser", express.json({type: '*/*'}), (req, res) => {
+	security.authenticate(req.body, (success) => {
+		if(success){
+			readUser.readUser(req.body, (user) => {
+				res.send(user);
+			});
+		} else {
+			res.send("failed authentication");
+		}
 	});
 });
 
 app.post("/deleteUser", express.json({type: '*/*'}), (req, res) => {
-	deleteUser.deleteUser(db, (user) => {
-		return res.send(user);
+	security.authenticate(req.body, (success) => {
+		if (success){
+			deleteUser.deleteUser(req.body, (user) => {
+				res.send(user);
+			});
+		} else {
+			res.send("failed authentication");
+		}
 	});
 });
