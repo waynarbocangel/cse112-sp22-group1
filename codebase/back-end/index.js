@@ -39,7 +39,7 @@ app.post("/updateUser", express.json({type: '*/*'}), (req, res) =>{
 				res.send(user);
 			});
 		} else {
-			res.send("failed authentication");
+			res.send(JSON.stringify({error: "failed authentication"}));
 		}
 	});
 });
@@ -51,7 +51,7 @@ app.post("/readUser", express.json({type: '*/*'}), (req, res) => {
 				res.send(user);
 			});
 		} else {
-			res.send("failed authentication");
+			res.send(JSON.stringify({error: "failed authentication"}));
 		}
 	});
 });
@@ -63,7 +63,7 @@ app.post("/deleteUser", express.json({type: '*/*'}), (req, res) => {
 				res.send(user);
 			});
 		} else {
-			res.send("failed authentication");
+			res.send(JSON.stringify({error: "failed authentication"}));
 		}
 	});
 });
