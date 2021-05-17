@@ -52,7 +52,7 @@ function readUser (userData, callback) {
 			}
 			let decodedUser = {
 				email: user.email,
-				pwd: userObject.pwd,
+				pwd: userData.pwd,
 				dailyLogs: user.dailyLogs,
 				monthlyLogs: user.monthlyLogs,
 				futureLogs: user.futureLogs,

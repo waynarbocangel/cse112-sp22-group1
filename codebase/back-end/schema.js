@@ -11,7 +11,6 @@ const userSchema = {
 		date: Date,
 		parent: String,
 		content: [String],
-		days: [String],
 		trackers: [String]
 	}],
 	monthlyLogs: [{

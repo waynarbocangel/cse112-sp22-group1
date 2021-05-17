@@ -9,6 +9,8 @@ const security = require(__dirname + "/security/securityFunctions.js");
 
 const app = express();
 
+app.use(express.static(__dirname + "/front-end"));
+
 mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
 mongoose.set("useCreateIndex", true);
 
@@ -16,8 +18,16 @@ app.listen("3000", () => {
 	console.log("server has started listening to port 3000");
 });
 
-app.get("/createUser", (req, res) =>{
-	createUser.createUser(req.query.email, req.query.pwd, (user) => {
+app.get("/login", (req, res) => {
+	res.sendFile(__dirname + "/front-end/login/login.html");
+});
+
+app.get("/success", (req, res) => {
+	res.send("success");
+});
+
+app.post("/createUser", express.json({type: '*/*'}), (req, res) =>{
+	createUser.createUser(req.body.email, req.body.pwd, (user) => {
 		res.send(user);
 	});
 });
