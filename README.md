@@ -1,8 +1,8 @@
 # cse110-sp21-group11
 This is the repository for team 11's CSE 110 project.  
-Team name: It's not a bug, It's a feature
+Team Name: It's not a bug, It's a feature
 
-Team members:   
+Team Members:   
 - Carlos Guerrero
 - Chang Liu
 - Claudia Handoyo
