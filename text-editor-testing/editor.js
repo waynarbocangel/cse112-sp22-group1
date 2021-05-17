@@ -1,78 +1,57 @@
-let textBlock = document.getElementById("textBlock");
-
-textBlock.addEventListener("input",() =>{
-	let content = textBlock.innerHTML;
-	// console.log(content);
-	if (content == "#&nbsp;"){
-		while(textBlock.classList.length > 0){
-			textBlock.classList.remove(textBlock.classList[0]);
+import { TextBlock } from "./block.js";
+let contentWrapper = document.getElementById("contentWrapper");
+export var blockArray = [];
+var idTable = [];
+var controller = {
+	creatingFromBullet: false,
+	currentTabLevel: 0,
+	resetPosition: true,
+	currentBlockIndex: 0,
+	addNewBlock: () => {
+		let newBlock = new TextBlock(controller, (success) => {
+			if (controller.currentBlockIndex < blockArray.length - 1){
+				contentWrapper.insertBefore(newBlock, blockArray[controller.currentBlockIndex + 1]);
+				blockArray.splice(controller.currentBlockIndex + 1, 0, newBlock);
+				controller.currentBlockIndex = controller.currentBlockIndex + 1;
+			} else {
+				contentWrapper.appendChild(newBlock);
+				blockArray.push(newBlock);
+				controller.currentBlockIndex = blockArray.length - 1;
+			}
+			newBlock.focus();
+		});
+	},
+	moveToNextBlock: () => {
+		let currentBlock = blockArray[controller.currentBlockIndex];
+		if (controller.currentBlockIndex < blockArray.length - 1){
+			let nextBlock = blockArray[controller.currentBlockIndex + 1];
+			nextBlock.moveToSpot(currentBlock.currentPointerSpot, false);
 		}
-		textBlock.setAttribute("placeholder", "Header 1");
-		textBlock.classList.add("header1");
-		textBlock.innerHTML = "";
-	} else if (content == "##&nbsp;"){
-		while(textBlock.classList.length > 0){
-			textBlock.classList.remove(textBlock.classList[0]);
+	},
+	moveToPreviousBlock: () => {
+		let currentBlock = blockArray[controller.currentBlockIndex];
+		if (controller.currentBlockIndex > 0){
+			let nextBlock = blockArray[controller.currentBlockIndex - 1];
+			nextBlock.moveToSpot(currentBlock.currentPointerSpot, true);
 		}
-		textBlock.setAttribute("placeholder", "Header 2");
-		textBlock.classList.add("header2");
-		textBlock.innerHTML = "";
-	} else if (content == "-&nbsp;"){
-		while(textBlock.classList.length > 0){
-			textBlock.classList.remove(textBlock.classList[0]);
-		}
-		textBlock.setAttribute("placeholder", 'Type "/" to create a block');
-		textBlock.innerHTML = "<ul><li class='notesList' placeholder='Note'></li></ul>";
-	} else if (content.includes("<ul><li")){
-		if (textBlock.textContent == ""){
-			textBlock.innerHTML = "<ul><li class='notesList' placeholder='Note'></li></ul>";
-		}
+	},
+	removeBlock: () => {
+		let currentBlock = blockArray[controller.currentBlockIndex];
+		blockArray.splice(controller.currentBlockIndex, 1);
+		controller.currentBlockIndex = (controller.currentBlockIndex == 0) ? controller.currentBlockIndex : controller.currentBlockIndex - 1;
+		console.log(controller.currentBlockIndex);
+		let nextBlock = blockArray[controller.currentBlockIndex];
+		console.log(nextBlock);
+		nextBlock.moveToSpot(100000, false);
+		contentWrapper.removeChild(currentBlock);
 	}
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+	let newBlock = new TextBlock(controller, (success) => {
+		contentWrapper.appendChild(newBlock);
+		blockArray.push(newBlock);
+		controller.currentBlockIndex = blockArray.length - 1;
+		newBlock.focus();
+	});
 });
-
-textBlock.onkeydown = (e)=>{
-	var key = e.keyCode || e.charCode;
-
-	if (key == 8 || key == 46){
-		// console.log(textBlock.innerHTML);
-		if(textBlock.innerHTML == "" || textBlock.innerHTML == '<ul><li class="notesList" placeholder="Note"></li></ul>' || textBlock.innerHTML == "<ul><li><br></li></ul>"){
-			while(textBlock.classList.length > 0){
-				textBlock.classList.remove(textBlock.classList[0]);
-			}
-			textBlock.setAttribute("placeholder", 'Type "/" to create a block');
-			textBlock.innerHTML = "";
-		}
-	} else if (key == 32){
-		let content = textBlock.innerHTML;
-		console.log(content);
-		if (content == "/h1"){
-			while(textBlock.classList.length > 0){
-				textBlock.classList.remove(textBlock.classList[0]);
-			}
-			textBlock.setAttribute("placeholder", "Header 1");
-			textBlock.classList.add("header1");
-			textBlock.innerHTML = "";
-			e.preventDefault();
-		} else if (content == "/h2"){
-			while(textBlock.classList.length > 0){
-				textBlock.classList.remove(textBlock.classList[0]);
-			}
-			textBlock.setAttribute("placeholder", "Header 2");
-			textBlock.classList.add("header2");
-			textBlock.innerHTML = "";
-			e.preventDefault();
-		} else if (content == "/note"){
-			while(textBlock.classList.length > 0){
-				textBlock.classList.remove(textBlock.classList[0]);
-			}
-			textBlock.setAttribute("placeholder", 'Type "/" to create a block');
-			textBlock.innerHTML = "<ul><li class='notesList' placeholder='Note'></li></ul>";
-		}
-	} else if (key == 13) {
-        let newBlock = document.createElement("text-block");
-
-        document.getElementsByTagName('main')[0].appendChild(newBlock);
-        console.log("WHAT");
-    }
-
-};
