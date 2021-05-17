@@ -9,6 +9,7 @@
   "author": "CSE 110 Team 11 Spring 2021",
   "license": "ISC",
   "dependencies": {
+    "crypto-js": "^4.0.0",
     "dotenv": "^9.0.0",
     "express": "^4.17.1",
     "mongoose": "^5.12.7"
