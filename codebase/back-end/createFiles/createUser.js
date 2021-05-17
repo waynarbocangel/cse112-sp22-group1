@@ -7,25 +7,31 @@ mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: tru
 mongoose.set("useCreateIndex", true);
 
 function createUser (email, pwd, callback) {
-	const newUser = new schema.User({
-		email: email,
-		pwd: security.passHash(pwd),
-		dailyLogs: [],
-		monthlyLogs: [],
-		futureLogs: [],
-		trackers: [],
-		collections: [],
-		textBlocks: [],
-		eventBlocks: [],
-		taskBlocks: [],
-		signifiers: []
-	});
-
-	newUser.save((err, user) => {
-		if (err) {
-			callback(err);
+	schema.User.findOne({email: email}, (error, user) => {
+		if (error){
+			const newUser = new schema.User({
+				email: email,
+				pwd: security.passHash(pwd),
+				dailyLogs: [],
+				monthlyLogs: [],
+				futureLogs: [],
+				trackers: [],
+				collections: [],
+				textBlocks: [],
+				eventBlocks: [],
+				taskBlocks: [],
+				signifiers: []
+			});
+	
+			newUser.save((err, user) => {
+				if (err) {
+					callback(err);
+				} else {
+					callback(user);
+				}
+			});
 		} else {
-			callback(user);
+			callback({error: "This email already has an account!"});
 		}
 	});
 }
