@@ -24,24 +24,36 @@ app.get("/createUser", (req, res) =>{
 
 app.post("/updateUser", express.json({type: '*/*'}), (req, res) =>{
 	security.authenticate(req.body, (success) => {
-		updateUser.updateUser(req.body, (user) => {
-			res.send(user);
-		});
+		if (success){
+			updateUser.updateUser(req.body, (user) => {
+				res.send(user);
+			});
+		} else {
+			res.send("failed authentication");
+		}
 	});
 });
 
 app.post("/readUser", express.json({type: '*/*'}), (req, res) => {
 	security.authenticate(req.body, (success) => {
-		readUser.readUser(req.body, (user) => {
-			res.send(user);
-		});
+		if(success){
+			readUser.readUser(req.body, (user) => {
+				res.send(user);
+			});
+		} else {
+			res.send("failed authentication");
+		}
 	});
 });
 
 app.post("/deleteUser", express.json({type: '*/*'}), (req, res) => {
 	security.authenticate(req.body, (success) => {
-		deleteUser.deleteUser(req.body, (user) => {
-			res.send(user);
-		});
+		if (success){
+			deleteUser.deleteUser(req.body, (user) => {
+				res.send(user);
+			});
+		} else {
+			res.send("failed authentication");
+		}
 	});
 });
