@@ -1,35 +1,16 @@
 require("dotenv").config();
 const e = require("express");
 const mongoose = require("mongoose");
+const crypto = require("../cryptotest.js");back-end_drop
 const schema = require(__dirname + "/../schema.js");
 
 mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
 mongoose.set("useCreateIndex", true);
-
-function createUserPouch (db, userObject, callback) {
-	console.log(userObject);
-	db.put({_id: "0000", _rev: userObject._rev,
-		dailyLogs: userObject.dailyLogs, 
-		monthlyLogs: userObject.monthlyLogs,
-		futureLogs: userObject.futureLogs,
-		collections: userObject.collections,
-		trackers: userObject.trackers,
-		textBlocks: userObject.textBlocks,
-		taskBlocks: userObject.taskBlocks,
-		eventBlocks: userObject.eventBlocks,
-		signifiers: userObject.signifiers}, (err, res) => {
-		if (err) {
-			console.log(err);//err when i use callback
-		} else {
-			console.log(res);//err when i use callback
-		}
-	});
-}
-
-function createUser (db, email, pwd, callback) {
-	const newUser = {
+function createUser (email, pwd, callback) {
+	let hashedPwd = crypto.passHash(pwd);
+	const newUser = new schema.User({
 		email: email,
-		pwd: pwd,
+		pwd: hashedPwd,
 		dailyLogs: [],
 		monthlyLogs: [],
 		futureLogs: [],
@@ -39,13 +20,13 @@ function createUser (db, email, pwd, callback) {
 		eventBlocks: [],
 		taskBlocks: [],
 		signifiers: []
-	};
+	});
 	newUserSchema = new schema.User(newUser);
 	newUserSchema.save((err, user) => {
 		if (err) {
 			callback(err);
 		} else {
-			callback(user);
+			return(user);
 		}
 	});
 	schema.User.findOne({email: email}, (error, user) => {
@@ -64,3 +45,5 @@ module.exports = {
 	createUser: createUser,
 	createUserPouch: createUserPouch
 }
+
+createUser('abc','hhh');
