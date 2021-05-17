@@ -3,9 +3,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const deleteUser = require("./deleteFiles/deleteUser");
 const createUser = require(__dirname + "/createFiles/createUser.js");
-const updateUserData = require(__dirname + "/updateFiles/updateUserData.js");
 const updateUser = require(__dirname + "/updateFiles/updateUser.js");
 const readUser = require(__dirname + "/readFiles/readUser.js");
+const security = require(__dirname + "/security/securityFunctions.js");
 
 const app = express();
 
@@ -22,26 +22,26 @@ app.get("/createUser", (req, res) =>{
 	});
 });
 
-app.post("/updateUserData", express.json({type: '*/*'}), (req, res) =>{
-	updateUserData.updateUserData(req.body, (user) => {
-		res.send(user);
-	});
-});
-
 app.post("/updateUser", express.json({type: '*/*'}), (req, res) =>{
-	updateUser.updateUser(req.body, (user) => {
-		res.send(user);
+	security.authenticate(req.body, (success) => {
+		updateUser.updateUser(req.body, (user) => {
+			res.send(user);
+		});
 	});
 });
 
 app.post("/readUser", express.json({type: '*/*'}), (req, res) => {
-	readUser.readUser(req.body, (user) => {
-		res.send(user);
+	security.authenticate(req.body, (success) => {
+		readUser.readUser(req.body, (user) => {
+			res.send(user);
+		});
 	});
 });
 
 app.post("/deleteUser", express.json({type: '*/*'}), (req, res) => {
-	deleteUser.deleteUser(req.body, (user) => {
-		res.send(user);
+	security.authenticate(req.body, (success) => {
+		deleteUser.deleteUser(req.body, (user) => {
+			res.send(user);
+		});
 	});
 });
