@@ -10,6 +10,12 @@ const security = require(__dirname + "/security/securityFunctions.js");
 const app = express();
 
 app.use(express.static(__dirname + "/front-end"));
+app.use((req, res, next) => {
+	res.header('Access-Control-Allow-Origin', "*");
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+});
 
 mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
 mongoose.set("useCreateIndex", true);
