@@ -18,7 +18,9 @@ logIn.onclick = (e) => {
 		alert("You need to fill in the password field");
 	} else {
 		loginUser(email.value, password.value, (user) => {
-			if (user.email != undefined){
+			if (user.error != undefined) {
+				alert(user.error);
+			} else if (user.email != undefined){
 				user.pwd = password.value;
 				createUserPouch(db, user, (userData) => {
 					window.location.href = "http://localhost:8080/success";
