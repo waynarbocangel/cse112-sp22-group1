@@ -1,6 +1,6 @@
 import {makeid} from "makeId.js";
 
-export function createDailyLogPouch (db, parent, content, trackers, callback) {
+export function createCollectionPouch (db, title, parent, content, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
@@ -20,12 +20,11 @@ export function createDailyLogPouch (db, parent, content, trackers, callback) {
 			while(arrays.filter((element) => element.id == id).length > 0){
 				id = makeid();
 			}
-			const dailyObject = {
+			const collectionObject = {
 				id: id,
-				date: Date(),
+				title: title,
 				parent: parent,
 				content: content,
-				trackers: trackers
 			};
 		}
 	});
@@ -38,7 +37,7 @@ export function createDailyLogPouch (db, parent, content, trackers, callback) {
 		} else {
 			db.put({_rev: doc._rev,
 				_id: "0000"}, (res) => {
-				doc.userObject.dailyLogs.push(dailyObject);
+				doc.userObject.collection.push(collectionObject);
 				console.log(res);
 				callback(res);
 			});

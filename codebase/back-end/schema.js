@@ -21,7 +21,7 @@ const userSchema = {
 		days: [String],
 		trackers: [String]
 	}],
-	futureLogs: [{
+	futureLogs:[{
 		id: String,
 		startDate: Date,
 		endDate: Date,
