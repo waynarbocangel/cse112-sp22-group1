@@ -7,7 +7,7 @@ mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: tru
 mongoose.set("useCreateIndex", true);
 
 function deleteUser (userObject, callback) {
-	schema.User.deleteOne({email: userObject.email}, (error, user) => {
+	schema.User.findOneAndDelete({email: userObject.email}, (error, user) => {
 		if (error) {
 			callback(error);
 		} else {
