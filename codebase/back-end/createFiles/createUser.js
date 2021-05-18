@@ -9,6 +9,8 @@ mongoose.set("useCreateIndex", true);
 function createUser (email, pwd, callback) {
 	schema.User.findOne({email: email}, (error, user) => {
 		if (error){
+			callback(error);
+		} else if (user == null) {
 			const newUser = new schema.User({
 				email: email,
 				pwd: security.passHash(pwd),
