@@ -1,4 +1,4 @@
-import {makeid} from "makeId.js";
+import {makeid} from "./makeId.js";
 
 export function createEventBlockPouch (db, parent, text, date, signifier, callback) {
 	db.get("0000", (err, doc) => {

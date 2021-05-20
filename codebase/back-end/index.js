@@ -1,11 +1,12 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
-const deleteUser = require("./deleteFiles/deleteUser");
+const deleteUser = require(__dirname + "/deleteFiles/deleteUser");
 const createUser = require(__dirname + "/createFiles/createUser.js");
 const updateUser = require(__dirname + "/updateFiles/updateUser.js");
 const readUser = require(__dirname + "/readFiles/readUser.js");
 const security = require(__dirname + "/security/securityFunctions.js");
+const path = require("../front-end");
 
 const app = express();
 
@@ -25,7 +26,7 @@ app.listen("3000", () => {
 });
 
 app.get("/login", (req, res) => {
-	res.sendFile(__dirname + "/front-end/login/login.html");
+	res.sendFile(path.resolve("/login/login.js"));
 });
 
 app.get("/success", (req, res) => {

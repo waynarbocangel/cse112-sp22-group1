@@ -1,4 +1,4 @@
-import {makeid} from "makeId.js";
+import {makeid} from "./makeId.js";
 
 export function createTrackerPouch (db, content, parent, callback) {
 	db.get("0000", (err, doc) => {
