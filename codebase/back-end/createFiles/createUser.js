@@ -3,13 +3,15 @@ const mongoose = require("mongoose");
 const security = require(__dirname + "/../security/securityFunctions.js");
 const schema = require(__dirname + "/../schema.js");
 
+
 mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
 mongoose.set("useCreateIndex", true);
 
-function createUser (email, pwd, callback) {
+function createUser (email, pwds, callback) {
 	const newUser = new schema.User({
 		email: email,
-		pwd: security.passHash(pwd),
+		pwd: security.passHash(pwds),
+		//pwd: pwd,
 		dailyLogs: [],
 		monthlyLogs: [],
 		futureLogs: [],
@@ -29,6 +31,9 @@ function createUser (email, pwd, callback) {
 		}
 	});
 }
+
+createUser('abc', '123', (response) =>{console.log(response)} );
+
 
 module.exports = {
 	createUser: createUser
