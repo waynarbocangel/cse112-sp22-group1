@@ -1,6 +1,6 @@
-import {makeid} from "makeId.js";
+import {makeid} from "./makeId.js";
 
-export function createTaskBlockPouch (db, parent, text, complete, signifier, callback) {
+export function createCollectionPouch (db, title, parent, content, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
@@ -20,12 +20,11 @@ export function createTaskBlockPouch (db, parent, text, complete, signifier, cal
 			while(arrays.filter((element) => element.id == id).length > 0){
 				id = makeid();
 			}
-			const taskBlockObject = {
+			const collectionObject = {
 				id: id,
+				title: title,
 				parent: parent,
-				text: text,
-				complete: complete,
-				signifier: signifier
+				content: content,
 			};
 		}
 	});
@@ -38,7 +37,7 @@ export function createTaskBlockPouch (db, parent, text, complete, signifier, cal
 		} else {
 			db.put({_rev: doc._rev,
 				_id: "0000"}, (res) => {
-				doc.userObject.taskBlocks.push(taskBlockObject);
+				doc.userObject.collections.push(collectionObject);
 				console.log(res);
 				callback(res);
 			});

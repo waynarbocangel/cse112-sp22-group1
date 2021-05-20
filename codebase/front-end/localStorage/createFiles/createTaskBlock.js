@@ -1,6 +1,6 @@
-import {makeid} from "makeId.js";
+import {makeid} from "./makeId.js";
 
-export function createTextBlockPouch (db, parent, content, trackers, callback) {
+export function createTaskBlockPouch (db, parent, text, complete, signifier, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
@@ -20,11 +20,11 @@ export function createTextBlockPouch (db, parent, content, trackers, callback) {
 			while(arrays.filter((element) => element.id == id).length > 0){
 				id = makeid();
 			}
-			const textBlockObject = {
+			const taskBlockObject = {
 				id: id,
 				parent: parent,
-				kind: kind,
 				text: text,
+				complete: complete,
 				signifier: signifier
 			};
 		}
@@ -38,7 +38,7 @@ export function createTextBlockPouch (db, parent, content, trackers, callback) {
 		} else {
 			db.put({_rev: doc._rev,
 				_id: "0000"}, (res) => {
-				doc.userObject.textBlocks.push(textBlockObject);
+				doc.userObject.taskBlocks.push(taskBlockObject);
 				console.log(res);
 				callback(res);
 			});

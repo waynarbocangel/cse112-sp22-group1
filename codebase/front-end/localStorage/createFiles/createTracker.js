@@ -1,6 +1,6 @@
-import {makeid} from "makeId.js";
+import {makeid} from "./makeId.js";
 
-export function createMonthlyLogPouch (db, parent, content, days, trackers, callback) {
+export function createTrackerPouch (db, content, parent, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
@@ -20,13 +20,10 @@ export function createMonthlyLogPouch (db, parent, content, days, trackers, call
 			while(arrays.filter((element) => element.id == id).length > 0){
 				id = makeid();
 			}
-			const monthlyObject = {
+			const trackerObject = {
 				id: id,
-				date: Date(),
-				parent: parent,
 				content: content,
-				days: days,
-				trackers: trackers
+				parent: parent
 			};
 		}
 	});
@@ -39,7 +36,7 @@ export function createMonthlyLogPouch (db, parent, content, days, trackers, call
 		} else {
 			db.put({_rev: doc._rev,
 				_id: "0000"}, (res) => {
-				doc.userObject.monthlyLogs.push(monthlyObject);
+				doc.userObject.trackers.push(trackerObject);
 				console.log(res);
 				callback(res);
 			});

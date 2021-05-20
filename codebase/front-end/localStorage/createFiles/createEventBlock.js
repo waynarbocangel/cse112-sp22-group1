@@ -1,6 +1,6 @@
-import {makeid} from "makeId.js";
+import {makeid} from "./makeId.js";
 
-export function createSignifierPouch (db, meaning, symbol, callback) {
+export function createEventBlockPouch (db, parent, text, date, signifier, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
@@ -20,10 +20,12 @@ export function createSignifierPouch (db, meaning, symbol, callback) {
 			while(arrays.filter((element) => element.id == id).length > 0){
 				id = makeid();
 			}
-			const signifierObject = {
+			const eventBlockObject = {
 				id: id,
-				meaning: meaning,
-				symbol: symbol
+				parent: parent,
+				text: text,
+				date: date,
+				signifier: signifier
 			};
 		}
 	});
@@ -36,7 +38,7 @@ export function createSignifierPouch (db, meaning, symbol, callback) {
 		} else {
 			db.put({_rev: doc._rev,
 				_id: "0000"}, (res) => {
-				doc.userObject.taskBlocks.push(TaskBlockObject);
+				doc.userObject.eventBlocks.push(eventBlockObject);
 				console.log(res);
 				callback(res);
 			});

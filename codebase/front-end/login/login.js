@@ -1,5 +1,5 @@
 import {createUser, loginUser, readUser, deleteDB, db} from "../localStorage/userOperations.js";
-import {createUserPouch} from "../localStorage/createUser.js";
+import {createUserPouch} from "../localStorage/createFiles/createUser.js";
 let email = document.getElementById("email-field");
 let password = document.getElementById("password-field");
 let logIn = document.getElementById("login-form-submit");

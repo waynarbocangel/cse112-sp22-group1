@@ -1,6 +1,6 @@
-import {makeid} from "makeId.js";
+import {makeid} from "./makeId.js";
 
-export function createCollectionPouch (db, title, parent, content, callback) {
+export function createSignifierPouch (db, meaning, symbol, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
@@ -20,11 +20,10 @@ export function createCollectionPouch (db, title, parent, content, callback) {
 			while(arrays.filter((element) => element.id == id).length > 0){
 				id = makeid();
 			}
-			const collectionObject = {
+			const signifierObject = {
 				id: id,
-				title: title,
-				parent: parent,
-				content: content,
+				meaning: meaning,
+				symbol: symbol
 			};
 		}
 	});
@@ -37,7 +36,7 @@ export function createCollectionPouch (db, title, parent, content, callback) {
 		} else {
 			db.put({_rev: doc._rev,
 				_id: "0000"}, (res) => {
-				doc.userObject.collections.push(collectionObject);
+				doc.userObject.taskBlocks.push(TaskBlockObject);
 				console.log(res);
 				callback(res);
 			});

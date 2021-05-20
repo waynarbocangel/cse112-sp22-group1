@@ -1,6 +1,6 @@
-import {makeid} from "makeId.js";
+import {makeid} from "./makeId.js";
 
-export function createTrackerPouch (db, content, parent, callback) {
+export function createTextBlockPouch (db, parent, content, trackers, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
@@ -20,10 +20,12 @@ export function createTrackerPouch (db, content, parent, callback) {
 			while(arrays.filter((element) => element.id == id).length > 0){
 				id = makeid();
 			}
-			const trackerObject = {
+			const textBlockObject = {
 				id: id,
-				content: content,
-				parent: parent
+				parent: parent,
+				kind: kind,
+				text: text,
+				signifier: signifier
 			};
 		}
 	});
@@ -36,7 +38,7 @@ export function createTrackerPouch (db, content, parent, callback) {
 		} else {
 			db.put({_rev: doc._rev,
 				_id: "0000"}, (res) => {
-				doc.userObject.trackers.push(trackerObject);
+				doc.userObject.textBlocks.push(textBlockObject);
 				console.log(res);
 				callback(res);
 			});

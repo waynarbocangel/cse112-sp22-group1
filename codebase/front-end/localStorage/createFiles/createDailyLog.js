@@ -1,6 +1,6 @@
-import {makeid} from "makeId.js";
+import {makeid} from "./makeId.js";
 
-export function createEventBlockPouch (db, parent, text, date, signifier, callback) {
+export function createDailyLogPouch (db, parent, content, trackers, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
@@ -20,12 +20,12 @@ export function createEventBlockPouch (db, parent, text, date, signifier, callba
 			while(arrays.filter((element) => element.id == id).length > 0){
 				id = makeid();
 			}
-			const eventBlockObject = {
+			const dailyObject = {
 				id: id,
+				date: Date(),
 				parent: parent,
-				text: text,
-				date: date,
-				signifier: signifier
+				content: content,
+				trackers: trackers
 			};
 		}
 	});
@@ -38,7 +38,7 @@ export function createEventBlockPouch (db, parent, text, date, signifier, callba
 		} else {
 			db.put({_rev: doc._rev,
 				_id: "0000"}, (res) => {
-				doc.userObject.eventBlocks.push(eventBlockObject);
+				doc.userObject.dailyLogs.push(dailyObject);
 				console.log(res);
 				callback(res);
 			});
