@@ -6,9 +6,9 @@ export function deleteCollectionPouch(db, id, callback) {
 			const newCollections = doc.collections.filter(collection => collection.id != id);
 			db.put({_id: "0000", _rev: doc._rev, collections: newCollections}, (err, res) => {
 				if (err) {
-					callback(err);//err when i use callback
+					callback(err);
 				} else {
-					callback(res);//err when i use callback
+					callback(res);
 				}
 			});
 		}

@@ -6,9 +6,9 @@ export function deleteEventBlockPouch(db, id, callback) {
 			const newEventBlocks = doc.eventBlocks.filter(eventBlock => eventBlock.id != id);
 			db.put({_id: "0000", _rev: doc._rev, collections: newEventBlocks}, (err, res) => {
 				if (err) {
-					callback(err);//err when i use callback
+					callback(err);
 				} else {
-					callback(res);//err when i use callback
+					callback(res);
 				}
 			});
 		}
