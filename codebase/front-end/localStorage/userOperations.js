@@ -1,7 +1,7 @@
 
 import {createUserPouch} from "../../back-end/createFiles/createUser.js";
 import {readUserPouch} from "./readFiles/readUser.js";
-import {createCollectionsPouch} from "./createFiles/createCollection.js";
+import {createCollectionPouch} from "./createFiles/createCollection.js";
 import {createDailyLogPouch} from "./createFiles/createDailyLog.js";
 import {createEventBlockPouch} from "/createFiles/createEventBlock.js";
 import {createFutureLogPouch} from "./createFiles/createFutureLog.js";
@@ -75,6 +75,10 @@ export function createUser(email, pwd, callback){
     });
 }
 
+export function createCollection(title, parent, content, callback){
+	createCollectionPouch(db, title, parent, content, callback);
+}
+
 export function createDailyLog(parent, content, trackers, callback){
     createDailyLogPouch(db, parent, content, trackers, (user) => {
 		callback(user);
@@ -111,10 +115,8 @@ export function createTaskBlock(parent, text, complete, signifier, callback) {
 	})
 }
 
-export function createUser(userObject, callback) {
-	createUserPouch(db, userObject, (user) => {
-		callback(user);
-	})
+export function createTextBlock(parent, content, trackers, callback){
+	createTextBlockPouch(db, parent, content, trackers, callback);
 }
 
 export function createTracker(content, parent, callback) {
@@ -133,4 +135,68 @@ export function deleteUser(){
 	deleteUserPouch(db, (user) => {
 		return res.send(user);
 	});
+}
+
+export function deleteCollection(collection, callback){
+	deleteCollectionPouch(db, collection.id, callback);
+}
+
+export function deleteCollectionByID (id, callback){
+	deleteCollectionPouch(db, id, callback);
+}
+
+export function deleteEvent(event, callback){
+	deleteEventBlockPouch(db, event.id, callback);
+}
+
+export function deleteEventByID(id, callback){
+	deleteEventBlockPouch(db, id, callback);
+}
+
+export function deleteEventAtIndex(container, index, callback){
+	deleteEventBlockPouch(db, container.content[index], callback);
+}
+
+export function deleteSignifier(signifier, callback){
+	deleteSignifierPouch(db, signifier.id, callback);
+}
+
+export function deleteSignifierByID(id, callback){
+	deleteSignifierPouch(db, id, callback);
+}
+
+export function deleteSignifierAtBlock(block, callback){
+	deleteSignifierPouch(db, block.signifier, callback);
+}
+
+export function deleteTask(task, callback){
+	deleteTaskBlockPouch(db, task.id, callback);
+}
+
+export function deleteTaskByID(id, callback){
+	deleteTaskBlockPouch(db, id, callback);
+}
+
+export function deleteTextBlock(block, callback){
+	deleteTextBlockPouch(db, block.id, callback);
+}
+
+export function deleteTextBlockByID(id, callback){
+	deleteTextBlockPouch(db, id, callback);
+}
+
+export function deleteTextBlockFromContainer(container, index, callback){
+	deleteTextBlockPouch(db, container.contents[index], callback);
+}
+
+export function deleteTracker(tracker, callback){
+	deleteTrackerPouch(db, tracker.id, callback);
+}
+
+export function deleteTrackerByID(id, callback){
+	deleteTrackerPouch(db, id, callback);
+}
+
+export function deleteTrackerFromContainer(container, index, callback){
+	deleteTrackerPouch(db, container.trackers[index], callback);
 }
