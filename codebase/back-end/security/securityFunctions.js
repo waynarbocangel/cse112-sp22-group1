@@ -31,7 +31,7 @@ function encrypt(message, password){
 
 function authenticate(userData, callback){
     schema.User.findOne({email: userData.email}, (error, user) => {
-        if (error){
+        if (error || user == null){
             callback(false);
         } else {
             let hashedPwd = passHash(userData.pwd);

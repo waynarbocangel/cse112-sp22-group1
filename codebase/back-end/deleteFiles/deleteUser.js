@@ -1,6 +1,5 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
-
 const schema = require(__dirname + "/../schema.js");
 
 mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
@@ -14,6 +13,10 @@ function deleteUser (userObject, callback) {
 			callback(user);
 		}
 	});
+	
+	/*deleteUserPouch(db, userObject, (res) => {
+		console.log(res);
+	});*/
 }
 
 
