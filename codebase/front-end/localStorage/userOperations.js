@@ -1,18 +1,17 @@
-
-import {createUserPouch} from "../../back-end/createFiles/createUser.js";
+import {createUserPouch} from "./createFiles/createUser.js";
 import {readUserPouch} from "./readFiles/readUser.js";
 import {createCollectionPouch} from "./createFiles/createCollection.js";
 import {createDailyLogPouch} from "./createFiles/createDailyLog.js";
-import {createEventBlockPouch} from "/createFiles/createEventBlock.js";
+import {createEventBlockPouch} from "./createFiles/createEventBlock.js";
 import {createFutureLogPouch} from "./createFiles/createFutureLog.js";
 import {createMonthlyLogPouch} from "./createFiles/createMonthlyLog.js"
 import {createSignifierPouch} from "./createFiles/createSignifier.js";
-import {createTextBlockPouch} from "./createFiles/TextBlock.js";
+import {createTextBlockPouch} from "./createFiles/createTextBlock.js";
 import {createTrackerPouch} from "./createFiles/createTracker.js";
 //---------------importing from delete-------------------------------------------
 import {deleteCollectionPouch} from "./deleteFiles/deleteCollection.js";
 import {deleteEventBlockPouch} from "./deleteFiles/deleteEventBlock.js";
-import {deleteSignifierPouch} from "./deleteFiles/deleteSignifie.js";
+import {deleteSignifierPouch} from "./deleteFiles/deleteSignifier.js";
 import {deleteTaskBlockPouch} from "./deleteFiles/deleteTaskBlock.js";
 import {deleteTextBlockPouch} from "./deleteFiles/deleteTextBlock.js";
 import {deleteTrackerPouch} from "./deleteFiles/deleteTracker.js";
@@ -64,6 +63,8 @@ export function loginUser(email, pwd, callback){
 	});
 }
 
+
+//----------------creation functions-----------------------------
 export function createUser(email, pwd, callback){
     fetch(`http://localhost:3000/createUser`, {
 		headers:{
@@ -140,6 +141,8 @@ export function readUser(callback){
 	});
 }
 
+
+//------------------------------deletion functions-----------------------------
 export function deleteUser(){
 	deleteUserPouch(db, (user) => {
 		return res.send(user);
@@ -208,4 +211,87 @@ export function deleteTrackerByID(id, callback){
 
 export function deleteTrackerFromContainer(container, index, callback){
 	deleteTrackerPouch(db, container.trackers[index], callback);
+}
+
+/*
+import {updateMonthlyLogPouch} from "./updateFiles/udpateMonthlyLog.js";
+import {updateCollectionPouch} from "./updateFiles/updateCollection.js";
+import {updateDailyLogPouch} from "./updateFiles/updateDailyLog.js";
+import {updateEventBlockPouch} from "./updateFiles/updateEventBlock.js";
+import {updateFutureLogPouch} from "./updateFiles/updateFutureLog.js";
+import {updateSignifierPouch} from "./updateFiles/updateSignifier.js";
+import {updateTaskBlockPouch} from "./updateFiles/updateTaskBlock.js";
+import {updateTextBlockPouch} from "./updateFiles/updateTextBlock.js";
+import {updateTrackerPouch} from "./updateFiles/updateTracker.js";
+import {updateUserPouch} from "./updateFiles/updateUser.js";
+*/
+//-------------------update functions--------------------
+export function updateUser(){
+	updateUserPouch(db, (user) => {
+		return res.send(user);
+	});
+}
+
+export function updateCollection(collection, callback){
+	updateCollectionPouch(db, collection.id, callback);
+}
+
+export function updateCollectionByID (id, callback){
+	updateCollectionPouch(db, id, callback);
+}
+
+export function updateEvent(event, callback){
+	updateEventBlockPouch(db, event.id, callback);
+}
+
+export function updateEventByID(id, callback){
+	updateEventBlockPouch(db, id, callback);
+}
+
+export function updateEventAtIndex(container, index, callback){
+	updateEventBlockPouch(db, container.content[index], callback);
+}
+
+export function updateSignifier(signifier, callback){
+	updateSignifierPouch(db, signifier.id, callback);
+}
+
+export function updateSignifierByID(id, callback){
+	updateSignifierPouch(db, id, callback);
+}
+
+export function updateSignifierAtBlock(block, callback){
+	updateSignifierPouch(db, block.signifier, callback);
+}
+
+export function updateTask(task, callback){
+	updateTaskBlockPouch(db, task.id, callback);
+}
+
+export function updateTaskByID(id, callback){
+	updateTaskBlockPouch(db, id, callback);
+}
+
+export function updateTextBlock(block, callback){
+	updateTextBlockPouch(db, block.id, callback);
+}
+
+export function updateTextBlockByID(id, callback){
+	updateTextBlockPouch(db, id, callback);
+}
+
+export function updateTextBlockFromContainer(container, index, callback){
+	updateTextBlockPouch(db, container.contents[index], callback);
+}
+
+export function updateTracker(tracker, callback){
+	updateTrackerPouch(db, tracker.id, callback);
+}
+
+export function updateTrackerByID(id, callback){
+	updateTrackerPouch(db, id, callback);
+}
+
+export function updateTrackerFromContainer(container, index, callback){
+	updateTrackerPouch(db, container.trackers[index], callback);
 }

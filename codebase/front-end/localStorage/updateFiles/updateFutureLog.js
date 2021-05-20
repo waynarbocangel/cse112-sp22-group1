@@ -1,4 +1,4 @@
-export function updateDailyLogPouch (db, log, callback) {
+export function updateFutureLogPouch (db, log, callback) {
 	console.log(log);
 	db.get("0000", (err, doc) => {
 		if (err) {
