@@ -1,4 +1,4 @@
-import {makeid} from "makeId.js";
+import {makeid} from "./makeId.js";
 
 export function createCollectionPouch (db, title, parent, content, callback) {
 	db.get("0000", (err, doc) => {

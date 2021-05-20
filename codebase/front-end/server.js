@@ -5,7 +5,7 @@ const app = express();
 app.use(express.static(__dirname));
 
 app.listen("8080", () => {
-	console.log("server has started listening to port 3000");
+	console.log("server has started listening to port 8080");
 });
 
 app.get("/login", (req, res) => {
