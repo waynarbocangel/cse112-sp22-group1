@@ -1,4 +1,4 @@
-export function updateMonthlyLog (db, log, callback) {
+export function updateMonthlyLogPouch (db, log, callback) {
 	console.log(log);
 	db.get("0000", (err, doc) => {
 		if (err) {
