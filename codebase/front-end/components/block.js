@@ -1,5 +1,6 @@
 import {blockArray} from "../index.js";
-import * as shadow from "shadow-selection-polyfill";
+import * as shadow from "./shadow.js";
+
 const tabSize = 20;
 const paddingSize = 10;
 

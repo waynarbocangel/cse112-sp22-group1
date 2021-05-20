@@ -3,7 +3,6 @@ const express = require("express");
 const app = express();
 
 app.use(express.static(__dirname));
-app.use(express.static(__dirname + "/components"));
 
 app.listen("8080", () => {
 	console.log("server has started listening to port 8080");
