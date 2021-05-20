@@ -7,6 +7,7 @@ mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: tru
 mongoose.set("useCreateIndex", true);
 
 function updateUser(userObject, callback){
+	console.log(userObject);
 	schema.User.findOne({email: userObject.email}, (error, user) => {
 		if (error) {
 			callback(error);
