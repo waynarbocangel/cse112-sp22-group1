@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const security = require(__dirname + "/../security/securityFunctions.js");
 const schema = require(__dirname + "/../schema.js");
 
+
 mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
 mongoose.set("useCreateIndex", true);
 
@@ -37,6 +38,9 @@ function createUser (email, pwd, callback) {
 		}
 	});
 }
+
+//createUser('abc', '123', (response) =>{console.log(response)} );
+
 
 module.exports = {
 	createUser: createUser

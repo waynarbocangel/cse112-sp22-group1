@@ -1,4 +1,4 @@
-export function deleteTrackersPouch(db, id, callback) {
+export function deleteTrackerPouch(db, id, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
