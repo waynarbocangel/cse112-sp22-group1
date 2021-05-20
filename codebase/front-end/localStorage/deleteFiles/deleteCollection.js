@@ -1,13 +1,14 @@
-export function deleteUserPouch(db, callback) {
+export function deleteCollectionPouch(db, id, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
-			db.remove(doc, function(err, response) {
+			const newCollections = doc.collections.filter(collection => collection.id != id);
+			db.put({_id: "0000", _rev: doc._rev, collections: newCollections}, (err, res) => {
 				if (err) {
 					callback(err);
 				} else {
-					callback(response);
+					callback(res);
 				}
 			});
 		}
