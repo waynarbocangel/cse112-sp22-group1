@@ -1,5 +1,5 @@
-import { createDailyLogPouch } from "./createDailyLog.js";
-import {createUserPouch} from "./createUser.js";
+import { createDailyLogPouch } from "./createFiles/createDailyLog.js";
+import {createUserPouch} from "./createFiles/createUser.js";
 import {deleteUserPouch} from "./deleteFiles/deleteUser.js";
 import {readUserPouch} from "./readFiles/readUser.js";
 // import {db} from "../login/login.js";
