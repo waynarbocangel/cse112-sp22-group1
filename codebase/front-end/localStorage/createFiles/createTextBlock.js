@@ -1,4 +1,4 @@
-import {makeid} from "makeId.js";
+import {makeid} from "./makeId.js";
 
 export function createTextBlockPouch (db, parent, content, trackers, callback) {
 	db.get("0000", (err, doc) => {

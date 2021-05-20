@@ -1,4 +1,4 @@
-import {makeid} from "makeId.js";
+import {makeid} from "./makeId.js";
 
 export function createSignifierPouch (db, meaning, symbol, callback) {
 	db.get("0000", (err, doc) => {
