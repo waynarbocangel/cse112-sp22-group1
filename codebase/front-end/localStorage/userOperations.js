@@ -17,8 +17,17 @@ import {deleteTaskBlockPouch} from "./deleteFiles/deleteTaskBlock.js";
 import {deleteTextBlockPouch} from "./deleteFiles/deleteTextBlock.js";
 import {deleteTrackerPouch} from "./deleteFiles/deleteTracker.js";
 import {deleteUserPouch} from "./deleteFiles/deleteUser.js";
-
-
+//----------------------importing from update----------------------------------
+import {updateMonthlyLogPouch} from "./updateFiles/udpateMonthlyLog.js";
+import {updateCollectionPouch} from "./updateFiles/updateCollection.js";
+import {updateDailyLogPouch} from "./updateFiles/updateDailyLog.js";
+import {updateEventBlockPouch} from "./updateFiles/updateEventBlock.js";
+import {updateFutureLogPouch} from "./updateFiles/updateFutureLog.js";
+import {updateSignifierPouch} from "./updateFiles/updateSignifier.js";
+import {updateTaskBlockPouch} from "./updateFiles/updateTaskBlock.js";
+import {updateTextBlockPouch} from "./updateFiles/updateTextBlock.js";
+import {updateTrackerPouch} from "./updateFiles/updateTracker.js";
+import {updateUserPouch} from "./updateFiles/updateUser.js";
 
 export let db = new PouchDB("Users");
 
