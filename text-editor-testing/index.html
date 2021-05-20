@@ -7,8 +7,29 @@
     <!-- <script src="https://cdn.rawgit.com/showdownjs/showdown/1.0.2/dist/showdown.min.js"></script> -->
     <!-- uses https://github.com/showdownjs/showdown/wiki (see link for documentation) to convert markdown to html -->
 </head>
-<body class="container-fluid">
-    <div id="contentWrapper" contenteditable="true"></div>
-    <script type="module" src="./editor.js"></script>
+<body>
+    <div class="sidebar">
+        <button class="imgbutton home_button"><img src="images/home_icon.png"></button>
+        <button class="imgbutton tracker_button"><img src="images/tracker_icon.png"></button>
+        <button class="imgbutton account_button"><img src="images/account_icon.png"></button>
+    </div>
+
+    <div class="topbar">
+        <span class="future_log">
+            <button class="imgbutton future_log_back"><img src="images/left-chevron.png"></button>
+            <h1>Future Log</h1>
+            <button class="imgbutton future_log_forward"><img src="images/right-chevron.png"></button>
+        </span>
+
+        <span class="search_bar">
+            <img src="images/search_icon.png">
+            <input type="text" placeholder="Search">
+        </span>
+    </div>
+
+    <div class="container-fluid">
+        <div id="contentWrapper" contenteditable="true"></div>
+        <script type="module" src="./editor.js"></script>
+    </div>
 </body>
 </html>
