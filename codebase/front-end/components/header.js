@@ -1,12 +1,14 @@
-class SideBar extends HTMLElement {
+class Header extends HTMLElement {
     constructor() {
         super();
 
         const template = document.createElement('template');
 
         template.innerHTML = `
-        
-        
+        <style>
+
+        </style>
+        <h1 class="title_page"></h1>
         `;
 
     // create a shadow root for this web component

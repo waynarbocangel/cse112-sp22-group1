@@ -1,4 +1,5 @@
 import { TextBlock } from "./components/block.js";
+import * as localStorage from "./localStorage/userOperations.js";
 let contentWrapper = document.getElementById("contentWrapper");
 export var blockArray = [];
 var idTable = [];
@@ -49,10 +50,11 @@ var controller = {
 
 document.addEventListener("DOMContentLoaded", () => {
 	let newBlock = new TextBlock(controller, (success) => {
-		contentWrapper.appendChild(newBlock);
+		
+	});
+	contentWrapper.appendChild(newBlock);
 		blockArray.push(newBlock);
 		controller.currentBlockIndex = blockArray.length - 1;
 		newBlock.focus();
-	});
 });
 

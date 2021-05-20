@@ -1,18 +1,17 @@
-
-import {createUserPouch} from "../../back-end/createFiles/createUser.js";
+import {createUserPouch} from "./createFiles/createUser.js";
 import {readUserPouch} from "./readFiles/readUser.js";
 import {createCollectionPouch} from "./createFiles/createCollection.js";
 import {createDailyLogPouch} from "./createFiles/createDailyLog.js";
-import {createEventBlockPouch} from "/createFiles/createEventBlock.js";
+import {createEventBlockPouch} from "./createFiles/createEventBlock.js";
 import {createFutureLogPouch} from "./createFiles/createFutureLog.js";
 import {createMonthlyLogPouch} from "./createFiles/createMonthlyLog.js"
 import {createSignifierPouch} from "./createFiles/createSignifier.js";
-import {createTextBlockPouch} from "./createFiles/TextBlock.js";
+import {createTextBlockPouch} from "./createFiles/createTextBlock.js";
 import {createTrackerPouch} from "./createFiles/createTracker.js";
 //---------------importing from delete-------------------------------------------
 import {deleteCollectionPouch} from "./deleteFiles/deleteCollection.js";
 import {deleteEventBlockPouch} from "./deleteFiles/deleteEventBlock.js";
-import {deleteSignifierPouch} from "./deleteFiles/deleteSignifie.js";
+import {deleteSignifierPouch} from "./deleteFiles/deleteSignifier.js";
 import {deleteTaskBlockPouch} from "./deleteFiles/deleteTaskBlock.js";
 import {deleteTextBlockPouch} from "./deleteFiles/deleteTextBlock.js";
 import {deleteTrackerPouch} from "./deleteFiles/deleteTracker.js";
