@@ -124,14 +124,14 @@ body {
 /* my journal style */
 #name {
 
-    position: absolute;
+    position: fixed;
     left: 10%;
-    top: 50%;
+    top: 40%;
 
     font-family: 'Satisfy', cursive;
     font-style: normal;
     font-weight: normal;
-    font-size: 9vw;
+    font-size: 11vw;
 
     color: #000000;
 }
@@ -139,9 +139,9 @@ body {
 /* contact us */
 a {
 
-    position:absolute;
-    bottom: -10%;
-    left:38%;
+    position: fixed;
+    bottom: 5%;
+    left:26%;
 
     font-family:'Tajawal', sans-serif;
     font-style: normal;
@@ -176,8 +176,9 @@ img {
     #name {
         position: absolute;
         top:0%;
-        left: 30vw;
-        font-size: 10vw;
+        left: 20vw;
+        font-size: 15vw;
+        white-space: nowrap;
         margin:0;
     }
 
@@ -209,10 +210,9 @@ img {
     div.logo {
         position: absolute;
         display:block;
-        top:20%;
+        top:25%;
         left:20%;
-        width:90vw;
-        height:auto;
+        width:120vw;
 
     }
 
@@ -232,21 +232,20 @@ img {
 
 
 @media only screen and (max-width:600px) {
-    div.logo {
-        position: absolute;
-        display:block;
-        top:17%;
-        left:3%;
-        width:175%;
-        height:auto;
+    img {
+        position:absolute;
+        top:50%;
+        left:20%;
+    
 
     }
 
     #name {
         position: absolute;
         top:0%;
-        left: 25vw;
-        font-size: 13vw;
+        left: 15vw;
+        font-size: 18vw;
         margin:0;
     }
+
 }
