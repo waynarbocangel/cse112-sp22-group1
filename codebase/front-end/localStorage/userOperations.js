@@ -1,7 +1,7 @@
 import { createDailyLogPouch } from "./createDailyLog.js";
 import {createUserPouch} from "./createUser.js";
-import {deleteUserPouch} from "./deleteUser.js";
-import {readUserPouch} from "./readUser.js";
+import {deleteUserPouch} from "./deleteFiles/deleteUser.js";
+import {readUserPouch} from "./readFiles/readUser.js";
 // import {db} from "../login/login.js";
 // import {updateUserPouch} from "./updateUser.js";
 export let db = new PouchDB("Users");
