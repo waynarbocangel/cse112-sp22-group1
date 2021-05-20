@@ -10,7 +10,6 @@
   "author": "CSE 110 Team 11",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
-    "shadow-selection-polyfill": "^1.1.0"
+    "express": "^4.17.1"
   }
 }

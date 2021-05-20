@@ -1,5 +1,5 @@
-import {blockArray} from "./editor.js";
-import * as shadow from "./node_modules/shadow-selection-polyfill/shadow.js";
+import {blockArray} from "../index.js";
+import * as shadow from "shadow-selection-polyfill";
 const tabSize = 20;
 const paddingSize = 10;
 
@@ -155,7 +155,7 @@ export class TextBlock extends HTMLElement{
         while(this.classList.length > 0){
             this.classList.remove(this.classList[0]);
         }
-        this.kind = "parragraph";
+        this.kind = "paragraph";
         this.initialHeight = 3;
         textBlock.classList.add("unstylized");
         textBlock.setAttribute("placeholder", 'Type "/" to create a block');
