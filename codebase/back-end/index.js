@@ -24,8 +24,11 @@ app.listen("3000", () => {
 	console.log("server has started listening to port 3000");
 });
 
+
 app.get("/login", (req, res) => {
-	res.sendFile(__dirname + "/front-end/login/login.html");
+	path = require('path');
+	let reqPath = path.join(__dirname, "../front-end/login/login.html");
+	res.sendFile(reqPath);
 });
 
 app.get("/success", (req, res) => {

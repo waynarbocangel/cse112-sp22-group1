@@ -39,7 +39,7 @@ function createUser (email, pwd, callback) {
 	});
 }
 
-createUser('abc', '123', (response) =>{console.log(response)} );
+//createUser('abc', '123', (response) =>{console.log(response)} );
 
 
 module.exports = {
