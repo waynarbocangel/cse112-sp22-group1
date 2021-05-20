@@ -61,6 +61,14 @@ ul {
 	width : 5px;
 	height: 5px
   }
+
+  .input-group{
+    display: flex;
+    align-items : center;
+	overflow: hidden;
+	float: right;
+	clear: both;
+}
   
   .right {
 	transform: rotate(-45deg);
