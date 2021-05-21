@@ -16,7 +16,19 @@ import {deleteTaskBlockPouch} from "./deleteFiles/deleteTaskBlock.js";
 import {deleteTextBlockPouch} from "./deleteFiles/deleteTextBlock.js";
 import {deleteTrackerPouch} from "./deleteFiles/deleteTracker.js";
 import {deleteUserPouch} from "./deleteFiles/deleteUser.js";
-//-------------importing from update----------------------------
+//---------------importing from update-------------------------------------------
+import {updateUserPouch, updateUserFromMongo} from "updateFiles/updateUser.js";
+import {updateDailyLogPouch} from "updateFiles/updateDailyLog.js";
+import {updateMonthlyLogPouch} from "updateFiles/updateMonthlyLog.js";
+import {updateFutureLogPouch} from "updateFiles/updateFutureLog.js";
+import {updateCollectionPouch} from "updateFiles/updateCollection.js";
+import {updateTrackerPouch} from "updateFiles/updateTracker.js";
+import {updateTextBlockPouch} from "updateFiles/updateTextBlock.js";
+import {updateTaskBlockPouch} from "updateFiles/updateTaskBlock.js";
+import {updateEventBlockPouch} from "updateFiles/updateEventBlock.js";
+import {updateSignifierPouch} from "updateFiles/updateSignifier.js";
+
+
 export let db = new PouchDB("Users");
 
 export function deleteDB(){
@@ -196,4 +208,151 @@ export function deleteTrackerByID(id, callback){
 
 export function deleteTrackerFromContainer(container, index, callback){
 	deleteTrackerPouch(db, container.trackers[index], callback);
+}
+
+//-------------------------------Update Functions----------------------------------
+export function updateUser(){
+	deleteUserPouch(db, (user) => {
+		return res.send(user);
+	});
+}
+
+export function updateUserOnline(){
+	deleteUserFromMongo(db, (user) => {
+		return res.send(user);
+	});
+}
+
+export function updateCollection(collection, callback){
+	updateCollectionPouch(db, collection, callback);
+}
+
+export function updateCollectionByID (id, callback){
+	db.get("0000", (err, doc) => {
+		if (err) {
+			callback(err);
+		} else {
+			const collection = doc.collections.filter(element => element.id == id);
+			updateCollectionPouch(db, collection[0], callback);		
+		}
+	});
+}
+
+export function updateEvent(event, callback){
+	updateEventBlockPouch(db, event, callback);
+}
+
+export function updateEventByID(id, callback){
+	db.get("0000", (err, doc) => {
+		if (err) {
+			callback(err);
+		} else {
+			const event = doc.eventBlocks.filter(element => element.id == id);
+			updateCollectionPouch(db, event[0], callback);		
+		}
+	});
+}
+
+export function updateEventAtIndex(container, index, callback){
+	db.get("0000", (err, doc) => {
+		if (err) {
+			callback(err);
+		} else {
+			const event = doc.eventBlocks.filter(element => element.id == container.content[index]);
+			updateCollectionPouch(db, event[0], callback);		
+		}
+	});
+}
+
+export function updateSignifier(signifier, callback){
+	updateSignifierPouch(db, signifier, callback);
+}
+
+export function updateSignifierByID(id, callback){
+	db.get("0000", (err, doc) => {
+		if (err) {
+			callback(err);
+		} else {
+			const signifier = doc.signifiers.filter(element => element.id == id);
+			updateCollectionPouch(db, signifier[0], callback);		
+		}
+	});
+}
+
+export function updateSignifierAtBlock(block, callback){
+	db.get("0000", (err, doc) => {
+		if (err) {
+			callback(err);
+		} else {
+			const signifier = doc.signifiers.filter(element => element.id == block.signifier);
+			updateSignifierPouch(db, signifier[0], callback);
+		}
+	});
+}
+
+export function updateTask(task, callback){
+	updateTaskBlockPouch(db, task, callback);
+}
+
+export function updateTaskByID(id, callback){
+	db.get("0000", (err, doc) => {
+		if (err) {
+			callback(err);
+		} else {
+			const task = doc.taskBlocks.filter(element => element.id == id);
+			updateCollectionPouch(db, task[0], callback);		
+		}
+	});
+}
+
+export function updateTextBlock(block, callback){
+	updateTextBlockPouch(db, block, callback);
+}
+
+export function updateTextBlockByID(id, callback){
+	db.get("0000", (err, doc) => {
+		if (err) {
+			callback(err);
+		} else {
+			const text = doc.textBlocks.filter(element => element.id == id);
+			updateCollectionPouch(db, text[0], callback);	
+		}
+	});
+}
+
+export function updateTextBlockFromContainer(container, index, callback){
+	db.get("0000", (err, doc) => {
+		if (err) {
+			callback(err);
+		} else {
+			const text = doc.textBlocks.filter(element => element.id == container.content[index]);
+			updateTextBlockPouch(db, text[0], callback);		
+		}
+	});
+}
+
+export function updateTracker(tracker, callback){
+	updateTrackerPouch(db, tracker, callback);
+}
+
+export function updateTrackerByID(id, callback){
+	db.get("0000", (err, doc) => {
+		if (err) {
+			callback(err);
+		} else {
+			const tracker = doc.trackers.filter(element => element.id == id);
+			updateCollectionPouch(db, tracker[0], callback);
+		}
+	});
+}
+
+export function updateTrackerFromContainer(container, index, callback){
+	db.get("0000", (err, doc) => {
+		if (err) {
+			callback(err);
+		} else {
+			const tracker = doc.trackers.filter(element => element.id == container.content[index]);
+			updateTrackerPouch(db, tracker[0], callback);		
+		}
+	});
 }
