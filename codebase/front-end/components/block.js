@@ -1,4 +1,3 @@
-import {blockArray} from "../index.js";
 import * as shadow from "./shadow.js";
 
 const tabSize = 20;
@@ -177,7 +176,7 @@ export class TextBlock extends HTMLElement{
 		textBlock.focus();
         
         document.addEventListener(shadow.eventName, () => {
-            blockArray[this.controller.currentBlockIndex].setCurrentSpot();
+            this.controller.blockArray[this.controller.currentBlockIndex].setCurrentSpot();
         });
 
 		textBlock.addEventListener("input",() =>{
@@ -201,7 +200,7 @@ export class TextBlock extends HTMLElement{
         textBlock.onfocus = (e) => {
             this.controller.resetPosition = false;
             this.setCurrentSpot();
-            this.controller.currentBlockIndex = blockArray.indexOf(this);
+            this.controller.currentBlockIndex = this.controller.blockArray.indexOf(this);
             this.controller.currentTabLevel = this.tabLevel;
             if (this.classList.contains("noteContainer")){
                 this.controller.creatingFromBullet = true;
@@ -219,7 +218,7 @@ export class TextBlock extends HTMLElement{
                 let currentSpot18 = this.currentPointerSpot - (this.tabLevel * tabSize) == paddingSize;
                 let currentSpotNote = this.currentPointerSpot - (this.tabLevel * tabSize) == paddingSize + 20 && this.classList.contains("noteContainer");
                 let isAtBegining = currentSpot18 || currentSpotNote;
-                if (textBlock.innerHTML == "" && textBlock.getAttribute('placeholder') == 'Type "/" to create a block' && blockArray.length > 1){
+                if (textBlock.innerHTML == "" && textBlock.getAttribute('placeholder') == 'Type "/" to create a block' && this.controller.blockArray.length > 1){
                     this.controller.removeBlock();
                 } else if((textBlock.innerHTML == "" || textBlock.innerHTML == "<br>") && this.tabLevel == 0){
 					this.removeStyles();

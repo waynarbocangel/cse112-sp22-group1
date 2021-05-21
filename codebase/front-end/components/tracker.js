@@ -30,7 +30,7 @@ export class TrackerMenu extends HTMLElement {
                 transition: transform .4s ease-in-out /*cubic-bezier(0, .52, 0, 1);*/
             }
             
-            .tracker_menu {
+            #tracker_menu {
                 background-color: #2B2D42;
                 color: white;
                 opacity: 95%;
@@ -108,10 +108,7 @@ export class TrackerMenu extends HTMLElement {
 					</div>
                 </div>
             </div>
-            <div class=tracker_menu>
-                <article class="content">
-                </article>
-            </div>
+            <div id="tracker_menu"><div id="editor"></div></div>
         </div>
         `;
 

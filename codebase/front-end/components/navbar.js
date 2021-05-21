@@ -26,7 +26,7 @@ template.innerHTML = `
 			width: 32px;
 			height: 32px;
 			left: 15px;
-			top: 30px;
+			top: 20px;
 		}
 
 		#target {
@@ -40,7 +40,7 @@ template.innerHTML = `
 			width: 35px;
 			height: 35px;
 			left: 15px;
-			top: 100px;
+			top: 90px;
 		}
 
 		#single {
@@ -54,7 +54,7 @@ template.innerHTML = `
 			width: 32px;
 			height: 32px;
 			left: 15px;
-			top: 170px;
+			top: 160px;
 		}
 
 		#double {
@@ -68,7 +68,7 @@ template.innerHTML = `
 			width: 35px;
 			height: 35px;
 			left: 15px;
-			top: 240px;
+			top: 230px;
 		}
 
 		#user {
@@ -82,11 +82,25 @@ template.innerHTML = `
 			width: 33px;
 			height: 33px;
 			left: 13.5px;
-			bottom: 25px;
+			bottom: 20px;
 		}
 
 		ul {
 			list-style-type: none;
+		}
+
+		ul li {
+			opacity: 0.7;
+			transition: 150ms;
+		}
+
+		ul li:hover{
+			opacity: 1;
+			transition: 150ms;
+		}
+
+		ul li button{
+			cursor: pointer;
 		}
 
 	</style> 
