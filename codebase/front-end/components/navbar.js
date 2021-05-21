@@ -1,3 +1,4 @@
+import {router} from "../router.js";
 const template = document.createElement('template');
 
 template.innerHTML = `
@@ -118,7 +119,7 @@ export class NavBar extends HTMLElement {
 
 
 		this.home.addEventListener('click', () => {
-			alert("hello"); 
+			router.setState("", "");
 		});
 
 		this.target.addEventListener('click', () => {

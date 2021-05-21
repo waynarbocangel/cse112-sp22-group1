@@ -41,16 +41,6 @@
 			filter: opacity(100%);
 			transition: 150ms;
 		}
-		/* .topbar {
-			position: fixed;
-			top: 0;
-			left: 120px;
-			width: calc(100% - 120px - 20px);
-			height: 80px;
-
-			border-bottom: solid;
-			border-color: #E5E5E5;
-		} */
 
 		.future_log {
 			position: relative;
@@ -61,7 +51,8 @@
 
 		button {
 			display: inline;
-			margin: 0 10px;
+			margin-top: 0;
+			margin-bottom: 0;
 		}
 
 		h1 {
@@ -126,13 +117,28 @@
 			transition: 150ms;
 			opacity: 90%;
 		}
+
+		#future_log_back{
+			margin-left: 0;
+			margin-right: 10px;
+		}
+
+		#future_log_forward{
+			margin-right: 0;
+			margin-left: 10px;
+		}
+
+		.hide{
+			display: none;
+			opacity: 0;
+		}
 	</style>
 	<span class="future_log">
-		<button class="imgbutton future_log_back"><img src="../public/resources/left-chevron.png"></button>
+		<button class="imgbutton" id="future_log_back"><img src="../public/resources/left-chevron.png"></button>
 
 		<h1 id="title_page">Template Page Title</h1>
 
-		<button class="imgbutton future_log_forward"><img src="../public/resources/right-chevron.png"></button>
+		<button class="imgbutton" id="future_log_forward"><img src="../public/resources/right-chevron.png"></button>
 	</span>
 
 	<span class="search_bar">
