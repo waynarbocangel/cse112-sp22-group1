@@ -4,7 +4,8 @@ export function updateMonthlyLogPouch (db, log, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			db.put({_id: "0000", _rev: doc._rev, dailyLogs: doc.monthlyLogs.push(log)}, (err, res) => {
+			const monthlyLogArr = doc.monthlyLogs.filter(element => element.id != log.id);
+			db.put({_id: "0000", _rev: doc._rev, monthlyLogs: monthlyLogArr.push(log)}, (err, res) => {
 				if (err) {
 					callback(err);
 				} else {
