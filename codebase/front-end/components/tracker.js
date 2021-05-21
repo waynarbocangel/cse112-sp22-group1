@@ -22,12 +22,12 @@ export class TrackerMenu extends HTMLElement {
                 height: 100vh;
                 font-family: "SF-Pro";
                 transform: translate3d(100vw, 0, 0);
-                transition: transform .25s ease-in /*cubic-bezier(0, .52, 0, 1);*/
+                transition: transform .4s ease-in-out /*cubic-bezier(0, .52, 0, 1);*/
             }
                         
             .wrapper.open {
                 transform: translate3d(65vw, 0, 0);
-                transition: transform .25s ease-in /*cubic-bezier(0, .52, 0, 1);*/
+                transition: transform .4s ease-in-out /*cubic-bezier(0, .52, 0, 1);*/
             }
             
             .tracker_menu {
@@ -102,7 +102,7 @@ export class TrackerMenu extends HTMLElement {
         <div class="wrapper">
             <div class="tracker_header">
                 <div class="tracker_header_content">
-                    <button class="close_button"> <img src="images/right-chevron.png"> </button>
+                    <button class="close_button"> <img src="../public/resources/right-chevron.png"> </button>
 					<div id="trackerTitleWrapper">
                     	<h1 class="tracker_h1">Future Log Tracker</h1>
 					</div>
