@@ -4,81 +4,35 @@ import * as shadow from "./shadow.js";
 const tabSize = 20;
 const paddingSize = 10;
 
-const blockTemplate = document.createElement('template');
 
-blockTemplate.innerHTML = `<template id="block">
-	<style>
-		@font-face {
-			font-family:"SF-Pro";
-			src: url("./public/fonts/SF-Pro.ttf");
-		}
-		#textBlock {
-			font-family: "SF-Pro";
-			border: none;
-			overflow: auto;
-			outline: none;
-			resize: none;
-			width: 94%;   
-		}
-
-		#textBlock:empty::before{
-			content: attr(placeholder);
-			color: gray;
-		}
-
-		.unstylized{
-			margin: 7px 0 12px;
-			font-size: 18px;
-			line-height: 28px;
-		}
-
-		.note{
-			margin: 0;
-			position: relative;
-			font-size: 18px;
-			line-height: 28px;
-			display: inline-block;
-			vertical-align: top;
-		}
-
-		.header1{
-			font-size: 42px;
-			line-height: 50px;
-			font-weight: bold;
-			color: black;
-			margin: 15px 0 20px;
-		}
-
-		.header2{
-			font-size: 30px;
-			line-height: 36px;
-			font-weight: bold;
-			color: black;
-			margin: 8px 0 13px;
-		}
-	</style>
-	<div id="textBlock" contenteditable="true" placeholder='Type "/" to create a block'></div>
-</template>`;
 
 export class TextBlock extends HTMLElement{
 	constructor(controller, callback){
 		super();
-        this.attachShadow({ mode: "open" });
-		this.shadowRoot.appendChild(blockTemplate.content.cloneNode(true));
-		this.root = this.shadowRoot;
-		this.kind = "paragraph";
-		this.initialHeight = 3;
-		this.controller = controller;
-		// this.shadowRoot.getElementById("textBlock").classList.add("unstylized");
-		this.currentBlock = null;
-		this.currentPointerSpot = 0;
-		this.currentPointerHeight = 2;
-		if (this.controller.creatingFromBullet){
-			this.setupBullet();
-		}
-		this.tabLevel = controller.currentTabLevel;
-		this.setupTabLevel();
-		callback(true);
+		fetch("./components/block.html").then((response) => {
+			return response.text();
+		}).then((html) => {
+			let parser = new DOMParser();
+			let blockTemplateFile = parser.parseFromString(html, 'text/html');
+			let blockTemplate = blockTemplateFile.getElementById("block");
+			this.attachShadow({ mode: "open" });
+			this.shadowRoot.appendChild(blockTemplate.content.cloneNode(true));
+			this.root = this.shadowRoot;
+			this.kind = "paragraph";
+			this.initialHeight = 3;
+			this.controller = controller;
+			this.shadowRoot.getElementById("textBlock").classList.add("unstylized");
+			this.currentBlock = null;
+			this.currentPointerSpot = 0;
+			this.currentPointerHeight = 2;
+			if (this.controller.creatingFromBullet){
+				this.setupBullet();
+			}
+			this.tabLevel = controller.currentTabLevel;
+			this.setupTabLevel();
+			callback(true);
+		})
+        
 	}
 
     setCurrentSpot(){

@@ -17,7 +17,6 @@ import {deleteTextBlockPouch} from "./deleteFiles/deleteTextBlock.js";
 import {deleteTrackerPouch} from "./deleteFiles/deleteTracker.js";
 import {deleteUserPouch} from "./deleteFiles/deleteUser.js";
 //-------------importing from update----------------------------
-import {}
 export let db = new PouchDB("Users");
 
 export function deleteDB(){
