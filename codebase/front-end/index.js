@@ -2,11 +2,10 @@ import { TextBlock } from "./components/block.js";
 import * as localStorage from "./localStorage/userOperations.js";
 import {router} from "./router.js";
 import {controller} from "./components/blockController.js";
-router.setState(history.state, null);
+router.setState(document.location.hash, null);
 
 let contentWrapper = document.getElementById("contentWrapper");
 export let blockArray = [];
-let idTable = [];
 
 document.addEventListener("DOMContentLoaded", () => {
 	let newBlock = new TextBlock(controller, (success) => {

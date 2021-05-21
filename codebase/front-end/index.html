@@ -7,32 +7,13 @@
 	<script src="//cdn.jsdelivr.net/npm/pouchdb@7.2.1/dist/pouchdb.min.js"></script>
 </head>
 <body>
-    <div class="sidebar">
-        <button class="imgbutton home_button"><img src="images/home_icon.png"></button>
-        <button class="imgbutton tracker_button"><img src="images/tracker_icon.png"></button>
-        <button class="imgbutton account_button"><img src="images/account_icon.png"></button>
-    </div>
+    <div id="sidebar"></div>
 
-    <div class="topbar">
-        <span class="future_log">
-            <button class="imgbutton future_log_back"><img src="images/left-chevron.png"></button>
-
-            <template>
-                <h1 class="title_page">Template Page Title</h1>
-            </template>
-
-            <button class="imgbutton future_log_forward"><img src="images/right-chevron.png"></button>
-        </span>
-
-        <span class="search_bar">
-            <img src="images/search_icon.png">
-            <input type="text" placeholder="Search">
-        </span>
-    </div>
+    <div id="topbar"></div>
 
     <div class="container-fluid">
         <div id="contentWrapper" contenteditable="true"></div>
-        <script type="module" src="./index.js"></script>
+       <script type="module" src="./index.js"></script>
     </div>
 
     <script src="./components/header.js" type="module"></script>

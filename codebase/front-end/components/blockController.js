@@ -1,3 +1,4 @@
+import { TextBlock } from "./block.js";
 import {blockArray} from "../index.js";
 
 export let controller = {
