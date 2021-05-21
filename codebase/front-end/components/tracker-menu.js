@@ -43,7 +43,6 @@ class TrackerMenu extends HTMLElement {
             
                 width: 35vw;
                 height: calc(100vh - 80px);
-                overflow-y: scroll;
             }
             
             .tracker_header {
@@ -98,9 +97,6 @@ class TrackerMenu extends HTMLElement {
                 transition: 150ms;
             }
 
-            .tracker_menu .content {
-                margin-top: 10px;
-            }
         </style>
         <div class="wrapper">
             <div class="tracker_header">
