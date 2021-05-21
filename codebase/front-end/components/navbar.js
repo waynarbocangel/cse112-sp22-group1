@@ -81,8 +81,8 @@ template.innerHTML = `
 			position: absolute;
 			width: 33px;
 			height: 33px;
-			left: 14px;
-			top: 92vh;
+			left: 13.5px;
+			bottom: 25px;
 		}
 
 		ul {
@@ -117,7 +117,10 @@ export class NavBar extends HTMLElement {
 
 
 		this.home.addEventListener('click', () => {
-			router.setState("", "");
+			
+			if (document.location.hash != null && document.location.hash != "#index" && document.location.hash !=''){
+				router.setState("", false);
+			}
 		});
 
 		this.target.addEventListener('click', () => {

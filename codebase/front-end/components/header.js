@@ -1,5 +1,5 @@
 export class PageHeader extends HTMLElement {
-    constructor(callback) {
+    constructor() {
         super();
 		fetch("./components/header.html").then((response) => {
 			return response.text();
@@ -9,7 +9,6 @@ export class PageHeader extends HTMLElement {
 			let template = templateFile.getElementById("header");
 			this.attachShadow({ mode: 'open' });
 			this.shadowRoot.appendChild(template.content.cloneNode(true));
-			callback(true);
 		});
   }
 }

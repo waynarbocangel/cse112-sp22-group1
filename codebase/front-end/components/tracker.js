@@ -1,32 +1,26 @@
 // tracker side menu web component
-class TrackerMenu extends HTMLElement {
+export class TrackerMenu extends HTMLElement {
     static get observedAttributes() {
         return ['open'];
     }
 
     constructor() {
         super();
-
-        this.attachShadow({ mode: 'open' });
+		this.attachShadow({ mode: 'open' });
         this.close = this.close.bind(this);
-    }
-
-    attributeChangedCallback(attr, oldVal, newVal) {
-        if (oldVal !== newVal) {
-            this[attr] = this.hasAttribute(attr);
-        }
-    }
-
-    connectedCallback() {
-        this.shadowRoot.innerHTML = `
+		this.shadowRoot.innerHTML = `
         <style>
+			@font-face {
+				font-family:"SF-Pro";
+				src: url("./public/fonts/SF-Pro.ttf");
+			}
             .wrapper {
                 position: fixed;
                 z-index: 1000;
                 top: 0;
                 width: 35vw;
                 height: 100vh;
-                
+                font-family: "SF-Pro";
                 transform: translate3d(100vw, 0, 0);
                 transition: transform .25s ease-in /*cubic-bezier(0, .52, 0, 1);*/
             }
@@ -53,8 +47,6 @@ class TrackerMenu extends HTMLElement {
                 background-color: #2B2D42;
                 color: white;
                 opacity: 95%;
-            
-                border-bottom: solid rgba(157, 148, 241, 0.7);
             }
             
             .tracker_header_content {
@@ -63,20 +55,29 @@ class TrackerMenu extends HTMLElement {
             }
             
             .tracker_header .close_button {
+				display: inline-block;
                 margin-top: 10px;
                 margin-left: 10px;
-                line-height: 36px;
-                vertical-align: sub;
+                line-height: 16px;
             }
             
-            .tracker_header h1 {
-                display: inline;
+            #trackerTitleWrapper {
+                display: inline-block;
+				left: 40px;
+				position: absolute;
+				right: 20px;
+				top: -10px;
+				border-bottom: solid rgba(157, 148, 241, 0.7);
+            }
+
+			#trackerTitleWrapper h1{
                 text-align: center;
                 font-size: 24pt;
-            }
+			}
             
             .tracker_header .close_button img {
                 filter: invert() opacity(50%);
+				width: 15px;
             }
             
             .tracker_header .close_button img:hover {
@@ -102,7 +103,9 @@ class TrackerMenu extends HTMLElement {
             <div class="tracker_header">
                 <div class="tracker_header_content">
                     <button class="close_button"> <img src="images/right-chevron.png"> </button>
-                    <h1 class="tracker_h1">Future Log Tracker</h1>
+					<div id="trackerTitleWrapper">
+                    	<h1 class="tracker_h1">Future Log Tracker</h1>
+					</div>
                 </div>
             </div>
             <div class=tracker_menu>
@@ -114,6 +117,15 @@ class TrackerMenu extends HTMLElement {
 
         this.title = "Future log tracker";
         this.closeButton = this.shadowRoot.querySelector(".close_button");
+    }
+
+    attributeChangedCallback(attr, oldVal, newVal) {
+        if (oldVal !== newVal) {
+            this[attr] = this.hasAttribute(attr);
+        }
+    }
+
+    connectedCallback() {
         this.closeButton.addEventListener("click", this.close);
     }
 

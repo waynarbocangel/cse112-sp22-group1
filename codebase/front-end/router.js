@@ -2,6 +2,7 @@
 import * as localStorage from "./localStorage/userOperations.js";
 import {NavBar} from "./components/navbar.js";
 import {PageHeader} from "./components/header.js";
+import {TrackerMenu} from "./components/tracker.js";
 
 export const router = {};
 
@@ -10,6 +11,9 @@ let header = new PageHeader();
 router.setState = function(state, prev) {
 	setTimeout(() => {
 		let url = "";
+		if (document.getElementById("trackerWrapper").childNodes.length > 0) {
+			document.getElementById("trackerWrapper").removeChild(document.getElementById("trackerWrapper").childNodes[0]);
+		}
 		console.log(state);
 		let body = document.querySelector("body");
 		body.className = "";
@@ -54,12 +58,7 @@ router.setState = function(state, prev) {
 				btn[i].removeAttribute("disabled");
 				btn[i].style.visibility = "visible";
 			}
-			
-			navbar.single.setAttribute ("disabled", "disabled");
-			navbar.single.style.visibility = "hidden";
-			navbar.double.setAttribute ("disabled", "disabled");
-			navbar.double.style.visibility = "hidden";
-
+			document.getElementById("trackerWrapper").appendChild(new TrackerMenu());
 		}
 		else if(state == "#monthly_log") {
 			title.innerText = "monthly_log";
@@ -73,6 +72,7 @@ router.setState = function(state, prev) {
 			}
 			navbar.double.setAttribute ("disabled", "disabled");
 			navbar.double.style.visibility = "hidden";
+			document.getElementById("trackerWrapper").appendChild(new TrackerMenu());
 		}
 		else if(state == "#future_log") {
 			title.innerText = "future_log";
@@ -88,9 +88,11 @@ router.setState = function(state, prev) {
 			navbar.single.style.visibility = "hidden";
 			navbar.double.setAttribute ("disabled", "disabled");
 			navbar.double.style.visibility = "hidden";
+			document.getElementById("trackerWrapper").appendChild(new TrackerMenu());
 		}
-
-		history.pushState({page: pageNumber}, title.innerText, url);
-	}, 100);
+		if (!prev){
+			history.pushState({page: pageNumber}, title.innerText, url);
+		}
+	}, 20);
 }
 
