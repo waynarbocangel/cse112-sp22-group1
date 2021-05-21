@@ -240,7 +240,7 @@ export function updateCollectionByID (id, callback){
 }
 
 export function updateEvent(event, callback){
-	updateEventBlockPouch(db, event.id, callback);
+	updateEventBlockPouch(db, event, callback);
 }
 
 export function updateEventByID(id, callback){
@@ -292,7 +292,7 @@ export function updateSignifierAtBlock(block, callback){
 }
 
 export function updateTask(task, callback){
-	updateTaskBlockPouch(db, task.id, callback);
+	updateTaskBlockPouch(db, task, callback);
 }
 
 export function updateTaskByID(id, callback){
@@ -307,7 +307,7 @@ export function updateTaskByID(id, callback){
 }
 
 export function updateTextBlock(block, callback){
-	updateTextBlockPouch(db, block.id, callback);
+	updateTextBlockPouch(db, block, callback);
 }
 
 export function updateTextBlockByID(id, callback){
@@ -333,7 +333,7 @@ export function updateTextBlockFromContainer(container, index, callback){
 }
 
 export function updateTracker(tracker, callback){
-	updateTrackerPouch(db, tracker.id, callback);
+	updateTrackerPouch(db, tracker, callback);
 }
 
 export function updateTrackerByID(id, callback){
