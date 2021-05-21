@@ -27,117 +27,8 @@
             <input type="text" placeholder="Search">
         </span>
     </div>
-
-    <div id="tracker_header">
-        <div id="tracker_header_content">
-
-            <button class="imgbutton"> <img src="images/right-chevron.png"> </button>
-            <h1> Future Log Tracker </h1>
-        </div>
-    </div>
-    <div id="tracker_menu">
-
-        <div id="content">
-            <ul>
-                Todo: (Placeholder)
-                <li>Task 1</li>
-                <li>Task 2</li>
-                <li>Task 3</li>
-                <li>Task 4</li>
-            </ul>
-            <ul>
-                Todo: (Placeholder)
-                <li>Task 1</li>
-                <li>Task 2</li>
-                <li>Task 3</li>
-                <li>Task 4</li>
-            </ul>
-            <ul>
-                Todo: (Placeholder)
-                <li>Task 1</li>
-                <li>Task 2</li>
-                <li>Task 3</li>
-                <li>Task 4</li>
-            </ul>
-            <ul>
-                Todo: (Placeholder)
-                <li>Task 1</li>
-                <li>Task 2</li>
-                <li>Task 3</li>
-                <li>Task 4</li>
-            </ul>
-            <ul>
-                Todo: (Placeholder)
-                <li>Task 1</li>
-                <li>Task 2</li>
-                <li>Task 3</li>
-                <li>Task 4</li>
-            </ul>
-            <ul>
-                Todo: (Placeholder)
-                <li>Task 1</li>
-                <li>Task 2</li>
-                <li>Task 3</li>
-                <li>Task 4</li>
-            </ul>
-            <ul>
-                Todo: (Placeholder)
-                <li>Task 1</li>
-                <li>Task 2</li>
-                <li>Task 3</li>
-                <li>Task 4</li>
-            </ul>
-            <ul>
-                Todo: (Placeholder)
-                <li>Task 1</li>
-                <li>Task 2</li>
-                <li>Task 3</li>
-                <li>Task 4</li>
-            </ul>
-            <ul>
-                Todo: (Placeholder)
-                <li>Task 1</li>
-                <li>Task 2</li>
-                <li>Task 3</li>
-                <li>Task 4</li>
-            </ul>
-            <ul>
-                Todo: (Placeholder)
-                <li>Task 1</li>
-                <li>Task 2</li>
-                <li>Task 3</li>
-                <li>Task 4</li>
-            </ul>
-            <ul>
-                Todo: (Placeholder)
-                <li>Task 1</li>
-                <li>Task 2</li>
-                <li>Task 3</li>
-                <li>Task 4</li>
-            </ul>
-            <ul>
-                Todo: (Placeholder)
-                <li>Task 1</li>
-                <li>Task 2</li>
-                <li>Task 3</li>
-                <li>Task 4</li>
-            </ul>
-            <ul>
-                Todo: (Placeholder)
-                <li>Task 1</li>
-                <li>Task 2</li>
-                <li>Task 3</li>
-                <li>Task 4</li>
-            </ul>
-            <ul>
-                Todo: (Placeholder)
-                <li>Task 1</li>
-                <li>Task 2</li>
-                <li>Task 3</li>
-                <li>Task 4</li>
-            </ul>
-        </div>
-    </div>
+    <tracker-menu>
+    </tracker-menu>
 
     <main>
         <div class="journal_thing">
@@ -152,39 +43,7 @@
         <img src="images/icon.png" width=50px height="50px">
     </button> -->
 
-    <script>
-        let trackerButton = document.querySelector("#tracker_button");
-        trackerButton.addEventListener("click", toggleMenu, false);
-
-        let trackerMenu = document.querySelector("#tracker_menu");
-        trackerMenu.addEventListener("click", hideMenu, false);
-
-        let trackerMenuHeader = document.querySelector("#tracker_header");
-        trackerMenuHeader.addEventListener("click", hideMenu, false);
-
-        function toggleMenu(e) {
-            if (trackerMenu.classList.contains("show")) {
-                hideMenu(e);
-            } else {
-                showMenu(e);
-            }
-        }
-
-        function showMenu(e) {
-            trackerMenu.classList.add("show");
-            trackerMenuHeader.classList.add("show");
-
-            document.body.style.overflow = "hidden";
-        }
-
-        function hideMenu(e) {
-            trackerMenu.classList.remove("show");
-            trackerMenuHeader.classList.remove("show");
-            e.stopPropagation();
-
-            document.body.style.overflow = "auto";
-        }
-    </script>
+    <script type="module" src="./tracker-menu.js"></script>
 </body>
 
 </html>
