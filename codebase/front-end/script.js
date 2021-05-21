@@ -9,8 +9,9 @@ window.onpopstate = function(event) {
     setState(event.state, true);
 }
 
-document.querySelector("header img").addEventListener("click", () => {
+document.querySelector("page-header button").addEventListener("click", () => {
     setState({name: "daily_log"}, false);
+    console.log("hello");
 });
 
 document.querySelector("title_page").addEventListener("click", () => {

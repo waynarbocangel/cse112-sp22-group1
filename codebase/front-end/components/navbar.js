@@ -101,8 +101,6 @@ template.innerHTML = `
 	</nav>
 `;
 
-
-
 export class NavBar extends HTMLElement {
 	constructor () {
 		super ();
@@ -122,7 +120,9 @@ export class NavBar extends HTMLElement {
 		});
 
 		this.target.addEventListener('click', () => {
-			alert("hello"); 
+			const trackerMenu = document.querySelector("tracker-menu");
+			trackerMenu.toggle();
+			trackerMenu.title = "Daily Log Tracker";
 		});
 		this.single.addEventListener('click', () => {
 			alert("hello"); 
@@ -133,7 +133,6 @@ export class NavBar extends HTMLElement {
 		this.user.addEventListener('click', () => {
 			alert("hello"); 
 		});
-
 	}
 }
 

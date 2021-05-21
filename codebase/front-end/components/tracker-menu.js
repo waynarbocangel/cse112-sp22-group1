@@ -162,8 +162,3 @@ class TrackerMenu extends HTMLElement {
 
 customElements.define('tracker-menu', TrackerMenu);
 
-/* Test code */
-const trackerButton = document.getElementById("tracker_button");
-trackerButton.addEventListener("click", () => {
-    document.querySelector('tracker-menu').toggle();
-});
