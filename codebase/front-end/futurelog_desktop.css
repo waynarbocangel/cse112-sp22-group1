@@ -1,0 +1,149 @@
+@media screen and (max-width: 900px) {
+    .search_bar {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 600px) {
+    .search_bar {
+        float: right;
+    }
+}
+
+/* Fade-in buttons */
+button {
+    border: none;
+    background-color: rgba(0,0,0,0);
+}
+
+button.imgbutton img {
+    filter: opacity(50%);
+}
+
+button.imgbutton:hover img {
+    filter: opacity(100%);
+    transition: 150ms;
+}
+
+ul li {
+    margin-left: 2em;
+}
+
+/* Top navigation */
+.topbar {
+    position: fixed;
+    top: 0;
+    left: 120px;
+    width: calc(100% - 120px - 20px);
+    height: 80px;
+
+    border-bottom: solid;
+    border-color: #E5E5E5;
+}
+
+.topbar .future_log {
+    position: relative;
+    top: 1em;
+    margin-left: 10px;
+}
+
+.topbar button {
+    display: inline;
+    margin: 0 10px;
+}
+
+.topbar h1 {
+    display: inline;
+    font-size: 48px;
+}
+
+.search_bar {
+    margin-top: 1em;
+}
+
+.search_bar img {
+    display: inline;
+ 
+    opacity: 25%;
+
+    height: 36px;
+    line-height: 36px;
+    vertical-align: text-bottom;
+
+    /* TODO: unjank */
+    position: relative;
+    top: 6px;
+}
+
+.search_bar input{
+    /* TODO: hard coded */
+    font-size: 16pt;
+
+    border: solid;
+    border-radius: 5px;
+    border-color: rgba(0, 0, 0, .25);
+}
+
+/* Fade in for search bar */
+.search_bar:hover img {
+    opacity: 100%;
+    transition: 150ms;
+}
+
+.search_bar:hover input {
+    border-color: rgba(0, 0, 0, .75);
+    transition: 150ms;
+}
+
+.search_bar input:focus {
+    border-color: rgba(0, 0, 0, .75);
+    transition: 150ms;
+}
+
+/* Side navigation */
+.sidebar {
+    height: 100%;
+    width: 100px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-x: hidden;
+    z-index: 1;
+    padding-top: 20px;
+    background-color: #F7F2EC;
+    text-align: center;
+}
+
+.sidebar button {
+    display: block;
+    color: #818181;
+    padding: 10px 0px;
+    margin: 10px auto;
+}
+
+/* Text editor, to be integrated */
+main {
+    margin-left: 100px;
+    margin-top: 100px;
+}
+
+/* Test code */
+.dropdown-button {
+    display: inline-block;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    background-color: white;
+    transition: 1000ms;
+}
+
+.dropdown-button:hover {
+    background-color: tomato;
+    transition: 250ms;
+}
+
+.dropdown-button:active {
+    border: solid;
+    border-color: gray;
+    transition: 250ms;
+}
