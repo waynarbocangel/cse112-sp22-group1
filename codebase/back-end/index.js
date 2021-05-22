@@ -22,6 +22,7 @@ app.listen("3000", () => {
 	console.log("server has started listening to port 3000");
 });
 
+
 app.post("/createUser", express.json({type: "*/*"}), (req, res) =>{
 	createUser.createUser(req.body.email, req.body.pwd, (user) => {
 		res.send(user);

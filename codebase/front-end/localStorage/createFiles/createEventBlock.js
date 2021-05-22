@@ -8,37 +8,45 @@ export function createEventBlockPouch (db, parent, text, date, signifier, callba
 			console.log(doc);
 			let id = makeid();
 			let arrays = [];
-			arrays.push(...doc.userObject.dailyLogs);
-			arrays.push(...doc.userObject.monthlyLogs);
-			arrays.push(...doc.userObject.futureLogs);
-			arrays.push(...doc.userObject.trackers);
-			arrays.push(...doc.userObject.collections);
-			arrays.push(...doc.userObject.textBlocks);
-			arrays.push(...doc.userObject.taskBlocks);
-			arrays.push(...doc.userObject.eventtBlocks);
-			arrays.push(...doc.userObject.signifiers);
+			arrays.push(...doc.dailyLogs);
+			arrays.push(...doc.monthlyLogs);
+			arrays.push(...doc.futureLogs);
+			arrays.push(...doc.trackers);
+			arrays.push(...doc.collections);
+			arrays.push(...doc.textBlocks);
+			arrays.push(...doc.taskBlocks);
+			arrays.push(...doc.eventtBlocks);
+			arrays.push(...doc.signifiers);
 			while(arrays.filter((element) => element.id == id).length > 0){
 				id = makeid();
 			}
 			const eventBlockObject = {
 				id: id,
+				objectType: "eventBlock",
+				tabLevel: 0,
 				parent: parent,
 				text: text,
 				date: date,
 				signifier: signifier
 			};
-		}
-	});
-	
-	
 
-	db.get("0000", (err, doc) => {
-		if (err) {
-			callback(err);
-		} else {
 			db.put({_rev: doc._rev,
 				_id: "0000"}, (res) => {
-				doc.userObject.eventBlocks.push(eventBlockObject);
+					let userArr = [];
+					Array.prototype.push.apply(userArr, doc.dailyLogs);
+					Array.prototype.push.apply(userArr, doc.monthlyLogs);
+					Array.prototype.push.apply(userArr, doc.futureLogs);
+					Array.prototype.push.apply(userArr, doc.trackers);
+					Array.prototype.push.apply(userArr, doc.collections);
+
+					let parentArr = userArr.filter(object => object.id == parent);
+
+					if(index == null) {
+						parentArr[0].contents.push(id);
+					} else {
+						parentArr[0].contents.splice(index, 0, id);
+					}
+					doc.eventBlocks.push(eventBlockObject);
 				console.log(res);
 				callback(res);
 			});

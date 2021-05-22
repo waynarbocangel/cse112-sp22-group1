@@ -3,7 +3,8 @@ export function createUserPouch (db, userObject, callback) {
 	db.put({_id: "0000", _rev: userObject._rev,
 		email: userObject.email,
 		pwd: userObject.pwd,
-		dailyLogs: userObject.dailyLogs, 
+		index: userObject.index,
+		dailyLogs: userObject.dailyLogs,
 		monthlyLogs: userObject.monthlyLogs,
 		futureLogs: userObject.futureLogs,
 		collections: userObject.collections,
@@ -12,10 +13,10 @@ export function createUserPouch (db, userObject, callback) {
 		taskBlocks: userObject.taskBlocks,
 		eventBlocks: userObject.eventBlocks,
 		signifiers: userObject.signifiers}, (err, res) => {
-		if (err) {
-			callback(err);//err when i use callback
-		} else {
-			callback(res);//err when i use callback
-		}
-	});
+			if (err) {
+				callback(err);//err when i use callback
+			} else {
+				callback(res);//err when i use callback
+			}
+		});
 }

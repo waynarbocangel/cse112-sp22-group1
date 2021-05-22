@@ -8,37 +8,30 @@ export function createDailyLogPouch (db, parent, content, trackers, callback) {
 			console.log(doc);
 			let id = makeid();
 			let arrays = [];
-			arrays.push(...doc.userObject.dailyLogs);
-			arrays.push(...doc.userObject.monthlyLogs);
-			arrays.push(...doc.userObject.futureLogs);
-			arrays.push(...doc.userObject.trackers);
-			arrays.push(...doc.userObject.collections);
-			arrays.push(...doc.userObject.textBlocks);
-			arrays.push(...doc.userObject.taskBlocks);
-			arrays.push(...doc.userObject.eventtBlocks);
-			arrays.push(...doc.userObject.signifiers);
+			arrays.push(...doc.dailyLogs);
+			arrays.push(...doc.monthlyLogs);
+			arrays.push(...doc.futureLogs);
+			arrays.push(...doc.trackers);
+			arrays.push(...doc.collections);
+			arrays.push(...doc.textBlocks);
+			arrays.push(...doc.taskBlocks);
+			arrays.push(...doc.eventtBlocks);
+			arrays.push(...doc.signifiers);
 			while(arrays.filter((element) => element.id == id).length > 0){
 				id = makeid();
 			}
 			const dailyObject = {
 				id: id,
+				objectType: "dailyObject",
 				date: Date(),
 				parent: parent,
 				content: content,
 				trackers: trackers
 			};
-		}
-	});
-	
-	
 
-	db.get("0000", (err, doc) => {
-		if (err) {
-			callback(err);
-		} else {
 			db.put({_rev: doc._rev,
 				_id: "0000"}, (res) => {
-				doc.userObject.dailyLogs.push(dailyObject);
+				doc.dailyLogs.push(dailyObject);
 				console.log(res);
 				callback(res);
 			});

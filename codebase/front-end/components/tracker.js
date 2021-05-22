@@ -18,15 +18,27 @@ export class TrackerMenu extends HTMLElement {
                 position: fixed;
                 z-index: 1000;
                 top: 0;
-                width: 35vw;
+                width: 35%;
+				padding-left: 20px;
+				padding-right: 20px;
                 height: 100vh;
+				background-color: #2B2D42;
                 font-family: "SF-Pro";
-                transform: translate3d(100vw, 0, 0);
+                transform: translate3d(135vw, 0, 0);
                 transition: transform .4s ease-in-out /*cubic-bezier(0, .52, 0, 1);*/
             }
+
+			.noteContainer{
+				margin-top: 7px;
+				margin-bottom: 7px;
+				margin-left: 20px;
+				display: list-item;
+				list-style-type: circle;
+				list-style-position: outside;
+			}
                         
             .wrapper.open {
-                transform: translate3d(65vw, 0, 0);
+                transform: translate3d(calc(65vw - 39px), 0, 0);
                 transition: transform .4s ease-in-out /*cubic-bezier(0, .52, 0, 1);*/
             }
             
@@ -34,45 +46,46 @@ export class TrackerMenu extends HTMLElement {
                 background-color: #2B2D42;
                 color: white;
                 opacity: 95%;
-            
+				padding-left: 0;
+				padding-right: 0;
                 width: 35vw;
-                height: calc(100vh - 80px);
             }
             
             .tracker_header {
                 top: 0;
-                right: 0;
-                width: 35vw;
-                height: 80px;
+				right: 10px;
+				margin-bottom: 15px;
                 background-color: #2B2D42;
                 color: white;
                 opacity: 95%;
+				border-bottom: solid rgba(157, 148, 241, 0.7);
             }
             
             .tracker_header_content {
                 position: relative;
-                top: 1em;
             }
             
             .tracker_header .close_button {
 				display: inline-block;
-                margin-top: 10px;
-                margin-left: 10px;
+                margin-top: 25px;
+				vertical-align: top;
+                margin-left: 0;
                 line-height: 16px;
             }
             
             #trackerTitleWrapper {
                 display: inline-block;
-				left: 40px;
-				position: absolute;
-				right: 20px;
-				top: -10px;
-				border-bottom: solid rgba(157, 148, 241, 0.7);
+				left: 20px;
+				position: relative;
+				width: calc(100% - 90px);
+				right: 10px;
             }
 
 			#trackerTitleWrapper h1{
                 text-align: center;
+				margin: 20px auto 10px;
                 font-size: 24pt;
+				line-height: 30pt;
 			}
             
             .tracker_header .close_button img {

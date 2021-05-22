@@ -8,38 +8,32 @@ export function createFutureLogPouch (db, startDate, endDate, months, content, t
 			console.log(doc);
 			let id = makeid();
 			let arrays = [];
-			arrays.push(...doc.userObject.dailyLogs);
-			arrays.push(...doc.userObject.monthlyLogs);
-			arrays.push(...doc.userObject.futureLogs);
-			arrays.push(...doc.userObject.trackers);
-			arrays.push(...doc.userObject.collections);
-			arrays.push(...doc.userObject.textBlocks);
-			arrays.push(...doc.userObject.taskBlocks);
-			arrays.push(...doc.userObject.eventtBlocks);
-			arrays.push(...doc.userObject.signifiers);
+			arrays.push(...doc.dailyLogs);
+			arrays.push(...doc.monthlyLogs);
+			arrays.push(...doc.futureLogs);
+			arrays.push(...doc.trackers);
+			arrays.push(...doc.collections);
+			arrays.push(...doc.textBlocks);
+			arrays.push(...doc.taskBlocks);
+			arrays.push(...doc.eventtBlocks);
+			arrays.push(...doc.signifiers);
 			while(arrays.filter((element) => element.id == id).length > 0){
 				id = makeid();
 			}
 			const futureObject = {
 				id: id,
+				objectType: "futureLog",
 				startDate: startDate,
 				endDate: endDate,
 				months: months,
 				content: content,
 				trackers: trackers
 			};
-		}
-	});
-	
-	
 
-	db.get("0000", (err, doc) => {
-		if (err) {
-			callback(err);
-		} else {
 			db.put({_rev: doc._rev,
 				_id: "0000"}, (res) => {
-				doc.userObject.futureLogs.push(futureObject);
+				doc.futureLogs.push(futureObject);
+				doc.index.contents.push(futureObject.id);
 				console.log(res);
 				callback(res);
 			});

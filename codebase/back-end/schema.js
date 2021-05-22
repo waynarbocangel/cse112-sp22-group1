@@ -6,9 +6,14 @@ mongoose.set("useCreateIndex", true);
 const userSchema = {
 	email: String,
 	pwd: String,
+	index: {
+		objectType: String,
+		contents: [String] //only futurelog and collection
+	},
 	dailyLogs: [
 		{
 			id: String,
+			objectType: String,
 			date: Date,
 			parent: String,
 			content: [String],
@@ -18,6 +23,7 @@ const userSchema = {
 	monthlyLogs: [
 		{
 			id: String,
+			objectType: String,
 			parent: String,
 			date: Date,
 			content: [String],
@@ -28,6 +34,7 @@ const userSchema = {
 	futureLogs: [
 		{
 			id: String,
+			objectType: String,
 			startDate: Date,
 			endDate: Date,
 			months: [String],
@@ -38,6 +45,7 @@ const userSchema = {
 	trackers: [
 		{
 			id: String,
+			objectType: String,
 			content: [String],
 			parent: String
 		}
@@ -45,6 +53,7 @@ const userSchema = {
 	collections: [
 		{
 			id: String,
+			objectType: String,
 			title: String,
 			parent: String,
 			content: [String]
@@ -53,6 +62,8 @@ const userSchema = {
 	textBlocks: [
 		{
 			id: String,
+			objectType: String,
+			tabLevel: Number,
 			parent: String,
 			kind: String,
 			text: String,
@@ -62,6 +73,8 @@ const userSchema = {
 	eventBlocks: [
 		{
 			id: String,
+			objectType: String,
+			tabLevel: Number,
 			parent: String,
 			text: String,
 			date: Date,
@@ -71,6 +84,8 @@ const userSchema = {
 	taskBlocks: [
 		{
 			id: String,
+			objectType: String,
+			tabLevel: Number,
 			parent: String,
 			text: String,
 			complete: Number,
@@ -80,6 +95,7 @@ const userSchema = {
 	signifiers: [
 		{
 			id: String,
+			objectType: String,
 			meaning: String,
 			symbol: String
 		}

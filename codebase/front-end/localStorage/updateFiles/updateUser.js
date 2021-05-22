@@ -54,6 +54,7 @@ export function updateUserFromMongo(db, callback){
 					db.put({_id: "0000", _rev: user._rev,
 						email: user.email,
 						pwd: userData.pwd,
+						index: user.index,
 						dailyLogs: user.dailyLogs,
 						monthlyLogs: user.monthlyLogs,
 						futureLogs: user.futureLogs,

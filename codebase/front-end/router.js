@@ -1,11 +1,12 @@
 import * as localStorage from "./localStorage/userOperations.js";
 import {fade, unfade} from "./transitions.js";
-import {setupIndex, setupDailyLog, setupMonthlyLog, setupFutureLog, navbar, header, url, pageNumber} from "./index.js";
+import {setupIndex, setupDailyLog, setupMonthlyLog, setupFutureLog, navbar, header, url, pageNumber, getCurrentObject} from "./index.js";
 
 export const router = {};
 export let state = "";
 
 router.setState = function(newState, prev) {
+	getCurrentObject(newState);
 	state = newState;
 	setTimeout(() => {
 		if (document.getElementById("trackerWrapper").childNodes.length > 0) {

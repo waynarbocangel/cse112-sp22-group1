@@ -19,6 +19,7 @@ export class TextBlock extends HTMLElement{
 			this.root = this.shadowRoot;
 			this.kind = "paragraph";
 			this.initialHeight = 3;
+			this.item = null;
 			this.controller = controller;
 			this.shadowRoot.getElementById("textBlock").classList.add("unstylized");
 			this.currentBlock = null;
@@ -167,17 +168,43 @@ export class TextBlock extends HTMLElement{
     setupTabLevel(){
         this.style.position = "relative";
         this.style.left = (this.tabLevel * tabSize) + "px";
+        // this.style.width = `calc(100% - ${this.tabLevel * tabSize})px`;
+        // this.style.overflowX = 'none';
         this.controller.currentTabLevel = this.tabLevel;
         this.setCurrentSpot();
     }
 
 	connectedCallback(){
+
 		let textBlock = this.shadowRoot.getElementById("textBlock");
 		textBlock.focus();
         
         document.addEventListener(shadow.eventName, () => {
             this.controller.blockArray[this.controller.currentBlockIndex].setCurrentSpot();
         });
+
+		textBlock.onpaste = (e) => {
+			// Get user's pasted data
+			let data = e.clipboardData.getData('text/html') ||
+				e.clipboardData.getData('text/plain');
+			
+			// Filter out everything except simple text and allowable HTML elements
+			let regex = /<(?!(\/\s*)?(a|b|i|em|s|strong|u)[>,\s])([^>])*>/g;
+			data = data.replace(regex, '');
+			
+			// Insert the filtered content
+			document.execCommand('insertText', false, data);
+			
+			// Prevent the standard paste behavior
+			e.preventDefault();
+		};
+
+		textBlock.onblur = () => {
+			//task, event, text
+            //if nothing in block dont save
+                //if yes save
+            //if curr state of block != object update type of block = delete object and create curr block
+		};
 
 		textBlock.addEventListener("input",() =>{
 			let content = textBlock.innerHTML;

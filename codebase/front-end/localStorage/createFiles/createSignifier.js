@@ -22,6 +22,7 @@ export function createSignifierPouch (db, meaning, symbol, callback) {
 			}
 			const signifierObject = {
 				id: id,
+				objectType: "signifier",
 				meaning: meaning,
 				symbol: symbol
 			};

@@ -17,16 +17,16 @@ import {deleteTextBlockPouch} from "./deleteFiles/deleteTextBlock.js";
 import {deleteTrackerPouch} from "./deleteFiles/deleteTracker.js";
 import {deleteUserPouch} from "./deleteFiles/deleteUser.js";
 //---------------importing from update-------------------------------------------
-import {updateUserPouch, updateUserFromMongo} from "updateFiles/updateUser.js";
-import {updateDailyLogPouch} from "updateFiles/updateDailyLog.js";
-import {updateMonthlyLogPouch} from "updateFiles/updateMonthlyLog.js";
-import {updateFutureLogPouch} from "updateFiles/updateFutureLog.js";
-import {updateCollectionPouch} from "updateFiles/updateCollection.js";
-import {updateTrackerPouch} from "updateFiles/updateTracker.js";
-import {updateTextBlockPouch} from "updateFiles/updateTextBlock.js";
-import {updateTaskBlockPouch} from "updateFiles/updateTaskBlock.js";
-import {updateEventBlockPouch} from "updateFiles/updateEventBlock.js";
-import {updateSignifierPouch} from "updateFiles/updateSignifier.js";
+import {updateUserPouch, updateUserFromMongo} from "./updateFiles/updateUser.js";
+import {updateDailyLogPouch} from "./updateFiles/updateDailyLog.js";
+import {updateMonthlyLogPouch} from "./updateFiles/updateMonthlyLog.js";
+import {updateFutureLogPouch} from "./updateFiles/updateFutureLog.js";
+import {updateCollectionPouch} from "./updateFiles/updateCollection.js";
+import {updateTrackerPouch} from "./updateFiles/updateTracker.js";
+import {updateTextBlockPouch} from "./updateFiles/updateTextBlock.js";
+import {updateTaskBlockPouch} from "./updateFiles/updateTaskBlock.js";
+import {updateEventBlockPouch} from "./updateFiles/updateEventBlock.js";
+import {updateSignifierPouch} from "./updateFiles/updateSignifier.js";
 
 
 export let db = new PouchDB("Users");
@@ -135,8 +135,8 @@ export function createTracker(content, parent, callback) {
 }
 
 export function readUser(callback){
-	readUserPouch(db, (user) => {
-		callback(user);
+	readUserPouch(db, (err, user) => {
+		callback(err, user);
 	});
 }
 
@@ -212,14 +212,65 @@ export function deleteTrackerFromContainer(container, index, callback){
 
 //-------------------------------Update Functions----------------------------------
 export function updateUser(){
-	deleteUserPouch(db, (user) => {
+	updateUserPouch(db, (user) => {
 		return res.send(user);
 	});
 }
 
 export function updateUserOnline(){
-	deleteUserFromMongo(db, (user) => {
+	updateUserFromMongo(db, (user) => {
 		return res.send(user);
+	});
+}
+
+export function updateDailyLog(dailyLog, callback) {
+	updateDailyLogPouch(dailyLog, (user) => {
+		return res.send(user);
+	})
+}
+
+export function updateDailyLogByID (id, callback){
+	db.get("0000", (err, doc) => {
+		if (err) {
+			callback(err);
+		} else {
+			const dailyLog = doc.dailyLogs.filter(element => element.id == id);
+			updateDailyLogPouch(db, dailyLog[0], callback);		
+		}
+	});
+}
+
+export function updateMonthlyLog(monthlyLog, callback) {
+	updateMonthlyLogPouch(monthlyLog, (user) => {
+		return res.send(user);
+	})
+}
+
+export function updateMonthlyLogByID (id, callback){
+	db.get("0000", (err, doc) => {
+		if (err) {
+			callback(err);
+		} else {
+			const monthlyLog = doc.monthlyLogs.filter(element => element.id == id);
+			updateMonthlyLogPouch(db, monthlyLog[0], callback);		
+		}
+	});
+}
+
+export function updateFutureLog(futureLog, callback) {
+	updateFutureLogPouch(futureLog, (user) => {
+		return res.send(user);
+	})
+}
+
+export function updateFutureLogByID (id, callback){
+	db.get("0000", (err, doc) => {
+		if (err) {
+			callback(err);
+		} else {
+			const futureLog = doc.futureLogs.filter(element => element.id == id);
+			updateFutureLogPouch(db, futureLog[0], callback);		
+		}
 	});
 }
 
@@ -248,7 +299,7 @@ export function updateEventByID(id, callback){
 			callback(err);
 		} else {
 			const event = doc.eventBlocks.filter(element => element.id == id);
-			updateCollectionPouch(db, event[0], callback);		
+			updateEventBlockPouch(db, event[0], callback);		
 		}
 	});
 }
@@ -259,7 +310,7 @@ export function updateEventAtIndex(container, index, callback){
 			callback(err);
 		} else {
 			const event = doc.eventBlocks.filter(element => element.id == container.content[index]);
-			updateCollectionPouch(db, event[0], callback);		
+			updateEventBlockPouch(db, event[0], callback);		
 		}
 	});
 }
@@ -274,7 +325,7 @@ export function updateSignifierByID(id, callback){
 			callback(err);
 		} else {
 			const signifier = doc.signifiers.filter(element => element.id == id);
-			updateCollectionPouch(db, signifier[0], callback);		
+			updateSignifierPouch(db, signifier[0], callback);		
 		}
 	});
 }
@@ -300,7 +351,7 @@ export function updateTaskByID(id, callback){
 			callback(err);
 		} else {
 			const task = doc.taskBlocks.filter(element => element.id == id);
-			updateCollectionPouch(db, task[0], callback);		
+			updateTaskBlockPouch(db, task[0], callback);		
 		}
 	});
 }
@@ -315,7 +366,7 @@ export function updateTextBlockByID(id, callback){
 			callback(err);
 		} else {
 			const text = doc.textBlocks.filter(element => element.id == id);
-			updateCollectionPouch(db, text[0], callback);	
+			updateTextBlockPouch(db, text[0], callback);	
 		}
 	});
 }
@@ -341,7 +392,7 @@ export function updateTrackerByID(id, callback){
 			callback(err);
 		} else {
 			const tracker = doc.trackers.filter(element => element.id == id);
-			updateCollectionPouch(db, tracker[0], callback);
+			updateTrackePouch(db, tracker[0], callback);
 		}
 	});
 }
