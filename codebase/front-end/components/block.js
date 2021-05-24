@@ -1,36 +1,37 @@
-import {blockArray} from "../index.js";
 import * as shadow from "./shadow.js";
 
 const tabSize = 20;
 const paddingSize = 10;
 
+
+
 export class TextBlock extends HTMLElement{
 	constructor(controller, callback){
 		super();
-        fetch("./block.html").then((response) => {
-            return response.text();
-        }).then((html) =>{
-            let parser = new DOMParser();
-            let blockTemplateFile = parser.parseFromString(html, 'text/html');
-            let blockTemplate = blockTemplateFile.getElementById("block");
-            this.attachShadow({ mode: "open" });
-            this.shadowRoot.appendChild(blockTemplate.content.cloneNode(true));
-            this.root = this.shadowRoot;
-            this.kind = "paragraph";
-            this.initialHeight = 3;
-            this.controller = controller;
-            this.shadowRoot.getElementById("textBlock").classList.add("unstylized");
-            this.currentBlock = null;
-            this.currentPointerSpot = 0;
-            this.currentPointerHeight = 2;
-            if (this.controller.creatingFromBullet){
-                this.setupBullet();
-            }
-            this.tabLevel = controller.currentTabLevel;
-            this.setupTabLevel();
-            callback(true);
-        });
-        
+		fetch("./components/block.html").then((response) => {
+			return response.text();
+		}).then((html) => {
+			let parser = new DOMParser();
+			let blockTemplateFile = parser.parseFromString(html, 'text/html');
+			let blockTemplate = blockTemplateFile.getElementById("block");
+			this.attachShadow({ mode: "open" });
+			this.shadowRoot.appendChild(blockTemplate.content.cloneNode(true));
+			this.root = this.shadowRoot;
+			this.kind = "paragraph";
+			this.initialHeight = 3;
+			this.item = null;
+			this.controller = controller;
+			this.shadowRoot.getElementById("textBlock").classList.add("unstylized");
+			this.currentBlock = null;
+			this.currentPointerSpot = 0;
+			this.currentPointerHeight = 2;
+			if (this.controller.creatingFromBullet){
+				this.setupBullet();
+			}
+			this.tabLevel = controller.currentTabLevel;
+			this.setupTabLevel();
+			callback(true);
+		})
         
 	}
 
@@ -167,17 +168,56 @@ export class TextBlock extends HTMLElement{
     setupTabLevel(){
         this.style.position = "relative";
         this.style.left = (this.tabLevel * tabSize) + "px";
+        // this.style.width = `calc(100% - ${this.tabLevel * tabSize})px`;
+        // this.style.overflowX = 'none';
         this.controller.currentTabLevel = this.tabLevel;
         this.setCurrentSpot();
     }
 
 	connectedCallback(){
+
 		let textBlock = this.shadowRoot.getElementById("textBlock");
 		textBlock.focus();
         
         document.addEventListener(shadow.eventName, () => {
-            blockArray[this.controller.currentBlockIndex].setCurrentSpot();
+            this.controller.blockArray[this.controller.currentBlockIndex].setCurrentSpot();
         });
+
+		textBlock.onpaste = (e) => {
+			// Get user's pasted data
+			let data = e.clipboardData.getData('text/html') ||
+				e.clipboardData.getData('text/plain');
+			
+			// Filter out everything except simple text and allowable HTML elements
+			let regex = /<(?!(\/\s*)?(a|b|i|em|s|strong|u)[>,\s])([^>])*>/g;
+			data = data.replace(regex, '');
+			
+			// Insert the filtered content
+			document.execCommand('insertText', false, data);
+			
+			// Prevent the standard paste behavior
+			e.preventDefault();
+		};
+
+		textBlock.onblur = () => {
+			/*//task, event, text
+            //if nothing in block dont save
+                //if yes save
+            //if curr state of block != object update type of block = delete object and create curr block
+            if (textBlock.textContent != "" ) {
+				this.item.kind = this.kind;
+				this.item.text = textBlock.textContent;
+                
+                localStorage.updateTextBlock(this.item, (res) => {
+                    console.log(res);    
+                })
+            } else {
+                localStorage.deleteTextBlock(this.item, (res) => {
+                    console
+                })
+            }
+            */
+		};
 
 		textBlock.addEventListener("input",() =>{
 			let content = textBlock.innerHTML;
@@ -200,7 +240,7 @@ export class TextBlock extends HTMLElement{
         textBlock.onfocus = (e) => {
             this.controller.resetPosition = false;
             this.setCurrentSpot();
-            this.controller.currentBlockIndex = blockArray.indexOf(this);
+            this.controller.currentBlockIndex = this.controller.blockArray.indexOf(this);
             this.controller.currentTabLevel = this.tabLevel;
             if (this.classList.contains("noteContainer")){
                 this.controller.creatingFromBullet = true;
@@ -218,7 +258,7 @@ export class TextBlock extends HTMLElement{
                 let currentSpot18 = this.currentPointerSpot - (this.tabLevel * tabSize) == paddingSize;
                 let currentSpotNote = this.currentPointerSpot - (this.tabLevel * tabSize) == paddingSize + 20 && this.classList.contains("noteContainer");
                 let isAtBegining = currentSpot18 || currentSpotNote;
-                if (textBlock.innerHTML == "" && textBlock.getAttribute('placeholder') == 'Type "/" to create a block' && blockArray.length > 1){
+                if (textBlock.innerHTML == "" && textBlock.getAttribute('placeholder') == 'Type "/" to create a block' && this.controller.blockArray.length > 1){
                     this.controller.removeBlock();
                 } else if((textBlock.innerHTML == "" || textBlock.innerHTML == "<br>") && this.tabLevel == 0){
 					this.removeStyles();
