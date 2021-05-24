@@ -59,19 +59,19 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         json-glob: ./codebase/back-end/testOutput.json
         workdir: ./codebase/back-end
-    - name: ESLint checker
-      run: npm run lint --if-present
-    #- name: ESLint Action eslintrc
+    #- name: ESLint checker
+      #run: npm run lint --if-present
+    - name: ESLint Action eslintrc
       # You may pin to the exact commit or the version.
       # uses: mrdivyansh/eslint-action@17eb59b7430afff999b822cb161ef44e9bd7a1cd
-      #uses: mrdivyansh/eslint-action@v1.0.7
-      #with:
+      uses: mrdivyansh/eslint-action@v1.0.7
+      with:
        # GitHub repository token for publishing inline lint annotations. Should be secrets.GITHUB_TOKEN.
-        #repo-token: ${{ secrets.GITHUB_TOKEN }}
+        repo-token: secrets.GITHUB_TOKEN
         # Path to eslintrc
-        #eslint-rc: ./.eslintrc.js
+        eslint-rc: ./.eslintrc.js
         # Root directory to lint files in
-        #execute-on-files: ./codebase/back-end
+        execute-on-files: ./codebase/back-end
     
     #- name: ESLint checker
       #run: npm run lint --if-present
