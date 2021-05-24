@@ -101,28 +101,20 @@ jobs:
         #execute-on-files: ./codebase/front-end
         
         
-  -name: ESLint Check on Codebase:
-    uses: mrdivyansh/eslint-action@v1.0.7
-      with:
-       # GitHub repository token for publishing inline lint annotations. Should be secrets.GITHUB_TOKEN.
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        # Path to eslintrc
-        eslint-rc: ./.eslintrc.js
-        # Root directory to lint files in
-        execute-on-files: ./codebase/
-     #runs-on: ubuntu-latest
-      # steps:
-       #  - uses: actions/checkout@v2
-        # - run: yarn install
-         #- uses: stefanoeb/eslint-action@1.0.2
-          # with:
-           #  files: ./codebase/
-           #env:
-            # GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  ESLint Check on Codebase:
+     runs-on: ubuntu-latest
+       steps:
+         - uses: actions/checkout@v2
+         - run: yarn install
+         - uses: stefanoeb/eslint-action@1.0.2
+           with:
+            files: ./codebase/
+           env:
+             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
              
              
              
-               #- name: ESLint checker
+     #ESLint checker
       #run: npm run lint --if-present
     #- name: ESLint Action eslintrc
       # You may pin to the exact commit or the version.
