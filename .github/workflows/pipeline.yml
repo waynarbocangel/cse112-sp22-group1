@@ -100,7 +100,7 @@ jobs:
         # Root directory to lint files in
         #execute-on-files: ./codebase/front-end
         
-  ESLint Check on Codebase:
+  ESLint-Check:
        runs-on: ubuntu-latest
        steps:
          - uses: actions/checkout@v2
