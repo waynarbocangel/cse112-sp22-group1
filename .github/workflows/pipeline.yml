@@ -59,6 +59,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         json-glob: ./codebase/back-end/testOutput.json
         workdir: ./codebase/back-end
+    - name: End to End Testing (Puppeteer)
+      run: npm install --save-dev puppeteer jest-puppeteer
+    
     #- name: ESLint checker
       #run: npm run lint --if-present
     #- name: ESLint Action eslintrc
