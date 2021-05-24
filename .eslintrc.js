@@ -65,9 +65,9 @@ module.exports = {
         "key-spacing": "error",
         "keyword-spacing": "error",
         "line-comment-position": "error",
-        "linebreak-style": [
-            "off"
-        ],
+        "linebreak-style": 0,
+        "global-require": 0,
+        "ESLint linebreak-style": [0, "error", "windows"],
         "lines-around-comment": "error",
         "lines-between-class-members": "error",
         "max-classes-per-file": "error",

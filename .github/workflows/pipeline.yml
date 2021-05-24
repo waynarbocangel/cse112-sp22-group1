@@ -9,6 +9,7 @@ on:
       - back-end_drop
       - front-end_drop
       - ci/cd-pipeline-1
+      - pipeline-test
 
   pull_request:
     branches:
@@ -58,6 +59,23 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         json-glob: ./codebase/back-end/testOutput.json
         workdir: ./codebase/back-end
+    #- name: ESLint checker
+      #run: npm run lint --if-present
+    - name: ESLint Action eslintrc
+      # You may pin to the exact commit or the version.
+      # uses: mrdivyansh/eslint-action@17eb59b7430afff999b822cb161ef44e9bd7a1cd
+      uses: mrdivyansh/eslint-action@v1.0.7
+      with:
+       # GitHub repository token for publishing inline lint annotations. Should be secrets.GITHUB_TOKEN.
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        # Path to eslintrc
+        eslint-rc: ./.eslintrc.js
+        # Root directory to lint files in
+        execute-on-files: ./codebase/back-end
+    
+    #- name: ESLint checker
+      #run: npm run lint --if-present
+
 
 
   front-end-build:
@@ -70,3 +88,14 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         json-glob: ./codebase/front-end/testOutput.json
         workdir: ./codebase/front-end
+    - name: ESLint Action eslintrc
+      # You may pin to the exact commit or the version.
+      # uses: mrdivyansh/eslint-action@17eb59b7430afff999b822cb161ef44e9bd7a1cd
+      uses: mrdivyansh/eslint-action@v1.0.7
+      with:
+       # GitHub repository token for publishing inline lint annotations. Should be secrets.GITHUB_TOKEN.
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        # Path to eslintrc
+        eslint-rc: ./.eslintrc.js
+        # Root directory to lint files in
+        execute-on-files: ./codebase/front-end
