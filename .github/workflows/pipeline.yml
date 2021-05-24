@@ -100,17 +100,17 @@ jobs:
         # Root directory to lint files in
         #execute-on-files: ./codebase/front-end
         
-        
   ESLint Check on Codebase:
-     runs-on: ubuntu-latest
-     steps:
-      - uses: actions/checkout@v2
-      - run: yarn install
-      - uses: stefanoeb/eslint-action@1.0.2
-        with:
-          files: ./codebase/
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+       runs-on: ubuntu-latest
+       steps:
+         - uses: actions/checkout@v2
+         - run: yarn install
+         - uses: stefanoeb/eslint-action@1.0.2
+           with:
+             files: ./codebase/
+           env:
+             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
              
              
              
