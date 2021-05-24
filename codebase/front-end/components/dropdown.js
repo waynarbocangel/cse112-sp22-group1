@@ -2,13 +2,11 @@ import { createEditor } from './blockController.js';
 const tabspace = 3;
 
 export class DropdownBlock extends HTMLElement {
-    constructor(title, item, level) {
+    constructor(title, item, level=1) {
         super();
         this.currentHeight = 5;
         this.item = item;
         this.attachShadow({ mode: 'open' });
-        // if (level === undefined) { level = 1; }
-        level = 1;
         this.shadowRoot.innerHTML = `
 		<style>
 			@font-face {
@@ -22,18 +20,24 @@ export class DropdownBlock extends HTMLElement {
 			}
 
             #arrow {
-                width: 36px;
-                height: 36px;
+                width: 12px;
+                height: 12px;
 				background-color: rgba(0,0,0,0);
                 border: none;
             }
 
+            #arrow img {
+                max-width: 18px;
+                max-height: 18px;
+            }
             :not(.closed) #arrow img {
                 transform: rotate(0deg);
                 transition: 0.2s;
             }
 
             .closed #arrow img {
+
+
                 transform: rotate(90deg);
                 transition: 0.2s;
             }
@@ -47,7 +51,7 @@ export class DropdownBlock extends HTMLElement {
 
 		</style>
         <div id="wrapper">
-            <h1 id="title">${title}</h1>
+            <h1 id="title"></h1>
             <button id="arrow"><img src="../public/resources/right-chevron.png" /></button>
             <div id="contentWrapper"></div>
         </div>
@@ -55,28 +59,22 @@ export class DropdownBlock extends HTMLElement {
         this.button = this.shadowRoot.getElementById("arrow");
         this.wrapper = this.shadowRoot.getElementById("wrapper");
         this.contentWrapper = this.shadowRoot.getElementById("contentWrapper");
+        this.header = this.shadowRoot.querySelector("h1");
 
         this.toggleItems = this.toggleItems.bind(this);
         this.hide = this.hide.bind(this);
         this.display = this.display.bind(this);
+
+        this.title = title;
     }
 
     connectedCallback() {
         this.closed = true;
-
-        createEditor(this.contentWrapper, (success) => {
-            console.log(success);
-            for (let child of this.contentWrapper.children) {
-                child.style.display = 'none';
-            }
-            console.log(this.closed);
-            if (this.closed) {
-                console.log("hiding elements");
-                
-            }
-        });
-
         this.button.addEventListener("click", () => { this.toggleItems(); });
+    }
+
+    set title(title) {
+        this.header.innerText = title;
     }
 
     get closed() {

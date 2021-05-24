@@ -88,9 +88,9 @@ export function createCollection(title, parent, content, callback){
 	createCollectionPouch(db, title, parent, content, callback);
 }
 
-export function createDailyLog(parent, content, trackers, callback){
-    createDailyLogPouch(db, parent, content, trackers, (user) => {
-		callback(user);
+export function createDailyLog(parent, content, trackers, date, callback){
+    createDailyLogPouch(db, parent, content, trackers, date, (err, day) => {
+		callback(err, day);
 	});
 }
 
@@ -101,14 +101,14 @@ export function createEventBlock(parent, text, date, signifier, callback) {
 }
 
 export function createFutureLog(startDate, endDate, months, content, trackers, callback) {
-	createFutureLogPouch(db, startDate, endDate, months, content, trackers, (user) => {
-		callback(user);
+	createFutureLogPouch(db, startDate, endDate, months, content, trackers, (err, futureLog) => {
+		callback(err, futureLog);
 	})
 }
 
-export function createMonthlyLog(parent, content, days, trackers, callback) {
-	createMonthlyLogPouch(db, parent, content, days, trackers, (user) => {
-		callback(user);
+export function createMonthlyLog(parent, content, days, trackers, date, callback) {
+	createMonthlyLogPouch(db, parent, content, days, trackers, date, (error, month) => {
+		callback(error, month);
 	})
 }
 
@@ -234,16 +234,14 @@ export function updateDailyLogByID (id, callback){
 		if (err) {
 			callback(err);
 		} else {
-			const dailyLog = doc.dailyLogs.filter(element => element.id == id);
+			const dailyLog = doc.userObject.dailyLogs.filter(element => element.id == id);
 			updateDailyLogPouch(db, dailyLog[0], callback);		
 		}
 	});
 }
 
 export function updateMonthlyLog(monthlyLog, callback) {
-	updateMonthlyLogPouch(monthlyLog, (user) => {
-		return res.send(user);
-	})
+	updateMonthlyLogPouch(monthlyLog, callback);
 }
 
 export function updateMonthlyLogByID (id, callback){
@@ -251,16 +249,14 @@ export function updateMonthlyLogByID (id, callback){
 		if (err) {
 			callback(err);
 		} else {
-			const monthlyLog = doc.monthlyLogs.filter(element => element.id == id);
+			const monthlyLog = doc.userObject.monthlyLogs.filter(element => element.id == id);
 			updateMonthlyLogPouch(db, monthlyLog[0], callback);		
 		}
 	});
 }
 
 export function updateFutureLog(futureLog, callback) {
-	updateFutureLogPouch(futureLog, (user) => {
-		return res.send(user);
-	})
+	updateFutureLogPouch(futureLog, callback);
 }
 
 export function updateFutureLogByID (id, callback){
@@ -268,7 +264,7 @@ export function updateFutureLogByID (id, callback){
 		if (err) {
 			callback(err);
 		} else {
-			const futureLog = doc.futureLogs.filter(element => element.id == id);
+			const futureLog = doc.userObject.futureLogs.filter(element => element.id == id);
 			updateFutureLogPouch(db, futureLog[0], callback);		
 		}
 	});
@@ -283,7 +279,7 @@ export function updateCollectionByID (id, callback){
 		if (err) {
 			callback(err);
 		} else {
-			const collection = doc.collections.filter(element => element.id == id);
+			const collection = doc.userObject.collections.filter(element => element.id == id);
 			updateCollectionPouch(db, collection[0], callback);		
 		}
 	});
@@ -298,7 +294,7 @@ export function updateEventByID(id, callback){
 		if (err) {
 			callback(err);
 		} else {
-			const event = doc.eventBlocks.filter(element => element.id == id);
+			const event = doc.userObject.eventBlocks.filter(element => element.id == id);
 			updateEventBlockPouch(db, event[0], callback);		
 		}
 	});
@@ -309,7 +305,7 @@ export function updateEventAtIndex(container, index, callback){
 		if (err) {
 			callback(err);
 		} else {
-			const event = doc.eventBlocks.filter(element => element.id == container.content[index]);
+			const event = doc.userObject.eventBlocks.filter(element => element.id == container.content[index]);
 			updateEventBlockPouch(db, event[0], callback);		
 		}
 	});
@@ -324,7 +320,7 @@ export function updateSignifierByID(id, callback){
 		if (err) {
 			callback(err);
 		} else {
-			const signifier = doc.signifiers.filter(element => element.id == id);
+			const signifier = doc.userObject.signifiers.filter(element => element.id == id);
 			updateSignifierPouch(db, signifier[0], callback);		
 		}
 	});
@@ -335,7 +331,7 @@ export function updateSignifierAtBlock(block, callback){
 		if (err) {
 			callback(err);
 		} else {
-			const signifier = doc.signifiers.filter(element => element.id == block.signifier);
+			const signifier = doc.userObject.signifiers.filter(element => element.id == block.signifier);
 			updateSignifierPouch(db, signifier[0], callback);
 		}
 	});
@@ -350,7 +346,7 @@ export function updateTaskByID(id, callback){
 		if (err) {
 			callback(err);
 		} else {
-			const task = doc.taskBlocks.filter(element => element.id == id);
+			const task = doc.userObject.taskBlocks.filter(element => element.id == id);
 			updateTaskBlockPouch(db, task[0], callback);		
 		}
 	});
@@ -365,7 +361,7 @@ export function updateTextBlockByID(id, callback){
 		if (err) {
 			callback(err);
 		} else {
-			const text = doc.textBlocks.filter(element => element.id == id);
+			const text = doc.userObject.textBlocks.filter(element => element.id == id);
 			updateTextBlockPouch(db, text[0], callback);	
 		}
 	});
@@ -376,7 +372,7 @@ export function updateTextBlockFromContainer(container, index, callback){
 		if (err) {
 			callback(err);
 		} else {
-			const text = doc.textBlocks.filter(element => element.id == container.content[index]);
+			const text = doc.userObject.textBlocks.filter(element => element.id == container.content[index]);
 			updateTextBlockPouch(db, text[0], callback);		
 		}
 	});
@@ -391,7 +387,7 @@ export function updateTrackerByID(id, callback){
 		if (err) {
 			callback(err);
 		} else {
-			const tracker = doc.trackers.filter(element => element.id == id);
+			const tracker = doc.userObject.trackers.filter(element => element.id == id);
 			updateTrackePouch(db, tracker[0], callback);
 		}
 	});
@@ -402,7 +398,7 @@ export function updateTrackerFromContainer(container, index, callback){
 		if (err) {
 			callback(err);
 		} else {
-			const tracker = doc.trackers.filter(element => element.id == container.content[index]);
+			const tracker = doc.userObject.trackers.filter(element => element.id == container.content[index]);
 			updateTrackerPouch(db, tracker[0], callback);		
 		}
 	});

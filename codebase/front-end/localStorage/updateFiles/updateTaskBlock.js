@@ -4,7 +4,7 @@ export function updateTaskBlockPouch (db, taskBlock, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			const taskBlockArr = doc.taslBlocks.filter(element => element.id != taskBlock.id);
+			const taskBlockArr = doc.userObject.taslBlocks.filter(element => element.id != taskBlock.id);
 			db.put({_id: "0000", _rev: doc._rev, taskBlocks: taskBlockArr.push(taskBlock)}, (err, res) => {
 				if (err) {
 					callback(err);

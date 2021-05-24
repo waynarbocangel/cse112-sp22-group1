@@ -8,16 +8,17 @@ export function createTrackerPouch (db, content, parent, callback) {
 			console.log(doc);
 			let id = makeid();
 			let arrays = [];
-			arrays.push(...doc.dailyLogs);
-			arrays.push(...doc.monthlyLogs);
-			arrays.push(...doc.futureLogs);
-			arrays.push(...doc.trackers);
-			arrays.push(...doc.collections);
-			arrays.push(...doc.textBlocks);
-			arrays.push(...doc.taskBlocks);
-			arrays.push(...doc.eventtBlocks);
-			arrays.push(...doc.signifiers);
-			while(arrays.filter((element) => element.id == id).length > 0){
+			Array.prototype.push.apply(arrays, doc.userObject.dailyLogs);
+			Array.prototype.push.apply(arrays, doc.userObject.monthlyLogs);
+			Array.prototype.push.apply(arrays, doc.userObject.futureLogs);
+			Array.prototype.push.apply(arrays, doc.userObject.collections);
+			Array.prototype.push.apply(arrays, doc.userObject.trackers);
+			Array.prototype.push.apply(arrays, doc.userObject.textBlocks);
+			Array.prototype.push.apply(arrays, doc.userObject.taskBlocks);
+			Array.prototype.push.apply(arrays, doc.userObject.eventBlocks);
+			Array.prototype.push.apply(arrays, doc.userObject.signifiers);
+			
+			while(arrays.filter(element => element.id == id) > 0){
 				id = makeid();
 			}
 			const trackerObject = {
@@ -27,12 +28,8 @@ export function createTrackerPouch (db, content, parent, callback) {
 				parent: parent
 			};
 
-			db.put({_rev: doc._rev,
-				_id: "0000"}, (res) => {
-				doc.trackers.push(trackerObject);
-				console.log(res);
-				callback(res);
-			});
+			doc.userObject.trackers.push(trackerObject);
+
 		}
 	});
 }

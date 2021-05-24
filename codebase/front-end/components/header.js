@@ -1,6 +1,8 @@
+import * as localStorage from "../localStorage/userOperations.js";
+
 export class PageHeader extends HTMLElement {
-    constructor() {
-        super();
+	constructor() {
+		super();
 		let template = document.createElement("template");
 		template.innerHTML = `
 			<style>
@@ -22,8 +24,12 @@ export class PageHeader extends HTMLElement {
 				}
 		
 				/* Top navigation */
-				.future_log{
+				.header {
 					font-family: "SF-Pro";
+					position: relative;
+					top: 1em;
+					margin-top: 100px;
+					margin-left: 0;
 				}
 		
 				button {
@@ -44,13 +50,6 @@ export class PageHeader extends HTMLElement {
 				button.imgbutton:hover img {
 					filter: opacity(100%);
 					transition: 150ms;
-				}
-		
-				.future_log {
-					position: relative;
-					top: 1em;
-					margin-top: 100px;
-					margin-left: 0;
 				}
 		
 				button {
@@ -124,12 +123,12 @@ export class PageHeader extends HTMLElement {
 					opacity: 90%;
 				}
 		
-				#future_log_back{
+				#header_back{
 					margin-left: 0;
 					margin-right: 10px;
 				}
 		
-				#future_log_forward{
+				#header_forward{
 					margin-right: 0;
 					margin-left: 10px;
 				}
@@ -138,24 +137,81 @@ export class PageHeader extends HTMLElement {
 					display: none;
 					opacity: 0;
 				}
+
+				.plus {
+					position: relative;
+					display: inline-block;
+					float: right;
+
+					background-image: url(../public/resources/target_icon.png);
+					background-size: cover;
+					background-color: transparent;
+					background-blend-mode: multiply;
+					top: 12px;
+					width: 33px;
+					height: 33px;
+					opacity: 50%;
+					transition: opacity .2s;
+				}
+
+				.plus:hover {
+					opacity: 100%;
+					transition: opacity .2s;
+				}
 			</style>
-			<span class="future_log">
-				<button class="imgbutton" id="future_log_back"><img src="../public/resources/left-chevron.png"></button>
+
+			
+
+			<span class="header">
+				<button class="imgbutton" id="header_back"><img src="../public/resources/left-chevron.png"></button>
 		
 				<h1 id="title_page">Template Page Title</h1>
 		
-				<button class="imgbutton" id="future_log_forward"><img src="../public/resources/right-chevron.png"></button>
+				<button class="imgbutton" id="header_forward"><img src="../public/resources/right-chevron.png"></button>
 			</span>
+
+			
 		
 			<span class="search_bar">
 				<input type="text" placeholder="Search">
 				<img src="../public/resources/search_icon.png">
 			</span>
+			<button class="plus">
+			</button>
 		`;
-		
+
 		this.attachShadow({ mode: 'open' });
 		this.shadowRoot.appendChild(template.content.cloneNode(true));
-  }
+		this.h1 = this.shadowRoot.querySelector("h1");
+
+		this.createFutureLog = this.createFutureLog.bind(this);
+		this.futureLogButton = this.shadowRoot.querySelector(".plus");
+		this.futureLogButton.addEventListener("click", () => {
+			this.createFutureLog();
+		});
+	}
+
+	set title(title) {
+		this.h1.innerText = title;
+	}
+
+	get title() {
+		return this.h1.innerText;
+	}
+
+	createFutureLog() {
+		localStorage.createFutureLog( new Date(2021, 5, 22), new Date(2021, 7, 23), [], [], [], (err, futureLog) => {
+			console.log(futureLog);
+			localStorage.readUser( (err, res) => {
+				if (err) {
+					console.log(err);
+				} else {
+					console.log(res);
+				}
+			})
+		});
+		
+	}
 }
 
 customElements.define('page-header', PageHeader);

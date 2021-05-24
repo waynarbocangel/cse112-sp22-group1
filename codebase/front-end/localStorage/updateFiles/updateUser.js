@@ -4,7 +4,7 @@ export function  updateUserPouch(db, callback){
 			callback(err);
 		} else {
 			console.log(doc);
-			updateUser(doc, (res) => {
+			updateUser(doc.userObject, (res) => {
 				callback(res);
 			});
 		}
@@ -16,7 +16,7 @@ export function updateUserFromMongo(db, callback){
 		if (err) {
 			callback(err);
 		} else {
-			schema.User.findOne({email: doc.email}, (error, user) => {
+			schema.User.findOne({email: doc.userObject.email}, (error, user) => {
 				if (error) {
 					callback(error);
 				} else {

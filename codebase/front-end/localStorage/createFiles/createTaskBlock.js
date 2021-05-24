@@ -30,26 +30,23 @@ export function createTaskBlockPouch (db, parent, text, complete, signifier, cal
 				signifier: signifier
 			};
 
-			db.put({_rev: doc._rev,
-				_id: "0000"}, (res) => {
-					let userArr = [];
-					Array.prototype.push.apply(userArr, doc.dailyLogs);
-					Array.prototype.push.apply(userArr, doc.monthlyLogs);
-					Array.prototype.push.apply(userArr, doc.futureLogs);
-					Array.prototype.push.apply(userArr, doc.trackers);
-					Array.prototype.push.apply(userArr, doc.collections);
 
-					let parentArr = userArr.filter(object => object.id == parent);
+			let userArr = [];
+			Array.prototype.push.apply(userArr, doc.userObject.dailyLogs);
+			Array.prototype.push.apply(userArr, doc.userObject.monthlyLogs);
+			Array.prototype.push.apply(userArr, doc.userObject.futureLogs);
+			Array.prototype.push.apply(userArr, doc.userObject.trackers);
+			Array.prototype.push.apply(userArr, doc.userObject.collections);
 
-					if(index == null) {
-						parentArr[0].contents.push(id);
-					} else {
-						parentArr[0].contents.splice(index, 0, id);
-					}
-					doc.taskBlocks.push(taskBlockObject);
-				console.log(res);
-				callback(res);
-			});
+			let parentArr = userArr.filter(object => object.id == parent);
+
+			if(index == null) {
+				parentArr[0].contents.push(id);
+			} else {
+				parentArr[0].contents.splice(index, 0, id);
+			}
+			doc.userObject.taskBlocks.push(taskBlockObject);
+				
 		}
 	});
 }

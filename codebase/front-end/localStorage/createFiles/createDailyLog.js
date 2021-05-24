@@ -1,40 +1,61 @@
 import {makeid} from "./makeId.js";
+let dailyObject;
 
-export function createDailyLogPouch (db, parent, content, trackers, callback) {
+export function createDailyLogPouch (db, parent, content, trackers, date, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
-			callback(err);
+			callback(err, null);
 		} else {
 			console.log(doc);
 			let id = makeid();
 			let arrays = [];
-			arrays.push(...doc.dailyLogs);
-			arrays.push(...doc.monthlyLogs);
-			arrays.push(...doc.futureLogs);
-			arrays.push(...doc.trackers);
-			arrays.push(...doc.collections);
-			arrays.push(...doc.textBlocks);
-			arrays.push(...doc.taskBlocks);
-			arrays.push(...doc.eventtBlocks);
-			arrays.push(...doc.signifiers);
-			while(arrays.filter((element) => element.id == id).length > 0){
+			Array.prototype.push.apply(arrays, doc.dailyLogs);
+			Array.prototype.push.apply(arrays, doc.monthlyLogs);
+			Array.prototype.push.apply(arrays, doc.futureLogs);
+			Array.prototype.push.apply(arrays, doc.collections);
+			Array.prototype.push.apply(arrays, doc.trackers);
+			Array.prototype.push.apply(arrays, doc.textBlocks);
+			Array.prototype.push.apply(arrays, doc.taskBlocks);
+			Array.prototype.push.apply(arrays, doc.eventBlocks);
+			Array.prototype.push.apply(arrays, doc.signifiers);
+			
+			while(arrays.filter(element => element.id == id) > 0){
 				id = makeid();
 			}
-			const dailyObject = {
+			dailyObject = {
 				id: id,
 				objectType: "dailyObject",
-				date: Date(),
+				date: date,
 				parent: parent,
 				content: content,
 				trackers: trackers
 			};
 
-			db.put({_rev: doc._rev,
-				_id: "0000"}, (res) => {
-				doc.dailyLogs.push(dailyObject);
+			doc.dailyLogs.push(dailyObject);
+			return db.put(
+				{
+					_id: "0000",
+					_rev: doc._rev,
+					email: doc.email,
+					pwd: doc.pwd,
+					index: doc.index,
+					dailyLogs: doc.dailyLogs,
+					monthlyLogs: doc.monthlyLogs,
+					futureLogs: doc.futureLogs,
+					collections: doc.collections,
+					trackers: doc.trackers,
+					textBlocks: doc.textBlocks,
+					taskBlocks: doc.taskBlocks,
+					eventBlocks: doc.eventBlocks,
+					signifiers: doc.signifiers
+				}
+			).then((res) => {
 				console.log(res);
-				callback(res);
+			}).catch((err) => {
+				callback(err, null);
 			});
 		}
+	}).then((res) => {
+		callback(null, dailyObject);
 	});
 }

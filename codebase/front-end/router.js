@@ -22,23 +22,22 @@ router.setState = function(newState, prev) {
 		
 		fade(content, () => {
 			localStorage.readUser((user) => {
-				let title = header.shadowRoot.getElementById("title_page");
 
 				//index page
 				if(state == null || state == "#index" || state =='') {
-					setupIndex(title, btn);
+					setupIndex(header, btn);
 				}
 				else if(state.includes("#daily_log")) {
-					setupDailyLog(title, btn);
+					setupDailyLog(header, btn);
 				}
 				else if(state.includes("#monthly_log")) {
-					setupMonthlyLog(title, btn);
+					setupMonthlyLog(header, btn);
 				}
 				else if(state.includes("#future_log")) {
-					setupFutureLog(title, btn);
+					setupFutureLog(header, btn);
 				}
 				if (!prev){
-					history.pushState({page: pageNumber}, title.innerText, url);
+					history.pushState({page: pageNumber}, "", url);
 				}
 				unfade(content, () => {});
 			});

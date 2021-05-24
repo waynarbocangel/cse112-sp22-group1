@@ -40,6 +40,7 @@ createAccount.onclick = (e) => {
 		alert("You need to fill in the password field");
 	} else {
 		createUser(email.value, password.value, (user) => {
+			console.log(user);
 			window.location.href = "http://localhost:8080/success";
 		});
 	}

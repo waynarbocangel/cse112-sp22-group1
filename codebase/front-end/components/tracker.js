@@ -18,7 +18,7 @@ export class TrackerMenu extends HTMLElement {
                 position: fixed;
                 z-index: 1000;
                 top: 0;
-                width: 35%;
+                width: 35vw;
 				padding-left: 20px;
 				padding-right: 20px;
                 height: 100vh;
@@ -110,8 +110,8 @@ export class TrackerMenu extends HTMLElement {
                 filter: opacity(100%);
                 transition: 150ms;
             }
-
         </style>
+
         <div class="wrapper">
             <div class="tracker_header">
                 <div class="tracker_header_content">
