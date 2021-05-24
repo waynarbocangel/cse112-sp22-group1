@@ -6,9 +6,8 @@ const schema = require(__dirname + "/schema.js");
 mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
 mongoose.set("useCreateIndex", true);
 
-//function makeUser (email, pwd) {
-// edit & test for lint
-var makeUser = function(email,pwd) {
+function makeUser (email, pwd) {
+
 	const userObject = {
 		email: email,
 		pwd: pwd
@@ -24,8 +23,8 @@ var makeUser = function(email,pwd) {
 		}
 		return us;
 	});
-//}
-};
+
+}
 
 module.exports = {
 	makeUser: makeUser
