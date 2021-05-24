@@ -101,7 +101,7 @@ jobs:
         #execute-on-files: ./codebase/front-end
         
         
-  lint-codebase:
+  ESLint Check on Codebase:
        runs-on: ubuntu-latest
        steps:
          - uses: actions/checkout@v2
