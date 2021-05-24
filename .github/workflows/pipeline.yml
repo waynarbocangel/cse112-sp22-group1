@@ -9,6 +9,7 @@ on:
       - back-end_drop
       - front-end_drop
       - ci/cd-pipeline-1
+      - pipeline-test
 
   pull_request:
     branches:
