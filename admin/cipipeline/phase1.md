@@ -2,11 +2,15 @@
 
 Our pipeline file is located in .github/workflows folder.
 
-GitHub Actions and pipeline runs when there is a push to the following branches: front-end_drop, back-end_drop, and ci-cd-pipeline-1. It also runs on pull requests to the branches front-end_drop, back-end_drop, and main.
+This is what we currently have for our CI/CD Pipeline. Each developer will have their own branch that they will update. 
+Then they can create a pull request to have their code merged into either the front end or back end branch. 
+There will be checks that need to be passed before merging into these branches. Finally at the end, pull requests can be made to merge into the main branch.
 
 
 ## GitHub Actions
 - We will use this for automating most of our testing and code styling checks. We can configure it in the pipeline.yml file
+- GitHub Actions runs when there is a push to the following branches: front-end_drop, back-end_drop, and ci-cd-pipeline-1. 
+- It also runs on pull requests to the branches front-end_drop, back-end_drop, and main.
 
 
 ## Generate JSDocs
