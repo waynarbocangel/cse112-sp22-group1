@@ -22,7 +22,7 @@ GitHub Actions and pipeline runs when there is a push to the following branches:
 
 ## ES Lint
 - ESLint is for checking code style.
-- In progress
+- In progress: Currently working, but may encounter problems later
 - May need to configure
 
 
