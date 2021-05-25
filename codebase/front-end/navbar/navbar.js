@@ -175,30 +175,24 @@ template.innerHTML = `
 		}
 		  
 		#menu {
-			position: absolute;
-			width: 180px;
-			height: 400px;
-			box-shadow: 0 0 10px #85888C;
+			position: fixed;
+			width: 30%;
+			height: 100%;
+			box-shadow: 0 0 5px #85888C;
 			margin: -50px 0 0 -50px;
 			padding: 50px;
 			padding-top: 125px;
-			background-color: #F5F6FA;
+			background-color: white;
 			-webkit-font-smoothing: antialiased;
 			transform-origin: 0% 0%;
 			transform: translate(-100%, 0);
 			transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
 		}
 
-		#menu {
-			position: fixed;
-			height: 100%;
-			width: 40%;
-		}
-
 		#menu li {
 			position: absolute;
 			transition-delay: 2s;
-			left: 30%;
+			left: 35%;
 			top: 10%;
 		}
 
@@ -265,7 +259,7 @@ template.innerHTML = `
 			<span></span>
 			<span></span>
 		<ul id="menu">
-			<li><button id="home"></button>  </li>
+			<li><button id="home"></button></li>
 			<li><button id="target">  </button></li>
 			<li><button id="single">  </button></li>
 			<li><button id="double">  </button></li>
