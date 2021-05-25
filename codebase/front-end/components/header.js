@@ -17,9 +17,9 @@ class Header extends HTMLElement{
                         <i id="navBarIcon" class="fa fa-bars" style="font-size: 24px;"></i>
                     </div>
                     
-                    <i class="arrow left" ></i>
+                    <i class="fa fa-arrow-left" ></i>
                     <span class="title"> </span>
-                    <i class="arrow right"></i>
+                    <i class="fa fa-arrow-right"></i>
                     <i id="plusSign" class="fa fa-plus" style="font-size: 20px;"></i>
                 </h1>
                 <hr>

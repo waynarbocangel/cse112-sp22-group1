@@ -4,14 +4,9 @@ class LogPage extends HTMLElement{
         super();
         const template = document.createElement('template');
         template.innerHTML = `
-        <style>
-          a{
-            color : black;
-          }
-        
-        </style>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <div>
-          <h1><a class="day" href="#">  </a> <i class="arrow down"></i></h1>
+          <h1><span class="day">  </span> <i class="fa fa-arrow-down"></i></h1>
           <ul style="padding-left: 30px;"></ul>
           <hr>	
         </div>	
