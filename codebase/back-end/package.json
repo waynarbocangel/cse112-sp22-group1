@@ -15,5 +15,9 @@
     "mongoose": "^5.12.7",
     "nodemon": "^2.0.7",
     "pouchdb": "^7.2.2"
+  },
+  "devDependencies": {
+    "jest-puppeteer": "^5.0.3",
+    "puppeteer": "^9.1.1"
   }
 }

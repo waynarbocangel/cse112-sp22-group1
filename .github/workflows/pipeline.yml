@@ -59,8 +59,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         json-glob: ./codebase/back-end/testOutput.json
         workdir: ./codebase/back-end
-    - name: End to End Testing (Puppeteer)
-      run: npm install --save-dev puppeteer jest-puppeteer
     
     #- name: ESLint checker
       #run: npm run lint --if-present
@@ -79,12 +77,22 @@ jobs:
     #- name: ESLint checker
       #run: npm run lint --if-present
 
-
-
   front-end-build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x, 15.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     steps:
     - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+      working-directory: ./codebase/front-end
+    - run: npm test --if-present
+      working-directory: ./codebase/back-end
     - name: JEST Report
       uses: RedaktionsNetzwerk-Deutschland/action-jest-reporter@v1.0.0
       with:
@@ -102,7 +110,8 @@ jobs:
         #eslint-rc: ./.eslintrc.js
         # Root directory to lint files in
         #execute-on-files: ./codebase/front-end
-        
+   
+ 
   ESLint-Check:
        runs-on: ubuntu-latest
        steps:

@@ -11,5 +11,9 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "jest-puppeteer": "^5.0.3",
+    "puppeteer": "^9.1.1"
   }
 }
