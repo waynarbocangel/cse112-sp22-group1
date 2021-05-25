@@ -15,7 +15,7 @@ There will be checks that need to be passed before merging into these branches. 
 
 ## Generate JSDocs
 - JSDocs helps with formatting. We run this in GitHub Actions at the beginning
-- Currently working
+- It is running and working
 
 
 ## JEST
