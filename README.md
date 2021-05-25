@@ -1,4 +1,4 @@
-# cse110-sp21-group11
+# CSE 110 Group 11
 This is the repository for Team 11's CSE 110 project.  
 Team Name: It's not a bug, It's a feature
 
