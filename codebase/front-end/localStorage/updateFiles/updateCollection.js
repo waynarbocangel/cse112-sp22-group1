@@ -4,8 +4,8 @@ export function updateCollectionPouch (db, collection, callback) {
 		if (err) {
 			callback(err);
 		} else {
-
-			db.put({_id: "0000", _rev: doc._rev, collections: doc.collections.push(collection)}, (err, res) => {
+			const collectionArr = doc.userObject.collections.filter(element => element.id != collection.id);
+			db.put({_id: "0000", _rev: doc._rev, collections: collectionArr.push(collection)}, (err, res) => {
 				if (err) {
 					callback(err);
 				} else {

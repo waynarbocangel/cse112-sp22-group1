@@ -6,11 +6,8 @@ const createUser = require(__dirname + "/createFiles/createUser.js");
 const updateUser = require(__dirname + "/updateFiles/updateUser.js");
 const readUser = require(__dirname + "/readFiles/readUser.js");
 const security = require(__dirname + "/security/securityFunctions.js");
-const path = require("../front-end");
 
 const app = express();
-
-app.use(express.static(__dirname + "/front-end"));
 app.use((req, res, next) => {
 	res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
@@ -25,14 +22,6 @@ app.listen("3000", () => {
 	console.log("server has started listening to port 3000");
 });
 
-
-app.get("/login", (req, res) => {
-	res.sendFile(path.resolve("/login/login.js"));
-});
-
-app.get("/success", (req, res) => {
-	res.send("success");
-});
 
 app.post("/createUser", express.json({type: "*/*"}), (req, res) =>{
 	createUser.createUser(req.body.email, req.body.pwd, (user) => {

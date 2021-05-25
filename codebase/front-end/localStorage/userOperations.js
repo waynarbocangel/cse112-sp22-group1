@@ -16,17 +16,18 @@ import {deleteTaskBlockPouch} from "./deleteFiles/deleteTaskBlock.js";
 import {deleteTextBlockPouch} from "./deleteFiles/deleteTextBlock.js";
 import {deleteTrackerPouch} from "./deleteFiles/deleteTracker.js";
 import {deleteUserPouch} from "./deleteFiles/deleteUser.js";
-//----------------------importing from update----------------------------------
-import {updateMonthlyLogPouch} from "./updateFiles/udpateMonthlyLog.js";
-import {updateCollectionPouch} from "./updateFiles/updateCollection.js";
+//---------------importing from update-------------------------------------------
+import {updateUserPouch, updateUserFromMongo} from "./updateFiles/updateUser.js";
 import {updateDailyLogPouch} from "./updateFiles/updateDailyLog.js";
-import {updateEventBlockPouch} from "./updateFiles/updateEventBlock.js";
+import {updateMonthlyLogPouch} from "./updateFiles/updateMonthlyLog.js";
 import {updateFutureLogPouch} from "./updateFiles/updateFutureLog.js";
-import {updateSignifierPouch} from "./updateFiles/updateSignifier.js";
-import {updateTaskBlockPouch} from "./updateFiles/updateTaskBlock.js";
-import {updateTextBlockPouch} from "./updateFiles/updateTextBlock.js";
+import {updateCollectionPouch} from "./updateFiles/updateCollection.js";
 import {updateTrackerPouch} from "./updateFiles/updateTracker.js";
-import {updateUserPouch} from "./updateFiles/updateUser.js";
+import {updateTextBlockPouch} from "./updateFiles/updateTextBlock.js";
+import {updateTaskBlockPouch} from "./updateFiles/updateTaskBlock.js";
+import {updateEventBlockPouch} from "./updateFiles/updateEventBlock.js";
+import {updateSignifierPouch} from "./updateFiles/updateSignifier.js";
+
 
 export let db = new PouchDB("Users");
 
@@ -89,9 +90,9 @@ export function createCollection(title, parent, content, callback){
 	createCollectionPouch(db, title, parent, content, callback);
 }
 
-export function createDailyLog(parent, content, trackers, callback){
-    createDailyLogPouch(db, parent, content, trackers, (user) => {
-		callback(user);
+export function createDailyLog(parent, content, trackers, date, callback){
+    createDailyLogPouch(db, parent, content, trackers, date, (err, day) => {
+		callback(err, day);
 	});
 }
 
@@ -102,14 +103,14 @@ export function createEventBlock(parent, text, date, signifier, callback) {
 }
 
 export function createFutureLog(startDate, endDate, months, content, trackers, callback) {
-	createFutureLogPouch(db, startDate, endDate, months, content, trackers, (user) => {
-		callback(user);
+	createFutureLogPouch(db, startDate, endDate, months, content, trackers, (err, futureLog) => {
+		callback(err, futureLog);
 	})
 }
 
-export function createMonthlyLog(parent, content, days, trackers, callback) {
-	createMonthlyLogPouch(db, parent, content, days, trackers, (user) => {
-		callback(user);
+export function createMonthlyLog(parent, content, days, trackers, date, callback) {
+	createMonthlyLogPouch(db, parent, content, days, trackers, date, (error, month) => {
+		callback(error, month);
 	})
 }
 
@@ -136,8 +137,8 @@ export function createTracker(content, parent, callback) {
 }
 
 export function readUser(callback){
-	readUserPouch(db, (user) => {
-		callback(user);
+	readUserPouch(db, (err, user) => {
+		callback(err, user);
 	});
 }
 
@@ -213,85 +214,196 @@ export function deleteTrackerFromContainer(container, index, callback){
 	deleteTrackerPouch(db, container.trackers[index], callback);
 }
 
-/*
-import {updateMonthlyLogPouch} from "./updateFiles/udpateMonthlyLog.js";
-import {updateCollectionPouch} from "./updateFiles/updateCollection.js";
-import {updateDailyLogPouch} from "./updateFiles/updateDailyLog.js";
-import {updateEventBlockPouch} from "./updateFiles/updateEventBlock.js";
-import {updateFutureLogPouch} from "./updateFiles/updateFutureLog.js";
-import {updateSignifierPouch} from "./updateFiles/updateSignifier.js";
-import {updateTaskBlockPouch} from "./updateFiles/updateTaskBlock.js";
-import {updateTextBlockPouch} from "./updateFiles/updateTextBlock.js";
-import {updateTrackerPouch} from "./updateFiles/updateTracker.js";
-import {updateUserPouch} from "./updateFiles/updateUser.js";
-*/
-//-------------------update functions--------------------
+//-------------------------------Update Functions----------------------------------
 export function updateUser(){
 	updateUserPouch(db, (user) => {
 		return res.send(user);
 	});
 }
 
+export function updateUserOnline(){
+	updateUserFromMongo(db, (user) => {
+		return res.send(user);
+	});
+}
+
+export function updateDailyLog(dailyLog, callback) {
+	updateDailyLogPouch(dailyLog, (user) => {
+		return res.send(user);
+	})
+}
+
+export function updateDailyLogByID (id, callback){
+	db.get("0000", (err, doc) => {
+		if (err) {
+			callback(err);
+		} else {
+			const dailyLog = doc.userObject.dailyLogs.filter(element => element.id == id);
+			updateDailyLogPouch(db, dailyLog[0], callback);		
+		}
+	});
+}
+
+export function updateMonthlyLog(monthlyLog, callback) {
+	updateMonthlyLogPouch(monthlyLog, callback);
+}
+
+export function updateMonthlyLogByID (id, callback){
+	db.get("0000", (err, doc) => {
+		if (err) {
+			callback(err);
+		} else {
+			const monthlyLog = doc.userObject.monthlyLogs.filter(element => element.id == id);
+			updateMonthlyLogPouch(db, monthlyLog[0], callback);		
+		}
+	});
+}
+
+export function updateFutureLog(futureLog, callback) {
+	updateFutureLogPouch(futureLog, callback);
+}
+
+export function updateFutureLogByID (id, callback){
+	db.get("0000", (err, doc) => {
+		if (err) {
+			callback(err);
+		} else {
+			const futureLog = doc.userObject.futureLogs.filter(element => element.id == id);
+			updateFutureLogPouch(db, futureLog[0], callback);		
+		}
+	});
+}
+
 export function updateCollection(collection, callback){
-	updateCollectionPouch(db, collection.id, callback);
+	updateCollectionPouch(db, collection, callback);
 }
 
 export function updateCollectionByID (id, callback){
-	updateCollectionPouch(db, id, callback);
+	db.get("0000", (err, doc) => {
+		if (err) {
+			callback(err);
+		} else {
+			const collection = doc.userObject.collections.filter(element => element.id == id);
+			updateCollectionPouch(db, collection[0], callback);		
+		}
+	});
 }
 
 export function updateEvent(event, callback){
-	updateEventBlockPouch(db, event.id, callback);
+	updateEventBlockPouch(db, event, callback);
 }
 
 export function updateEventByID(id, callback){
-	updateEventBlockPouch(db, id, callback);
+	db.get("0000", (err, doc) => {
+		if (err) {
+			callback(err);
+		} else {
+			const event = doc.userObject.eventBlocks.filter(element => element.id == id);
+			updateEventBlockPouch(db, event[0], callback);		
+		}
+	});
 }
 
 export function updateEventAtIndex(container, index, callback){
-	updateEventBlockPouch(db, container.content[index], callback);
+	db.get("0000", (err, doc) => {
+		if (err) {
+			callback(err);
+		} else {
+			const event = doc.userObject.eventBlocks.filter(element => element.id == container.content[index]);
+			updateEventBlockPouch(db, event[0], callback);		
+		}
+	});
 }
 
 export function updateSignifier(signifier, callback){
-	updateSignifierPouch(db, signifier.id, callback);
+	updateSignifierPouch(db, signifier, callback);
 }
 
 export function updateSignifierByID(id, callback){
-	updateSignifierPouch(db, id, callback);
+	db.get("0000", (err, doc) => {
+		if (err) {
+			callback(err);
+		} else {
+			const signifier = doc.userObject.signifiers.filter(element => element.id == id);
+			updateSignifierPouch(db, signifier[0], callback);		
+		}
+	});
 }
 
 export function updateSignifierAtBlock(block, callback){
-	updateSignifierPouch(db, block.signifier, callback);
+	db.get("0000", (err, doc) => {
+		if (err) {
+			callback(err);
+		} else {
+			const signifier = doc.userObject.signifiers.filter(element => element.id == block.signifier);
+			updateSignifierPouch(db, signifier[0], callback);
+		}
+	});
 }
 
 export function updateTask(task, callback){
-	updateTaskBlockPouch(db, task.id, callback);
+	updateTaskBlockPouch(db, task, callback);
 }
 
 export function updateTaskByID(id, callback){
-	updateTaskBlockPouch(db, id, callback);
+	db.get("0000", (err, doc) => {
+		if (err) {
+			callback(err);
+		} else {
+			const task = doc.userObject.taskBlocks.filter(element => element.id == id);
+			updateTaskBlockPouch(db, task[0], callback);		
+		}
+	});
 }
 
 export function updateTextBlock(block, callback){
-	updateTextBlockPouch(db, block.id, callback);
+	updateTextBlockPouch(db, block, callback);
 }
 
 export function updateTextBlockByID(id, callback){
-	updateTextBlockPouch(db, id, callback);
+	db.get("0000", (err, doc) => {
+		if (err) {
+			callback(err);
+		} else {
+			const text = doc.userObject.textBlocks.filter(element => element.id == id);
+			updateTextBlockPouch(db, text[0], callback);	
+		}
+	});
 }
 
 export function updateTextBlockFromContainer(container, index, callback){
-	updateTextBlockPouch(db, container.contents[index], callback);
+	db.get("0000", (err, doc) => {
+		if (err) {
+			callback(err);
+		} else {
+			const text = doc.userObject.textBlocks.filter(element => element.id == container.content[index]);
+			updateTextBlockPouch(db, text[0], callback);		
+		}
+	});
 }
 
 export function updateTracker(tracker, callback){
-	updateTrackerPouch(db, tracker.id, callback);
+	updateTrackerPouch(db, tracker, callback);
 }
 
 export function updateTrackerByID(id, callback){
-	updateTrackerPouch(db, id, callback);
+	db.get("0000", (err, doc) => {
+		if (err) {
+			callback(err);
+		} else {
+			const tracker = doc.userObject.trackers.filter(element => element.id == id);
+			updateTrackePouch(db, tracker[0], callback);
+		}
+	});
 }
 
 export function updateTrackerFromContainer(container, index, callback){
-	updateTrackerPouch(db, container.trackers[index], callback);
+	db.get("0000", (err, doc) => {
+		if (err) {
+			callback(err);
+		} else {
+			const tracker = doc.userObject.trackers.filter(element => element.id == container.content[index]);
+			updateTrackerPouch(db, tracker[0], callback);		
+		}
+	});
 }
