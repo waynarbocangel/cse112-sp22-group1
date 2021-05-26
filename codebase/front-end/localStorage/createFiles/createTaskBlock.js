@@ -8,15 +8,16 @@ export function createTaskBlockPouch (db, parent, text, complete, signifier, cal
 			console.log(doc);
 			let id = makeid();
 			let arrays = [];
-			arrays.push(...doc.dailyLogs);
-			arrays.push(...doc.monthlyLogs);
-			arrays.push(...doc.futureLogs);
-			arrays.push(...doc.trackers);
-			arrays.push(...doc.collections);
-			arrays.push(...doc.textBlocks);
-			arrays.push(...doc.taskBlocks);
-			arrays.push(...doc.eventtBlocks);
-			arrays.push(...doc.signifiers);
+			Array.prototype.push.apply(arrays, doc.dailyLogs);
+			Array.prototype.push.apply(arrays, doc.monthlyLogs);
+			Array.prototype.push.apply(arrays, doc.futureLogs);
+			Array.prototype.push.apply(arrays, doc.collections);
+			Array.prototype.push.apply(arrays, doc.trackers);
+			Array.prototype.push.apply(arrays, doc.textBlocks);
+			Array.prototype.push.apply(arrays, doc.taskBlocks);
+			Array.prototype.push.apply(arrays, doc.eventBlocks);
+			Array.prototype.push.apply(arrays, doc.signifiers);
+
 			while(arrays.filter((element) => element.id == id).length > 0){
 				id = makeid();
 			}
@@ -32,11 +33,11 @@ export function createTaskBlockPouch (db, parent, text, complete, signifier, cal
 
 
 			let userArr = [];
-			Array.prototype.push.apply(userArr, doc.userObject.dailyLogs);
-			Array.prototype.push.apply(userArr, doc.userObject.monthlyLogs);
-			Array.prototype.push.apply(userArr, doc.userObject.futureLogs);
-			Array.prototype.push.apply(userArr, doc.userObject.trackers);
-			Array.prototype.push.apply(userArr, doc.userObject.collections);
+			Array.prototype.push.apply(userArr, doc.dailyLogs);
+			Array.prototype.push.apply(userArr, doc.monthlyLogs);
+			Array.prototype.push.apply(userArr, doc.futureLogs);
+			Array.prototype.push.apply(userArr, doc.trackers);
+			Array.prototype.push.apply(userArr, doc.collections);
 
 			let parentArr = userArr.filter(object => object.id == parent);
 
@@ -45,8 +46,26 @@ export function createTaskBlockPouch (db, parent, text, complete, signifier, cal
 			} else {
 				parentArr[0].contents.splice(index, 0, id);
 			}
-			doc.userObject.taskBlocks.push(taskBlockObject);
+			doc.taskBlocks.push(taskBlockObject);
 				
+			return db.put(
+				{
+					_id: "0000",
+					_rev: doc._rev,
+					email: doc.email,
+					pwd: doc.pwd,
+					index: doc.index,
+					dailyLogs: doc.dailyLogs,
+					monthlyLogs: doc.monthlyLogs,
+					futureLogs: doc.futureLogs,
+					collections: doc.collections,
+					trackers: doc.trackers,
+					textBlocks: doc.textBlocks,
+					taskBlocks: doc.taskBlocks,
+					eventBlocks: doc.eventBlocks,
+					signifiers: doc.signifiers
+				}
+			);
 		}
 	});
 }

@@ -3,15 +3,28 @@ export function deleteSignifierPouch(db, id, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			const newSignifiers = doc.userObject.signifiers.filter(signifier => signifier.id != id);
-			//try removing db.put and using doc.userObject.signifier = newSignifiers;
-			db.put({_id: "0000", _rev: doc._rev, signifiers: newSignifiers}, (err, res) => {
-				if (err) {
-					callback(err);
-				} else {
-					callback(res);
+			const newSignifiers = doc.signifiers.filter(signifier => signifier.id != id);
+			
+			doc.signifiers = newSignifiers;
+			
+			return db.put(
+				{
+					_id: "0000",
+					_rev: doc._rev,
+					email: doc.email,
+					pwd: doc.pwd,
+					index: doc.index,
+					dailyLogs: doc.dailyLogs,
+					monthlyLogs: doc.monthlyLogs,
+					futureLogs: doc.futureLogs,
+					collections: doc.collections,
+					trackers: doc.trackers,
+					textBlocks: doc.textBlocks,
+					taskBlocks: doc.taskBlocks,
+					eventBlocks: doc.eventBlocks,
+					signifiers: doc.signifiers
 				}
-			});
+			);
 		}
 	})
 }

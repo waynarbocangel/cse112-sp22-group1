@@ -1,4 +1,5 @@
 import * as shadow from "./shadow.js";
+import * as localStorage from "./../localStorage/userOperations.js";
 
 const tabSize = 20;
 const paddingSize = 10;
@@ -200,23 +201,20 @@ export class TextBlock extends HTMLElement{
 		};
 
 		textBlock.onblur = () => {
-			/*//task, event, text
-            //if nothing in block dont save
-                //if yes save
-            //if curr state of block != object update type of block = delete object and create curr block
-            if (textBlock.textContent != "" ) {
-				this.item.kind = this.kind;
-				this.item.text = textBlock.textContent;
-                
-                localStorage.updateTextBlock(this.item, (res) => {
-                    console.log(res);    
-                })
-            } else {
-                localStorage.deleteTextBlock(this.item, (res) => {
-                    console
-                })
-            }
-            */
+            if(this.item != null){ //this.item is null for some reason
+				if (textBlock.textContent != "" ) {
+					this.item.kind = this.kind;
+					this.item.text = textBlock.textContent;
+					
+					localStorage.updateTextBlock(this.item, (res) => {
+						console.log(res);    
+					})
+				} else {
+					localStorage.deleteTextBlock(this.item, (res) => {
+						console
+					})
+				}
+			}
 		};
 
 		textBlock.addEventListener("input",() =>{
