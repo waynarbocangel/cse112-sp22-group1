@@ -87,10 +87,49 @@ div{
     margin: 10px auto;
 }
 
+<<<<<<< HEAD:codebase/front-end/index.css
 /* Text editor, to be integrated */
 main {
     margin-left: 100px;
     margin-top: 100px;
+=======
+.arrow {
+	
+	border: solid black;
+	border-width: 0 3px 3px 0;
+	display: inline-block;
+	padding: 3px;
+	width : 5px;
+	height: 5px
+  }
+  
+  .right {
+	transform: rotate(-45deg);
+	-webkit-transform: rotate(-45deg);
+  }
+  
+  .left {
+	transform: rotate(135deg);
+	-webkit-transform: rotate(135deg);
+  }
+  
+  .up {
+	transform: rotate(-135deg);
+	-webkit-transform: rotate(-135deg);
+  }
+  
+  .down {
+	transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+  }
+
+  .input-group{
+    display: flex;
+    align-items : center;
+	overflow: hidden;
+	float: right;
+	clear: both;
+>>>>>>> front-end_drop:codebase/front-end/newindex.css
 }
 
 /* Test code */
