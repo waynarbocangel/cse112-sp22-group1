@@ -212,6 +212,10 @@ export class PageHeader extends HTMLElement {
 				}
 			})
 		});
+		
+	}
+
+	createCollection() {
 		localStorage.createCollection("testing createCollection", "1", [], (err, collection) => {
 			console.log(collection);
 			localStorage.readUser((err, res) => {
