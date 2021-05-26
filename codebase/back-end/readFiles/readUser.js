@@ -53,6 +53,7 @@ function readUser (userData, callback) {
 			let decodedUser = {
 				email: user.email,
 				pwd: userData.pwd,
+				index: user.index,
 				dailyLogs: user.dailyLogs,
 				monthlyLogs: user.monthlyLogs,
 				futureLogs: user.futureLogs,

@@ -22,7 +22,9 @@ logIn.onclick = (e) => {
 				alert(user.error);
 			} else if (user.email != undefined){
 				user.pwd = password.value;
+				console.log(user.index);
 				createUserPouch(db, user, (userData) => {
+					console.log(userData);
 					window.location.href = "http://localhost:8080/success";
 				});
 			} else {

@@ -2,15 +2,13 @@ import {makeid} from "./makeId.js";
 import * as localStorage from "../userOperations.js";
 
 let monthlyObject;
-let user;
+let startProcessed = false;
 
 export function createMonthlyLogPouch (db, parent, content, days, trackers, date, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err, null);
 		} else {
-			user = doc;
-			console.log(doc);
 			let id = makeid();
 			let arrays = [];
 			Array.prototype.push.apply(arrays, doc.dailyLogs);
@@ -23,14 +21,14 @@ export function createMonthlyLogPouch (db, parent, content, days, trackers, date
 			Array.prototype.push.apply(arrays, doc.eventBlocks);
 			Array.prototype.push.apply(arrays, doc.signifiers);
 			
-			while(arrays.filter(element => element.id == id) > 0){
+			while(arrays.filter(element => element.id == id).length > 0){
 				id = makeid();
 			}
 
 
 			monthlyObject = {
 				id: id,
-				userObject: "monthlyLog",
+				objectType: "monthlyLog",
 				date: date,
 				parent: parent,
 				content: content,
@@ -56,40 +54,47 @@ export function createMonthlyLogPouch (db, parent, content, days, trackers, date
 					signifiers: doc.signifiers
 				}
 			).then((res) => {
-				console.log(res);
 			}).catch((err) => {
 				callback(err, null);
 			});
 		}
 	}).then((res) => {
-		let date = new Date(monthlyObject.date.getFullYear(), monthlyObject.date.getMonth(), 0);
-		let d = date.getDate()
-		addDay(1, monthlyObject.date, d, monthlyObject, (daysArray) => {
+		let ending = (monthlyObject.date.getDate() != new Date(monthlyObject.date.getFullYear() ,monthlyObject.date.getMonth() + 1, 0).getDate() && startProcessed);
+		let date = new Date(monthlyObject.date.getFullYear(), (ending) ? monthlyObject.date.getMonth() : monthlyObject.date.getMonth() + 1, (ending) ? monthlyObject.date.getDate() : 0);
+		console.log(date);
+		let d = date.getDate();
+		let startDate = 1;
+		if (!startProcessed) {
+			startDate = monthlyObject.date.getDate();
+			startProcessed = true;
+		}
+		addDay(startDate, new Date(monthlyObject.date), d, monthlyObject, (daysArray) => {
 			monthlyObject.days = daysArray;
-			user.monthlyLogs[user.monthlyLogs.length - 1] = monthlyObject;
-			db.put(
-				{
-					_id: "0000",
-					_rev: user._rev,
-					email: user.email,
-					pwd: user.pwd,
-					index: user.index,
-					dailyLogs: user.dailyLogs,
-					monthlyLogs: user.monthlyLogs,
-					futureLogs: user.futureLogs,
-					collections: user.collections,
-					trackers: user.trackers,
-					textBlocks: user.textBlocks,
-					taskBlocks: user.taskBlocks,
-					eventBlocks: user.eventBlocks,
-					signifiers: user.signifiers
-				}
-			).then((res) => {
-				console.log(res);
-				callback(null, monthlyObject);
-			}).catch((err) => {
-				console.log(err);
-				callback(err, null);
+			db.get("0000", (err, doc) => {
+				doc.monthlyLogs[doc.monthlyLogs.length - 1] = monthlyObject;
+				db.put(
+					{
+						_id: "0000",
+						_rev: doc._rev,
+						email: doc.email,
+						pwd: doc.pwd,
+						index: doc.index,
+						dailyLogs: doc.dailyLogs,
+						monthlyLogs: doc.monthlyLogs,
+						futureLogs: doc.futureLogs,
+						collections: doc.collections,
+						trackers: doc.trackers,
+						textBlocks: doc.textBlocks,
+						taskBlocks: doc.taskBlocks,
+						eventBlocks: doc.eventBlocks,
+						signifiers: doc.signifiers
+					}
+				).then((res) => {
+					callback(null, monthlyObject);
+				}).catch((err) => {
+					console.log(err);
+					callback(err, null);
+				});
 			});
 		});
 	});
@@ -97,7 +102,8 @@ export function createMonthlyLogPouch (db, parent, content, days, trackers, date
 
 function addDay(currentDay, startDate, endDay, month, callback){
 	let dayDate = new Date(startDate.getFullYear(), startDate.getMonth(), currentDay);
-	if (currentDay == endDay){
+	// console.log(dayDate);
+	if (currentDay > endDay){
 		callback([]);
 	} else {
 		localStorage.createDailyLog(month.id, [], [], dayDate, (error, day) => {
@@ -111,4 +117,8 @@ function addDay(currentDay, startDate, endDay, month, callback){
 			}
 		});
 	}
+}
+
+export function restart(){
+	startProcessed = false;
 }

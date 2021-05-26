@@ -4,7 +4,7 @@ export class TrackerMenu extends HTMLElement {
         return ['open'];
     }
 
-    constructor() {
+    constructor(title) {
         super();
 		this.attachShadow({ mode: 'open' });
         this.close = this.close.bind(this);
@@ -125,7 +125,7 @@ export class TrackerMenu extends HTMLElement {
         </div>
         `;
 
-        this.title = "Future log tracker";
+        this.title = title;
         this.closeButton = this.shadowRoot.querySelector(".close_button");
     }
 

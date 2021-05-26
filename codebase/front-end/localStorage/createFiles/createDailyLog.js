@@ -6,7 +6,6 @@ export function createDailyLogPouch (db, parent, content, trackers, date, callba
 		if (err) {
 			callback(err, null);
 		} else {
-			console.log(doc);
 			let id = makeid();
 			let arrays = [];
 			Array.prototype.push.apply(arrays, doc.dailyLogs);
@@ -19,12 +18,12 @@ export function createDailyLogPouch (db, parent, content, trackers, date, callba
 			Array.prototype.push.apply(arrays, doc.eventBlocks);
 			Array.prototype.push.apply(arrays, doc.signifiers);
 			
-			while(arrays.filter(element => element.id == id) > 0){
+			while(arrays.filter(element => element.id == id).length > 0){
 				id = makeid();
 			}
 			dailyObject = {
 				id: id,
-				objectType: "dailyObject",
+				objectType: "dailyLog",
 				date: date,
 				parent: parent,
 				content: content,
@@ -50,7 +49,6 @@ export function createDailyLogPouch (db, parent, content, trackers, date, callba
 					signifiers: doc.signifiers
 				}
 			).then((res) => {
-				console.log(res);
 			}).catch((err) => {
 				callback(err, null);
 			});
