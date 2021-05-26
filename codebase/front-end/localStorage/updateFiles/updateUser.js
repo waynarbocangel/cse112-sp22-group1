@@ -16,7 +16,7 @@ export function updateUserFromMongo(db, callback){
 		if (err) {
 			callback(err);
 		} else {
-			schema.User.findOne({email: doc.userObject.email}, (error, user) => {
+			schema.User.findOne({email: doc.email}, (error, user) => {
 				if (error) {
 					callback(error);
 				} else {
