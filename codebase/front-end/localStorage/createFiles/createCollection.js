@@ -23,7 +23,7 @@ export function createCollectionPouch (db, title, parent, content, callback) {
 			}
 			const collectionObject = {
 				id: id,
-				objectType: "String",
+				objectType: "collection",
 				title: title,
 				parent: parent,
 				content: content,
