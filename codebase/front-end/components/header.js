@@ -61,6 +61,8 @@ export class PageHeader extends HTMLElement {
 				h1 {
 					display: inline;
 					font-size: 48px;
+					font-weight: bold;
+					letter-spacing: 1.8px;
 					vertical-align: middle;
 				}
 		
@@ -200,7 +202,7 @@ export class PageHeader extends HTMLElement {
 	}
 
 	createFutureLog() {
-		localStorage.createFutureLog( new Date(2021, 5, 22), new Date(2021, 7, 23), [], [], [], (err, futureLog) => {
+		localStorage.createFutureLog( new Date(2021, 5, 22), new Date(2021, 8, 23), [], [], [], (err, futureLog) => {
 			console.log(futureLog);
 			localStorage.readUser( (err, res) => {
 				if (err) {

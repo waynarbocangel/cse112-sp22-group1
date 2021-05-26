@@ -1,4 +1,6 @@
 import {router} from "../router.js";
+import {currentObject} from "../index.js";
+import * as localStorage from "../localStorage/userOperations.js";
 const template = document.createElement('template');
 
 template.innerHTML = `
@@ -131,7 +133,6 @@ export class NavBar extends HTMLElement {
 
 
 		this.home.addEventListener('click', () => {
-			
 			if (document.location.hash != null && document.location.hash != "#index" && document.location.hash !=''){
 				router.setState("", false);
 			}
@@ -140,13 +141,28 @@ export class NavBar extends HTMLElement {
 		this.target.addEventListener('click', () => {
 			const trackerMenu = document.querySelector("tracker-menu");
 			trackerMenu.toggle();
-			trackerMenu.title = "Daily Log Tracker";
 		});
 		this.single.addEventListener('click', () => {
-			alert("hello"); 
+			let parent = (document.location.hash.includes("#dailyLog")) ? "monthlyLog" : "futureLog";
+			router.setState(`#${parent}~${currentObject.parent}`, false);
 		});
 		this.double.addEventListener('click', () => {
-			alert("hello"); 
+			let parent = (document.location.hash.includes("#dailyLog")) ? "futureLog" : "index";
+			localStorage.readUser((err, user) => {
+				if (err == null) {
+					let userArr = [];
+					Array.prototype.push.apply(userArr, user.dailyLogs);
+					Array.prototype.push.apply(userArr, user.monthlyLogs);
+					Array.prototype.push.apply(userArr, user.futureLogs);
+					Array.prototype.push.apply(userArr, user.collections);
+					let parsed = userArr.filter(object => object.id == currentObject.parent);
+					let firstParent = parsed[0];
+					router.setState(`#${parent}~${firstParent.parent}`, false);
+				} else {
+					console.log(err);
+				}
+			});
+			
 		});
 		this.user.addEventListener('click', () => {
 			alert("hello"); 

@@ -18,7 +18,7 @@ export function createTextBlockPouch (db, parent, index, content, callback) {
 			Array.prototype.push.apply(arrays, doc.userObject.eventBlocks);
 			Array.prototype.push.apply(arrays, doc.userObject.signifiers);
 			
-			while(arrays.filter(element => element.id == id) > 0){
+			while(arrays.filter(element => element.id == id).length > 0){
 				id = makeid();
 			}
 			const textBlockObject = {
