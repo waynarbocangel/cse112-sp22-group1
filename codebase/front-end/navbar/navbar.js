@@ -95,18 +95,14 @@ template.innerHTML = `
 		list-style-type: none;
 	}
 
-	@media only screen and (max-width:600px) {
+	@media only screen and (max-width:1600px) {
 
 		.nav-bar {
 			display:none;
 		}
-
-		  
-		  
-		
 		.navigation {
 			display: block;
-			background-color: rgba(236, 223, 207, 0.4);
+			background-color: rgba(236, 223, 207, 0.0);
 			height: 8vh;
 			padding: none;
 			margin: none;
@@ -116,119 +112,79 @@ template.innerHTML = `
 			position:fixed;
 		}
 		  
-		  
-		#menuToggle {
-			display: flex;
-			flex-direction: column;
-			position: absolute;
-			top: 3vh;
-			left: 4vw;
-			z-index: 1;
-		  }
-		  
-		#menuToggle input {
-			display: flex;
-			width: 40px;
-			height: 32px;
-			position: absolute;
-			cursor: pointer;
-			opacity: 0;
-			z-index: 2;
-		  }
-		  
-		#menuToggle span {
-			display: flex;
-			width: 29px;
-			height: 2px;
-			margin-bottom: 5px;
-			position: relative;
-			background: grey;
-			border-radius: 3px;
-			z-index: 1;
-			transform-origin: 5px 0px;
-			transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
-						background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
-						opacity 0.55s ease;
-		}
-		  
-		#menuToggle span:first-child {
-			transform-origin: 0% 0%;
-		}
-		  
-		#menuToggle span:nth-last-child(2) {
-			transform-origin: 0% 100%;
-		}
-		  
-		#menuToggle input:checked ~ span {
-			opacity: 1;
-			transform: rotate(45deg) translate(-3px, -1px);
-			background: #36383F;
-		}
-		
-		#menuToggle input:checked ~ span:nth-last-child(3) {
-			opacity: 0;
-			transform: rotate(0deg) scale(0.2, 0.2);
-		}
-		
-		#menuToggle input:checked ~ span:nth-last-child(2) {
-			transform: rotate(-45deg) translate(0, -1px);
-		}
-		  
 		#menu {
 			position: fixed;
 			width: 30%;
 			height: 100%;
-			box-shadow: 0 0 5px #85888C;
-			margin: -50px 0 0 -50px;
-			padding: 50px;
-			padding-top: 125px;
+			box-shadow: 0 0 2px #85888C;
+			top: 0;
+			left: 0;
+			margin: 0;
+			padding: 0;
 			background-color: white;
+		}
+
+		.menuClosed{
 			-webkit-font-smoothing: antialiased;
-			transform-origin: 0% 0%;
 			transform: translate(-100%, 0);
 			transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
 		}
 
-		#menu li {
-			position: absolute;
-			transition-delay: 2s;
-			left: 35%;
-			top: 10%;
+		.menuOpen{
+			-webkit-font-smoothing: antialiased;
+			transform-origin: 0 0;
+			transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
 		}
 
-		#home {
+		#homeMenu {
 			position: absolute;
-			width: 40px;
-			height: 40px;
-			top: 3vh;
+			width: 60px;
+			height: 60px;
+			top: 70px;
+			left: 0;
+			right: 0;
+			margin: auto;
 		}
 
-		#target {
+		#targetMenu {
 			position: absolute;
-			width: 40px;
-			height: 40px;
-			top: 15vh;
+			width: 60px;
+			height: 60px;
+			top: 180px;
+			left: 0;
+			right: 0;
+			margin: auto;
 		}
 
-		#single {
+		#singleMenu {
 			position: absolute;
-			width: 40px;
-			height: 40px;
-			top: 27vh;
+			width: 60px;
+			height: 60px;
+			top: 290px;
+			left: 0;
+			right: 0;
+			margin: auto;
 		}
 
-		#double {
+		#doubleMenu {
 			position: absolute;
-			width: 40px;
-			height: 40px;
-			top: 39vh;
+			width: 60px;
+			height: 60px;
+			top: 400px;
+			left: 0;
+			right: 0;
+			margin: auto;
 		}
 
-		#user {
+		#userMenu {
 			position: absolute;
-			width: 45px;
-			height: 45px;
-			top:80vh;
+			width: 65px;
+			height: 65px;
+			top: calc(100% - 115px);
+			left: 0;
+			right: 0;
+			padding: 0;
+			margin: 0 auto;
 		}
 
 		  
@@ -238,6 +194,71 @@ template.innerHTML = `
 		  }
  
 	}
+
+	@media only screen and (max-height: 1200px){
+		#homeMenu {
+			width: 40px;
+			height: 40px;
+		}
+
+		#targetMenu {
+			width: 40px;
+			height: 40px;
+			top: 150px;
+		}
+
+		#singleMenu {
+			width: 40px;
+			height: 40px;
+			top: 230px;
+		}
+
+		#doubleMenu {
+			width: 40px;
+			height: 40px;
+			top: 310px;
+		}
+
+		#userMenu {
+			position: absolute;
+			width: 45px;
+			height: 45px;
+			top: calc(100% - 85px);
+		}
+	}
+
+	@media only screen and (max-height: 800px){
+		#homeMenu {
+			width: 35px;
+			height: 35px;
+		}
+
+		#targetMenu {
+			width: 35px;
+			height: 35px;
+			top: 130px;
+		}
+
+		#singleMenu {
+			width: 35px;
+			height: 35px;
+			top: 190px;
+		}
+
+		#doubleMenu {
+			width: 35px;
+			height: 35px;
+			top: 250px;
+		}
+
+		#userMenu {
+			position: absolute;
+			width: 40px;
+			height: 40px;
+			top: calc(100% - 65px);
+		}
+	}
+
 	</style> 
 	</head>
 
@@ -245,8 +266,8 @@ template.innerHTML = `
 		<nav class="nav-bar">
 		<ul>
 			<li><button id="home"> </button></li>
-			<li><button id="target">  </button></li>
-			<li><button id="single">  </button></li>
+			<li><button id="target"></button></li>
+			<li><button id="single"></button></li>
 			<li><button id="double"></button></li>
 			<li><button id="user"></button></li>
 		</ul>
@@ -258,13 +279,14 @@ template.innerHTML = `
 			<span></span>
 			<span></span>
 			<span></span>
-		<ul id="menu">
-			<li><button id="home"></button></li>
-			<li><button id="target">  </button></li>
-			<li><button id="single">  </button></li>
-			<li><button id="double">  </button></li>
-			<li><button id="user">  </button></li>
-		</ul>
+		
+		</div>
+		<div id="menu" class="menuClosed">
+			<button id="homeMenu"></button>
+			<button id="targetMenu"></button>
+			<button id="singleMenu"></button>
+			<button id="doubleMenu"></button>
+			<button id="userMenu"></button>
 		</div>
 	</nav>
 
@@ -287,12 +309,20 @@ export class NavBar extends HTMLElement {
 		this.single = this.shadowRoot.querySelectorAll('button')[2];
 		this.double = this.shadowRoot.querySelectorAll('button')[3];
 		this.user = this.shadowRoot.querySelectorAll('button')[4];
+		this.menu = this.shadowRoot.querySelector('#menu');
+		this.toggler = this.shadowRoot.querySelector('#menuToggle');
+		this.homeMenu = this.shadowRoot.querySelector('#homeMenu');
+		this.targetMenu = this.shadowRoot.querySelector('#targetMenu');
+		this.singleMenu = this.shadowRoot.querySelector('#singleMenu');
+		this.doubleMenu = this.shadowRoot.querySelector('#doubleMenu');
+		this.userMenu = this.shadowRoot.querySelector('#userMenu');
 
+	}
 
+	connectedCallback () {
 		this.home.addEventListener('click', () => {
 			alert("hello"); 
 		});
-
 		this.target.addEventListener('click', () => {
 			alert("hello"); 
 		});
@@ -306,6 +336,32 @@ export class NavBar extends HTMLElement {
 			alert("hello"); 
 		});
 
+		this.homeMenu.addEventListener('click', () => {
+			alert("hello"); 
+		});
+		this.targetMenu.addEventListener('click', () => {
+			alert("hello"); 
+		});
+		this.singleMenu.addEventListener('click', () => {
+			alert("hello"); 
+		});
+		this.doubleMenu.addEventListener('click', () => {
+			alert("hello"); 
+		});
+		this.userMenu.addEventListener('click', () => {
+			alert("hello"); 
+		});
+		
+		this.toggler.addEventListener('click', () => {
+			console.log("hello");
+			if (this.menu.classList.contains("menuClosed")){
+				this.menu.classList.remove("menuClosed");
+				this.menu.classList.add("menuOpen");
+			} else {
+				this.menu.classList.remove("menuOpen");
+				this.menu.classList.add("menuClosed");
+			}
+		});
 	}
 }
 

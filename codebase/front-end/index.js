@@ -18,6 +18,9 @@ let contentWrapper = document.getElementById("contentWrapper");
 
 document.getElementById("topbar").appendChild(header);
 document.getElementById("sidebar").appendChild(navbar);
+document.getElementById("targetMenu").onclick = () => {
+	navbar.toggleTracker();
+};
 router.setState(document.location.hash, false);
 
 window.onpopstate = () => {
@@ -77,6 +80,10 @@ export function setupIndex(header, btn) {
 					let dropdown = new DropdownBlock(`Future Log ${monthNames[futureLogStart.getMonth()]} ${futureLogStart.getFullYear()} - ${monthNames[futureLogEnd.getMonth()]} ${futureLogEnd.getFullYear()}`, parentArr[i], 1);
 					contentWrapper.appendChild(dropdown);
 
+					if (i > 0){
+						dropdown.titleWrapper.classList.add("singleItemWrapper");
+					}
+
 					for (let j = 0; j < parentArr[i].months.length; j++) {
 						let currentMonth = user.monthlyLogs.filter(month => month.id == parentArr[i].months[j])[0];
 						let dropdownMonth = new DropdownBlock(`${monthNames[new Date(currentMonth.date).getMonth()]} ${new Date(currentMonth.date).getFullYear()}`, currentMonth, 2);
@@ -111,6 +118,10 @@ export function setupIndex(header, btn) {
 	navbar.single.style.visibility = "hidden";
 	navbar.double.setAttribute ("disabled", "disabled");
 	navbar.double.style.visibility = "hidden";
+	navbar.singleMenu.setAttribute ("disabled", "disabled");
+	navbar.singleMenu.style.visibility = "hidden";
+	navbar.doubleMenu.setAttribute ("disabled", "disabled");
+	navbar.doubleMenu.style.visibility = "hidden";
 	let headerButtons = header.shadowRoot.querySelectorAll(".imgbutton");
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.add("hide");
@@ -134,7 +145,11 @@ export function setupFutureLog(header, btn, newState){
 				let currentMonth = parentArr[i];
 				let dropdownMonth = new DropdownBlock(`${monthNames[new Date(currentMonth.date).getMonth()]} ${new Date(currentMonth.date).getFullYear()}`, currentMonth, 1);
 				contentWrapper.appendChild(dropdownMonth);
-				console.log(currentMonth);
+
+				if (i > 0){
+					dropdownMonth.titleWrapper.classList.add("singleItemWrapper");
+				}
+
 				for(let k = 0; k < currentMonth.days.length; k++) {
 					let currentDay = user.dailyLogs.filter(day => day.id == currentMonth.days[k])[0];
 					console.log(currentDay);
@@ -162,6 +177,10 @@ export function setupFutureLog(header, btn, newState){
 	navbar.single.style.visibility = "hidden";
 	navbar.double.setAttribute ("disabled", "disabled");
 	navbar.double.style.visibility = "hidden";
+	navbar.singleMenu.setAttribute ("disabled", "disabled");
+	navbar.singleMenu.style.visibility = "hidden";
+	navbar.doubleMenu.setAttribute ("disabled", "disabled");
+	navbar.doubleMenu.style.visibility = "hidden";
 	let headerButtons = header.shadowRoot.querySelectorAll(".imgbutton");
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.remove("hide");
@@ -185,10 +204,11 @@ export function setupMonthlyLog(header, btn, newState){
 			let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 			for(let i = 0; i < currentObject.days.length; i++) {
 				let currentDay = parentArr[i];
-				console.log(currentDay);
-				console.log(new Date(currentDay.date));
-				let dropdownDay = new DropdownBlock(`${weekDays[new Date(currentObject.date).getDay()]}, ${monthNames[new Date(currentDay.date).getMonth()]} ${new Date(currentDay.date).getUTCDate()}`, currentDay, 1);
+				let dropdownDay = new DropdownBlock(`${weekDays[new Date(currentDay.date).getDay()]}, ${monthNames[new Date(currentDay.date).getMonth()]} ${new Date(currentDay.date).getUTCDate()}`, currentDay, 1);
 				contentWrapper.appendChild(dropdownDay);
+				if (i > 0){
+					dropdownDay.titleWrapper.classList.add("singleItemWrapper");
+				}
 			}
 		}
 	});
@@ -204,6 +224,8 @@ export function setupMonthlyLog(header, btn, newState){
 	}
 	navbar.double.setAttribute ("disabled", "disabled");
 	navbar.double.style.visibility = "hidden";
+	navbar.doubleMenu.setAttribute ("disabled", "disabled");
+	navbar.doubleMenu.style.visibility = "hidden";
 	let headerButtons = header.shadowRoot.querySelectorAll(".imgbutton");
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.remove("hide");
