@@ -28,7 +28,6 @@ import {updateTaskBlockPouch} from "./updateFiles/updateTaskBlock.js";
 import {updateEventBlockPouch} from "./updateFiles/updateEventBlock.js";
 import {updateSignifierPouch} from "./updateFiles/updateSignifier.js";
 
-
 export let db = new PouchDB("Users");
 
 export function deleteDB(){
