@@ -14,7 +14,7 @@ function createUser (email, pwd, callback) {
 		} 
 		// Create a new user
 		else if (user == null) {
-			const newUser = new schema.User({
+			var newUser = new schema.User({
 				email: email,
 				pwd: security.passHash(pwd),
 				index: {
