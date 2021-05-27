@@ -9,6 +9,7 @@ export class Controller extends Object {
 		this.resetPosition = true;
 		this.currentBlockIndex = 0;
 		this.container = container;
+		//this.
 	}
 
 	createNewBlock(callback){

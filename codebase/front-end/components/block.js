@@ -201,19 +201,19 @@ export class TextBlock extends HTMLElement{
 		};
 
 		textBlock.onblur = () => {
-            if(this.item != null){ //this.item is null for some reason
-				if (textBlock.textContent != "" ) {
-					this.item.kind = this.kind;
-					this.item.text = textBlock.textContent;
-					
-					localStorage.updateTextBlock(this.item, (res) => {
-						console.log(res);    
-					})
-				} else {
-					localStorage.deleteTextBlock(this.item, (res) => {
-						console
-					})
-				}
+            if(this.item == null){ //this.item is null for some reason
+				localStorage.createTextBlock(controller)
+			if (textBlock.textContent != "" ) {
+				this.item.kind = this.kind;
+				this.item.text = textBlock.textContent;
+				
+				localStorage.updateTextBlock(this.item, (res) => {
+					console.log(res);    
+				})
+			} else {
+				localStorage.deleteTextBlock(this.item, (res) => {
+					console
+				})
 			}
 		};
 
