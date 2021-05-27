@@ -66,22 +66,22 @@ const userSchema = {
 			tabLevel: Number,
 			parent: String,
 			kind: String,
+			objectReference: String,
 			text: String,
 			signifier: String
 		}
 	],
-	eventBlocks: [
+	events: [
 		{
 			id: String,
 			objectType: String,
 			tabLevel: Number,
 			parent: String,
-			text: String,
 			date: Date,
 			signifier: String
 		}
 	],
-	taskBlocks: [
+	tasks: [
 		{
 			id: String,
 			objectType: String,

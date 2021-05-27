@@ -21,34 +21,34 @@ function readUser (userData, callback) {
 			callback(error);
 		} else {
 			let newCollections = [];
-			for(let i = 0; i < user.collections.lenght; i++){
+			for(let i = 0; i < user.collections.length; i++){
 				let collection = user.collection[i];
 				collection.title = security.decrypt(collection.title, userData.pwd);
 				newCollections.push(collection);
 			}
 			let newTextBlocks = [];
-			for(let i = 0; i < user.textBlocks.lenght; i++){
+			for(let i = 0; i < user.textBlocks.length; i++){
 				let block = user.textBlocks[i];
 				block.text = security.decrypt(block.text, userData.pwd);
 				newTextBlocks.push(block);
 			}
-			let newTaskBlocks = [];
-			for(let i = 0; i < user.taskBlocks.lenght; i++){
-				let block = user.taskBlocks[i];
+			let newTasks = [];
+			for(let i = 0; i < user.tasks.length; i++){
+				let block = user.tasks[i];
 				block.text = security.decrypt(block.text, userData.pwd);
-				newTextBlocks.push(block);
+				newTasks.push(block);
 			}
-			let newEventBlocks = [];
-			for(let i = 0; i < user.eventBlocks.lenght; i++){
-				let block = user.eventBlocks[i];
+			let newEvents = [];
+			for(let i = 0; i < user.events.length; i++){
+				let block = user.events[i];
 				block.text = security.decrypt(block.text, userData.pwd);
-				newTextBlocks.push(block);
+				newEvents.push(block);
 			}
 			let newSignifiers = [];
-			for(let i = 0; i < user.signifiers.lenght; i++){
+			for(let i = 0; i < user.signifiers.length; i++){
 				let signifier = user.signifiers[i];
 				signifier.text = security.decrypt(signifier.meaning, userData.pwd);
-				newTextBlocks.push(signifier);
+				newSignifiers.push(signifier);
 			}
 			let decodedUser = {
 				email: user.email,
@@ -60,8 +60,8 @@ function readUser (userData, callback) {
 				trackers: user.trackers,
 				collections: newCollections,
 				textBlocks: newTextBlocks,
-				eventBlocks: newEventBlocks,
-				taskBlocks: newTaskBlocks,
+				events: newEvents,
+				tasks: newTasks,
 				signifiers: newSignifiers
 			}
 			callback(decodedUser);

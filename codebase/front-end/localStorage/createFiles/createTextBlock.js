@@ -1,11 +1,14 @@
 import {makeid} from "./makeId.js";
+import * as localStorage from "./../userOperations.js";
 
-export function createTextBlockPouch (db, parent, index, content, callback) {
+let textBlockObject;
+
+export function createTextBlockPouch (db, parent, index, content, tabLevel, kind, objectReference, signifier, date, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
-			callback(err);
+			callback(err, null);
 		} else {
-			console.log(doc);
+			console.log(parent);
 			let id = makeid();
 			let arrays = [];
 			Array.prototype.push.apply(arrays, doc.dailyLogs);
@@ -14,22 +17,41 @@ export function createTextBlockPouch (db, parent, index, content, callback) {
 			Array.prototype.push.apply(arrays, doc.collections);
 			Array.prototype.push.apply(arrays, doc.trackers);
 			Array.prototype.push.apply(arrays, doc.textBlocks);
-			Array.prototype.push.apply(arrays, doc.taskBlocks);
-			Array.prototype.push.apply(arrays, doc.eventBlocks);
+			Array.prototype.push.apply(arrays, doc.tasks);
+			Array.prototype.push.apply(arrays, doc.events);
 			Array.prototype.push.apply(arrays, doc.signifiers);
 			
 			while(arrays.filter(element => element.id == id).length > 0){
 				id = makeid();
 			}
-			const textBlockObject = {
+			textBlockObject = {
 				id: id,
 				objectType: "textBlock",
-				tabLevel: 0,
+				tabLevel: tabLevel,
 				parent: parent,
 				kind: kind,
+				objectReference: objectReference,
 				text: content,
 				signifier: signifier
 			};
+			
+			if (kind == "task") {
+				localStorage.createTask(id, "", 0, null, (err, task) => {
+					if (err) {
+						callback(err, null);
+					} else {
+						textBlockObject.objectReference = task.id;
+					}
+				})
+			} else if (kind = "event") {
+				localStorage.createEvent(id, date, null, (err, event) => {
+					if (err) {
+						callback(err, null);
+					} else {
+						textBlockObject.objectReference = event.id;
+					}
+				})
+			}
 			
 			let userArr = [];
 			Array.prototype.push.apply(userArr, doc.dailyLogs);
@@ -39,8 +61,13 @@ export function createTextBlockPouch (db, parent, index, content, callback) {
 			Array.prototype.push.apply(userArr, doc.collections);
 
 			let parentArr = userArr.filter(object => object.id == parent);
-
-			if(index == null) {
+			if (parent == null){
+				if(index == null) {
+					doc.index.contents.push(id);
+				} else {
+					doc.index.contents.splice(index, 0, id);
+				}
+			} else if(index == null) {
 				parentArr[0].contents.push(id);
 			} else {
 				parentArr[0].contents.splice(index, 0, id);
@@ -60,11 +87,16 @@ export function createTextBlockPouch (db, parent, index, content, callback) {
 					collections: doc.collections,
 					trackers: doc.trackers,
 					textBlocks: doc.textBlocks,
-					taskBlocks: doc.taskBlocks,
-					eventBlocks: doc.eventBlocks,
+					tasks: doc.tasks,
+					events: doc.events,
 					signifiers: doc.signifiers
 				}
 			);
+			console.log("saving at createtextblock");
+			callback(null, textBlockObject);
 		}
-	});
+	})/*.then((res) => {
+		callback(null, textBlockObject);
+		console.log("callback back from createTextblock");
+	});*/
 }

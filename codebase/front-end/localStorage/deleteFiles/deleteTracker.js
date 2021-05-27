@@ -55,8 +55,8 @@ export function deleteTrackerPouch(db, id, callback) {
 					collections: doc.collections,
 					trackers: doc.trackers,
 					textBlocks: doc.textBlocks,
-					taskBlocks: doc.taskBlocks,
-					eventBlocks: doc.eventBlocks,
+					tasks: doc.tasks,
+					events: doc.events,
 					signifiers: doc.signifiers
 				}
 			);

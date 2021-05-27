@@ -1,14 +1,13 @@
-export function deleteTaskBlockPouch(db, id, index, callback) {
+export function deleteEventPouch(db, id, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
-			const taskBlockArr = doc.taskBlocks.filter(taskBlock => taskBlock.id == id);
+			const eventArr = doc.events.filter(event => event.id == id);
 			const block = null;
-			if (taskBlockArr != undefined) {
-				block = taskBlockArr[0];
+			if (eventArr.length > 0) {
+				block = eventArr[0];
 			}
-
 			let userArr = [];
 					Array.prototype.push.apply(userArr, doc.dailyLogs);
 					Array.prototype.push.apply(userArr, doc.monthlyLogs);
@@ -21,10 +20,10 @@ export function deleteTaskBlockPouch(db, id, index, callback) {
 			const parent = parentArr[0];
 			const newContents = parent.contents.filter(obj => obj != id);
 
-			const newTaskBlocks = doc.taskBlocks.filter(taskBlock => taskBlock.id != id);
+			const newEvents = doc.events.filter(event => event.id != id);
 			
-			doc.taskBlocks = newTaskBlocks;
-			
+			doc.events = newEvents;
+
 			return db.put(
 				{
 					_id: "0000",
@@ -38,8 +37,8 @@ export function deleteTaskBlockPouch(db, id, index, callback) {
 					collections: doc.collections,
 					trackers: doc.trackers,
 					textBlocks: doc.textBlocks,
-					taskBlocks: doc.taskBlocks,
-					eventBlocks: doc.eventBlocks,
+					tasks: doc.tasks,
+					events: doc.events,
 					signifiers: doc.signifiers
 				}
 			);

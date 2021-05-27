@@ -4,10 +4,8 @@ import * as localStorage from "./../localStorage/userOperations.js";
 const tabSize = 20;
 const paddingSize = 10;
 
-
-
 export class TextBlock extends HTMLElement{
-	constructor(controller, callback){
+	constructor(controller, itemObject, callback){
 		super();
 		fetch("./components/block.html").then((response) => {
 			return response.text();
@@ -20,14 +18,23 @@ export class TextBlock extends HTMLElement{
 			this.root = this.shadowRoot;
 			this.kind = "paragraph";
 			this.initialHeight = 3;
-			this.item = null;
+			this.item = itemObject;
 			this.controller = controller;
 			this.shadowRoot.getElementById("textBlock").classList.add("unstylized");
 			this.currentBlock = null;
+			this.checkBox = this.shadowRoot.getElementById("checkerContainer");
+			this.checkBox.style.display = "none";
 			this.currentPointerSpot = 0;
+			this.editorIcons = this.shadowRoot.getElementById("editorIcons");
 			this.currentPointerHeight = 2;
-			if (this.controller.creatingFromBullet){
-				this.setupBullet();
+			if (this.controller.creatingFromBullet.isTrue){
+				if (this.controller.creatingFromBullet.kind == "note"){
+					this.setupNote();
+				} else if (this.controller.creatingFromBullet.kind == "event"){
+					this.setupEvent();
+				} else {
+					this.setupTask();
+				}
 			}
 			this.tabLevel = controller.currentTabLevel;
 			this.setupTabLevel();
@@ -103,55 +110,137 @@ export class TextBlock extends HTMLElement{
 
     setupHeader1(){
         let textBlock = this.shadowRoot.getElementById("textBlock");
+		while(this.editorIcons.classList.length > 0){
+            this.editorIcons.classList.remove(this.editorIcons.classList[0]);
+        }
         while(textBlock.classList.length > 0){
             textBlock.classList.remove(textBlock.classList[0]);
         }
         while(this.classList.length > 0){
             this.classList.remove(this.classList[0]);
         }
-        this.controller.creatingFromBullet = false;
+        this.controller.creatingFromBullet = {isTrue: false, kind: ""};
         this.kind = "header1";
         this.initialHeight = 0;
         textBlock.setAttribute("placeholder", "Header 1");
         textBlock.classList.add("header1");
+		this.editorIcons.classList.add("header1Icons");
         textBlock.innerHTML = "";
+		this.checkBox.style.display = "none";
     }
 
     setupHeader2(){
         let textBlock = this.shadowRoot.getElementById("textBlock");
+		while(this.editorIcons.classList.length > 0){
+            this.editorIcons.classList.remove(this.editorIcons.classList[0]);
+        }
         while(textBlock.classList.length > 0){
             textBlock.classList.remove(textBlock.classList[0]);
         }
         while(this.classList.length > 0){
             this.classList.remove(this.classList[0]);
         }
-        this.controller.creatingFromBullet = false;
+        this.controller.creatingFromBullet = {isTrue: false, kind: ""};
         this.kind = "header 2";
         this.initialHeight = 0;
         textBlock.setAttribute("placeholder", "Header 2");
         textBlock.classList.add("header2");
+		this.editorIcons.classList.add("header2Icons");
         textBlock.innerHTML = "";
+		this.checkBox.style.display = "none";
     }
 
-    setupBullet(){
+	setupHeader3(){
         let textBlock = this.shadowRoot.getElementById("textBlock");
+		while(this.editorIcons.classList.length > 0){
+            this.editorIcons.classList.remove(this.editorIcons.classList[0]);
+        }
         while(textBlock.classList.length > 0){
             textBlock.classList.remove(textBlock.classList[0]);
         }
         while(this.classList.length > 0){
             this.classList.remove(this.classList[0]);
         }
-        this.controller.creatingFromBullet = true;
-        this.kind = "bullet";
+        this.controller.creatingFromBullet = {isTrue: false, kind: ""};
+        this.kind = "header 3";
+        this.initialHeight = 0;
+        textBlock.setAttribute("placeholder", "Header 3");
+        textBlock.classList.add("header3");
+		this.editorIcons.classList.add("header3Icons");
+        textBlock.innerHTML = "";
+		this.checkBox.style.display = "none";
+    }
+
+    setupNote(){
+        let textBlock = this.shadowRoot.getElementById("textBlock");
+		while(this.editorIcons.classList.length > 0){
+            this.editorIcons.classList.remove(this.editorIcons.classList[0]);
+        }
+        while(textBlock.classList.length > 0){
+            textBlock.classList.remove(textBlock.classList[0]);
+        }
+        while(this.classList.length > 0){
+            this.classList.remove(this.classList[0]);
+        }
+        this.kind = "note";
+		this.controller.creatingFromBullet = {isTrue: true, kind: this.kind};
         this.initialHeight = 3;
         textBlock.setAttribute("placeholder", "Note");
         this.classList.add("noteContainer");
+		this.editorIcons.classList.add("noteIcons");
         textBlock.classList.add("note");
         textBlock.innerHTML = "";
+		this.checkBox.style.display = "none";
+    }
+
+	setupEvent(){
+        let textBlock = this.shadowRoot.getElementById("textBlock");
+		while(this.editorIcons.classList.length > 0){
+            this.editorIcons.classList.remove(this.editorIcons.classList[0]);
+        }
+        while(textBlock.classList.length > 0){
+            textBlock.classList.remove(textBlock.classList[0]);
+        }
+        while(this.classList.length > 0){
+            this.classList.remove(this.classList[0]);
+        }
+        this.kind = "event";
+		this.controller.creatingFromBullet = {isTrue: true, kind: this.kind};
+        this.initialHeight = 3;
+        textBlock.setAttribute("placeholder", "Event");
+        this.classList.add("eventContainer");
+		this.editorIcons.classList.add("noteIcons");
+        textBlock.classList.add("note");
+        textBlock.innerHTML = "";
+		this.checkBox.style.display = "none";
+    }
+
+	setupTask(){
+        let textBlock = this.shadowRoot.getElementById("textBlock");
+		while(this.editorIcons.classList.length > 0){
+            this.editorIcons.classList.remove(this.editorIcons.classList[0]);
+        }
+        while(textBlock.classList.length > 0){
+            textBlock.classList.remove(textBlock.classList[0]);
+        }
+        while(this.classList.length > 0){
+            this.classList.remove(this.classList[0]);
+        }
+        this.kind = "task";
+		this.controller.creatingFromBullet = {isTrue: true, kind: this.kind};
+        this.initialHeight = 3;
+		textBlock.classList.add("task");
+        textBlock.setAttribute("placeholder", "Task");
+        textBlock.innerHTML = "";
+		this.editorIcons.classList.add("paragraphIcons");
+		this.checkBox.style.display = "inline";
     }
 
     removeStyles(){
         let textBlock = this.shadowRoot.getElementById("textBlock");
+		while(this.editorIcons.classList.length > 0){
+            this.editorIcons.classList.remove(this.editorIcons.classList[0]);
+        }
         while(textBlock.classList.length > 0){
             textBlock.classList.remove(textBlock.classList[0]);
         }
@@ -163,7 +252,9 @@ export class TextBlock extends HTMLElement{
         textBlock.classList.add("unstylized");
         textBlock.setAttribute("placeholder", 'Type "/" to create a block');
         textBlock.innerHTML = "";
-        this.controller.creatingFromBullet = false;
+		this.editorIcons.classList.add("paragraphIcons");
+        this.controller.creatingFromBullet = {isTrue: false, kind: ""};
+		this.checkBox.style.display = "none";
     }
 
     setupTabLevel(){
@@ -184,6 +275,16 @@ export class TextBlock extends HTMLElement{
             this.controller.blockArray[this.controller.currentBlockIndex].setCurrentSpot();
         });
 
+		this.checkBox.onclick = () => {
+			if (this.checkBox.getAttribute("checked") == "checked"){
+				this.checkBox.setAttribute("checked", "");
+				textBlock.classList.remove("crossed");
+			} else {
+				this.checkBox.setAttribute("checked", "checked");
+				textBlock.classList.add("crossed");
+			}
+		}
+
 		textBlock.onpaste = (e) => {
 			// Get user's pasted data
 			let data = e.clipboardData.getData('text/html') ||
@@ -201,18 +302,34 @@ export class TextBlock extends HTMLElement{
 		};
 
 		textBlock.onblur = () => {
-            if(this.item == null){ //this.item is null for some reason
-				localStorage.createTextBlock(controller)
-			if (textBlock.textContent != "" ) {
-				this.item.kind = this.kind;
-				this.item.text = textBlock.textContent;
-				
-				localStorage.updateTextBlock(this.item, (res) => {
-					console.log(res);    
-				})
-			} else {
-				localStorage.deleteTextBlock(this.item, (res) => {
-					console
+			this.editorIcons.classList.remove("focusedIcons");
+			this.editorIcons.classList.add("unfocusedIcons");
+            if(this.item != null){
+				console.log("hello my very old friend");
+				if (textBlock.textContent != "" ) {
+					this.item.kind = this.kind;
+					this.item.text = textBlock.textContent;
+					
+					localStorage.updateTextBlock(this.item, (res) => {
+						console.log(res);    
+					})
+				} else {
+					localStorage.deleteTextBlock(this.item, (res) => {
+						console.log(res);
+					})
+				}
+			} else if (textBlock.textContent != ""){
+				console.log("hello my very new friend");
+				console.log(this.controller.parent);
+				localStorage.createTextBlock(this.controller.parent.id, this.controller.currentBlockIndex, textBlock.textContent, this.tabLevel, this.kind, null, (err, block) => {
+					if (err == null){
+						this.item = block;
+						console.log(block);
+                        //callback(block)
+					} else {
+						console.log(err);
+                        //callback(err);
+					}
 				})
 			}
 		};
@@ -224,8 +341,14 @@ export class TextBlock extends HTMLElement{
 				this.setupHeader1();
 			} else if (content == "##&nbsp;"){
 				this.setupHeader2();
+			} else if (content == "###&nbsp;"){
+				this.setupHeader3();
 			} else if (content == "-&nbsp;"){
-				this.setupBullet();
+				this.setupNote();
+			} else if (content == "--&nbsp;"){
+				this.setupEvent();
+			} else if (content == "*-&nbsp;"){
+				this.setupTask();
 			} else if (content == "<div><br></div>"){
 				this.removeStyles();
 			} else if (content == "<br>"){
@@ -238,12 +361,14 @@ export class TextBlock extends HTMLElement{
         textBlock.onfocus = (e) => {
             this.controller.resetPosition = false;
             this.setCurrentSpot();
+			this.editorIcons.classList.remove("unfocusedIcons");
+			this.editorIcons.classList.add("focusedIcons");
             this.controller.currentBlockIndex = this.controller.blockArray.indexOf(this);
             this.controller.currentTabLevel = this.tabLevel;
-            if (this.classList.contains("noteContainer")){
-                this.controller.creatingFromBullet = true;
+            if (this.classList.contains("noteContainer") || this.checkBox.style.display != "none"){
+                this.controller.creatingFromBullet = {isTrue: true, kind: this.kind};
             } else {
-                this.controller.creatingFromBullet = false;
+                this.controller.creatingFromBullet = {isTrue: false, kind: ""};
             }
         };
 
@@ -272,8 +397,17 @@ export class TextBlock extends HTMLElement{
 				} else if (content == "/h2"){
 					this.setupHeader2()
 					e.preventDefault();
+				} else if (content == "/h3"){
+					this.setupHeader3()
+					e.preventDefault();
 				} else if (content == "/note"){
-					this.setupBullet();
+					this.setupNote();
+                    e.preventDefault();
+				} else if (content == "/event"){
+					this.setupEvent();
+                    e.preventDefault();
+				} else if (content == "/task"){
+					this.setupTask();
                     e.preventDefault();
 				} else {
                     this.controller.resetPosition = false;

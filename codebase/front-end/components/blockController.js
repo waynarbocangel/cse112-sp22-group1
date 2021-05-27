@@ -1,19 +1,20 @@
 import { TextBlock } from "./block.js";
+import * as localStorage from "../localStorage/userOperations.js";
 
 export class Controller extends Object {
-	constructor(container){
+	constructor(container, parent){
 		super();
 		this.blockArray = [];
-		this.creatingFromBullet = false;
+		this.creatingFromBullet = {isTrue: false, kind: ""};
 		this.currentTabLevel = 0;
 		this.resetPosition = true;
 		this.currentBlockIndex = 0;
 		this.container = container;
-		//this.
+		this.parent = parent;
 	}
 
-	createNewBlock(callback){
-		let newBlock = new TextBlock(this, (success) => {
+	createNewBlock(parent, callback){
+		let newBlock = new TextBlock(this, parent, (success) => {
 			if (this.currentBlockIndex < this.blockArray.length - 1){
 				this.container.insertBefore(newBlock, this.blockArray[this.currentBlockIndex + 1]);
 				this.blockArray.splice(this.currentBlockIndex + 1, 0, newBlock);
@@ -28,8 +29,8 @@ export class Controller extends Object {
 		});
 	}
 	
-	addNewBlock () {
-		let newBlock = new TextBlock(this, (success) => {
+	addNewBlock (parent) {
+		let newBlock = new TextBlock(this, parent, (success) => {
 			if (this.currentBlockIndex < this.blockArray.length - 1){
 				this.container.insertBefore(newBlock, this.blockArray[this.currentBlockIndex + 1]);
 				this.blockArray.splice(this.currentBlockIndex + 1, 0, newBlock);
@@ -71,32 +72,63 @@ export class Controller extends Object {
 	}
 }
 
-export function createEditor (container, callback) {
+export function createEditor (container, parent, callback) {
 
-	let controller = new Controller(container);
+	let controller = new Controller(container, parent);
 	setTimeout(() => {
-		let newBlock = new TextBlock(controller, (success) => {
+		let itemObject = null;
+		//let 
+		localStorage.readUser((err, doc) => {
+			if (err) {
+				callback(err);
+			} else {
+				let arrays = [];
+				Array.prototype.push.apply(arrays, doc.dailyLogs);
+				Array.prototype.push.apply(arrays, doc.monthlyLogs);
+				Array.prototype.push.apply(arrays, doc.futureLogs);
+				Array.prototype.push.apply(arrays, doc.collections);
+				Array.prototype.push.apply(arrays, doc.trackers);
+				Array.prototype.push.apply(arrays, doc.textBlocks);
+				Array.prototype.push.apply(arrays, doc.tasks);
+				Array.prototype.push.apply(arrays, doc.events);
+				Array.prototype.push.apply(arrays, doc.signifiers);
+				
+				let itemArrs = arrays.filter(element => element.id == parent);
+				
+				if(itemArrs.length > 0){
+						itemObject = itemArrs[0];
+						let objectArr = [];
+					for(let i = 0; i < itemObject.content.length; i++) {
+						Array.prototype.push.apply(objectArr, arrays.filter(element => element.id == itemObject.content[i].id));
+					}
+					populateEditor(controller, objectArr, itemObject, (res) => {
+						console.log(res);
+					})
+				}
+			}
+		})
+
+		let newBlock = new TextBlock(controller, itemObject, (success) => {
 			if (success){
 				container.appendChild(newBlock);
 				controller.blockArray.push(newBlock);
 				controller.currentBlockIndex = controller.blockArray.length - 1;
 				newBlock.focus();
-				newBlock.style.width = "100%";
 			}
 			callback(controller);
 		});
 	}, 20);
 }
 
-export function populateEditor (controller, items, index, callback) {
-	populateEditorRecursive(controller, items, 0, (res) => {
-		console.log(res);
+export function populateEditor (controller, items, parent, callback) {
+	populateEditorRecursive(controller, items, parent, 0, (res) => {
+		callback(res);
 	});
 }
 
-function populateEditorRecursive(controller, items, index, callback) {
+function populateEditorRecursive(controller, items, parent, index, callback) {
 	if(index < items.length) {
-		controller.createNewBlock((block) => {
+		controller.createNewBlock(parent, (block) => {
 	 		block.tabLevel = item[index].tabLevel
 	 		block.setupTabLevel();
 			
@@ -112,7 +144,7 @@ function populateEditorRecursive(controller, items, index, callback) {
 	 	});
 
 		//rec call
-		populateEditorRecursive(controller, items, index + 1, (res) => {
+		populateEditorRecursive(controller, items, parent, index + 1, (res) => {
 			callback(res);
 		});
 	} else {
