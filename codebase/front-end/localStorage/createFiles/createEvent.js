@@ -68,7 +68,7 @@ export function createEventPouch (db, parent, date, signifier, callback) {
 			);
 			callback(null, eventObject);
 		}
-	})/*.then((res) => {
+	}).then((err, eventObject) => {
 		callback(null, eventObject);
-	});*/
+	});
 }

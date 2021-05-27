@@ -124,8 +124,8 @@ export function createTask(parent, text, complete, signifier, callback) {
 	})
 }
 
-export function createTextBlock(parent, index, content, tabLevel, kind, signifier, date, callback){
-	createTextBlockPouch(db, parent, index, content, tabLevel, kind, signifier, (error, textBlock) => {
+export function createTextBlock(parent, index, content, tabLevel, kind, objectReference, signifier, date, callback){
+	createTextBlockPouch(db, parent, index, content, tabLevel, kind, objectReference, signifier, date, (error, textBlock) => {
 		callback(error, textBlock);
 	});
 }

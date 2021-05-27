@@ -321,7 +321,7 @@ export class TextBlock extends HTMLElement{
 			} else if (textBlock.textContent != ""){
 				console.log("hello my very new friend");
 				console.log(this.controller.parent);
-				localStorage.createTextBlock(this.controller.parent.id, this.controller.currentBlockIndex, textBlock.textContent, this.tabLevel, this.kind, null, (err, block) => {
+				localStorage.createTextBlock(this.controller.parent.id, this.controller.currentBlockIndex, textBlock.textContent, this.tabLevel, this.kind, null, null, null, (err, block) => {
 					if (err == null){
 						this.item = block;
 						console.log(block);

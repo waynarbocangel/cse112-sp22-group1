@@ -93,10 +93,10 @@ export function createTextBlockPouch (db, parent, index, content, tabLevel, kind
 				}
 			);
 			console.log("saving at createtextblock");
-			callback(null, textBlockObject);
+			//callback(null, textBlockObject);
 		}
-	})/*.then((res) => {
+	}).then((res) => {
 		callback(null, textBlockObject);
 		console.log("callback back from createTextblock");
-	});*/
+	});
 }
