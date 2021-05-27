@@ -1,5 +1,5 @@
 require("dotenv").config();
-const mongoose = require("mongoose");
+var mongoose = require("mongoose");
 const security = require(__dirname + "/../security/securityFunctions.js");
 const schema = require(__dirname + "/../schema.js");
 
