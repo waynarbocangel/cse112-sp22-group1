@@ -11,7 +11,9 @@ function createUser (email, pwd, callback) {
 	schema.User.findOne({email: email}, (error, user) => {
 		if (error){
 			callback(error);
-		} else if (user == null) {
+		} 
+		// Create a new user
+		else if (user == null) {
 			const newUser = new schema.User({
 				email: email,
 				pwd: security.passHash(pwd),
@@ -29,7 +31,7 @@ function createUser (email, pwd, callback) {
 				taskBlocks: [],
 				signifiers: []
 			});
-	
+			
 			newUser.save((err, user) => {
 				if (err) {
 					callback(err);
@@ -37,7 +39,9 @@ function createUser (email, pwd, callback) {
 					callback(user);
 				}
 			});
-		} else {
+		} 
+		// Email already has account
+		else {
 			callback({error: "This email already has an account!"});
 		}
 	});
