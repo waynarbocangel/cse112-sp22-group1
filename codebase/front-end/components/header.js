@@ -143,13 +143,13 @@ export class PageHeader extends HTMLElement {
 					position: relative;
 					display: inline-block;
 					float: right;
-					background-image: url(../public/resources/target_icon.png);
+					background-image: url(../public/resources/plusIcon.png);
 					background-size: cover;
 					background-color: transparent;
 					background-blend-mode: multiply;
-					top: 12px;
-					width: 33px;
-					height: 33px;
+					top: 20px;
+					width: 23px;
+					height: 23px;
 					opacity: 50%;
 					transition: opacity .2s;
 				}
@@ -248,7 +248,7 @@ export class PageHeader extends HTMLElement {
 
 					.plus{
 						position: absolute;
-						top: 30px;
+						top: 42px;
 						right: 20px;
 					}
 

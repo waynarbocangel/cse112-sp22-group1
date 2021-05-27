@@ -110,7 +110,7 @@ export function setupIndex(header, btn) {
 		btn[i].removeAttribute("disabled");
 		btn[i].style.visibility = "visible";
 	}
-
+	document.getElementById("targetMenu").style.display = "none";
 	createEditor(contentWrapper, currentObject, (success) => {});
 	navbar.target.setAttribute ("disabled", "disabled");
 	navbar.target.style.visibility = "hidden";
@@ -161,7 +161,7 @@ export function setupFutureLog(header, btn, newState){
 			}
 		}
 	});
-
+	document.getElementById("targetMenu").style.display = "block";
 	let futureLogStart = new Date(currentObject.startDate);
 	let futureLogEnd = new Date(currentObject.endDate);
 	header.title = (futureLogEnd.getFullYear() == futureLogStart.getFullYear()) ? `Future Log ${futureLogStart.getFullYear()}` : `Future Log ${futureLogStart.getFullYear()} - ${futureLogEnd.getFullYear()}`;
@@ -222,6 +222,7 @@ export function setupMonthlyLog(header, btn, newState){
 		btn[i].removeAttribute("disabled");
 		btn[i].style.visibility = "visible";
 	}
+	document.getElementById("targetMenu").style.display = "block";
 	navbar.double.setAttribute ("disabled", "disabled");
 	navbar.double.style.visibility = "hidden";
 	navbar.doubleMenu.setAttribute ("disabled", "disabled");
@@ -248,6 +249,7 @@ export function setupDailyLog(header, btn, newState){
 	createEditor(contentWrapper, currentObject, (success) => {
 		console.log(success);
 	});
+	document.getElementById("targetMenu").style.display = "block";
 	let headerButtons = header.shadowRoot.querySelectorAll(".imgbutton");
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.remove("hide");

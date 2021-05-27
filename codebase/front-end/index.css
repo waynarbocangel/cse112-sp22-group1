@@ -62,9 +62,6 @@ text-block{
     list-style-position: outside;
 }
 
-.taskContainer::before{
-	content:;
-}
 
 /*
 .noteContainer:before{content: '\f081';} */

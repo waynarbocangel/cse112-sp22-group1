@@ -260,8 +260,6 @@ export class TextBlock extends HTMLElement{
     setupTabLevel(){
         this.style.position = "relative";
         this.style.left = (this.tabLevel * tabSize) + "px";
-        // this.style.width = `calc(100% - ${this.tabLevel * tabSize})px`;
-        // this.style.overflowX = 'none';
         this.controller.currentTabLevel = this.tabLevel;
         this.setCurrentSpot();
     }
@@ -275,7 +273,7 @@ export class TextBlock extends HTMLElement{
             this.controller.blockArray[this.controller.currentBlockIndex].setCurrentSpot();
         });
 
-		this.checkBox.onclick = () => {
+		this.checkBox.onclick = (e) => {
 			if (this.checkBox.getAttribute("checked") == "checked"){
 				this.checkBox.setAttribute("checked", "");
 				textBlock.classList.remove("crossed");
@@ -283,6 +281,7 @@ export class TextBlock extends HTMLElement{
 				this.checkBox.setAttribute("checked", "checked");
 				textBlock.classList.add("crossed");
 			}
+			e.preventDefault();
 		}
 
 		textBlock.onpaste = (e) => {
@@ -347,7 +346,7 @@ export class TextBlock extends HTMLElement{
 				this.setupNote();
 			} else if (content == "--&nbsp;"){
 				this.setupEvent();
-			} else if (content == "*-&nbsp;"){
+			} else if (content == "=-&nbsp;"){
 				this.setupTask();
 			} else if (content == "<div><br></div>"){
 				this.removeStyles();
@@ -408,6 +407,18 @@ export class TextBlock extends HTMLElement{
                     e.preventDefault();
 				} else if (content == "/task"){
 					this.setupTask();
+                    e.preventDefault();
+				} else if (content == "/futurelog"){
+					alert("New Future Log will be created");
+                    e.preventDefault();
+				} else if (content == "/monthlylog"){
+					alert("New Monthly Log will be created");
+                    e.preventDefault();
+				} else if (content == "/dailylog"){
+					alert("New Daily Log will be created");
+                    e.preventDefault();
+				} else if (content == "/collection"){
+					alert("New Collection will be created");
                     e.preventDefault();
 				} else {
                     this.controller.resetPosition = false;
