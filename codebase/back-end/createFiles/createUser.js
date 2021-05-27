@@ -1,7 +1,8 @@
 require("dotenv").config();
 var mongoose = require("mongoose");
-const security = require(__dirname + "/../security/securityFunctions.js");
-const schema = require(__dirname + "/../schema.js");
+var security = require(__dirname + "/../security/securityFunctions.js");
+var schema = require(__dirname + "/../schema.js");
+var newUser;
 
 
 mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
@@ -14,7 +15,7 @@ function createUser (email, pwd, callback) {
 		} 
 		// Create a new user
 		else if (user == null) {
-			var newUser = new schema.User({
+			newUser = new schema.User({
 				email: email,
 				pwd: security.passHash(pwd),
 				index: {
