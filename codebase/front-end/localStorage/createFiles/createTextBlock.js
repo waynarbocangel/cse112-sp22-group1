@@ -35,22 +35,26 @@ export function createTextBlockPouch (db, parent, index, content, tabLevel, kind
 				signifier: signifier
 			};
 			
-			if (kind == "task") {
-				localStorage.createTask(id, "", 0, null, (err, task) => {
-					if (err) {
-						callback(err, null);
-					} else {
-						textBlockObject.objectReference = task.id;
-					}
-				})
-			} else if (kind = "event") {
-				localStorage.createEvent(id, date, null, (err, event) => {
-					if (err) {
-						callback(err, null);
-					} else {
-						textBlockObject.objectReference = event.id;
-					}
-				})
+			if(kind != "paragraph") {
+				if (kind == "task") {
+					//index == null for now just for testing
+					localStorage.createTask(null, id, "", 0, null, (err, task) => {
+						if (err) {
+							callback(err, null);
+						} else {
+							textBlockObject.objectReference = task.id;
+						}
+					})
+				} else if (kind = "event") {
+					//index == null for now just for testing
+					localStorage.createEvent(null, id, date, null, (err, event) => {
+						if (err) {
+							callback(err, null);
+						} else {
+							textBlockObject.objectReference = event.id;
+						}
+					})
+				}
 			}
 			
 			let userArr = [];
@@ -61,6 +65,7 @@ export function createTextBlockPouch (db, parent, index, content, tabLevel, kind
 			Array.prototype.push.apply(userArr, doc.collections);
 
 			let parentArr = userArr.filter(object => object.id == parent);
+
 			if (parent == null){
 				if(index == null) {
 					doc.index.contents.push(id);
@@ -68,10 +73,11 @@ export function createTextBlockPouch (db, parent, index, content, tabLevel, kind
 					doc.index.contents.splice(index, 0, id);
 				}
 			} else if(index == null) {
-				parentArr[0].contents.push(id);
+				parentArr[0].content.push(id);
 			} else {
-				parentArr[0].contents.splice(index, 0, id);
+				parentArr[0].content.splice(index, 0, id);
 			}
+
 			doc.textBlocks.push(textBlockObject);
 
 			return db.put(
@@ -91,12 +97,12 @@ export function createTextBlockPouch (db, parent, index, content, tabLevel, kind
 					events: doc.events,
 					signifiers: doc.signifiers
 				}
-			);
-			console.log("saving at createtextblock");
-			//callback(null, textBlockObject);
+			).then((res) => {
+			}).catch((err) => {
+				callback(err, null);
+			});
 		}
 	}).then((res) => {
 		callback(null, textBlockObject);
-		console.log("callback back from createTextblock");
 	});
 }

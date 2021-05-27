@@ -94,8 +94,8 @@ export function createDailyLog(parent, content, trackers, date, callback){
 	});
 }
 
-export function createEvent(parent, date, signifier, callback) {
-	createEventPouch(db, parent, date, signifier, (error, event) => {
+export function createEvent(index, parent, date, signifier, callback) {
+	createEventPouch(db, index, parent, date, signifier, (error, event) => {
 		callback(error, event);
 	})
 }
@@ -118,8 +118,8 @@ export function createSignifier(meaning, symbol, callback) {
 	})
 }
 
-export function createTask(parent, text, complete, signifier, callback) {
-	createTaskPouch(db, parent, text, complete, signifier, (error, task) => {
+export function createTask(index, parent, text, complete, signifier, callback) {
+	createTaskPouch(db, index, parent, text, complete, signifier, (error, task) => {
 		callback(error, task);
 	})
 }

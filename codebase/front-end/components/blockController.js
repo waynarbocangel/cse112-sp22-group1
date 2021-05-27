@@ -77,7 +77,7 @@ export function createEditor (container, parent, callback) {
 	let controller = new Controller(container, parent);
 	setTimeout(() => {
 		let itemObject = null;
-		//let 
+		let objectArr = [];
 		localStorage.readUser((err, doc) => {
 			if (err) {
 				callback(err);
@@ -93,18 +93,28 @@ export function createEditor (container, parent, callback) {
 				Array.prototype.push.apply(arrays, doc.events);
 				Array.prototype.push.apply(arrays, doc.signifiers);
 				
-				let itemArrs = arrays.filter(element => element.id == parent);
-				
-				if(itemArrs.length > 0){
+				if(parent.objectType != "index") {
+					let itemArrs = arrays.filter(element => element.id == parent.id);
+					
+					if(itemArrs.length > 0){
 						itemObject = itemArrs[0];
-						let objectArr = [];
-					for(let i = 0; i < itemObject.content.length; i++) {
-						Array.prototype.push.apply(objectArr, arrays.filter(element => element.id == itemObject.content[i].id));
+						for(let i = 0; i < itemObject.content.length; i++) {
+							Array.prototype.push.apply(objectArr, arrays.filter(element => element.id == itemObject.content[i].id));
+						}
+						populateEditor(controller, objectArr, itemObject, (res) => {
+							console.log(res);
+						})
+					}
+				} else {
+					itemObject = doc.index;
+					for(let i = 0; i < itemObject.contents.length; i++) {
+						Array.prototype.push.apply(objectArr, arrays.filter(element => element.id == itemObject.contents[i].id));
 					}
 					populateEditor(controller, objectArr, itemObject, (res) => {
 						console.log(res);
 					})
 				}
+				//console.log("itemArrs length is :" + itemArrs.length);
 			}
 		})
 
@@ -127,6 +137,8 @@ export function populateEditor (controller, items, parent, callback) {
 }
 
 function populateEditorRecursive(controller, items, parent, index, callback) {
+	console.log("in recursive populate editor");
+	console.log(items.length);
 	if(index < items.length) {
 		controller.createNewBlock(parent, (block) => {
 	 		block.tabLevel = item[index].tabLevel
