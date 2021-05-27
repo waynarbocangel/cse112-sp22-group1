@@ -35,32 +35,39 @@ div{
 	z-index: -1;
 }
 
-.container-fluid {
-    margin-top: 5%;
-    margin-left: 8%;
-}
-
-.text-block{
-    background-color: white;
+text-block{
+	display: block;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	left: 0;
+	right: 0;
 }
 
 .noteContainer{
     margin-top: 7px;
     margin-bottom: 7px;
-    margin-left: 20px;
+    margin-left: 65px;
+    display: list-item;
+    list-style-type: disc;
+    list-style-position: outside;
+}
+
+.eventContainer{
+	margin-top: 7px;
+    margin-bottom: 7px;
+    margin-left: 65px;
     display: list-item;
     list-style-type: circle;
     list-style-position: outside;
 }
 
+.taskContainer::before{
+	content:;
+}
+
 /*
 .noteContainer:before{content: '\f081';} */
-
-#markdown {
-    overflow: auto;
-    border-left: 1px solid black;
-    padding: 3%;
-}
 
 
 /* thomas's code */

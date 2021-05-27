@@ -378,16 +378,6 @@ export class PageHeader extends HTMLElement {
 	}
 
 	createFutureLog() {
-		localStorage.createCollection("testing createCollection", "1", [], (err, collection) => {
-			console.log(collection);
-			localStorage.readUser((err, res) => {
-				if(err) {
-					console.log(err);
-				} else {
-					console.log(res);
-				}
-			});
-		});
 		localStorage.createFutureLog( new Date(2021, 5, 22), new Date(2021, 8, 23), [], [], [], (err, futureLog) => {
 			console.log(futureLog);
 			localStorage.readUser( (err, res) => {
@@ -395,6 +385,16 @@ export class PageHeader extends HTMLElement {
 					console.log(err);
 				} else {
 					console.log(res);
+					// localStorage.createCollection("testing createCollection", "1", [], (err, collection) => {
+					// 	console.log(collection);
+					// 	localStorage.readUser((err, res) => {
+					// 		if(err) {
+					// 			console.log(err);
+					// 		} else {
+					// 			console.log(res);
+					// 		}
+					// 	});
+					// });
 				}
 			})
 		});

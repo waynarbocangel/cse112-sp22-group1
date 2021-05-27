@@ -1,9 +1,9 @@
 import {makeid} from "./makeId.js";
 
-export function createTaskBlockPouch (db, parent, text, complete, signifier, callback) {
+export function createTaskPouch (db, parent, text, complete, signifier, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
-			callback(err);
+			callback(err, null);
 		} else {
 			console.log(doc);
 			let id = makeid();
@@ -14,16 +14,16 @@ export function createTaskBlockPouch (db, parent, text, complete, signifier, cal
 			Array.prototype.push.apply(arrays, doc.collections);
 			Array.prototype.push.apply(arrays, doc.trackers);
 			Array.prototype.push.apply(arrays, doc.textBlocks);
-			Array.prototype.push.apply(arrays, doc.taskBlocks);
-			Array.prototype.push.apply(arrays, doc.eventBlocks);
+			Array.prototype.push.apply(arrays, doc.tasks);
+			Array.prototype.push.apply(arrays, doc.events);
 			Array.prototype.push.apply(arrays, doc.signifiers);
 
 			while(arrays.filter((element) => element.id == id).length > 0){
 				id = makeid();
 			}
-			const taskBlockObject = {
+			const taskObject = {
 				id: id,
-				objectType: "taskBlock",
+				objectType: "task",
 				tabLevel: 0,
 				parent: parent,
 				text: text,
@@ -46,7 +46,7 @@ export function createTaskBlockPouch (db, parent, text, complete, signifier, cal
 			} else {
 				parentArr[0].contents.splice(index, 0, id);
 			}
-			doc.taskBlocks.push(taskBlockObject);
+			doc.tasks.push(taskObject);
 				
 			return db.put(
 				{
@@ -61,11 +61,13 @@ export function createTaskBlockPouch (db, parent, text, complete, signifier, cal
 					collections: doc.collections,
 					trackers: doc.trackers,
 					textBlocks: doc.textBlocks,
-					taskBlocks: doc.taskBlocks,
-					eventBlocks: doc.eventBlocks,
+					tasks: doc.tasks,
+					events: doc.events,
 					signifiers: doc.signifiers
 				}
 			);
 		}
+	}).then((res) => {
+		callback(null, taskObject);
 	});
 }
