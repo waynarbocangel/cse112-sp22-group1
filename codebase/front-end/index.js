@@ -34,6 +34,7 @@ export function getCurrentObject(urlFromRouter) {
 		urlparse = urlFromRouter.split("~");
 	}
 	if (urlparse != undefined){
+		console.log("current object id is " + urlparse[1]);
 		id = urlparse[1];
 	}
 	localStorage.readUser((err, user) => {
@@ -245,6 +246,10 @@ export function setupDailyLog(header, btn, newState){
 		btn[i].removeAttribute("disabled");
 		btn[i].style.visibility = "visible";
 	}
+
+	getCurrentObject(url);//added by carlos (maybe is wrong)
+	console.log("current object inside setupdialy is ", currentObject);
+
 	createEditor(contentWrapper, currentObject, (success) => {
 		console.log(success);
 	});
