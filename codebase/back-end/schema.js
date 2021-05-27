@@ -8,7 +8,7 @@ const userSchema = {
 	pwd: String,
 	index: {
 		objectType: String,
-		contents: [String] //only futurelog and collection
+		contents: [String]
 	},
 	dailyLogs: [
 		{
