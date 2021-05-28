@@ -18,6 +18,11 @@
 			color: gray;
 		}
 
+		.eventNodateFocused::after{
+			content: attr(dateFiller);
+			color: gray;
+		}
+
 		.unstylized{
 			margin: 7px 0 12px;
 			font-size: 18px;
@@ -135,10 +140,12 @@
 		#checkerContainer{
 			position: relative;
 			overflow: hidden;
+			user-select: none;
 		}
 
 		#taskChecker{
 			display: inline-block;
+			user-select: none;
 			background-color: #fafafa;
 			border: 1px solid #cacece;
 			box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);

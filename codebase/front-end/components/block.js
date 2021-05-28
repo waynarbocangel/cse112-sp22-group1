@@ -37,6 +37,8 @@ export class TextBlock extends HTMLElement{
 				}
 			}
 			this.tabLevel = controller.currentTabLevel;
+			this.atPressed = false;
+			this.hashPressed = false;
 			this.setupTabLevel();
 			callback(true);
 		})
@@ -207,10 +209,12 @@ export class TextBlock extends HTMLElement{
         this.kind = "event";
 		this.controller.creatingFromBullet = {isTrue: true, kind: this.kind};
         this.initialHeight = 3;
-        textBlock.setAttribute("placeholder", "Event");
+        textBlock.setAttribute("placeholder", "Event:");
+		textBlock.setAttribute("dateFiller", " use @ for time 13:00 and # for dates MM/DD/YYYY or weekdays");
         this.classList.add("eventContainer");
 		this.editorIcons.classList.add("noteIcons");
         textBlock.classList.add("note");
+		textBlock.classList.add("eventNodateFocused");
         textBlock.innerHTML = "";
 		this.checkBox.style.display = "none";
     }
@@ -288,7 +292,7 @@ export class TextBlock extends HTMLElement{
 							})
 						}
 					});
-				}, 1000);
+				}, 10);
 			} else {
 				this.checkBox.setAttribute("checked", "checked");
 				textBlock.classList.add("crossed");
@@ -306,7 +310,7 @@ export class TextBlock extends HTMLElement{
 							console.log(err);
 						}
 					});
-				}, 1000);
+				}, 10);
 			}
 			e.preventDefault();
 		}
@@ -329,6 +333,7 @@ export class TextBlock extends HTMLElement{
 
 		textBlock.onblur = () => {
 			this.editorIcons.classList.remove("focusedIcons");
+			textBlock.classList.remove("eventNodateFocused");
 			this.editorIcons.classList.add("unfocusedIcons");
             if(this.item != null){
 				console.log("hello my very old friend");
@@ -360,6 +365,17 @@ export class TextBlock extends HTMLElement{
 		textBlock.addEventListener("input",() =>{
 			let content = textBlock.innerHTML;
             this.setCurrentSpot();
+			if (!content.includes("@")){
+				this.atPressed = false;
+			}
+			if (this.kind == "event"){
+				if (content.includes('@')){
+					content.replace("@", `<strong>@</strong>`);
+					console.log(content);
+					textBlock.innerHTML = content;
+					this.moveToSpot(1000000, true);
+				}
+			}
 			if (content == "#&nbsp;"){
 				this.setupHeader1();
 			} else if (content == "##&nbsp;"){
@@ -388,8 +404,11 @@ export class TextBlock extends HTMLElement{
 			this.editorIcons.classList.add("focusedIcons");
             this.controller.currentBlockIndex = this.controller.blockArray.indexOf(this);
             this.controller.currentTabLevel = this.tabLevel;
-            if (this.classList.contains("noteContainer") || this.checkBox.style.display != "none"){
+            if (this.classList.contains("noteContainer") || this.classList.contains("eventContainer") || this.checkBox.style.display != "none"){
                 this.controller.creatingFromBullet = {isTrue: true, kind: this.kind};
+				if (this.kind == "event"){
+					textBlock.classList.add("eventNodateFocused");
+				}
             } else {
                 this.controller.creatingFromBullet = {isTrue: false, kind: ""};
             }
@@ -463,8 +482,17 @@ export class TextBlock extends HTMLElement{
                 this.tabLevel += 1;
                 this.setupTabLevel();
                 e.preventDefault();
-            }
-
+            } else if (key == "@" && this.kind == "event"){
+				if (!this.atPressed) {
+					this.atPressed = true;
+				} else {
+					e.stopPropagation();
+					e.preventDefault();
+				}
+			} else if (this.atPressed && this.kind == "event" && key.match(/[^123456789:]/g)){
+				e.stopPropagation();
+				e.preventDefault();
+			}
 		};
 
         textBlock.onkeyup = (e) => {

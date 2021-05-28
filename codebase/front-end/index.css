@@ -92,6 +92,7 @@ text-block{
 /* Fade-in buttons */
 #targetMenu{
 	display: none;
+	opacity: 0;
 }
 
 

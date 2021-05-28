@@ -122,6 +122,7 @@ export function createEditor (container, parent, subParent, callback) {
 									container.appendChild(newBlock);
 									controller.blockArray.push(newBlock);
 									controller.currentBlockIndex = controller.blockArray.length - 1;
+									newBlock.removeStyles();
 									newBlock.focus();
 								}
 								callback(controller);
@@ -134,6 +135,7 @@ export function createEditor (container, parent, subParent, callback) {
 							container.appendChild(newBlock);
 							controller.blockArray.push(newBlock);
 							controller.currentBlockIndex = controller.blockArray.length - 1;
+							newBlock.removeStyles();
 							newBlock.focus();
 							console.log("newblock created successfully");
 						} else {
@@ -154,9 +156,6 @@ export function populateEditor (controller, items, callback) {
 }
 
 function populateEditorRecursive(controller, items, index, callback) {
-	console.log("in recursive populate editor");
-	console.log(items.length);
-	console.log(items);
 	if(index < items.length) {
 		controller.createNewBlock(items[index], (block) => {
 	 		block.tabLevel = items[index].tabLevel
@@ -164,34 +163,67 @@ function populateEditorRecursive(controller, items, index, callback) {
 			
 			if (items[index].kind == "note"){
 				block.setupNote();
+				block.item = items[index];
+				block.shadowRoot.getElementById("textBlock").innerText = items[index].text;//= item.text;
+				populateEditorRecursive(controller, items, index + 1, (res) => {
+					callback(res);
+				});
 			} else if (items[index].kind == "event"){
 				block.setupEvent();
+				block.item = items[index];
+				block.shadowRoot.getElementById("textBlock").innerText = items[index].text;//= item.text;
+				populateEditorRecursive(controller, items, index + 1, (res) => {
+					callback(res);
+				});
+				
 			} else if (items[index].kind == "task") {
 				console.log(items[index]);
 				block.setupTask();
 				localStorage.readUser((err, user) => {
 					if (err == null){
-						let task = user.tasks.filter(task => task.id == items[index].objectReference);
+						let task = user.tasks.filter(task => task.id == items[index].objectReference)[0];
 						console.log(task);
 						if (task.complete == 1){
 							block.checkBox.setAttribute("checked", "checked");
 							block.shadowRoot.getElementById("textBlock").classList.add("crossed");
 						}
+						block.item = items[index];
+						block.shadowRoot.getElementById("textBlock").innerText = items[index].text;//= item.text;
+						populateEditorRecursive(controller, items, index + 1, (res) => {
+							callback(res);
+						});
 					} else {
 						console.log(err);
 					}
 				});
 			} else if (items[index].kind == "h1") {
 				block.setupHeader1();
+				block.item = items[index];
+				block.shadowRoot.getElementById("textBlock").innerText = items[index].text;//= item.text;
+				populateEditorRecursive(controller, items, index + 1, (res) => {
+					callback(res);
+				});
 			} else if (items[index].kind == "h2") {
 				block.setupHeader2();
+				block.item = items[index];
+				block.shadowRoot.getElementById("textBlock").innerText = items[index].text;//= item.text;
+				populateEditorRecursive(controller, items, index + 1, (res) => {
+					callback(res);
+				});
+			} else if (items[index].kind == "h3"){
+				block.setupHeader3();
+				block.item = items[index];
+				block.shadowRoot.getElementById("textBlock").innerText = items[index].text;//= item.text;
+				populateEditorRecursive(controller, items, index + 1, (res) => {
+					callback(res);
+				});
+			} else {
+				block.item = items[index];
+				block.shadowRoot.getElementById("textBlock").innerText = items[index].text;//= item.text;
+				populateEditorRecursive(controller, items, index + 1, (res) => {
+					callback(res);
+				});
 			}
-			//block.item = item;
-	 		block.item = items[index];
-	 		block.shadowRoot.getElementById("textBlock").innerText = items[index].text;//= item.text;
-			populateEditorRecursive(controller, items, index + 1, (res) => {
-				callback(res);
-			});
 	 	});
 	} else {
 		callback("done populating items");
