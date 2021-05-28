@@ -2,7 +2,7 @@ import { TextBlock } from "./block.js";
 import * as localStorage from "../localStorage/userOperations.js";
 
 export class Controller extends Object {
-	constructor(container, parent){
+	constructor(container, parent, subParent){
 		super();
 		this.blockArray = [];
 		this.creatingFromBullet = {isTrue: false, kind: ""};
@@ -11,10 +11,11 @@ export class Controller extends Object {
 		this.currentBlockIndex = 0;
 		this.container = container;
 		this.parent = parent;
+		this.subParent = subParent;
 	}
 
-	createNewBlock(parent, callback){
-		let newBlock = new TextBlock(this, parent, (success) => {
+	createNewBlock(block, callback){
+		let newBlock = new TextBlock(this, block, (success) => {
 			if (this.currentBlockIndex < this.blockArray.length - 1){
 				this.container.insertBefore(newBlock, this.blockArray[this.currentBlockIndex + 1]);
 				this.blockArray.splice(this.currentBlockIndex + 1, 0, newBlock);
@@ -29,8 +30,8 @@ export class Controller extends Object {
 		});
 	}
 	
-	addNewBlock (parent) {
-		let newBlock = new TextBlock(this, parent, (success) => {
+	addNewBlock (block) {
+		let newBlock = new TextBlock(this, block, (success) => {
 			if (this.currentBlockIndex < this.blockArray.length - 1){
 				this.container.insertBefore(newBlock, this.blockArray[this.currentBlockIndex + 1]);
 				this.blockArray.splice(this.currentBlockIndex + 1, 0, newBlock);
@@ -72,9 +73,9 @@ export class Controller extends Object {
 	}
 }
 
-export function createEditor (container, parent, callback) {
+export function createEditor (container, parent, subParent, callback) {
 
-	let controller = new Controller(container, parent);
+	let controller = new Controller(container, parent, subParent);
 	setTimeout(() => {
 		let itemObject = null;
 		let objectArr = [];
@@ -94,21 +95,29 @@ export function createEditor (container, parent, callback) {
 						
 					if(itemArrs.length > 0){
 						itemObject = itemArrs[0];
-						console.log("itemObject is ", itemObject);
-						console.log("itemObject contnetn length is " + itemObject.content.length);
 						
-						let tempArr = [];
-						Array.prototype.push.apply(tempArr, doc.dailyLogs);
-						Array.prototype.push.apply(tempArr, doc.monthlyLogs);
-						Array.prototype.push.apply(tempArr, doc.futureLogs);
-						Array.prototype.push.apply(tempArr, doc.textBlocks);
-						for(let i = 0; i < itemObject.content.length; i++) {
-							Array.prototype.push.apply(objectArr, tempArr.filter(element => element.id == itemObject.content[i]));
-						}
+						let tempArr = doc.textBlocks;
 
-						populateEditor(controller, objectArr, itemObject, (res) => {
+						if (subParent == null){
+							for(let i = 0; i < itemObject.content.length; i++) {
+								Array.prototype.push.apply(objectArr, tempArr.filter(element => element.id == itemObject.content[i]));
+							}
+						} else if (itemObject.objectType == "monthlyLog"){
+							let day = itemObject.days.filter(day => day.id == subParent);
+							for(let i = 0; i < day.content.length; i++) {
+								Array.prototype.push.apply(objectArr, tempArr.filter(element => element.id == day.content[i]));
+							}
+						} else if (itemObject.objectType == "futureLog"){
+							let month = itemObject.months.filter(month => month.id == subParent);
+							for(let i = 0; i < month.content.length; i++) {
+								Array.prototype.push.apply(objectArr, tempArr.filter(element => element.id == month.content[i]));
+							}
+						}
+						
+
+						populateEditor(controller, objectArr, (res) => {
 							console.log(res);
-							let newBlock = new TextBlock(controller, itemObject, (success) => {
+							let newBlock = new TextBlock(controller, null, (success) => {
 								if (success){
 									container.appendChild(newBlock);
 									controller.blockArray.push(newBlock);
@@ -120,7 +129,7 @@ export function createEditor (container, parent, callback) {
 						})
 					}
 				} else {
-					let newBlock = new TextBlock(controller, itemObject, (success) => {
+					let newBlock = new TextBlock(controller, null, (success) => {
 						if (success){
 							container.appendChild(newBlock);
 							controller.blockArray.push(newBlock);
@@ -138,22 +147,40 @@ export function createEditor (container, parent, callback) {
 	}, 20);
 }
 
-export function populateEditor (controller, items, parent, callback) {
-	populateEditorRecursive(controller, items, parent, 0, (res) => {
+export function populateEditor (controller, items, callback) {
+	populateEditorRecursive(controller, items, 0, (res) => {
 		callback(res);
 	});
 }
 
-function populateEditorRecursive(controller, items, parent, index, callback) {
+function populateEditorRecursive(controller, items, index, callback) {
 	console.log("in recursive populate editor");
 	console.log(items.length);
+	console.log(items);
 	if(index < items.length) {
-		controller.createNewBlock(parent, (block) => {
+		controller.createNewBlock(items[index], (block) => {
 	 		block.tabLevel = items[index].tabLevel
 	 		block.setupTabLevel();
 			
-			if (items[index].kind == "note" || items[index].objectType == "eventBlock" || items[index].objectType == "taskBlock") {
-				block.setupBullet();
+			if (items[index].kind == "note"){
+				block.setupNote();
+			} else if (items[index].kind == "event"){
+				block.setupEvent();
+			} else if (items[index].kind == "task") {
+				console.log(items[index]);
+				block.setupTask();
+				localStorage.readUser((err, user) => {
+					if (err == null){
+						let task = user.tasks.filter(task => task.id == items[index].objectReference);
+						console.log(task);
+						if (task.complete == 1){
+							block.checkBox.setAttribute("checked", "checked");
+							block.shadowRoot.getElementById("textBlock").classList.add("crossed");
+						}
+					} else {
+						console.log(err);
+					}
+				});
 			} else if (items[index].kind == "h1") {
 				block.setupHeader1();
 			} else if (items[index].kind == "h2") {
@@ -162,12 +189,10 @@ function populateEditorRecursive(controller, items, parent, index, callback) {
 			//block.item = item;
 	 		block.item = items[index];
 	 		block.shadowRoot.getElementById("textBlock").innerText = items[index].text;//= item.text;
+			populateEditorRecursive(controller, items, index + 1, (res) => {
+				callback(res);
+			});
 	 	});
-
-		//rec call
-		populateEditorRecursive(controller, items, parent, index + 1, (res) => {
-			callback(res);
-		});
 	} else {
 		callback("done populating items");
 	}

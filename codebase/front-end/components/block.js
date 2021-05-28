@@ -120,7 +120,7 @@ export class TextBlock extends HTMLElement{
             this.classList.remove(this.classList[0]);
         }
         this.controller.creatingFromBullet = {isTrue: false, kind: ""};
-        this.kind = "header1";
+        this.kind = "h1";
         this.initialHeight = 0;
         textBlock.setAttribute("placeholder", "Header 1");
         textBlock.classList.add("header1");
@@ -141,7 +141,7 @@ export class TextBlock extends HTMLElement{
             this.classList.remove(this.classList[0]);
         }
         this.controller.creatingFromBullet = {isTrue: false, kind: ""};
-        this.kind = "header 2";
+        this.kind = "h2";
         this.initialHeight = 0;
         textBlock.setAttribute("placeholder", "Header 2");
         textBlock.classList.add("header2");
@@ -162,7 +162,7 @@ export class TextBlock extends HTMLElement{
             this.classList.remove(this.classList[0]);
         }
         this.controller.creatingFromBullet = {isTrue: false, kind: ""};
-        this.kind = "header 3";
+        this.kind = "h3";
         this.initialHeight = 0;
         textBlock.setAttribute("placeholder", "Header 3");
         textBlock.classList.add("header3");
@@ -277,9 +277,36 @@ export class TextBlock extends HTMLElement{
 			if (this.checkBox.getAttribute("checked") == "checked"){
 				this.checkBox.setAttribute("checked", "");
 				textBlock.classList.remove("crossed");
+				setTimeout(() => {
+					localStorage.readUser((err, user) => {
+						if (err == null){
+							let task = user.tasks.filter(task => task.id == this.item.objectReference)[0];
+							task.complete = 0; 
+							localStorage.updateTask(task, (err, task) => {
+								console.log(err);
+								console.log(task);
+							})
+						}
+					});
+				}, 1000);
 			} else {
 				this.checkBox.setAttribute("checked", "checked");
 				textBlock.classList.add("crossed");
+				setTimeout(() => {
+					localStorage.readUser((err, user) => {
+						if (err == null){
+							let task = user.tasks.filter(task => task.id == this.item.objectReference)[0];
+							console.log(task)
+							task.complete = 1; 
+							localStorage.updateTask(task, (err, task) => {
+								console.log(err);
+								console.log(task);
+							})
+						} else {
+							console.log(err);
+						}
+					});
+				}, 1000);
 			}
 			e.preventDefault();
 		}
@@ -318,9 +345,8 @@ export class TextBlock extends HTMLElement{
 					})
 				}
 			} else if (textBlock.textContent != ""){
-				console.log("hello my very new friend");
-				console.log(this.controller.parent);
-				localStorage.createTextBlock(this.controller.parent.id, this.controller.currentBlockIndex, textBlock.textContent, this.tabLevel, /*null*/this.kind, null, null, null, (err, block) => {
+
+				localStorage.createTextBlock(this.controller.parent.id, this.controller.subParent, this.controller.currentBlockIndex, textBlock.textContent, this.tabLevel, this.kind, null, null, null, (err, block) => {
 					if (err){
 						console.log(err);
 					} else {
@@ -424,7 +450,7 @@ export class TextBlock extends HTMLElement{
                     e.preventDefault();
                 }
 			} else if (key == "ArrowDown"){
-                let lineheight = (textBlock.classList.contains("header1")) ? 80 : ((textBlock.classList.contains("header2")) ? 57 : ((this.kind == "bullet") ? 47 : 42));
+                let lineheight = (textBlock.classList.contains("header1")) ? 80 : ((textBlock.classList.contains("header2")) ? 57 : ((this.kind == "note" || this.kind == "event" || this.kind == "task") ? 47 : 42));
                 if (this.currentPointerHeight > textBlock.offsetHeight - lineheight){
                     this.controller.moveToNextBlock();
                 } 

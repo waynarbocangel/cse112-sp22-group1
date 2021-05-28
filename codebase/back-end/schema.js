@@ -26,8 +26,11 @@ const userSchema = {
 			objectType: String,
 			parent: String,
 			date: Date,
-			content: [String],
-			days: [String],
+			days: [{
+				id: String,
+				content: [String],
+				dailyLog: [String]
+			}],
 			trackers: [String]
 		}
 	],
@@ -37,8 +40,11 @@ const userSchema = {
 			objectType: String,
 			startDate: Date,
 			endDate: Date,
-			months: [String],
-			content: [String],
+			months: [{
+				id: String,
+				content: [String],
+				monthlyLog: [String]
+			}],
 			trackers: [String]
 		}
 	],
@@ -65,6 +71,7 @@ const userSchema = {
 			objectType: String,
 			tabLevel: Number,
 			parent: String,
+			subParent: String,
 			kind: String,
 			objectReference: String,
 			text: String,
@@ -75,7 +82,7 @@ const userSchema = {
 		{
 			id: String,
 			objectType: String,
-			tabLevel: Number,
+			title: String,
 			parent: String,
 			date: Date,
 			signifier: String
@@ -85,7 +92,6 @@ const userSchema = {
 		{
 			id: String,
 			objectType: String,
-			tabLevel: Number,
 			parent: String,
 			text: String,
 			complete: Number,

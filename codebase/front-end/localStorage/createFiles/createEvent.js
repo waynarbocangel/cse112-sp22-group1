@@ -25,7 +25,6 @@ export function createEventPouch (db, index, parent, date, signifier, callback) 
 			eventObject = {
 				id: id,
 				objectType: "event",
-				tabLevel: 0,
 				parent: parent,
 				date: date,
 				signifier: signifier

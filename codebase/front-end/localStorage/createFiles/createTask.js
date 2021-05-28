@@ -1,7 +1,7 @@
 import {makeid} from "./makeId.js";
 let taskObject;
 
-export function createTaskPouch (db, index, parent, text, complete, signifier, callback) {
+export function createTaskPouch (db, parent, text, complete, signifier, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err, null);
@@ -25,7 +25,6 @@ export function createTaskPouch (db, index, parent, text, complete, signifier, c
 			taskObject = {
 				id: id,
 				objectType: "task",
-				tabLevel: 0,
 				parent: parent,
 				text: text,
 				complete: complete,
@@ -69,10 +68,12 @@ export function createTaskPouch (db, index, parent, text, complete, signifier, c
 				}
 			).then((res) => {
 			}).catch((err) => {
+				console.log(err);
 				callback(err, null);
 			});
 		}
 	}).then((res) => {
+		console.log(res);
 		callback(null, taskObject);
 	});
 }

@@ -92,11 +92,11 @@ export function setupIndex(header, btn) {
 					}
 
 					for (let j = 0; j < parentArr[i].months.length; j++) {
-						let currentMonth = user.monthlyLogs.filter(month => month.id == parentArr[i].months[j])[0];
+						let currentMonth = user.monthlyLogs.filter(month => month.id == parentArr[i].months[j].monthlyLog)[0];
 						let dropdownMonth = new DropdownBlock(`${monthNames[new Date(currentMonth.date).getMonth()]} ${new Date(currentMonth.date).getFullYear()}`, currentMonth, 2);
 						dropdown.contentWrapper.appendChild(dropdownMonth);
 						for(let k = 0; k < currentMonth.days.length; k++) {
-							let currentDay = user.dailyLogs.filter(day => day.id == currentMonth.days[k])[0];;
+							let currentDay = user.dailyLogs.filter(day => day.id == currentMonth.days[k].dailyLog)[0];;
 							let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 							let dropdownDay = new DropdownBlock(`${weekDays[new Date(currentDay.date).getDay()]}, ${monthNames[new Date(currentDay.date).getMonth()]} ${new Date(currentDay.date).getUTCDate()}`, currentDay, 3);
 							dropdownMonth.contentWrapper.appendChild(dropdownDay);
@@ -118,7 +118,7 @@ export function setupIndex(header, btn) {
 		btn[i].style.visibility = "visible";
 	}
 	document.getElementById("targetMenu").style.display = "none";
-	createEditor(contentWrapper, currentObject, (success) => {});
+	createEditor(contentWrapper, currentObject, null, (success) => {});
 	navbar.target.setAttribute ("disabled", "disabled");
 	navbar.target.style.visibility = "hidden";
 	navbar.single.setAttribute ("disabled", "disabled");
@@ -145,7 +145,7 @@ export function setupFutureLog(header, btn, newState){
 			console.log(currentObject);
 			let parentArr = [];
 			for (let i = 0; i < currentObject.months.length; i++) {
-				Array.prototype.push.apply(parentArr, userArr.filter(object => object.id == currentObject.months[i]));
+				Array.prototype.push.apply(parentArr, userArr.filter(object => object.id == currentObject.months[i].monthlyLog));
 			}
 
 			let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -159,7 +159,7 @@ export function setupFutureLog(header, btn, newState){
 				}
 
 				for(let k = 0; k < currentMonth.days.length; k++) {
-					let currentDay = user.dailyLogs.filter(day => day.id == currentMonth.days[k])[0];
+					let currentDay = user.dailyLogs.filter(day => day.id == currentMonth.days[k].dailyLog)[0];
 					//console.log(currentDay);
 					//console.log(new Date(currentDay.date));
 					let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -205,7 +205,7 @@ export function setupMonthlyLog(header, btn, newState){
 
 			let parentArr = [];
 			for (let i = 0; i < currentObject.days.length; i++) {
-				Array.prototype.push.apply(parentArr, userArr.filter(object => object.id == currentObject.days[i]));
+				Array.prototype.push.apply(parentArr, userArr.filter(object => object.id == currentObject.days[i].dailyLog));
 			}
 
 			let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -255,10 +255,7 @@ export function setupDailyLog(header, btn, newState){
 		btn[i].style.visibility = "visible";
 	}
 
-	//getCurrentObject(url);//added by carlos (maybe is wrong)
-	//console.log("current object inside setupdialy is ", currentObject);
-
-	createEditor(contentWrapper, currentObject, (success) => {
+	createEditor(contentWrapper, currentObject, null, (success) => {
 		console.log(success);
 	});
 	document.getElementById("targetMenu").style.display = "block";
@@ -269,7 +266,7 @@ export function setupDailyLog(header, btn, newState){
 	let tracker = new TrackerMenu("Daily Log Trackers");
 	setTimeout(() => {
 		let trackerContent = tracker.shadowRoot.getElementById('editor');
-		createEditor(trackerContent, tracker,(success) => {
+		createEditor(trackerContent, tracker, null, (success) => {
 			console.log(success);
 		});
 		document.getElementById("trackerWrapper").appendChild(tracker);
@@ -302,7 +299,7 @@ export function setupCollection(header, btn, newState){
 		btn[i].style.visibility = "visible";
 	}
 
-	createEditor(contentWrapper, currentObject, (success) => {
+	createEditor(contentWrapper, currentObject, null, (success) => {
 		console.log(success);
 	});
 	

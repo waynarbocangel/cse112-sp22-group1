@@ -9,16 +9,7 @@ export function deleteEventPouch(db, id, callback) {
 				block = eventArr[0];
 			}
 			let userArr = [];
-					Array.prototype.push.apply(userArr, doc.dailyLogs);
-					Array.prototype.push.apply(userArr, doc.monthlyLogs);
-					Array.prototype.push.apply(userArr, doc.futureLogs);
-					Array.prototype.push.apply(userArr, doc.trackers);
-					Array.prototype.push.apply(userArr, doc.collections);
-
-			let parentArr = userArr.filter(object => object.id == parent);
-			
-			const parent = parentArr[0];
-			const newContents = parent.contents.filter(obj => obj != id);
+			Array.prototype.push.apply(userArr, doc.textBlocks);
 
 			const newEvents = doc.events.filter(event => event.id != id);
 			
@@ -45,3 +36,4 @@ export function deleteEventPouch(db, id, callback) {
 		}
 	})
 }
+u

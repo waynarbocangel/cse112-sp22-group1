@@ -118,14 +118,14 @@ export function createSignifier(meaning, symbol, callback) {
 	})
 }
 
-export function createTask(index, parent, text, complete, signifier, callback) {
-	createTaskPouch(db, index, parent, text, complete, signifier, (error, task) => {
+export function createTask(parent, text, complete, signifier, callback) {
+	createTaskPouch(db, parent, text, complete, signifier, (error, task) => {
 		callback(error, task);
 	})
 }
 
-export function createTextBlock(parent, index, content, tabLevel, kind, objectReference, signifier, date, callback){
-	createTextBlockPouch(db, parent, index, content, tabLevel, kind, objectReference, signifier, date, (error, textBlock) => {
+export function createTextBlock(parent, subParent, index, content, tabLevel, kind, objectReference, signifier, date, callback){
+	createTextBlockPouch(db, parent, subParent, index, content, tabLevel, kind, objectReference, signifier, date, (error, textBlock) => {
 		callback(error, textBlock);
 	});
 }
@@ -214,22 +214,16 @@ export function deleteTrackerFromContainer(container, index, callback){
 }
 
 //-------------------------------Update Functions----------------------------------
-export function updateUser(){
-	updateUserPouch(db, (user) => {
-		return res.send(user);
-	});
+export function updateUser(callback){
+	updateUserPouch(db, callback);
 }
 
-export function updateUserOnline(){
-	updateUserFromMongo(db, (user) => {
-		return res.send(user);
-	});
+export function updateUserOnline(callback){
+	updateUserFromMongo(db, callback);
 }
 
 export function updateDailyLog(dailyLog, callback) {
-	updateDailyLogPouch(dailyLog, (user) => {
-		return res.send(user);
-	})
+	updateDailyLogPouch(dailyLog, callback);
 }
 
 export function updateDailyLogByID (id, callback){

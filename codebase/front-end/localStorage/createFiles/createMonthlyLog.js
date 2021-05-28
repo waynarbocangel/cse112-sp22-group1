@@ -109,7 +109,7 @@ function addDay(currentDay, startDate, endDay, month, callback){
 		localStorage.createDailyLog(month.id, [], [], dayDate, (error, day) => {
 			if (error == null){
 				addDay(currentDay + 1, startDate, endDay, month, (daysArray) =>  {
-					daysArray.splice(0, 0, day.id);
+					daysArray.splice(0, 0, {id: day.id, content: [], dailyLog: day.id});
 					callback(daysArray);
 				});
 			} else {
