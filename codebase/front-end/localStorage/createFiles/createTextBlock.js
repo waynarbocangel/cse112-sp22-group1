@@ -188,7 +188,6 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 					})
 				}
 			} else {
-				console.log("this still happens");
 				let userArr = [];
 				Array.prototype.push.apply(userArr, doc.dailyLogs);
 				Array.prototype.push.apply(userArr, doc.monthlyLogs);

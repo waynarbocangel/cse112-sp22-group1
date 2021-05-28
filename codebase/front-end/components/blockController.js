@@ -156,9 +156,6 @@ export function populateEditor (controller, items, callback) {
 }
 
 function populateEditorRecursive(controller, items, index, callback) {
-	console.log("in recursive populate editor");
-	console.log(items.length);
-	console.log(items);
 	if(index < items.length) {
 		controller.createNewBlock(items[index], (block) => {
 	 		block.tabLevel = items[index].tabLevel
@@ -173,6 +170,11 @@ function populateEditorRecursive(controller, items, index, callback) {
 				});
 			} else if (items[index].kind == "event"){
 				block.setupEvent();
+				block.item = items[index];
+				block.shadowRoot.getElementById("textBlock").innerText = items[index].text;//= item.text;
+				populateEditorRecursive(controller, items, index + 1, (res) => {
+					callback(res);
+				});
 				
 			} else if (items[index].kind == "task") {
 				console.log(items[index]);
@@ -203,6 +205,19 @@ function populateEditorRecursive(controller, items, index, callback) {
 				});
 			} else if (items[index].kind == "h2") {
 				block.setupHeader2();
+				block.item = items[index];
+				block.shadowRoot.getElementById("textBlock").innerText = items[index].text;//= item.text;
+				populateEditorRecursive(controller, items, index + 1, (res) => {
+					callback(res);
+				});
+			} else if (items[index].kind == "h3"){
+				block.setupHeader3();
+				block.item = items[index];
+				block.shadowRoot.getElementById("textBlock").innerText = items[index].text;//= item.text;
+				populateEditorRecursive(controller, items, index + 1, (res) => {
+					callback(res);
+				});
+			} else {
 				block.item = items[index];
 				block.shadowRoot.getElementById("textBlock").innerText = items[index].text;//= item.text;
 				populateEditorRecursive(controller, items, index + 1, (res) => {

@@ -12,7 +12,7 @@ export function deleteTextBlockPouch(db, id, callback) {
 				if(block.kind == "task"){
 					localStorage.deleteTaskByID(block.objectReference, (error) => {
 						if (!error){
-							deleteBlock(db, id, callback);
+							deleteBlock(db, block, id, callback);
 						} else {
 							callback(error);
 						}
@@ -20,13 +20,13 @@ export function deleteTextBlockPouch(db, id, callback) {
 				} else if (block.kind == "event"){
 					localStorage.deleteEventByID(block.objectReference, (error) => {
 						if (!error){
-							deleteBlock(db, id, callback);
+							deleteBlock(db, block, id, callback);
 						} else {
 							callback(error);
 						}
 					})
 				} else {
-					deleteBlock(db, id, callback);
+					deleteBlock(db, block, id, callback);
 				}
 			}
 		}
@@ -35,7 +35,7 @@ export function deleteTextBlockPouch(db, id, callback) {
 	});
 }
 
-function deleteBlock(db, id, callback){
+function deleteBlock(db, block, id, callback){
 	localStorage.readUser((err, user) => {
 		if (err == null){
 			let userArr = [];
@@ -46,8 +46,6 @@ function deleteBlock(db, id, callback){
 			Array.prototype.push.apply(userArr, user.collections);
 
 			let parentArr = userArr.filter(object => object.id == block.parent);
-			
-			console.log(parentArr);
 
 			let parent = parentArr[0];
 			if (parent.objectType == "dailyLog"){

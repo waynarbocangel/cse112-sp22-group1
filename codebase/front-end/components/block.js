@@ -37,6 +37,8 @@ export class TextBlock extends HTMLElement{
 				}
 			}
 			this.tabLevel = controller.currentTabLevel;
+			this.atPressed = false;
+			this.hashPressed = false;
 			this.setupTabLevel();
 			callback(true);
 		})
@@ -207,7 +209,7 @@ export class TextBlock extends HTMLElement{
         this.kind = "event";
 		this.controller.creatingFromBullet = {isTrue: true, kind: this.kind};
         this.initialHeight = 3;
-        textBlock.setAttribute("placeholder", "Event");
+        textBlock.setAttribute("placeholder", "Event:");
 		textBlock.setAttribute("dateFiller", " use @ for time 13:00 and # for dates MM/DD/YYYY or weekdays");
         this.classList.add("eventContainer");
 		this.editorIcons.classList.add("noteIcons");
@@ -363,6 +365,17 @@ export class TextBlock extends HTMLElement{
 		textBlock.addEventListener("input",() =>{
 			let content = textBlock.innerHTML;
             this.setCurrentSpot();
+			if (!content.includes("@")){
+				this.atPressed = false;
+			}
+			if (this.kind == "event"){
+				if (content.includes('@')){
+					content.replace("@", `<strong>@</strong>`);
+					console.log(content);
+					textBlock.innerHTML = content;
+					this.moveToSpot(1000000, true);
+				}
+			}
 			if (content == "#&nbsp;"){
 				this.setupHeader1();
 			} else if (content == "##&nbsp;"){
@@ -469,8 +482,17 @@ export class TextBlock extends HTMLElement{
                 this.tabLevel += 1;
                 this.setupTabLevel();
                 e.preventDefault();
-            }
-
+            } else if (key == "@" && this.kind == "event"){
+				if (!this.atPressed) {
+					this.atPressed = true;
+				} else {
+					e.stopPropagation();
+					e.preventDefault();
+				}
+			} else if (this.atPressed && this.kind == "event" && key.match(/[^123456789:]/g)){
+				e.stopPropagation();
+				e.preventDefault();
+			}
 		};
 
         textBlock.onkeyup = (e) => {
