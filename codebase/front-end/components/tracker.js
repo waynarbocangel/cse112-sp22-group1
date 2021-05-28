@@ -16,7 +16,7 @@ export class TrackerMenu extends HTMLElement {
 			}
             .wrapper {
                 position: fixed;
-                z-index: 1000;
+                z-index: 5;
                 top: 0;
                 width: 35vw;
 				padding-left: 20px;
@@ -53,7 +53,7 @@ export class TrackerMenu extends HTMLElement {
             .tracker_header {
                 top: 0;
 				right: 10px;
-				margin-bottom: 15px;
+				padding-bottom: 15px;
                 opacity: 95%;
 				border-bottom: solid rgba(157, 148, 241, 0.7);
             }

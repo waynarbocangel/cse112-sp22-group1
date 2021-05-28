@@ -1,21 +1,23 @@
 const themeColors = {
     darkmode: {
-        "--content-foreground-color": "#FFFFFF",
-        "--content-background-color": "#1e1e1e",
+        "--border-color":             "#292929",
+        "--content-foreground-color": "#D4D4D4",
+        "--content-background-color": "#1E1E1E",
         "--tracker-foreground-color": "#FFFFFF",
         "--tracker-background-color": "#2B2D42",
-        "--navbar-foreground-color": "#FFFFFF",
-        "--navbar-background-color": "#333333",
+        "--navbar-foreground-color":  "#FFFFFF",
+        "--navbar-background-color":  "#333333",
         "--icon-filter": "invert()",
     },
 
     lightmode: {
+        "--border-color":             "#F2F2F2",
         "--content-foreground-color": "#000000",
         "--content-background-color": "#FFFFFF",
         "--tracker-foreground-color": "#FFFFFF",
         "--tracker-background-color": "#2B2D42",
-        "--navbar-foreground-color": "#FFFFFF",
-        "--navbar-background-color": "#F7F2EC",
+        "--navbar-foreground-color":  "#FFFFFF",
+        "--navbar-background-color":  "#F7F2EC",
         "--icon-filter": "",
 
     }
@@ -40,7 +42,7 @@ export class SettingsMenu extends HTMLElement {
                     bottom: 0;
                     right: 0;
                     background-color: #0000007F;
-                    z-index: 3;
+                    z-index: 10;
                     cursor: pointer;
                     user-select: none;
                 }
