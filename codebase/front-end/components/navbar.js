@@ -16,96 +16,40 @@ template.innerHTML = `
 			bottom: 0;
 			left: 0;
 			display: block;
-			background: rgba(236, 223, 207, 0.4);
-			
-
+			background-color: var(--navbar-background-color);
 		}
 
-		#home {
-			background-image: url(../public/resources/home_icon.png);
-			background-size: cover;
+		button {
+			display: block;
 			background-color: transparent;
-			border:none;
-
-			position: absolute;
+			border: none;
+			padding: 0;
 			width: 32px;
 			height: 32px;
-			left: 15px;
-			top: 20px;
+			margin: 32px auto;
 		}
 
-		#target {
-			background-image: url(../public/resources/target_icon.png);
-			background-size: cover;
-			background-color: transparent;
-			background-blend-mode: multiply;
-			border:none;
+		button img {
+			height: 100%;
+			filter: var(--icon-filter);
+			opacity: 50%;
 
-			position: absolute;
-			width: 35px;
-			height: 35px;
-			left: 15px;
-			top: 90px;
 		}
 
-		#single {
-			background-image: url(../public/resources/left.png);
-			background-size: cover;
-			background-color: transparent;
-			background-blend-mode: multiply;
-			border:none;
-
-			position: absolute;
-			width: 32px;
-			height: 32px;
-			left: 15px;
-			top: 160px;
+		button:hover img {
+			opacity: 100%;
+			transition: opacity 150ms;
 		}
 
-		#double {
-			background-image: url(../public/resources/double_icon.png);
-			background-size: cover;
-			background-color: transparent;
-			background-blend-mode: multiply;
-			border:none;
-
+		#bottom {
 			position: absolute;
-			width: 35px;
-			height: 35px;
-			left: 15px;
-			top: 230px;
+			bottom: 10px;
+			width: 100%;
 		}
 
 		#user {
-			background-image: url(../public/resources/user.png);
-			background-size: cover;
-			background-color: transparent;
-			background-blend-mode: multiply;
-			border:none;
-
-			position: absolute;
-			width: 33px;
-			height: 33px;
-			left: 13.5px;
-			bottom: 20px;
-		}
-
-		ul {
-			list-style-type: none;
-		}
-
-		ul li {
-			opacity: 0.7;
-			transition: 150ms;
-		}
-
-		ul li:hover{
-			opacity: 1;
-			transition: 150ms;
-		}
-
-		ul li button{
-			cursor: pointer;
+			position: static;
+			margin: 0 auto;
 		}
 
 		@media only screen and (max-width:900px) {
@@ -151,8 +95,6 @@ template.innerHTML = `
 			}
 	
 			#homeMenu {
-				background-image: url(../public/resources/home_icon.png);
-				background-size: cover;
 				background-color: transparent;
 				border:none;
 				cursor: pointer;
@@ -166,8 +108,6 @@ template.innerHTML = `
 			}
 	
 			#singleMenu {
-				background-image: url(../public/resources/left.png);
-				background-size: cover;
 				background-color: transparent;
 				border:none;
 				cursor: pointer;
@@ -181,8 +121,6 @@ template.innerHTML = `
 			}
 	
 			#doubleMenu {
-				background-image: url(../public/resources/double_icon.png);
-				background-size: cover;
 				background-color: transparent;
 				border:none;
 				cursor: pointer;
@@ -196,8 +134,6 @@ template.innerHTML = `
 			}
 	
 			#userMenu {
-				background-image: url(../public/resources/user.png);
-				background-size: cover;
 				background-color: transparent;
 				border:none;
 				cursor: pointer;
@@ -274,13 +210,13 @@ template.innerHTML = `
 	</style> 
 
 	<nav class="nav-bar">
-		<ul>
-			<li><button id="home"></button></li>
-			<li><button id="target"></button></li>
-			<li><button id="single"></button></li>
-			<li><button id="double"></button></li>
-			<li><button id="user"></button></li>
-		</ul>
+		<button id="home">  <img src="../public/resources/home_icon.png"></button>
+		<button id="target"><img src="../public/resources/target_icon.png"></button>
+		<button id="single"><img src="../public/resources/left.png"></button>
+		<button id="double"><img src="../public/resources/double_icon.png"></button>
+		<div id="bottom">
+			<button id="user">  <img src="../public/resources/user.png"></button>
+		</div>
 	</nav>
 	<nav class="navigation">
 		<div id="menu" class="menuClosed">
@@ -325,7 +261,9 @@ export class NavBar extends HTMLElement {
 			this.goFarBack();
 		});
 		this.user.addEventListener('click', () => {
-			alert("hello"); 
+			let settingsMenu = document.querySelector("settings-menu");
+
+			settingsMenu.open();
 		});
 
 		this.homeMenu.addEventListener('click', () => {
