@@ -1,6 +1,6 @@
 import * as localStorage from "../userOperations.js";
 
-export function updateTextBlockPouch (db, textBlock, callback) {
+export function updateTextBlockPouch (db, textBlock, date, callback) {
 	console.log(textBlock);
 	db.get("0000", (err, doc) => {
 		if (err) {
@@ -23,6 +23,10 @@ export function updateTextBlockPouch (db, textBlock, callback) {
 					let events = eventArr.filter(element => element.id == textBlock.objectReference);
 					let event = events[0];
 
+					/*let index = 0;
+					while(doc.events[index].id != event.id){
+						index++;
+					}*/
 					localStorage.deleteEvent(event, (err) => {
 						if (err) {
 							console.log(err);
@@ -33,7 +37,7 @@ export function updateTextBlockPouch (db, textBlock, callback) {
 									callback(err, null);
 								} else {
 									textBlock.objectReference = task.id;
-									updateBlock(textBlockArr, (err) => {
+									updateBlock(db, textBlockArr, (err) => {
 										if (err) {
 											console.log(err);
 											callback(err);
@@ -42,7 +46,7 @@ export function updateTextBlockPouch (db, textBlock, callback) {
 								}
 							})
 
-							updateBlock(textBlockArr, (err) => {
+							updateBlock(db, textBlockArr, (err) => {
 								if (err) {
 									console.log(err);
 									callback(err);
@@ -61,7 +65,7 @@ export function updateTextBlockPouch (db, textBlock, callback) {
 							console.log(err);
 							callback(err);
 						} else {
-							updateBlock(textBlockArr, (err) => {
+							updateBlock(db, textBlockArr, (err) => {
 								if (err) {
 									console.log(err);
 									callback(err);
@@ -76,14 +80,7 @@ export function updateTextBlockPouch (db, textBlock, callback) {
 							callback(err);
 						} else {
 							textBlock.objectReference = task.id;
-							updateBlock(textBlockArr, (err) => {
-								if (err) {
-									console.log(err);
-									callback(err);
-								}
-							})
-							
-							updateBlock(textBlockArr, (err) => {
+							updateBlock(db, textBlockArr, (err) => {
 								if (err) {
 									console.log(err);
 									callback(err);
@@ -102,9 +99,9 @@ export function updateTextBlockPouch (db, textBlock, callback) {
 					if (err) {
 						console.log(err);
 						callback(err);
-						textBlock.objectReference = nul
 					} else {
-						updateBlock(textBlockArr, (err) => {
+						textBlock.objectReference = null;
+						updateBlock(db, textBlockArr, (err) => {
 							if (err) {
 								console.log(err);
 								callback(err);
@@ -112,31 +109,104 @@ export function updateTextBlockPouch (db, textBlock, callback) {
 						})
 					}
 				})
-			}
-			/*else if (textBlock.kind == "event") {
+			} else if (textBlock.kind != "event" && oldBlock.kind == "event") {
+				let eventArr = [];
+				Array.prototype.push.apply(eventArr, doc.events);
+				let events = eventArr.filter(element => element.id == textBlock.objectReference);
+				let event = events[0];
+
+				localStorage.deleteEvent(event, (err) => {
+					if (err) {
+						console.log(err);
+						callback(err);
+					} else {
+						textBlock.objectReference = null;
+						updateBlock(db, textBlockArr, (err) => {
+							if (err) {
+								console.log(err);
+								callback(err);
+							}
+						})
+					}
+				})
+			} else if (textBlock.kind == "event") {
 				if (oldBlock.kind == "event") {
 					let eventArr = [];
 					Array.prototype.push.apply(eventArr, doc.events);
 					let events = eventArr.filter(element => element.id == textBlock.objectReference);
 					let event = events[0];
 					
-					event.something to change == textblock.new stuff to add to event
-					localStorage.updateTask(task, (err) => {
+					event.title = textBlock.text;
+					localStorage.updateEvent(event, (err) => {
 						if (err) {
 							console.log(err);
 							callback(err);
+						} else {
+							updateBlock(db, textBlockArr, (err) => {
+								if (err) {
+									console.log(err);
+									callback(err);
+								}
+							})
 						}
 					})
 				} else if (oldBlock.kind == "task") {
+					let taskArr = [];
+					Array.prototype.push.apply(eventArr, doc.tasks);
+					let tasks = taskArr.filter(element => element.id == textBlock.objectReference);
+					let task = tasks[0];
 
+					localStorage.deleteTask(task, (err) => {
+						if (err) {
+							console.log(err);
+						} else {
+							localStorage.createEvent(textBlock.text, textBlock.id, date, textBlock.signifier, (err, event) => {
+								if (err) {
+									console.log(err);
+									callback(err, null);
+								} else {
+									textBlock.objectReference = event.id;
+									updateBlock(db, textBlockArr, (err) => {
+										if (err) {
+											console.log(err);
+											callback(err);
+										}
+									})
+								}
+							})
+
+							updateBlock(db, textBlockArr, (err) => {
+								if (err) {
+									console.log(err);
+									callback(err);
+								}
+							})
+						}
+					})
+
+				} else if(oldBlock.kind != "event") {
+					localStorage.createEvent(textBlock.text, textBlock.id, date, textBlock.signifier, (err, event) => {
+						if (err) {
+							console.log(err);
+							callback(err);
+						} else {
+							textBlock.objectReference = event.id;
+							updateBlock(db, textBlockArr, (err) => {
+								if (err) {
+									console.log(err);
+									callback(err);
+								}
+							})
+						}
+					})
 				}
-			}*/
+			}
 			
 		}
 	})
 }
 
-function updateBlock(textBlockArr, callback){
+function updateBlock(db, textBlockArr, callback){
 	localStorage.readUser((err, user) => {
 		if (err == null){
 			db.put({

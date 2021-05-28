@@ -3,8 +3,8 @@ export function deleteTaskPouch(db, id, index, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			const taskArr = doc.tasks.filter(task => task.id == id);
-			const block = null;
+			let taskArr = doc.tasks.filter(task => task.id == id);
+			let block = null;
 			if (taskArr != undefined) {
 				block = taskArr[0];
 			}
@@ -16,7 +16,7 @@ export function deleteTaskPouch(db, id, index, callback) {
 			Array.prototype.push.apply(userArr, doc.trackers);
 			Array.prototype.push.apply(userArr, doc.collections);
 
-			const newTasks = doc.tasks.filter(task => task.id != id);
+			let newTasks = doc.tasks.filter(task => task.id != id);
 			
 			doc.tasks = newTasks;
 			

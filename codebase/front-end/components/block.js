@@ -335,8 +335,8 @@ export class TextBlock extends HTMLElement{
 				if (textBlock.textContent != "" ) {
 					this.item.kind = this.kind;
 					this.item.text = textBlock.textContent;
-					
-					localStorage.updateTextBlock(this.item, (res) => {
+					let date = null;
+					localStorage.updateTextBlock(this.item, date, (res) => {
 						console.log(res);    
 					})
 				} else {

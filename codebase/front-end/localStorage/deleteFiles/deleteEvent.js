@@ -3,15 +3,15 @@ export function deleteEventPouch(db, id, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			const eventArr = doc.events.filter(event => event.id == id);
-			const block = null;
+			let eventArr = doc.events.filter(event => event.id == id);
+			let block = null;
 			if (eventArr.length > 0) {
 				block = eventArr[0];
 			}
 			let userArr = [];
 			Array.prototype.push.apply(userArr, doc.textBlocks);
 
-			const newEvents = doc.events.filter(event => event.id != id);
+			let newEvents = doc.events.filter(event => event.id != id);
 			
 			doc.events = newEvents;
 
@@ -36,4 +36,3 @@ export function deleteEventPouch(db, id, callback) {
 		}
 	})
 }
-u

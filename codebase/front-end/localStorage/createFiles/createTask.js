@@ -33,18 +33,14 @@ export function createTaskPouch (db, parent, text, complete, signifier, callback
 
 
 			/*let userArr = [];
-			Array.prototype.push.apply(userArr, doc.dailyLogs);
-			Array.prototype.push.apply(userArr, doc.monthlyLogs);
-			Array.prototype.push.apply(userArr, doc.futureLogs);
-			Array.prototype.push.apply(userArr, doc.trackers);
-			Array.prototype.push.apply(userArr, doc.collections);
+			Array.prototype.push.apply(userArr, doc.textBlocks);
 
 			let parentArr = userArr.filter(object => object.id == parent);
-
-			if(index == null) {
-				parentArr[0].contents.push(id);
-			} else {
-				parentArr[0].contents.splice(index, 0, id);
+			let parentObj = null;
+			for(let i = 0; i < userArr.length; i++){
+				if (userArr[i].id == parent) {
+					parentObj = userArr[i];
+				}
 			}*/
 			
 			doc.tasks.push(taskObject);

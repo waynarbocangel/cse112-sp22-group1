@@ -1,7 +1,7 @@
 import {makeid} from "./makeId.js";
 let eventObject;
 
-export function createEventPouch (db, index, parent, date, signifier, callback) {
+export function createEventPouch (db, title, parent, date, signifier, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err, null);
@@ -25,28 +25,31 @@ export function createEventPouch (db, index, parent, date, signifier, callback) 
 			eventObject = {
 				id: id,
 				objectType: "event",
+				title: title,
 				parent: parent,
 				date: date,
 				signifier: signifier
 			};
 
 			/*let userArr = [];
-			//Array.prototype.push.apply(userArr, doc.dailyLogs);
-			//Array.prototype.push.apply(userArr, doc.monthlyLogs);
-			//Array.prototype.push.apply(userArr, doc.futureLogs);
-			//Array.prototype.push.apply(userArr, doc.trackers);
-			//Array.prototype.push.apply(userArr, doc.collections);
 			Array.prototype.push.apply(userArr, doc.textBlocks);
 
 			let parentArr = userArr.filter(object => object.id == parent);
-			
+			let parentObj = null;
+			for(let i = 0; i < userArr.length; i++){
+				if (userArr[i].id == parent) {
+					parentObj = userArr[i];
+				}
+			}
 			//parentArr will be empty since createTextBlock isn't done running when createEvent is run
-			if(index == null) {
-				parentArr[0].content.push(id);
-			} else {
-				parentArr[0].content.splice(index, 0, id);
+			//but not when we are updating a task textblock to an event textblock
+			if(parentObj != null){
+				if(index == null) {
+					parentObj.content.push(id);
+				} else {
+					parentObj.content.splice(index, 0, id);
+				}
 			}*/
-
 			doc.events.push(eventObject);
 
 			return db.put(
