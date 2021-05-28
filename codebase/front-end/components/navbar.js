@@ -8,6 +8,7 @@ template.innerHTML = `
 		.navigation {
 			display: none; 
 		}
+
 		.nav-bar {
 			position: fixed;
 			width: 60px;

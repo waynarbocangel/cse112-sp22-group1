@@ -24,7 +24,7 @@ export function updateTaskPouch (db, task, callback) {
 				if (err) {
 					callback(err);
 				} else {
-					callback(res);
+					callback(null);
 				}
 			});
 		}

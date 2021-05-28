@@ -36,4 +36,3 @@ export function deleteEventPouch(db, id, callback) {
 		}
 	})
 }
-u

@@ -1,3 +1,5 @@
+import * as localStorage from "../userOperations.js";
+
 export function deleteTextBlockPouch(db, id, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {

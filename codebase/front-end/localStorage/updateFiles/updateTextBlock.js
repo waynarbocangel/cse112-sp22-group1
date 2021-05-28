@@ -33,7 +33,7 @@ export function updateTextBlockPouch (db, textBlock, callback) {
 									callback(err, null);
 								} else {
 									textBlock.objectReference = task.id;
-									updateBlock(textBlockArr, (err) => {
+									updateBlock(db, textBlockArr, (err) => {
 										if (err) {
 											console.log(err);
 											callback(err);
@@ -42,7 +42,7 @@ export function updateTextBlockPouch (db, textBlock, callback) {
 								}
 							})
 
-							updateBlock(textBlockArr, (err) => {
+							updateBlock(db, textBlockArr, (err) => {
 								if (err) {
 									console.log(err);
 									callback(err);
@@ -61,7 +61,7 @@ export function updateTextBlockPouch (db, textBlock, callback) {
 							console.log(err);
 							callback(err);
 						} else {
-							updateBlock(textBlockArr, (err) => {
+							updateBlock(db, textBlockArr, (err) => {
 								if (err) {
 									console.log(err);
 									callback(err);
@@ -76,19 +76,12 @@ export function updateTextBlockPouch (db, textBlock, callback) {
 							callback(err);
 						} else {
 							textBlock.objectReference = task.id;
-							updateBlock(textBlockArr, (err) => {
+							updateBlock(db, textBlockArr, (err) => {
 								if (err) {
 									console.log(err);
 									callback(err);
 								}
-							})
-							
-							updateBlock(textBlockArr, (err) => {
-								if (err) {
-									console.log(err);
-									callback(err);
-								}
-							})
+							});
 						}
 					})
 				}
@@ -104,7 +97,7 @@ export function updateTextBlockPouch (db, textBlock, callback) {
 						callback(err);
 						textBlock.objectReference = nul
 					} else {
-						updateBlock(textBlockArr, (err) => {
+						updateBlock(db, textBlockArr, (err) => {
 							if (err) {
 								console.log(err);
 								callback(err);
@@ -136,7 +129,7 @@ export function updateTextBlockPouch (db, textBlock, callback) {
 	})
 }
 
-function updateBlock(textBlockArr, callback){
+function updateBlock(db, textBlockArr, callback){
 	localStorage.readUser((err, user) => {
 		if (err == null){
 			db.put({
