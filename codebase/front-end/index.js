@@ -2,6 +2,7 @@ import * as localStorage from "./localStorage/userOperations.js";
 import { TrackerMenu } from "./components/tracker.js";
 import { NavBar } from "./components/navbar.js";
 import { PageHeader } from "./components/header.js";
+import { SettingsMenu } from "./components/settings.js";
 import { DropdownBlock } from './components/dropdown.js';
 import { router, state } from './router.js';
 import { createEditor } from './components/blockController.js';

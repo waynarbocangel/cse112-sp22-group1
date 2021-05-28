@@ -1,11 +1,16 @@
 
 :root {
-    --content-foreground-color: #FF0000;
-    --content-background-color: #FF0000;
+    --content-foreground-color: #000000;
+    --content-background-color: #FFFFFF;
 
     --tracker-background-color: #2B2D42;
     --tracker-foreground-color: #FFFFFF;
-    
-    --sidebar-background-color: #FFFFFF;
-    --sidebar-foreground-color: #FFFFFF;
+
+    --navbar-background-color: #F7F2EC; /*ecdfcf66;*/
+    --navbar-foreground-color: #FFFFFF;
+
+    --icon-filter: ;
+
+    background-color: var(--content-background-color);
+    color: var(--content-foreground-color);
 }
