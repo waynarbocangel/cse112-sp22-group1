@@ -14,8 +14,8 @@ export function createDailyLogPouch (db, parent, content, trackers, date, callba
 			Array.prototype.push.apply(arrays, doc.collections);
 			Array.prototype.push.apply(arrays, doc.trackers);
 			Array.prototype.push.apply(arrays, doc.textBlocks);
-			Array.prototype.push.apply(arrays, doc.taskBlocks);
-			Array.prototype.push.apply(arrays, doc.eventBlocks);
+			Array.prototype.push.apply(arrays, doc.tasks);
+			Array.prototype.push.apply(arrays, doc.events);
 			Array.prototype.push.apply(arrays, doc.signifiers);
 			
 			while(arrays.filter(element => element.id == id).length > 0){
@@ -44,8 +44,8 @@ export function createDailyLogPouch (db, parent, content, trackers, date, callba
 					collections: doc.collections,
 					trackers: doc.trackers,
 					textBlocks: doc.textBlocks,
-					taskBlocks: doc.taskBlocks,
-					eventBlocks: doc.eventBlocks,
+					tasks: doc.tasks,
+					events: doc.events,
 					signifiers: doc.signifiers
 				}
 			).then((res) => {

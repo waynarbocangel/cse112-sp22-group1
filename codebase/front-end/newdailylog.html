@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="./newdailylog.css">
+    <link rel="stylesheet" href="./themes/darkmode.css">
+   
+	  <script></script>	
+    <title>January 1,2021</title>	
+</head>
+<body >
+<header></header>
+<main></main>
+<div>
+  <select id="theme">
+    <option value="lightmode">Light Mode</option>
+    <option value="darkmode">Dark Mode</option>
+
+  </select>
+</div>	
+	<script >
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById("theme").addEventListener("change", (e)=>{
+  document.querySelector("body").setAttribute("class", e.target.value);
+  });
+	let header = document.querySelector("header");
+	let myheader = document.createElement("my-header");
+
+	myheader.title = "Daily Log";
+	header.appendChild(myheader);
+    let main = document.querySelector("main");
+    let dailylog = document.createElement("log-list");
+
+    dailylog.categories = [
+        {
+          name: "1 Monday",
+          logs: [
+            {
+              text: "Lorem ipsum dolor sit amet adipiscine, consecacutor...",
+              link: "#"
+            },
+            {
+              text: "Lorem ipsum dolor sit amet adipiscine, consecacutor...",
+              link: "#"
+            },
+            {
+              text: "Lorem ipsum dolor sit amet adipiscine, consecacutor...",
+              link: "#"
+            }
+          ]
+        },
+        {
+          name: "2 Tuesday",
+          logs: [
+            {
+              text: "Lorem ipsum dolor sit amet adipiscine, consecacutor...",
+              link: "#"
+            },
+            {
+              text: "Lorem ipsum dolor sit amet adipiscine, consecacutor...",
+              link: "#"
+            },
+            {
+              text: "Lorem ipsum dolor sit amet adipiscine, consecacutor...",
+              link: "#"
+            }
+          ]
+        },
+		{
+          name: "3 Wednesday",
+          logs: [
+            {
+              text: "Lorem ipsum dolor sit amet adipiscine, consecacutor...",
+              link: "#"
+            },
+            {
+              text: "Lorem ipsum dolor sit amet adipiscine, consecacutor...",
+              link: "#"
+            },
+            {
+              text: "Lorem ipsum dolor sit amet adipiscine, consecacutor...",
+              link: "#"
+            }
+          ]
+        }
+      ]
+      main.appendChild(dailylog);
+});
+	</script>
+    <script src="./components/log.js"></script>
+	<script src="./components/header.js"></script>
+	<script src='./components/loglist.js'></script>
+    
+</body>
+</html>

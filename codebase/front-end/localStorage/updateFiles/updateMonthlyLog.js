@@ -4,7 +4,7 @@ export function updateMonthlyLogPouch (db, log, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			let monthlyLogArr = doc.userObject.monthlyLogs.filter(element => element.id != log.id);
+			let monthlyLogArr = doc.monthlyLogs.filter(element => element.id != log.id);
 			monthlyLogArr[0].date = log.date;
 			monthlyLogArr[0].parent = log.parent;
 			monthlyLogArr[0].content = log.content;

@@ -16,6 +16,9 @@ export let pageNumber = 1;
 export let currentObject;
 let contentWrapper = document.getElementById("contentWrapper");
 
+document.getElementById("targetMenu").onclick = () => {
+	navbar.toggleTracker();
+};
 router.setState(document.location.hash, false);
 
 window.onpopstate = () => {
@@ -75,6 +78,10 @@ export function setupIndex(header, btn) {
 					let dropdown = new DropdownBlock(`Future Log ${monthNames[futureLogStart.getMonth()]} ${futureLogStart.getFullYear()} - ${monthNames[futureLogEnd.getMonth()]} ${futureLogEnd.getFullYear()}`, parentArr[i], 1);
 					contentWrapper.appendChild(dropdown);
 
+					if (i > 0){
+						dropdown.titleWrapper.classList.add("singleItemWrapper");
+					}
+
 					for (let j = 0; j < parentArr[i].months.length; j++) {
 						let currentMonth = user.monthlyLogs.filter(month => month.id == parentArr[i].months[j])[0];
 						let dropdownMonth = new DropdownBlock(`${monthNames[new Date(currentMonth.date).getMonth()]} ${new Date(currentMonth.date).getFullYear()}`, currentMonth, 2);
@@ -101,14 +108,18 @@ export function setupIndex(header, btn) {
 		btn[i].removeAttribute("disabled");
 		btn[i].style.visibility = "visible";
 	}
-
-	createEditor(contentWrapper, (success) => {});
+	document.getElementById("targetMenu").style.display = "none";
+	createEditor(contentWrapper, currentObject, (success) => {});
 	navbar.target.setAttribute ("disabled", "disabled");
 	navbar.target.style.visibility = "hidden";
 	navbar.single.setAttribute ("disabled", "disabled");
 	navbar.single.style.visibility = "hidden";
 	navbar.double.setAttribute ("disabled", "disabled");
 	navbar.double.style.visibility = "hidden";
+	navbar.singleMenu.setAttribute ("disabled", "disabled");
+	navbar.singleMenu.style.visibility = "hidden";
+	navbar.doubleMenu.setAttribute ("disabled", "disabled");
+	navbar.doubleMenu.style.visibility = "hidden";
 	let headerButtons = header.querySelectorAll(".imgbutton");
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.add("hide");
@@ -132,7 +143,11 @@ export function setupFutureLog(header, btn, newState){
 				let currentMonth = parentArr[i];
 				let dropdownMonth = new DropdownBlock(`${monthNames[new Date(currentMonth.date).getMonth()]} ${new Date(currentMonth.date).getFullYear()}`, currentMonth, 1);
 				contentWrapper.appendChild(dropdownMonth);
-				console.log(currentMonth);
+
+				if (i > 0){
+					dropdownMonth.titleWrapper.classList.add("singleItemWrapper");
+				}
+
 				for(let k = 0; k < currentMonth.days.length; k++) {
 					let currentDay = user.dailyLogs.filter(day => day.id == currentMonth.days[k])[0];
 					console.log(currentDay);
@@ -144,7 +159,7 @@ export function setupFutureLog(header, btn, newState){
 			}
 		}
 	});
-	console.log(currentObject);
+	document.getElementById("targetMenu").style.display = "block";
 	let futureLogStart = new Date(currentObject.startDate);
 	let futureLogEnd = new Date(currentObject.endDate);
 	header.title = (futureLogEnd.getFullYear() == futureLogStart.getFullYear()) ? `Future Log ${futureLogStart.getFullYear()}` : `Future Log ${futureLogStart.getFullYear()} - ${futureLogEnd.getFullYear()}`;
@@ -160,6 +175,10 @@ export function setupFutureLog(header, btn, newState){
 	navbar.single.style.visibility = "hidden";
 	navbar.double.setAttribute ("disabled", "disabled");
 	navbar.double.style.visibility = "hidden";
+	navbar.singleMenu.setAttribute ("disabled", "disabled");
+	navbar.singleMenu.style.visibility = "hidden";
+	navbar.doubleMenu.setAttribute ("disabled", "disabled");
+	navbar.doubleMenu.style.visibility = "hidden";
 	let headerButtons = header.querySelectorAll(".imgbutton");
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.remove("hide");
@@ -183,10 +202,11 @@ export function setupMonthlyLog(header, btn, newState){
 			let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 			for(let i = 0; i < currentObject.days.length; i++) {
 				let currentDay = parentArr[i];
-				console.log(currentDay);
-				console.log(new Date(currentDay.date));
-				let dropdownDay = new DropdownBlock(`${weekDays[new Date(currentObject.date).getDay()]}, ${monthNames[new Date(currentDay.date).getMonth()]} ${new Date(currentDay.date).getUTCDate()}`, currentDay, 1);
+				let dropdownDay = new DropdownBlock(`${weekDays[new Date(currentDay.date).getDay()]}, ${monthNames[new Date(currentDay.date).getMonth()]} ${new Date(currentDay.date).getUTCDate()}`, currentDay, 1);
 				contentWrapper.appendChild(dropdownDay);
+				if (i > 0){
+					dropdownDay.titleWrapper.classList.add("singleItemWrapper");
+				}
 			}
 		}
 	});
@@ -200,8 +220,11 @@ export function setupMonthlyLog(header, btn, newState){
 		btn[i].removeAttribute("disabled");
 		btn[i].style.visibility = "visible";
 	}
+	document.getElementById("targetMenu").style.display = "block";
 	navbar.double.setAttribute ("disabled", "disabled");
 	navbar.double.style.visibility = "hidden";
+	navbar.doubleMenu.setAttribute ("disabled", "disabled");
+	navbar.doubleMenu.style.visibility = "hidden";
 	let headerButtons = header.querySelectorAll(".imgbutton");
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.remove("hide");
@@ -221,9 +244,10 @@ export function setupDailyLog(header, btn, newState){
 		btn[i].removeAttribute("disabled");
 		btn[i].style.visibility = "visible";
 	}
-	createEditor(contentWrapper, (success) => {
+	createEditor(contentWrapper, currentObject, (success) => {
 		console.log(success);
 	});
+	document.getElementById("targetMenu").style.display = "block";
 	let headerButtons = header.querySelectorAll(".imgbutton");
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.remove("hide");
@@ -231,10 +255,54 @@ export function setupDailyLog(header, btn, newState){
 	let tracker = new TrackerMenu("Daily Log Trackers");
 	setTimeout(() => {
 		let trackerContent = tracker.shadowRoot.getElementById('editor');
-		createEditor(trackerContent, (success) => {
+		createEditor(trackerContent, tracker,(success) => {
 			console.log(success);
 		});
 		document.getElementById("trackerWrapper").appendChild(tracker);
 	}, 20);
 	
+}
+
+export function setupCollection(header, btn, newState){
+	/*localStorage.readUser((err, user) => {
+		if (err) {
+			console.log(err);
+		} else {
+			let userArr = [];
+			Array.prototype.push.apply(userArr, user.textBlocks);
+			
+			let parentArr = [];
+			for (let i = 0; i < currentObject.contents.length; i++) {
+				Array.prototype.push.apply(parentArr, userArr.filter(object => object.id == currentObject.contents[i]));
+			}
+		}
+	});*/
+
+	header.title = currentObject.title;
+	pageNumber = 5;
+	url = newState;
+	//setting navbar buttons
+	for(let i = 0; i<btn.length;i++)
+	{
+		btn[i].removeAttribute("disabled");
+		btn[i].style.visibility = "visible";
+	}
+
+	createEditor(contentWrapper, currentObject, (success) => {
+		console.log(success);
+	});
+	
+	navbar.single.setAttribute ("disabled", "disabled");
+	navbar.single.style.visibility = "hidden";
+	navbar.double.setAttribute ("disabled", "disabled");
+	navbar.double.style.visibility = "hidden";
+	navbar.singleMenu.setAttribute ("disabled", "disabled");
+	navbar.singleMenu.style.visibility = "hidden";
+	navbar.doubleMenu.setAttribute ("disabled", "disabled");
+	navbar.doubleMenu.style.visibility = "hidden";
+	let headerButtons = header.shadowRoot.querySelectorAll(".imgbutton");
+	for (let i = 0; i < headerButtons.length; i++){
+		headerButtons[i].classList.remove("hide");
+	}
+	//document.getElementById("trackerWrapper").appendChild(new TrackerMenu("Future Log Trackers"));
 }

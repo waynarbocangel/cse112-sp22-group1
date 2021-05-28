@@ -1,12 +1,12 @@
-export function deleteCollectionPouch(db, id, callback) {
+export function deleteEventPouch(db, id, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
-			const collectionArr = doc.collections.filter(collection => collection.id == id);
+			const eventArr = doc.events.filter(event => event.id == id);
 			const block = null;
-			if (collectionArr.length > 0) {
-				block = taskBlockArr[0];
+			if (eventArr.length > 0) {
+				block = eventArr[0];
 			}
 			let userArr = [];
 					Array.prototype.push.apply(userArr, doc.dailyLogs);
@@ -20,16 +20,10 @@ export function deleteCollectionPouch(db, id, callback) {
 			const parent = parentArr[0];
 			const newContents = parent.contents.filter(obj => obj != id);
 
-			const newCollections = doc.collections.filter(collection => collection.id != id);
-			const newIndexContents = doc.index.contents.filter(tracker => tracker.id != id);
-			const indexObj = {
-				objectType: "index",
-				contents: newIndexContents
-			}
-
-			doc.collections = newCollections;
-			doc.index = indexObj;
+			const newEvents = doc.events.filter(event => event.id != id);
 			
+			doc.events = newEvents;
+
 			return db.put(
 				{
 					_id: "0000",

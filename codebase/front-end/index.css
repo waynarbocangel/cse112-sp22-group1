@@ -15,7 +15,9 @@ html, body, section, .full-height {
 
 body {
     margin: 0;
-    overflow: auto;
+	overflow: auto;
+	position: relative;
+	z-index: -2;
 }
 
 div {
@@ -28,45 +30,105 @@ div {
     overflow: auto;
     outline: none;
     display: block;
-    margin-top: 20px;
-    margin-left: 80px;
-    margin-right: 20px;
+	margin-top: 10px;
+	margin-left: 80px;
+	margin-right: 20px;
+	position: relative;
+	z-index: -1;
 }
 
-.container-fluid {
-    margin-top: 5%;
-    margin-left: 8%;
+text-block{
+	display: block;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	left: 0;
+	right: 0;
 }
 
-.noteContainer {
+.noteContainer{
     margin-top: 7px;
     margin-bottom: 7px;
-    margin-left: 20px;
+    margin-left: 65px;
+    display: list-item;
+    list-style-type: disc;
+    list-style-position: outside;
+}
+
+.eventContainer{
+	margin-top: 7px;
+    margin-bottom: 7px;
+    margin-left: 65px;
     display: list-item;
     list-style-type: circle;
     list-style-position: outside;
 }
 
+
 /*
 .noteContainer:before{content: '\f081';} */
 
-#markdown {
-    overflow: auto;
-    border-left: 1px solid black;
-    padding: 3%;
-}
-
 /* thomas's code */
-
 page-header {
     display: block;
     margin-left: 80px;
     margin-right: 20px;
     border-bottom: solid 2px rgba(0, 0, 0, 0.05);
+	text-align: left;
 }
 
+@media only screen and (max-width:900px) {
+	#topbar{
+		margin-left: 20px;
+		text-align: center;
+	}
+
+	#contentWrapper{
+		margin-left: 20px;
+	}
+}
+
+/* Fade-in buttons */
+#targetMenu{
+	display: none;
+}
+
+
+@media only screen and (max-width:900px) {
+	#targetMenu{
+		display: block;
+		position: fixed;
+		bottom: 20px;
+		right: 20px;
+		width: 60px;
+		height: 60px;
+		border-radius: 80px;
+		border: 1px solid transparent;
+		box-shadow: 1px 5px 10px 5px rgba(0, 0, 0, 0.1);
+		background-image: url(./public/resources/target_icon.png);
+		background-size: 35px;
+		background-repeat: no-repeat;
+		background-position-x: 14px;
+		background-position-y: 7px;
+		background-color: transparent;
+		cursor: pointer;
+		opacity: 0.7;
+		-webkit-font-smoothing: antialiased;
+		background-blend-mode: multiply;
+		transition: 0.2s;
+	}
+	
+	#targetMenu:hover{
+		opacity: 1;
+		transition: 0.2s;
+	}
+}
+
+/* Side navigation */
 nav-bar {
     overflow: hidden;
+	position: relative;
+	z-index: 1;
 }
 
 .sidebar button {

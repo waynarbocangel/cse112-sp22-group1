@@ -1,4 +1,5 @@
 import * as localStorage from "../localStorage/userOperations.js";
+import {navbar} from "../index.js";
 
 export class PageHeader extends HTMLElement {
 	constructor() {
@@ -12,20 +13,12 @@ export class PageHeader extends HTMLElement {
 					font-family:"SF-Pro";
 					src: url("./public/fonts/SF-Pro.ttf");
 				}
-				@media screen and (max-width: 900px) {
-					.search_bar {
-						display: none;
-					}
-				
-				}
-				
-				@media screen and (min-width: 600px) {
-					.search_bar {
-						float: right;
-					}
-				}
 		
 				/* Top navigation */
+				#menuToggle{
+					display: none;
+				}
+
 				.header {
 					font-family: "SF-Pro";
 					position: relative;
@@ -39,6 +32,8 @@ export class PageHeader extends HTMLElement {
 		
 				button.imgbutton{
 					height: 20px;
+					position: relative;
+					z-index: -1;
 				}
 		
 				button.imgbutton img {
@@ -59,15 +54,19 @@ export class PageHeader extends HTMLElement {
 		
 				h1 {
 					display: inline;
-					font-size: 48px;
+					font-size: 40px;
 					font-weight: bold;
-					letter-spacing: 1.8px;
+					letter-spacing: 1.7px;
 					vertical-align: middle;
+					position: relative;
+					z-index: 0;
+					outline: none;
 				}
 		
 				.search_bar {
 					margin-top: 15px;
 					margin-right: 0;
+					margin-left: 10px;
 					height: 30px;
 					border-radius: 5px;
 					border-color: rgba(0, 0, 0, 0.1);
@@ -127,12 +126,12 @@ export class PageHeader extends HTMLElement {
 		
 				#header_back{
 					margin-left: 0;
-					margin-right: 10px;
+					margin-right: 5px;
 				}
 		
 				#header_forward{
 					margin-right: 0;
-					margin-left: 10px;
+					margin-left: 5px;
 				}
 		
 				.hide{
@@ -144,14 +143,13 @@ export class PageHeader extends HTMLElement {
 					position: relative;
 					display: inline-block;
 					float: right;
-
-					background-image: url(../public/resources/target_icon.png);
+					background-image: url(../public/resources/plusIcon.png);
 					background-size: cover;
 					background-color: transparent;
 					background-blend-mode: multiply;
-					top: 12px;
-					width: 33px;
-					height: 33px;
+					top: 20px;
+					width: 23px;
+					height: 23px;
 					opacity: 50%;
 					transition: opacity .2s;
 					margin-right: 5px;
@@ -161,7 +159,169 @@ export class PageHeader extends HTMLElement {
 					opacity: 100%;
 					transition: opacity .2s;
 				}
+				#menuToggle {
+					flex-direction: column;
+					position: absolute;
+					top: 45px;
+					left: 20px;
+					z-index: 1;
+				  }
+				  
+				#menuToggle input {
+					display: flex;
+					width: 40px;
+					height: 32px;
+					position: absolute;
+					cursor: pointer;
+					opacity: 0;
+					z-index: 2;
+				  }
+				  
+				#menuToggle span {
+					display: flex;
+					width: 29px;
+					height: 2px;
+					margin-bottom: 5px;
+					position: relative;
+					background: grey;
+					border-radius: 3px;
+					z-index: 1;
+					transform-origin: 5px 0px;
+					transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+								background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+								opacity 0.55s ease;
+				}
+				  
+				#menuToggle span:first-child {
+					transform-origin: 0% 0%;
+				}
+				  
+				#menuToggle span:nth-last-child(2) {
+					transform-origin: 0% 100%;
+				}
+				  
+				#menuToggle input:checked ~ span {
+					opacity: 1;
+					transform: rotate(45deg) translate(-7px, -10px);
+					background: #36383F;
+				}
+				
+				#menuToggle input:checked ~ span:nth-last-child(3) {
+					opacity: 0;
+					transform: rotate(0deg) scale(0.2, 0.2);
+				}
+				
+				#menuToggle input:checked ~ span:nth-last-child(2) {
+					transform: rotate(-45deg) translate(-5px, 10px);
+				}
+				
+				@media screen and (max-width: 1250px) {
+					.search_bar input {
+						width: 220px;
+					}
+				}
+
+				@media screen and (max-width: 1080px) {
+					.search_bar input {
+						width: 170px;
+					}
+				}
+
+				@media screen and (max-width: 1020px) {
+					.search_bar {
+						display: none;
+					}
+				}
+
+				@media screen and (max-width: 900px) {
+					.search_bar {
+						display: none;
+					}
+
+					.header{
+						margin-left: 35px;
+						margin-right: 35px;
+					}
+
+					#menuToggle{
+						display: inline;
+					}
+
+					.plus{
+						position: absolute;
+						top: 42px;
+						right: 20px;
+					}
+
+					#title_page{
+						top: 5px;
+						font-size: 35px;
+						letter-spacing: 1.5px;
+					}
+
+					button.imgbutton img {
+						height: 15px;
+					}
+
+					button.imgbutton {
+						height: 15px;
+						padding: 0;
+					}
+					#header_back{
+						margin-left: 0;
+						margin-right: 1px;
+					}
+			
+					#header_forward{
+						margin-right: 0;
+						margin-left: 1px;
+					}
+
+				}
+
+				@media screen and (max-width: 700px) {
+					.plus{
+						position: absolute;
+					}
+
+					#title_page{
+						top: 5px;
+						font-size: 22px;
+						letter-spacing: 1px;
+					}
+
+					button.imgbutton img {
+						height: 15px;
+					}
+
+					button.imgbutton {
+						height: 15px;
+						padding: 0;
+					}
+					#header_back{
+						margin-left: 0;
+						margin-right: 1px;
+					}
+			
+					#header_forward{
+						margin-right: 0;
+						margin-left: 1px;
+					}
+				}
+				@media screen and (min-width: 600px) {
+					.search_bar {
+						float: right;
+					}
+				}
 			</style>
+
+			<div id="menuToggle">
+				<input type="checkbox" />
+				<span></span>
+				<span></span>
+				<span></span>
+			
+			</div>
 
 			<span class="header">
 				<button class="imgbutton" id="header_back"><img src="../public/resources/left-chevron.png"></button>
@@ -183,9 +343,25 @@ export class PageHeader extends HTMLElement {
 
 		this.createFutureLog = this.createFutureLog.bind(this);
 		this.futureLogButton = this.querySelector(".plus");
+		this.menu = this.querySelector("#menuToggle");
+		this.input = this.querySelector("#menuToggle input");
+		
+		this.menu.onclick = () => {
+			console.log(this.input.checked);
+			navbar.toggleMenu();
+		};
+
 		this.futureLogButton.addEventListener("click", () => {
 			this.createFutureLog();
 		});
+	}
+
+	makeEditabe(){
+		this.h1.contentEditable = true;
+	}
+
+	makeUneditable(){
+		this.h1.contentEditable = false;
 	}
 
 	set title(title) {
@@ -204,6 +380,16 @@ export class PageHeader extends HTMLElement {
 					console.log(err);
 				} else {
 					console.log(res);
+					// localStorage.createCollection("testing createCollection", "1", [], (err, collection) => {
+					// 	console.log(collection);
+					// 	localStorage.readUser((err, res) => {
+					// 		if(err) {
+					// 			console.log(err);
+					// 		} else {
+					// 			console.log(res);
+					// 		}
+					// 	});
+					// });
 				}
 			})
 		});

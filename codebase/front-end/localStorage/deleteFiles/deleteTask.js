@@ -1,13 +1,14 @@
-export function deleteCollectionPouch(db, id, callback) {
+export function deleteTaskPouch(db, id, index, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
-			const collectionArr = doc.collections.filter(collection => collection.id == id);
+			const taskArr = doc.tasks.filter(task => task.id == id);
 			const block = null;
-			if (collectionArr.length > 0) {
-				block = taskBlockArr[0];
+			if (taskArr != undefined) {
+				block = taskArr[0];
 			}
+
 			let userArr = [];
 					Array.prototype.push.apply(userArr, doc.dailyLogs);
 					Array.prototype.push.apply(userArr, doc.monthlyLogs);
@@ -20,15 +21,9 @@ export function deleteCollectionPouch(db, id, callback) {
 			const parent = parentArr[0];
 			const newContents = parent.contents.filter(obj => obj != id);
 
-			const newCollections = doc.collections.filter(collection => collection.id != id);
-			const newIndexContents = doc.index.contents.filter(tracker => tracker.id != id);
-			const indexObj = {
-				objectType: "index",
-				contents: newIndexContents
-			}
-
-			doc.collections = newCollections;
-			doc.index = indexObj;
+			const newTasks = doc.tasks.filter(task => task.id != id);
+			
+			doc.tasks = newTasks;
 			
 			return db.put(
 				{
