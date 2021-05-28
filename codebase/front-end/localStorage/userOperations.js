@@ -138,6 +138,7 @@ export function createTracker(content, parent, callback) {
 
 export function readUser(callback){
 	readUserPouch(db, (err, user) => {
+		//console.log("user is ", user);
 		callback(err, user);
 	});
 }

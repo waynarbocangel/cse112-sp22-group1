@@ -87,59 +87,54 @@ export function createEditor (container, parent, callback) {
 				Array.prototype.push.apply(arrays, doc.monthlyLogs);
 				Array.prototype.push.apply(arrays, doc.futureLogs);
 				Array.prototype.push.apply(arrays, doc.collections);
-				//Array.prototype.push.apply(arrays, doc.trackers);
-				//Array.prototype.push.apply(arrays, doc.textBlocks);
-				//Array.prototype.push.apply(arrays, doc.tasks);
-				//Array.prototype.push.apply(arrays, doc.events);
-				//Array.prototype.push.apply(arrays, doc.signifiers);
-				
-				//if(parent.objectType != "index") {
-				let itemArrs = arrays.filter(element => element.id == parent.id);
-					
-				if(itemArrs.length > 0){
-					itemObject = itemArrs[0];
-					console.log("itemObject is ", itemObject);
-					console.log("itemObject contnetn length is " + itemObject.content.length);
-					
-					let tempArr = [];
-					//Array.prototype.push.apply(tempArr, doc.dailyLogs);
-					//Array.prototype.push.apply(tempArr, doc.monthlyLogs);
-					//Array.prototype.push.apply(tempArr, doc.futureLogs);
-					Array.prototype.push.apply(tempArr, doc.textBlocks);
-					for(let i = 0; i < itemObject.content.length; i++) {
-						console.log("itemobject content object id is " + itemObject.content[i]);
-						Array.prototype.push.apply(objectArr, tempArr.filter(element => element.id == itemObject.content[i]));
+				Array.prototype.push.apply(arrays, doc.trackers);
+
+				if(parent.objectType != "index") {
+					let itemArrs = arrays.filter(element => element.id == parent.id);
+						
+					if(itemArrs.length > 0){
+						itemObject = itemArrs[0];
+						console.log("itemObject is ", itemObject);
+						console.log("itemObject contnetn length is " + itemObject.content.length);
+						
+						let tempArr = [];
+						Array.prototype.push.apply(tempArr, doc.dailyLogs);
+						Array.prototype.push.apply(tempArr, doc.monthlyLogs);
+						Array.prototype.push.apply(tempArr, doc.futureLogs);
+						Array.prototype.push.apply(tempArr, doc.textBlocks);
+						for(let i = 0; i < itemObject.content.length; i++) {
+							Array.prototype.push.apply(objectArr, tempArr.filter(element => element.id == itemObject.content[i]));
+						}
+
+						populateEditor(controller, objectArr, itemObject, (res) => {
+							console.log(res);
+							let newBlock = new TextBlock(controller, itemObject, (success) => {
+								if (success){
+									container.appendChild(newBlock);
+									controller.blockArray.push(newBlock);
+									controller.currentBlockIndex = controller.blockArray.length - 1;
+									newBlock.focus();
+								}
+								callback(controller);
+							});
+						})
 					}
-					console.log("objectArr is", objectArr);
-					populateEditor(controller, objectArr, itemObject, (res) => {
-						console.log(res);
-					})
+				} else {
+					let newBlock = new TextBlock(controller, itemObject, (success) => {
+						if (success){
+							container.appendChild(newBlock);
+							controller.blockArray.push(newBlock);
+							controller.currentBlockIndex = controller.blockArray.length - 1;
+							newBlock.focus();
+							console.log("newblock created successfully");
+						} else {
+							console.log("newBlock not being created");
+						}
+						callback(controller);
+					});
 				}
-				/*} else {
-					itemObject = doc.index;
-					for(let i = 0; i < itemObject.contents.length; i++) {
-						Array.prototype.push.apply(objectArr, arrays.filter(element => element.id == itemObject.contents[i].id));
-					}
-					populateEditor(controller, objectArr, itemObject, (res) => {
-						console.log(res);
-					})
-				}*/
-				//console.log("itemArrs length is :" + itemArrs.length);
 			}
 		})
-
-		let newBlock = new TextBlock(controller, itemObject, (success) => {
-			if (success){
-				container.appendChild(newBlock);
-				controller.blockArray.push(newBlock);
-				controller.currentBlockIndex = controller.blockArray.length - 1;
-				newBlock.focus();
-				console.log("newblock created successfully");
-			} else {
-				console.log("newBlock not being created");
-			}
-			callback(controller);
-		});
 	}, 20);
 }
 
