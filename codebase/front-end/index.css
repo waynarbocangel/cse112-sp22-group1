@@ -1,34 +1,36 @@
+@import "./theme.css";
 @font-face {
-    font-family:"SF-Pro";
+    font-family: "SF-Pro";
     src: url("./public/fonts/SF-Pro.ttf");
 }
 
-html{
-	overflow: hidden;
+html {
+    overflow: hidden;
 }
 
 html, body, section, .full-height {
     height: 100%;
     user-select: all;
-} 
-
-body{
-    margin: 0;
-	overflow: auto;
 }
 
-div{
+body {
+    margin: 0;
+    overflow: auto;
+}
+
+div {
     font-size: 18px;
     line-height: 26px;
 }
+
 #contentWrapper {
     border: none;
     overflow: auto;
     outline: none;
     display: block;
-	margin-top: 20px;
-	margin-left: 80px;
-	margin-right: 20px;
+    margin-top: 20px;
+    margin-left: 80px;
+    margin-right: 20px;
 }
 
 .container-fluid {
@@ -36,11 +38,7 @@ div{
     margin-left: 8%;
 }
 
-.text-block{
-    background-color: white;
-}
-
-.noteContainer{
+.noteContainer {
     margin-top: 7px;
     margin-bottom: 7px;
     margin-left: 20px;
@@ -58,26 +56,17 @@ div{
     padding: 3%;
 }
 
-
 /* thomas's code */
-#topbar{
-	margin-top: 15px;
-	margin-left: 80px;
-	margin-right: 20px;
-	vertical-align: middle;
-	border-bottom: solid 2px rgba(0, 0, 0, 0.05);
-	height: 60px;
+
+page-header {
+    display: block;
+    margin-left: 80px;
+    margin-right: 20px;
+    border-bottom: solid 2px rgba(0, 0, 0, 0.05);
 }
 
-
-/* Fade-in buttons */
-
-
-
-
-/* Side navigation */
-#sidebar {
-	overflow: hidden;
+nav-bar {
+    overflow: hidden;
 }
 
 .sidebar button {
@@ -88,28 +77,8 @@ div{
 }
 
 /* Text editor, to be integrated */
+
 main {
     margin-left: 100px;
     margin-top: 100px;
-}
-
-/* Test code */
-.dropdown-button {
-    display: inline-block;
-    padding: 10px;
-    border-radius: 20px;
-    border: none;
-    background-color: white;
-    transition: 1000ms;
-}
-
-.dropdown-button:hover {
-    background-color: tomato;
-    transition: 250ms;
-}
-
-.dropdown-button:active {
-    border: solid;
-    border-color: gray;
-    transition: 250ms;
 }

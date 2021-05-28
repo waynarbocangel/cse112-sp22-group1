@@ -1,0 +1,11 @@
+
+:root {
+    --content-foreground-color: #FF0000;
+    --content-background-color: #FF0000;
+
+    --tracker-background-color: #2B2D42;
+    --tracker-foreground-color: #FFFFFF;
+    
+    --sidebar-background-color: #FFFFFF;
+    --sidebar-foreground-color: #FFFFFF;
+}

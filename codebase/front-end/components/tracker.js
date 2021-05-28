@@ -22,13 +22,14 @@ export class TrackerMenu extends HTMLElement {
 				padding-left: 20px;
 				padding-right: 20px;
                 height: 100vh;
-				background-color: #2B2D42;
+				background-color: var(--tracker-background-color); /* #2B2D42 */
+                color: var(--tracker-foreground-color);
                 font-family: "SF-Pro";
                 transform: translate3d(135vw, 0, 0);
                 transition: transform .4s ease-in-out /*cubic-bezier(0, .52, 0, 1);*/
             }
 
-			.noteContainer{
+			.noteContainer {
 				margin-top: 7px;
 				margin-bottom: 7px;
 				margin-left: 20px;
@@ -43,8 +44,6 @@ export class TrackerMenu extends HTMLElement {
             }
             
             #tracker_menu {
-                background-color: #2B2D42;
-                color: white;
                 opacity: 95%;
 				padding-left: 0;
 				padding-right: 0;
@@ -55,8 +54,6 @@ export class TrackerMenu extends HTMLElement {
                 top: 0;
 				right: 10px;
 				margin-bottom: 15px;
-                background-color: #2B2D42;
-                color: white;
                 opacity: 95%;
 				border-bottom: solid rgba(157, 148, 241, 0.7);
             }
@@ -67,10 +64,7 @@ export class TrackerMenu extends HTMLElement {
             
             .tracker_header .close_button {
 				display: inline-block;
-                margin-top: 25px;
-				vertical-align: top;
                 margin-left: 0;
-                line-height: 16px;
             }
             
             #trackerTitleWrapper {
@@ -83,9 +77,8 @@ export class TrackerMenu extends HTMLElement {
 
 			#trackerTitleWrapper h1{
                 text-align: center;
-				margin: 20px auto 10px;
+				margin: 21px auto 10px;
                 font-size: 24pt;
-				line-height: 30pt;
 			}
             
             .tracker_header .close_button img {
