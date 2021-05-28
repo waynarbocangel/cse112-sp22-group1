@@ -94,8 +94,8 @@ export function createDailyLog(parent, content, trackers, date, callback){
 	});
 }
 
-export function createEvent(parent, date, signifier, callback) {
-	createEventPouch(db, parent, date, signifier, (error, event) => {
+export function createEvent(index, parent, date, signifier, callback) {
+	createEventPouch(db, index, parent, date, signifier, (error, event) => {
 		callback(error, event);
 	})
 }
@@ -118,14 +118,14 @@ export function createSignifier(meaning, symbol, callback) {
 	})
 }
 
-export function createTask(parent, text, complete, signifier, callback) {
-	createTaskPouch(db, parent, text, complete, signifier, (error, task) => {
+export function createTask(index, parent, text, complete, signifier, callback) {
+	createTaskPouch(db, index, parent, text, complete, signifier, (error, task) => {
 		callback(error, task);
 	})
 }
 
-export function createTextBlock(parent, index, content, tabLevel, kind, signifier, date, callback){
-	createTextBlockPouch(db, parent, index, content, tabLevel, kind, signifier, (error, textBlock) => {
+export function createTextBlock(parent, index, content, tabLevel, kind, objectReference, signifier, date, callback){
+	createTextBlockPouch(db, parent, index, content, tabLevel, kind, objectReference, signifier, date, (error, textBlock) => {
 		callback(error, textBlock);
 	});
 }
@@ -138,6 +138,7 @@ export function createTracker(content, parent, callback) {
 
 export function readUser(callback){
 	readUserPouch(db, (err, user) => {
+		//console.log("user is ", user);
 		callback(err, user);
 	});
 }

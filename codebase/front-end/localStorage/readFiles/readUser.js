@@ -3,6 +3,7 @@ export function readUserPouch (db, callback) {
 		if (err) {
 			callback(err, null);
 		} else {
+			//console.log("user is ", user);
 			callback(null, user);
 		}
 	});

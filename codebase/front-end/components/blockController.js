@@ -77,7 +77,7 @@ export function createEditor (container, parent, callback) {
 	let controller = new Controller(container, parent);
 	setTimeout(() => {
 		let itemObject = null;
-		//let 
+		let objectArr = [];
 		localStorage.readUser((err, doc) => {
 			if (err) {
 				callback(err);
@@ -88,35 +88,53 @@ export function createEditor (container, parent, callback) {
 				Array.prototype.push.apply(arrays, doc.futureLogs);
 				Array.prototype.push.apply(arrays, doc.collections);
 				Array.prototype.push.apply(arrays, doc.trackers);
-				Array.prototype.push.apply(arrays, doc.textBlocks);
-				Array.prototype.push.apply(arrays, doc.tasks);
-				Array.prototype.push.apply(arrays, doc.events);
-				Array.prototype.push.apply(arrays, doc.signifiers);
-				
-				let itemArrs = arrays.filter(element => element.id == parent);
-				
-				if(itemArrs.length > 0){
+
+				if(parent.objectType != "index") {
+					let itemArrs = arrays.filter(element => element.id == parent.id);
+						
+					if(itemArrs.length > 0){
 						itemObject = itemArrs[0];
-						let objectArr = [];
-					for(let i = 0; i < itemObject.content.length; i++) {
-						Array.prototype.push.apply(objectArr, arrays.filter(element => element.id == itemObject.content[i].id));
+						console.log("itemObject is ", itemObject);
+						console.log("itemObject contnetn length is " + itemObject.content.length);
+						
+						let tempArr = [];
+						Array.prototype.push.apply(tempArr, doc.dailyLogs);
+						Array.prototype.push.apply(tempArr, doc.monthlyLogs);
+						Array.prototype.push.apply(tempArr, doc.futureLogs);
+						Array.prototype.push.apply(tempArr, doc.textBlocks);
+						for(let i = 0; i < itemObject.content.length; i++) {
+							Array.prototype.push.apply(objectArr, tempArr.filter(element => element.id == itemObject.content[i]));
+						}
+
+						populateEditor(controller, objectArr, itemObject, (res) => {
+							console.log(res);
+							let newBlock = new TextBlock(controller, itemObject, (success) => {
+								if (success){
+									container.appendChild(newBlock);
+									controller.blockArray.push(newBlock);
+									controller.currentBlockIndex = controller.blockArray.length - 1;
+									newBlock.focus();
+								}
+								callback(controller);
+							});
+						})
 					}
-					populateEditor(controller, objectArr, itemObject, (res) => {
-						console.log(res);
-					})
+				} else {
+					let newBlock = new TextBlock(controller, itemObject, (success) => {
+						if (success){
+							container.appendChild(newBlock);
+							controller.blockArray.push(newBlock);
+							controller.currentBlockIndex = controller.blockArray.length - 1;
+							newBlock.focus();
+							console.log("newblock created successfully");
+						} else {
+							console.log("newBlock not being created");
+						}
+						callback(controller);
+					});
 				}
 			}
 		})
-
-		let newBlock = new TextBlock(controller, itemObject, (success) => {
-			if (success){
-				container.appendChild(newBlock);
-				controller.blockArray.push(newBlock);
-				controller.currentBlockIndex = controller.blockArray.length - 1;
-				newBlock.focus();
-			}
-			callback(controller);
-		});
 	}, 20);
 }
 
@@ -127,20 +145,23 @@ export function populateEditor (controller, items, parent, callback) {
 }
 
 function populateEditorRecursive(controller, items, parent, index, callback) {
+	console.log("in recursive populate editor");
+	console.log(items.length);
 	if(index < items.length) {
 		controller.createNewBlock(parent, (block) => {
-	 		block.tabLevel = item[index].tabLevel
+	 		block.tabLevel = items[index].tabLevel
 	 		block.setupTabLevel();
 			
-			if (item[index].kind == "note" || item[index].objectType == "eventBlock" || item[index].objectType == "taskBlock") {
+			if (items[index].kind == "note" || items[index].objectType == "eventBlock" || items[index].objectType == "taskBlock") {
 				block.setupBullet();
-			} else if (item[index].kind == "h1") {
+			} else if (items[index].kind == "h1") {
 				block.setupHeader1();
-			} else if (item[index].kind == "h2") {
+			} else if (items[index].kind == "h2") {
 				block.setupHeader2();
 			}
-	 		block.item = item;
-	 		block.shadowRoot.getElementById("textBlock").innerText = item.text;
+			//block.item = item;
+	 		block.item = items[index];
+	 		block.shadowRoot.getElementById("textBlock").innerText = items[index].text;//= item.text;
 	 	});
 
 		//rec call

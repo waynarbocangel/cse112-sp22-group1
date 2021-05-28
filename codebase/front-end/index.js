@@ -34,12 +34,14 @@ export function getCurrentObject(urlFromRouter) {
 		urlparse = urlFromRouter.split("~");
 	}
 	if (urlparse != undefined){
+		//console.log("current object id is " + urlparse[1]);
 		id = urlparse[1];
 	}
 	localStorage.readUser((err, user) => {
 		if (err) {
 			window.location.href = "http://localhost:8080/login";
 		} else {
+			console.log("user is ", user);
 			if (id != null){
 				let userArr = [];
 				Array.prototype.push.apply(userArr, user.dailyLogs);
@@ -50,6 +52,8 @@ export function getCurrentObject(urlFromRouter) {
 				currentObject = parsed[0];
 			} else {
 				currentObject = user.index;
+				//console.log(currentObject.objectType);
+				//console.log("user is " ,user);
 			}
 		}
 	});
@@ -57,15 +61,18 @@ export function getCurrentObject(urlFromRouter) {
 }
 
 export function setupIndex(header, btn) {
+	//getCurrentObject(null);
 	localStorage.readUser((err, user) => {
 		if (err) {
 			console.log(err);
 		} else {
+
 			let userArr = [];
 			Array.prototype.push.apply(userArr, user.futureLogs);
 			Array.prototype.push.apply(userArr, user.collections);
 
 			let parentArr = [];
+			console.log(currentObject);
 			for (let i = 0; i < currentObject.contents.length; i++) {
 				Array.prototype.push.apply(parentArr, userArr.filter(object => object.id == currentObject.contents[i]));
 			}
@@ -129,6 +136,7 @@ export function setupIndex(header, btn) {
 }
 
 export function setupFutureLog(header, btn, newState){
+	//getCurrentObject(newState);
 	localStorage.readUser((err, user) => {
 		if (err) {
 			console.log(err);
@@ -152,8 +160,8 @@ export function setupFutureLog(header, btn, newState){
 
 				for(let k = 0; k < currentMonth.days.length; k++) {
 					let currentDay = user.dailyLogs.filter(day => day.id == currentMonth.days[k])[0];
-					console.log(currentDay);
-					console.log(new Date(currentDay.date));
+					//console.log(currentDay);
+					//console.log(new Date(currentDay.date));
 					let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 					let dropdownDay = new DropdownBlock(`${weekDays[new Date(currentDay.date).getDay()]}, ${monthNames[new Date(currentDay.date).getMonth()]} ${new Date(currentDay.date).getUTCDate()}`, currentDay, 2);
 					dropdownMonth.contentWrapper.appendChild(dropdownDay);
@@ -246,6 +254,10 @@ export function setupDailyLog(header, btn, newState){
 		btn[i].removeAttribute("disabled");
 		btn[i].style.visibility = "visible";
 	}
+
+	//getCurrentObject(url);//added by carlos (maybe is wrong)
+	//console.log("current object inside setupdialy is ", currentObject);
+
 	createEditor(contentWrapper, currentObject, (success) => {
 		console.log(success);
 	});
