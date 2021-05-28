@@ -30,12 +30,12 @@ export class DropdownBlock extends HTMLElement {
 				font-weight: calc(900 - ${level * 200});
 				letter-spacing: calc(1.2px - ${level * 0.35}px);
 				cursor: pointer;
-				border-bottom: 2px solid rgba(0,0,0,0.4);
+				border-bottom: 2px solid var(--content-foreground-color); /*rgba(0,0,0,0.4);*/
 				transition: 0.2s;
 			}
 
 			#title:hover{
-				border-bottom: 2px solid rgba(0,0,0,0.9);
+				border-bottom: 2px solid var(--content-foreground-color); /*rgba(0,0,0,0.9);*/
 				transition: 0.2s;
 			}
 
@@ -50,10 +50,12 @@ export class DropdownBlock extends HTMLElement {
             #arrow img {
                 max-width: calc(24px - ${level * 3}px);
                 max-height: calc(24px - ${level * 3}px);
+
+                filter: var(--icon-filter);
             }
             :not(.closed) #arrow img {
                 transform: rotate(0deg);
-                transition: 0.2s;
+                transition: transform 0.2s;
             }
 
             .closed #arrow img {

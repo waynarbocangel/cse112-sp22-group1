@@ -15,41 +15,51 @@ export class PageHeader extends HTMLElement {
 				}
 		
 				/* Top navigation */
-				#menuToggle{
+				#menuToggle {
 					display: none;
+				}
+
+				#container {
+					display: flex;
+					align-items: center;
 				}
 
 				.header {
 					font-family: "SF-Pro";
 					position: relative;
+					flex: 2;	/* Use half of the space for the title */
 				}
 		
 				button {
+					user-select: none;
 					vertical-align: middle;
 					border: none;
 					background-color: rgba(0,0,0,0);
-				}
-		
-				button.imgbutton{
-					height: 20px;
-					position: relative;
-					z-index: -1;
-				}
-		
-				button.imgbutton img {
-					filter: opacity(50%);
-					height: 20px;
-				}
-		
-				button.imgbutton:hover img {
-					filter: opacity(100%);
-					transition: 150ms;
-				}
-		
-				button {
 					display: inline;
 					margin-left: 5px;
-					margin-bottom: 0;
+				}
+
+				.plus {
+					display: inline-block;
+					top: 20px;
+					width: 23px;
+					height: 23px;
+					margin-right: 10px;
+				}
+				
+				.imgbutton {
+					height: 20px;
+				}
+		
+				.imgbutton img {
+					opacity: 20%;
+					filter: var(--icon-filter);
+					height: 20px;
+				}
+		
+				.imgbutton:hover img {
+					opacity: 100%;
+					transition: opacity 150ms;
 				}
 		
 				h1 {
@@ -58,18 +68,15 @@ export class PageHeader extends HTMLElement {
 					font-weight: bold;
 					letter-spacing: 1.7px;
 					vertical-align: middle;
-					position: relative;
 					z-index: 0;
 					outline: none;
 				}
 		
 				.search_bar {
-					margin-top: 15px;
-					margin-right: 0;
-					margin-left: 10px;
-					height: 30px;
+					margin: 15px auto;
+					padding: 0 5px;
 					border-radius: 5px;
-					border-color: rgba(0, 0, 0, 0.1);
+					border-color: var(--content-foreground-color); /*rgba(0, 0, 0, 0.1);*/
 					border-width: 2px;
 					border-style: solid;
 					opacity: 60%;
@@ -79,24 +86,17 @@ export class PageHeader extends HTMLElement {
 					display: inline-block;
 				
 					opacity: 50%;
-		
 					height: 21px;
-					line-height: 36px;
-					vertical-align: text-bottom;
 		
-					/* TODO: unjank */
-					position: relative;
-					top: 0;
-					right: 15px;
-					margin-left: 10px;
+					vertical-align: middle;
+
+					filter: var(--icon-filter);
 				}
 		
 				.search_bar input{
-					/* TODO: hard coded */
-					margin-top: -6px;
-					margin-left: 10px;
 
 					background-color: rgba(0, 0, 0, 0);
+					color: var(--content-foreground-color);
 					font-size: 14pt;
 					opacity: 90%;
 					height: 35px;
@@ -111,12 +111,13 @@ export class PageHeader extends HTMLElement {
 				/* Fade in for search bar */
 				.search_bar:hover img {
 					opacity: 50%;
-					transition: 150ms;
+					transition: opacity 150ms;
 				}
 		
 				.search_bar:hover {
 					transition: 150ms;
 					opacity: 90%;
+					
 				}
 		
 				.search_bar input:focus .search_bar{
@@ -139,26 +140,6 @@ export class PageHeader extends HTMLElement {
 					opacity: 0;
 				}
 
-				.plus {
-					position: relative;
-					display: inline-block;
-					float: right;
-					background-image: url(../public/resources/plusIcon.png);
-					background-size: cover;
-					background-color: transparent;
-					background-blend-mode: multiply;
-					top: 20px;
-					width: 23px;
-					height: 23px;
-					opacity: 50%;
-					transition: opacity .2s;
-					margin-right: 5px;
-				}
-
-				.plus:hover {
-					opacity: 100%;
-					transition: opacity .2s;
-				}
 				#menuToggle {
 					flex-direction: column;
 					position: absolute;
@@ -308,35 +289,32 @@ export class PageHeader extends HTMLElement {
 						margin-left: 1px;
 					}
 				}
-				@media screen and (min-width: 600px) {
-					.search_bar {
-						float: right;
-					}
-				}
 			</style>
 
-			<div id="menuToggle">
-				<input type="checkbox" />
-				<span></span>
-				<span></span>
-				<span></span>
-			
-			</div>
+			<div id="container">
+				<div id="menuToggle">
+					<input type="checkbox" />
+					<span></span>
+					<span></span>
+					<span></span>
+				
+				</div>
 
-			<span class="header">
-				<button class="imgbutton" id="header_back"><img src="../public/resources/left-chevron.png"></button>
-		
-				<h1 id="title_page">Template Page Title</h1>
-		
-				<button class="imgbutton" id="header_forward"><img src="../public/resources/right-chevron.png"></button>
-			</span>
-		
-			<span class="search_bar">
-				<input type="text" placeholder="Search">
-				<img src="../public/resources/search_icon.png">
-			</span>
-			<button class="plus">
-			</button>
+				<span class="header">
+					<button class="imgbutton" id="header_back"><img src="../public/resources/left-chevron.png"></button>
+			
+					<h1 id="title_page">Template Page Title</h1>
+			
+					<button class="imgbutton" id="header_forward"><img src="../public/resources/right-chevron.png"></button>
+				</span>
+			
+				<button class="imgbutton plus"><img src="../public/resources/plusIcon.png"></button>
+			
+				<span class="search_bar">
+					<input type="text" placeholder="Search">
+					<img src="../public/resources/search_icon.png">
+				</span>
+			</div>
 		`;
 
 		this.h1 = this.querySelector("h1");
