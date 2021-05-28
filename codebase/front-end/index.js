@@ -8,16 +8,14 @@ import { createEditor } from './components/blockController.js';
 
 document.querySelector("body").style.display = "none";
 
-export let navbar = new NavBar();
-export let header = new PageHeader();
+export let navbar = document.querySelector('nav-bar');
+export let header = document.querySelector('page-header');
 export let url = "";
 export let pageNumber = 1;
 
 export let currentObject;
 let contentWrapper = document.getElementById("contentWrapper");
 
-document.getElementById("topbar").appendChild(header);
-document.getElementById("sidebar").appendChild(navbar);
 router.setState(document.location.hash, false);
 
 window.onpopstate = () => {
@@ -111,7 +109,7 @@ export function setupIndex(header, btn) {
 	navbar.single.style.visibility = "hidden";
 	navbar.double.setAttribute ("disabled", "disabled");
 	navbar.double.style.visibility = "hidden";
-	let headerButtons = header.shadowRoot.querySelectorAll(".imgbutton");
+	let headerButtons = header.querySelectorAll(".imgbutton");
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.add("hide");
 	}
@@ -162,7 +160,7 @@ export function setupFutureLog(header, btn, newState){
 	navbar.single.style.visibility = "hidden";
 	navbar.double.setAttribute ("disabled", "disabled");
 	navbar.double.style.visibility = "hidden";
-	let headerButtons = header.shadowRoot.querySelectorAll(".imgbutton");
+	let headerButtons = header.querySelectorAll(".imgbutton");
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.remove("hide");
 	}
@@ -204,7 +202,7 @@ export function setupMonthlyLog(header, btn, newState){
 	}
 	navbar.double.setAttribute ("disabled", "disabled");
 	navbar.double.style.visibility = "hidden";
-	let headerButtons = header.shadowRoot.querySelectorAll(".imgbutton");
+	let headerButtons = header.querySelectorAll(".imgbutton");
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.remove("hide");
 	}
@@ -226,7 +224,7 @@ export function setupDailyLog(header, btn, newState){
 	createEditor(contentWrapper, (success) => {
 		console.log(success);
 	});
-	let headerButtons = header.shadowRoot.querySelectorAll(".imgbutton");
+	let headerButtons = header.querySelectorAll(".imgbutton");
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.remove("hide");
 	}

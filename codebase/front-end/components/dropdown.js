@@ -56,8 +56,6 @@ export class DropdownBlock extends HTMLElement {
             }
 
             .closed #arrow img {
-
-
                 transform: rotate(90deg);
                 transition: 0.2s;
             }

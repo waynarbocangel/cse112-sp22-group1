@@ -3,8 +3,10 @@ import * as localStorage from "../localStorage/userOperations.js";
 export class PageHeader extends HTMLElement {
 	constructor() {
 		super();
-		let template = document.createElement("template");
-		template.innerHTML = `
+	}
+
+	connectedCallback() {
+		this.innerHTML = `
 			<style>
 				@font-face {
 					font-family:"SF-Pro";
@@ -27,13 +29,10 @@ export class PageHeader extends HTMLElement {
 				.header {
 					font-family: "SF-Pro";
 					position: relative;
-					top: 1em;
-					margin-top: 100px;
-					margin-left: 0;
 				}
 		
 				button {
-					vertical-align: bottom;
+					vertical-align: middle;
 					border: none;
 					background-color: rgba(0,0,0,0);
 				}
@@ -54,7 +53,7 @@ export class PageHeader extends HTMLElement {
 		
 				button {
 					display: inline;
-					margin-top: 0;
+					margin-left: 5px;
 					margin-bottom: 0;
 				}
 		
@@ -96,6 +95,8 @@ export class PageHeader extends HTMLElement {
 				.search_bar input{
 					/* TODO: hard coded */
 					margin-top: -6px;
+					margin-left: 10px;
+
 					background-color: rgba(0, 0, 0, 0);
 					font-size: 14pt;
 					opacity: 90%;
@@ -104,7 +105,6 @@ export class PageHeader extends HTMLElement {
 					width: 400px;
 					border: solid;
 					border-radius: 5px;
-					margin-left: 10px;
 					border-color: rgba(0, 0, 0, 0);
 					outline: none;
 				}
@@ -154,6 +154,7 @@ export class PageHeader extends HTMLElement {
 					height: 33px;
 					opacity: 50%;
 					transition: opacity .2s;
+					margin-right: 5px;
 				}
 
 				.plus:hover {
@@ -162,8 +163,6 @@ export class PageHeader extends HTMLElement {
 				}
 			</style>
 
-			
-
 			<span class="header">
 				<button class="imgbutton" id="header_back"><img src="../public/resources/left-chevron.png"></button>
 		
@@ -171,8 +170,6 @@ export class PageHeader extends HTMLElement {
 		
 				<button class="imgbutton" id="header_forward"><img src="../public/resources/right-chevron.png"></button>
 			</span>
-
-			
 		
 			<span class="search_bar">
 				<input type="text" placeholder="Search">
@@ -182,12 +179,10 @@ export class PageHeader extends HTMLElement {
 			</button>
 		`;
 
-		this.attachShadow({ mode: 'open' });
-		this.shadowRoot.appendChild(template.content.cloneNode(true));
-		this.h1 = this.shadowRoot.querySelector("h1");
+		this.h1 = this.querySelector("h1");
 
 		this.createFutureLog = this.createFutureLog.bind(this);
-		this.futureLogButton = this.shadowRoot.querySelector(".plus");
+		this.futureLogButton = this.querySelector(".plus");
 		this.futureLogButton.addEventListener("click", () => {
 			this.createFutureLog();
 		});
@@ -202,9 +197,9 @@ export class PageHeader extends HTMLElement {
 	}
 
 	createFutureLog() {
-		localStorage.createFutureLog( new Date(2021, 5, 22), new Date(2021, 8, 23), [], [], [], (err, futureLog) => {
+		localStorage.createFutureLog(new Date(2021, 5, 22), new Date(2021, 8, 23), [], [], [], (err, futureLog) => {
 			console.log(futureLog);
-			localStorage.readUser( (err, res) => {
+			localStorage.readUser((err, res) => {
 				if (err) {
 					console.log(err);
 				} else {
@@ -212,7 +207,7 @@ export class PageHeader extends HTMLElement {
 				}
 			})
 		});
-		
+
 	}
 }
 
