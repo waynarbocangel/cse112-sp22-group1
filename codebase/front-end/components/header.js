@@ -90,6 +90,9 @@ export class PageHeader extends HTMLElement {
 				}
 		
 				.search_bar {
+					display: flex;
+					align-items: center;
+
 					margin: 15px auto;
 					padding: 0 5px;
 					border-radius: 5px;
@@ -212,7 +215,6 @@ export class PageHeader extends HTMLElement {
 						margin-right: 0;
 						margin-left: 1px;
 					}
-
 				}
 
 				@media screen and (max-width: 700px) {

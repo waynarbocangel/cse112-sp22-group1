@@ -34,7 +34,6 @@ template.innerHTML = `
 			height: 100%;
 			filter: var(--icon-filter);
 			opacity: 50%;
-
 		}
 
 		button:hover img {
@@ -57,7 +56,7 @@ template.innerHTML = `
 			.nav-bar {
 				display:none;
 			}
-			
+
 			.navigation {
 				display: block;
 				height: 8vh;
@@ -68,7 +67,7 @@ template.innerHTML = `
 				left: 0;
 				position:fixed;
 			}
-			  
+
 			#menu {
 				position: fixed;
 				width: 30%;
@@ -86,12 +85,12 @@ template.innerHTML = `
 				transform: translate(-100%, 0);
 				transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
 			}
-	
+
 			#menu.open {
 				transform-origin: 0 0;
 				transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
 			}
-	
+
 			#homeMenu {
 				position: absolute;
 				width: 60px;
@@ -101,7 +100,7 @@ template.innerHTML = `
 				right: 0;
 				margin: auto;
 			}
-	
+
 			#singleMenu {
 				position: absolute;
 				width: 60px;
@@ -111,7 +110,7 @@ template.innerHTML = `
 				right: 0;
 				margin: auto;
 			}
-	
+
 			#doubleMenu {
 				position: absolute;
 				width: 60px;
@@ -121,7 +120,7 @@ template.innerHTML = `
 				right: 0;
 				margin: auto;
 			}
-	
+
 			#userMenu {
 				position: absolute;
 				width: 65px;
@@ -132,7 +131,7 @@ template.innerHTML = `
 				padding: 0;
 				margin: 0 auto;
 			}
-	
+
 			#menuToggle {
 				flex-direction: column;
 				position: absolute;
@@ -140,7 +139,7 @@ template.innerHTML = `
 				left: 20px;
 				z-index: 1;
 			  }
-			  
+
 			#menuToggle input {
 				display: flex;
 				width: 40px;
@@ -150,7 +149,7 @@ template.innerHTML = `
 				opacity: 0;
 				z-index: 2;
 			  }
-			  
+
 			#menuToggle span {
 				display: flex;
 				width: 29px;
@@ -165,25 +164,25 @@ template.innerHTML = `
 							background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
 							opacity 0.55s ease;
 			}
-			  
+
 			#menuToggle span:first-child {
 				transform-origin: 0% 0%;
 			}
-			  
+
 			#menuToggle span:nth-last-child(2) {
 				transform-origin: 0% 100%;
 			}
-			  
+
 			#menuToggle input:checked ~ span {
 				opacity: 1;
 				transform: rotate(45deg) translate(-7px, -10px);
 			}
-			
+
 			#menuToggle input:checked ~ span:nth-last-child(3) {
 				opacity: 0;
 				transform: rotate(0deg) scale(0.2, 0.2);
 			}
-			
+
 			#menuToggle input:checked ~ span:nth-last-child(2) {
 				transform: rotate(-45deg) translate(-5px, 10px);
 			}
