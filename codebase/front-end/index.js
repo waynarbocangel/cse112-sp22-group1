@@ -323,3 +323,7 @@ export function setupCollection(header, btn, newState){
 	}
 	//document.getElementById("trackerWrapper").appendChild(new TrackerMenu("Future Log Trackers"));
 }
+
+export function setupTrackers(header, btn, newState) {
+	
+}
