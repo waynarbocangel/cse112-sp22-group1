@@ -85,11 +85,7 @@ export function updateTextBlockPouch (db, textBlock, date, callback) {
 									console.log(err);
 									callback(err);
 								}
-<<<<<<< HEAD
-							})
-=======
 							});
->>>>>>> dev-waynar
 						}
 					})
 				}
@@ -104,10 +100,6 @@ export function updateTextBlockPouch (db, textBlock, date, callback) {
 						console.log(err);
 						callback(err);
 					} else {
-<<<<<<< HEAD
-						textBlock.objectReference = null;
-=======
->>>>>>> dev-waynar
 						updateBlock(db, textBlockArr, (err) => {
 							if (err) {
 								console.log(err);

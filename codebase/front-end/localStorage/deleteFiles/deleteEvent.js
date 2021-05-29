@@ -35,8 +35,4 @@ export function deleteEventPouch(db, id, callback) {
 			);
 		}
 	})
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> dev-waynar
