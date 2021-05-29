@@ -1,28 +1,32 @@
 const themeColors = {
     darkmode: {
-        "--border-color":             "#292929",
+        "--border-color": "#292929",
         "--content-foreground-color": "#D4D4D4",
         "--content-background-color": "#1E1E1E",
         "--tracker-foreground-color": "#FFFFFF",
         "--tracker-background-color": "#2B2D42",
-        "--navbar-foreground-color":  "#FFFFFF",
-        "--navbar-background-color":  "#333333",
+        "--navbar-foreground-color": "#FFFFFF",
+        "--navbar-background-color": "#333333",
         "--icon-filter": "invert()",
     },
 
     lightmode: {
-        "--border-color":             "#F2F2F2",
+        "--border-color": "#F2F2F2",
         "--content-foreground-color": "#000000",
         "--content-background-color": "#FFFFFF",
         "--tracker-foreground-color": "#FFFFFF",
         "--tracker-background-color": "#2B2D42",
-        "--navbar-foreground-color":  "#FFFFFF",
-        "--navbar-background-color":  "#F7F2EC",
+        "--navbar-foreground-color": "#FFFFFF",
+        "--navbar-background-color": "#F7F2EC",
         "--icon-filter": "",
     }
 }
 
 export class SettingsMenu extends HTMLElement {
+    static get observedAttributes() {
+        return ['open'];
+    }
+
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
@@ -33,7 +37,6 @@ export class SettingsMenu extends HTMLElement {
             <style>
                 #overlay {
                     position: fixed;
-                    display: block;
                     width: 100%;
                     height: 100%;
                     top: 0;
@@ -94,12 +97,19 @@ export class SettingsMenu extends HTMLElement {
             </div>
         `;
 
-        this.darkmodeButton = this.shadowRoot.querySelector("#darkmode");
-        this.darkmodeButton.addEventListener('change', () => this.updateTheme('darkmode'));
-        this.lightmodeButton = this.shadowRoot.querySelector("#lightmode");
-        this.lightmodeButton.addEventListener('change', () => this.updateTheme('lightmode'));
+        let themeRadios = this.shadowRoot.querySelectorAll("input[type=radio]");
+        for (let themeRadio of themeRadios) {
+            themeRadio.addEventListener('change', () => this.updateTheme(themeRadio.id));
+        }
 
-        this.shadowRoot.querySelector("#close").addEventListener('click', () => {this.close(); });
+        this.shadowRoot.getElementById("close").addEventListener('click', () => { this.hide(); });
+        this.hide();
+    }
+
+    attributeChangedCallback(attr, oldVal, newVal) {
+        if (oldVal !== newVal) {
+            this[attr] = this.hasAttribute(attr);
+        }
     }
 
     updateTheme(theme) {
@@ -110,12 +120,33 @@ export class SettingsMenu extends HTMLElement {
         }
     }
 
-    close() {
-        this.style.display = 'none';
+    get open() {
+        return this.hasAttribute('open');
     }
 
-    open() {
-        this.style.display = '';
+    set open(isOpen) {
+        this.classList.toggle('open', isOpen);
+        this.setAttribute('aria-hidden', !isOpen)
+        if (isOpen) {
+            this.style.display = '';
+            this.setAttribute('open', 'true');
+            this.focus();
+        } else {
+            this.style.display = 'none';
+            this.removeAttribute('open');
+        }
+    }
+
+    toggle() {
+        this.open = !this.open;
+    }
+
+    show() {
+        this.open = true;
+    }
+
+    hide() {
+        this.open = false;
     }
 }
 
