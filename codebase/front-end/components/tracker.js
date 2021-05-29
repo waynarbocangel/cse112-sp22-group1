@@ -26,8 +26,6 @@ export class TrackerMenu extends HTMLElement {
 				background-color: var(--tracker-background-color); /* #2B2D42 */
                 color: var(--tracker-foreground-color);
                 font-family: "SF-Pro";
-                transform: translate3d(135vw, 0, 0);
-                transition: transform .4s ease-in-out /*cubic-bezier(0, .52, 0, 1);*/
             }
 
 			.noteContainer {
@@ -38,6 +36,11 @@ export class TrackerMenu extends HTMLElement {
 				list-style-type: circle;
 				list-style-position: outside;
 			}
+
+            .wrapper.closed {
+                transform: translate3d(135vw, 0, 0);
+                transition: transform .4s ease-in-out /*cubic-bezier(0, .52, 0, 1);*/
+            }
                         
             .wrapper.open {
                 transform: translate3d(calc(65vw - 39px), 0, 0);
@@ -48,7 +51,6 @@ export class TrackerMenu extends HTMLElement {
                 opacity: 95%;
 				padding-left: 0;
 				padding-right: 0;
-                width: 35vw;
             }
             
             .tracker_header {
@@ -106,7 +108,7 @@ export class TrackerMenu extends HTMLElement {
             }
         </style>
 
-        <div class="wrapper">
+        <div class="wrapper closed">
             <div class="tracker_header">
                 <div class="tracker_header_content">
                     <button class="close_button"> <img src="../public/resources/right-chevron.png"> </button>
@@ -134,9 +136,6 @@ export class TrackerMenu extends HTMLElement {
         this.closeButton.addEventListener("click", this.close);
     }
 
-    disconnectedCallback() {
-    }
-
     toggle() {
         this.open = !this.open;
     }
@@ -147,6 +146,7 @@ export class TrackerMenu extends HTMLElement {
 
     set open(isOpen) {
         this.shadowRoot.querySelector('.wrapper').classList.toggle('open', isOpen);
+        this.shadowRoot.querySelector('.wrapper').classList.toggle('closed', !isOpen);
         this.shadowRoot.querySelector('.wrapper').setAttribute('aria-hidden', !isOpen)
         if (isOpen) {
             this.setAttribute('open', '');
@@ -158,10 +158,6 @@ export class TrackerMenu extends HTMLElement {
 
     set title(text) {
         this.shadowRoot.querySelector(".tracker_header h1").innerText = text;
-    }
-
-    appendBlock() {
-        
     }
 
     close() {
