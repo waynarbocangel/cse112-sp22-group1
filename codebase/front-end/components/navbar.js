@@ -137,7 +137,7 @@ template.innerHTML = `
 			#menuToggle {
 				flex-direction: column;
 				position: absolute;
-				top: 25px;
+				top: 45px;
 				left: 20px;
 				z-index: 1;
 			  }

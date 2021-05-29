@@ -86,7 +86,8 @@ text-block{
 
 
 @media only screen and (max-width:900px) {
-	#targetMenu{
+	/* TODO: use img instead of background-image for theme */
+	#targetMenu {
 		display: block;
 		position: fixed;
 		bottom: 20px;

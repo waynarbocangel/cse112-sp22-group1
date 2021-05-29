@@ -11,6 +11,7 @@ document.querySelector("body").style.display = "none";
 
 export let navbar = document.querySelector('nav-bar');
 export let header = document.querySelector('page-header');
+export let trackerMenu = document.querySelector('tracker-menu');
 export let url = "";
 export let pageNumber = 1;
 
@@ -184,7 +185,8 @@ export function setupFutureLog(header, btn, newState){
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.remove("hide");
 	}
-	document.getElementById("trackerWrapper").appendChild(new TrackerMenu("Future Log Trackers"));
+
+	trackerMenu.title = "Future Log Trackers";
 }
 
 export function setupMonthlyLog(header, btn, newState){
@@ -230,7 +232,8 @@ export function setupMonthlyLog(header, btn, newState){
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.remove("hide");
 	}
-	document.getElementById("trackerWrapper").appendChild(new TrackerMenu("Monthly Log Trackers"));
+
+	trackerMenu.title = "Monthly Log Trackers";
 }
 
 export function setupDailyLog(header, btn, newState){
@@ -253,13 +256,14 @@ export function setupDailyLog(header, btn, newState){
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.remove("hide");
 	}
-	let tracker = new TrackerMenu("Daily Log Trackers");
+
+	trackerMenu.title = "Daily Log Trackers";
+
 	setTimeout(() => {
-		let trackerContent = tracker.shadowRoot.getElementById('editor');
-		createEditor(trackerContent, tracker,(success) => {
+		let trackerContent = trackerMenu.shadowRoot.getElementById('editor');
+		createEditor(trackerContent, trackerMenu,(success) => {
 			console.log(success);
 		});
-		document.getElementById("trackerWrapper").appendChild(tracker);
 	}, 20);
 	
 }

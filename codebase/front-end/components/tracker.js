@@ -8,6 +8,7 @@ export class TrackerMenu extends HTMLElement {
         super();
 		this.attachShadow({ mode: 'open' });
         this.close = this.close.bind(this);
+        this.clear = this.clear.bind(this);
 		this.shadowRoot.innerHTML = `
         <style>
 			@font-face {
@@ -120,6 +121,7 @@ export class TrackerMenu extends HTMLElement {
 
         this.title = title;
         this.closeButton = this.shadowRoot.querySelector(".close_button");
+        this.editor = this.shadowRoot.getElementById("editor");
     }
 
     attributeChangedCallback(attr, oldVal, newVal) {
@@ -158,16 +160,19 @@ export class TrackerMenu extends HTMLElement {
         this.shadowRoot.querySelector(".tracker_header h1").innerText = text;
     }
 
-    set content(placeholder) {
-
-    }
-
     appendBlock() {
         
     }
 
     close() {
         this.open = false;
+    }
+
+    clear() {
+        this.close();
+        for (let child of this.editor.children) {
+            child.remove();
+        }
     }
 }
 
