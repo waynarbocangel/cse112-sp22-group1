@@ -112,14 +112,11 @@ export class SettingsMenu extends HTMLElement {
                 }
 
                 #close {
-                    position: absolute;
                     color: var(--content-foreground-color);
 
                     width: 40px;
                     height: 40px;
 
-                    top: 10px;
-                    right: 10px;
 
                     border: none;
                     background-color: rgba(0,0,0,0);
@@ -137,11 +134,26 @@ export class SettingsMenu extends HTMLElement {
                     background-color: var(--content-background-color);
                 }
 
-                #header {
+                h1 {
                     text-align: center;
+                    flex: 2;
+                }
+
+                #header {
+                    display: flex;
+                    align-items: center;
+                    height: 75px;
                     margin-left: 10px;
                     margin-right: 10px;
                     border-bottom: 2px solid var(--border-color);
+                }
+
+                #theme {
+                    margin: 20px;
+                }
+
+                input {
+                    line-height: 18px;
                 }
             </style>
 
@@ -153,12 +165,12 @@ export class SettingsMenu extends HTMLElement {
                     </div>
                     
                     <form id="theme">
-                        <input type="radio" name="themeradio" id="darkmode"> <label>Darkmode</label></input><br>
-                        <input type="radio" name="themeradio" id="lightmode"> <label>Noobmode</label></input><br>
-                        <input type="radio" name="themeradio" id="highcontrast"> <label>High Contrast</label></input><br>
-                        <input type="radio" name="themeradio" id="theme4"> <label>Theme 4</label></input><br>
-                        <input type="radio" name="themeradio" id="theme5"> <label>Theme 5</label></input><br>
-                        <input type="radio" name="themeradio" id="theme6"> <label>Theme 6</label></input><br>
+                        <input type="radio" name="themeradio" id="darkmode">     <label for="darkmode">Darkmode</label></input><br>
+                        <input type="radio" name="themeradio" id="lightmode" checked>    <label for="lightmode">Noobmode</label></input><br>
+                        <input type="radio" name="themeradio" id="highcontrast"> <label for="highcontrast">High Contrast</label></input><br>
+                        <input type="radio" name="themeradio" id="theme4">       <label for="theme4">Theme 4</label></input><br>
+                        <input type="radio" name="themeradio" id="theme5">       <label for="theme5">Theme 5</label></input><br>
+                        <input type="radio" name="themeradio" id="theme6">       <label for="theme6">Theme 6</label></input><br>
                     </form>
                 </div>
             </div>
