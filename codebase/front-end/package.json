@@ -1,0 +1,15 @@
+{
+  "name": "front-end",
+  "version": "1.0.0",
+  "description": "This is the front-end for CSE 110 Spring 2021 Team 11",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js & nodemon ../back-end/index.js"
+  },
+  "author": "CSE 110 Team 11",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

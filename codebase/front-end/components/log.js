@@ -1,5 +1,5 @@
 
-class LogPage extends HTMLElement{
+export class LogPage extends HTMLElement{
     constructor(){
         super();
         const template = document.createElement('template');
