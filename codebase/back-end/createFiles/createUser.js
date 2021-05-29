@@ -25,8 +25,8 @@ function createUser (email, pwd, callback) {
 				trackers: [],
 				collections: [],
 				textBlocks: [],
-				eventBlocks: [],
-				taskBlocks: [],
+				events: [],
+				tasks: [],
 				signifiers: []
 			});
 	
@@ -42,9 +42,6 @@ function createUser (email, pwd, callback) {
 		}
 	});
 }
-
-//createUser('abc', '123', (response) =>{console.log(response)} );
-
 
 module.exports = {
 	createUser: createUser

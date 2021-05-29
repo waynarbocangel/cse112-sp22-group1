@@ -4,12 +4,9 @@ export function updateMonthlyLogPouch (db, log, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			let monthlyLogArr = doc.userObject.monthlyLogs.filter(element => element.id != log.id);
-			monthlyLogArr[0].date = log.date;
-			monthlyLogArr[0].parent = log.parent;
-			monthlyLogArr[0].content = log.content;
-			monthlyLogArr[0].days = log.days;
-			monthlyLogArr[0].trackers = log.trackers;
+			let monthlyLogArr = doc.monthlyLogs.filter(element => element.id != log.id);
+			monthlyLogArr.push(log);
+
 			db.put({
 				_id: "0000", 
 				_rev: doc._rev,
@@ -17,7 +14,7 @@ export function updateMonthlyLogPouch (db, log, callback) {
 				pwd: doc.pwd,
 				index: doc.index,
 				dailyLogs: doc.dailyLogs,
-				monthlyLogs: doc.monthlyLogs,
+				monthlyLogs: monthlyLogArr,
 				futureLogs: doc.futureLogs,
 				trackers: doc.trackers,
 				collections: doc.collections,
@@ -29,7 +26,7 @@ export function updateMonthlyLogPouch (db, log, callback) {
 				if (err) {
 					callback(err, null);
 				} else {
-					callback(null, monthlyLogArr[0]);
+					callback(null, log);
 				}
 			});
 		}

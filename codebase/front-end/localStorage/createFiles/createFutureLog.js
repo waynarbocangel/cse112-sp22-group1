@@ -1,11 +1,10 @@
 import {makeid} from "./makeId.js";
 import * as localStorage from "./../userOperations.js";
-var futureObject;
+import {restart} from "./createMonthlyLog.js";
+let futureObject;
 
 export function createFutureLogPouch (db, startDate, endDate, months, content, trackers, callback) {
 	db.get("0000").then((doc) => {
-		console.log(doc);
-		console.log("this is doc: " + doc);
 		let id = makeid();
 		let arrays = [];
 
@@ -15,11 +14,11 @@ export function createFutureLogPouch (db, startDate, endDate, months, content, t
 		Array.prototype.push.apply(arrays, doc.collections);
 		Array.prototype.push.apply(arrays, doc.trackers);
 		Array.prototype.push.apply(arrays, doc.textBlocks);
-		Array.prototype.push.apply(arrays, doc.taskBlocks);
-		Array.prototype.push.apply(arrays, doc.eventBlocks);
+		Array.prototype.push.apply(arrays, doc.tasks);
+		Array.prototype.push.apply(arrays, doc.events);
 		Array.prototype.push.apply(arrays, doc.signifiers);
 		
-		while(arrays.filter(element => element.id == id) > 0){
+		while(arrays.filter(element => element.id == id).length > 0){
 			id = makeid();
 		}
 		futureObject = {
@@ -48,14 +47,15 @@ export function createFutureLogPouch (db, startDate, endDate, months, content, t
 				collections: doc.collections,
 				trackers: doc.trackers,
 				textBlocks: doc.textBlocks,
-				taskBlocks: doc.taskBlocks,
-				eventBlocks: doc.eventBlocks,
+				tasks: doc.tasks,
+				events: doc.events,
 				signifiers: doc.signifiers
 			}
 		);
 	}).then((res) => {
-		db.get("0000").then((doc) => {
-			addMonth(futureObject.startDate, futureObject.endDate, futureObject, (monthsIDArray) => {
+		
+		addMonth(new Date(futureObject.startDate.getTime()), new Date(futureObject.endDate.getTime()), futureObject, (monthsIDArray) => {
+			db.get("0000").then((doc) => {
 				futureObject.months = monthsIDArray;
 				doc.futureLogs[doc.futureLogs.length - 1] = futureObject;
 				db.put(
@@ -71,12 +71,17 @@ export function createFutureLogPouch (db, startDate, endDate, months, content, t
 						collections: doc.collections,
 						trackers: doc.trackers,
 						textBlocks: doc.textBlocks,
-						taskBlocks: doc.taskBlocks,
-						eventBlocks: doc.eventBlocks,
+						tasks: doc.tasks,
+						events: doc.events,
 						signifiers: doc.signifiers
 					}
 				, (err, res) => {
-					callback(null, futureObject);
+					restart();
+					if (!err){
+						callback(null, futureObject);
+					} else {
+						callback(err, null);
+					}
 				});
 			});
 		});
@@ -84,18 +89,27 @@ export function createFutureLogPouch (db, startDate, endDate, months, content, t
 }
 
 function addMonth(startDate, endDate, futureLog, callback){
-	let date = new Date(startDate.getFullYear(), startDate.getMonth(), 0);
-	let d = date.getDate()
-	// let d = new Date(startDate.getFullYear(), startDate.getMonth(), 0);
+	let date = (startDate.getTime() == futureObject.startDate.getTime()) ? new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getUTCDate()) : new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
+	if (startDate.getMonth() == endDate.getMonth()){
+		date = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getUTCDate());;
+	}
 	localStorage.createMonthlyLog(futureLog.id, [], [], [], date, (err, month) => {
-		console.log(month);
 		if (err == null){
-			startDate.setMonth((startDate.getMonth() + 1 ) % 12);
-			if(startDate.getMonth() == endDate.getMonth()){
+			if(startDate.getMonth() > endDate.getMonth()){
 				callback([]);
 			} else {
-				addMonth(startDate, endDate, futureLog, (monthsIDArray) => {
-					monthsIDArray.splice(0, 0, month.id);
+				if (startDate.getDate() != new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0).getDate()){
+					startDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
+				}
+				let newStartDate = new Date(startDate);
+				newStartDate.setMonth(startDate.getMonth() + 1);
+				if (startDate.getDate() != newStartDate.getDate()){
+					newStartDate.setDate(0);
+				} else if (newStartDate.getDate() != new Date(newStartDate.getFullYear(), newStartDate.getMonth() + 1, 0).getDate()){
+					newStartDate = new Date(newStartDate.getFullYear(), newStartDate.getMonth() + 1, 0);
+				}
+				addMonth(newStartDate, endDate, futureLog, (monthsIDArray) => {
+					monthsIDArray.splice(0, 0, {id: month.id, content: [], monthlyLog: month.id});
 					callback(monthsIDArray);
 				});
 			}

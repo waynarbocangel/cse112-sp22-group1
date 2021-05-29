@@ -8,7 +8,7 @@ const userSchema = {
 	pwd: String,
 	index: {
 		objectType: String,
-		contents: [String] //only futurelog and collection
+		contents: [String]
 	},
 	dailyLogs: [
 		{
@@ -26,8 +26,11 @@ const userSchema = {
 			objectType: String,
 			parent: String,
 			date: Date,
-			content: [String],
-			days: [String],
+			days: [{
+				id: String,
+				content: [String],
+				dailyLog: [String]
+			}],
 			trackers: [String]
 		}
 	],
@@ -37,8 +40,11 @@ const userSchema = {
 			objectType: String,
 			startDate: Date,
 			endDate: Date,
-			months: [String],
-			content: [String],
+			months: [{
+				id: String,
+				content: [String],
+				monthlyLog: [String]
+			}],
 			trackers: [String]
 		}
 	],
@@ -65,27 +71,27 @@ const userSchema = {
 			objectType: String,
 			tabLevel: Number,
 			parent: String,
+			subParent: String,
 			kind: String,
+			objectReference: String,
 			text: String,
 			signifier: String
 		}
 	],
-	eventBlocks: [
+	events: [
 		{
 			id: String,
 			objectType: String,
-			tabLevel: Number,
+			title: String,
 			parent: String,
-			text: String,
 			date: Date,
 			signifier: String
 		}
 	],
-	taskBlocks: [
+	tasks: [
 		{
 			id: String,
 			objectType: String,
-			tabLevel: Number,
 			parent: String,
 			text: String,
 			complete: Number,

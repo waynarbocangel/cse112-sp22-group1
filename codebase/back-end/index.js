@@ -45,6 +45,7 @@ app.post("/readUser", express.json({type: "*/*"}), (req, res) => {
 	security.authenticate(req.body, (success) => {
 		if (success) {
 			readUser.readUser(req.body, (user) => {
+				console.log(user);
 				res.send(user);
 			});
 		} else {

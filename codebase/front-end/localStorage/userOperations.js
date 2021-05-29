@@ -2,17 +2,18 @@ import {createUserPouch} from "./createFiles/createUser.js";
 import {readUserPouch} from "./readFiles/readUser.js";
 import {createCollectionPouch} from "./createFiles/createCollection.js";
 import {createDailyLogPouch} from "./createFiles/createDailyLog.js";
-import {createEventBlockPouch} from "./createFiles/createEventBlock.js";
+import {createEventPouch} from "./createFiles/createEvent.js";
 import {createFutureLogPouch} from "./createFiles/createFutureLog.js";
 import {createMonthlyLogPouch} from "./createFiles/createMonthlyLog.js"
 import {createSignifierPouch} from "./createFiles/createSignifier.js";
 import {createTextBlockPouch} from "./createFiles/createTextBlock.js";
 import {createTrackerPouch} from "./createFiles/createTracker.js";
+import {createTaskPouch} from "./createFiles/createTask.js";
 //---------------importing from delete-------------------------------------------
 import {deleteCollectionPouch} from "./deleteFiles/deleteCollection.js";
-import {deleteEventBlockPouch} from "./deleteFiles/deleteEventBlock.js";
+import {deleteEventPouch} from "./deleteFiles/deleteEvent.js";
 import {deleteSignifierPouch} from "./deleteFiles/deleteSignifier.js";
-import {deleteTaskBlockPouch} from "./deleteFiles/deleteTaskBlock.js";
+import {deleteTaskPouch} from "./deleteFiles/deleteTask.js";
 import {deleteTextBlockPouch} from "./deleteFiles/deleteTextBlock.js";
 import {deleteTrackerPouch} from "./deleteFiles/deleteTracker.js";
 import {deleteUserPouch} from "./deleteFiles/deleteUser.js";
@@ -24,12 +25,10 @@ import {updateFutureLogPouch} from "./updateFiles/updateFutureLog.js";
 import {updateCollectionPouch} from "./updateFiles/updateCollection.js";
 import {updateTrackerPouch} from "./updateFiles/updateTracker.js";
 import {updateTextBlockPouch} from "./updateFiles/updateTextBlock.js";
-import {updateTaskBlockPouch} from "./updateFiles/updateTaskBlock.js";
-import {updateEventBlockPouch} from "./updateFiles/updateEventBlock.js";
+import {updateTaskPouch} from "./updateFiles/updateTask.js";
+import {updateEventPouch} from "./updateFiles/updateEvent.js";
 import {updateSignifierPouch} from "./updateFiles/updateSignifier.js";
 
-
-//const PouchDB = require('pouchdb-7.2.1.min.js');
 export let db = new PouchDB("Users");
 
 
@@ -98,9 +97,9 @@ export function createDailyLog(parent, content, trackers, date, callback){
 	});
 }
 
-export function createEventBlock(parent, text, date, signifier, callback) {
-	createEventBlockPouch(db, parent, text, date, signifier, (user) => {
-		callback(user);
+export function createEvent(index, parent, date, signifier, callback) {
+	createEventPouch(db, index, parent, date, signifier, (error, event) => {
+		callback(error, event);
 	})
 }
 
@@ -122,14 +121,16 @@ export function createSignifier(meaning, symbol, callback) {
 	})
 }
 
-export function createTaskBlock(parent, text, complete, signifier, callback) {
-	createTaskBlockPouch(db, parent, text, complete, signifier, (user) => {
-		callback(user);
+export function createTask(parent, text, complete, signifier, callback) {
+	createTaskPouch(db, parent, text, complete, signifier, (error, task) => {
+		callback(error, task);
 	})
 }
 
-export function createTextBlock(parent, content, trackers, callback){
-	createTextBlockPouch(db, parent, content, trackers, callback);
+export function createTextBlock(parent, subParent, index, content, tabLevel, kind, objectReference, signifier, date, callback){
+	createTextBlockPouch(db, parent, subParent, index, content, tabLevel, kind, objectReference, signifier, date, (error, textBlock) => {
+		callback(error, textBlock);
+	});
 }
 
 export function createTracker(content, parent, callback) {
@@ -140,6 +141,7 @@ export function createTracker(content, parent, callback) {
 
 export function readUser(callback){
 	readUserPouch(db, (err, user) => {
+		//console.log("user is ", user);
 		callback(err, user);
 	});
 }
@@ -161,15 +163,15 @@ export function deleteCollectionByID (id, callback){
 }
 
 export function deleteEvent(event, callback){
-	deleteEventBlockPouch(db, event.id, callback);
+	deleteEventPouch(db, event.id, callback);
 }
 
 export function deleteEventByID(id, callback){
-	deleteEventBlockPouch(db, id, callback);
+	deleteEventPouch(db, id, callback);
 }
 
 export function deleteEventAtIndex(container, index, callback){
-	deleteEventBlockPouch(db, container.content[index], callback);
+	deleteEventPouch(db, container.content[index], callback);
 }
 
 export function deleteSignifier(signifier, callback){
@@ -185,11 +187,11 @@ export function deleteSignifierAtBlock(block, callback){
 }
 
 export function deleteTask(task, callback){
-	deleteTaskBlockPouch(db, task.id, callback);
+	deleteTaskPouch(db, task.id, callback);
 }
 
 export function deleteTaskByID(id, callback){
-	deleteTaskBlockPouch(db, id, callback);
+	deleteTaskPouch(db, id, callback);
 }
 
 export function deleteTextBlock(block, callback){
@@ -217,22 +219,16 @@ export function deleteTrackerFromContainer(container, index, callback){
 }
 
 //-------------------------------Update Functions----------------------------------
-export function updateUser(){
-	updateUserPouch(db, (user) => {
-		return res.send(user);
-	});
+export function updateUser(callback){
+	updateUserPouch(db, callback);
 }
 
-export function updateUserOnline(){
-	updateUserFromMongo(db, (user) => {
-		return res.send(user);
-	});
+export function updateUserOnline(callback){
+	updateUserFromMongo(db, callback);
 }
 
 export function updateDailyLog(dailyLog, callback) {
-	updateDailyLogPouch(dailyLog, (user) => {
-		return res.send(user);
-	})
+	updateDailyLogPouch(dailyLog, callback);
 }
 
 export function updateDailyLogByID (id, callback){
@@ -292,16 +288,17 @@ export function updateCollectionByID (id, callback){
 }
 
 export function updateEvent(event, callback){
-	updateEventBlockPouch(db, event, callback);
+	updateEventPouch(db, event, callback);
 }
+
 
 export function updateEventByID(id, callback){
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
-			const event = doc.userObject.eventBlocks.filter(element => element.id == id);
-			updateEventBlockPouch(db, event[0], callback);		
+			const event = doc.events.filter(element => element.id == id);
+			updateEventPouch(db, event[0], callback);		
 		}
 	});
 }
@@ -311,8 +308,8 @@ export function updateEventAtIndex(container, index, callback){
 		if (err) {
 			callback(err);
 		} else {
-			const event = doc.userObject.eventBlocks.filter(element => element.id == container.content[index]);
-			updateEventBlockPouch(db, event[0], callback);		
+			const event = doc.events.filter(element => element.id == container.content[index]);
+			updateEventPouch(db, event[0], callback);		
 		}
 	});
 }
@@ -344,7 +341,7 @@ export function updateSignifierAtBlock(block, callback){
 }
 
 export function updateTask(task, callback){
-	updateTaskBlockPouch(db, task, callback);
+	updateTaskPouch(db, task, callback);
 }
 
 export function updateTaskByID(id, callback){
@@ -352,8 +349,8 @@ export function updateTaskByID(id, callback){
 		if (err) {
 			callback(err);
 		} else {
-			const task = doc.userObject.taskBlocks.filter(element => element.id == id);
-			updateTaskBlockPouch(db, task[0], callback);		
+			const task = doc.tasks.filter(element => element.id == id);
+			updateTaskPouch(db, task[0], callback);		
 		}
 	});
 }

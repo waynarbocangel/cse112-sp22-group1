@@ -8,17 +8,17 @@ export function createTrackerPouch (db, content, parent, callback) {
 			console.log(doc);
 			let id = makeid();
 			let arrays = [];
-			Array.prototype.push.apply(arrays, doc.userObject.dailyLogs);
-			Array.prototype.push.apply(arrays, doc.userObject.monthlyLogs);
-			Array.prototype.push.apply(arrays, doc.userObject.futureLogs);
-			Array.prototype.push.apply(arrays, doc.userObject.collections);
-			Array.prototype.push.apply(arrays, doc.userObject.trackers);
-			Array.prototype.push.apply(arrays, doc.userObject.textBlocks);
-			Array.prototype.push.apply(arrays, doc.userObject.taskBlocks);
-			Array.prototype.push.apply(arrays, doc.userObject.eventBlocks);
-			Array.prototype.push.apply(arrays, doc.userObject.signifiers);
+			Array.prototype.push.apply(arrays, doc.dailyLogs);
+			Array.prototype.push.apply(arrays, doc.monthlyLogs);
+			Array.prototype.push.apply(arrays, doc.futureLogs);
+			Array.prototype.push.apply(arrays, doc.collections);
+			Array.prototype.push.apply(arrays, doc.trackers);
+			Array.prototype.push.apply(arrays, doc.textBlocks);
+			Array.prototype.push.apply(arrays, doc.tasks);
+			Array.prototype.push.apply(arrays, doc.events);
+			Array.prototype.push.apply(arrays, doc.signifiers);
 			
-			while(arrays.filter(element => element.id == id) > 0){
+			while(arrays.filter(element => element.id == id).length > 0){
 				id = makeid();
 			}
 			const trackerObject = {
@@ -28,8 +28,26 @@ export function createTrackerPouch (db, content, parent, callback) {
 				parent: parent
 			};
 
-			doc.userObject.trackers.push(trackerObject);
+			doc.trackers.push(trackerObject);
 
+			return db.put(
+				{
+					_id: "0000",
+					_rev: doc._rev,
+					email: doc.email,
+					pwd: doc.pwd,
+					index: doc.index,
+					dailyLogs: doc.dailyLogs,
+					monthlyLogs: doc.monthlyLogs,
+					futureLogs: doc.futureLogs,
+					collections: doc.collections,
+					trackers: doc.trackers,
+					textBlocks: doc.textBlocks,
+					taskBlocks: doc.tasks,
+					eventBlocks: doc.events,
+					signifiers: doc.signifiers
+				}
+			);
 		}
 	});
 }

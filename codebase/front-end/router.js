@@ -27,14 +27,14 @@ router.setState = function(newState, prev) {
 				if(state == null || state == "#index" || state =='') {
 					setupIndex(header, btn);
 				}
-				else if(state.includes("#daily_log")) {
-					setupDailyLog(header, btn);
+				else if(state.includes("#dailyLog")) {
+					setupDailyLog(header, btn, newState);
 				}
-				else if(state.includes("#monthly_log")) {
-					setupMonthlyLog(header, btn);
+				else if(state.includes("#monthlyLog")) {
+					setupMonthlyLog(header, btn, newState);
 				}
-				else if(state.includes("#future_log")) {
-					setupFutureLog(header, btn);
+				else if(state.includes("#futureLog")) {
+					setupFutureLog(header, btn, newState);
 				}
 				if (!prev){
 					history.pushState({page: pageNumber}, "", url);
