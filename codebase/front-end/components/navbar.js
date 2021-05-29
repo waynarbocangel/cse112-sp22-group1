@@ -63,7 +63,7 @@ template.innerHTML = `
 				height: 8vh;
 				padding: none;
 				margin: none;
-				width: 30%;
+				width: 30vh;
 				top: 0;
 				left: 0;
 				position:fixed;
@@ -136,7 +136,7 @@ template.innerHTML = `
 			#menuToggle {
 				flex-direction: column;
 				position: absolute;
-				top: 45px;
+				top: 37px;
 				left: 20px;
 				z-index: 1;
 			  }
