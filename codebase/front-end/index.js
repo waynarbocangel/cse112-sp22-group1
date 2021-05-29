@@ -181,6 +181,9 @@ export function setupFutureLog(header, btn, newState){
 		btn[i].removeAttribute("disabled");
 		btn[i].style.visibility = "visible";
 	}
+	createEditor(contentWrapper, currentObject, null, (success) => {
+		console.log(success);
+	});
 	navbar.single.setAttribute ("disabled", "disabled");
 	navbar.single.style.visibility = "hidden";
 	navbar.double.setAttribute ("disabled", "disabled");
@@ -230,6 +233,9 @@ export function setupMonthlyLog(header, btn, newState){
 		btn[i].removeAttribute("disabled");
 		btn[i].style.visibility = "visible";
 	}
+	createEditor(contentWrapper, currentObject, null, (success) => {
+		console.log(success);
+	});
 	document.getElementById("targetMenu").style.display = "block";
 	navbar.double.setAttribute ("disabled", "disabled");
 	navbar.double.style.visibility = "hidden";

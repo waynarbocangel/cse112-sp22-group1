@@ -1,3 +1,5 @@
+import * as localStorage from "../userOperations.js";
+
 export function updateEventPouch (db, event, callback) {
 	console.log(event);
 	db.get("0000", (err, doc) => {
@@ -5,23 +7,26 @@ export function updateEventPouch (db, event, callback) {
 			callback(err);
 		} else {
 			let eventArr = doc.events.filter(element => element.id != event.id);
-			eventArr.push(event)
-			
-			db.put({_id: "0000", 
-			_rev: doc._rev,
-			email: doc.email,
-			pwd: doc.pwd,
-			index: doc.index,
-			dailyLogs: doc.dailyLogs,
-			monthlyLogs: doc.monthlyLogs,
-			futureLogs: doc.futureLogs,
-			collections: doc.collections,
-			trackers: doc.trackers,
-			textBlocks: doc.textBlocks,
-			tasks: doc.tasks,
-			events: eventArr,
-			signifiers: doc.signifiers}, (err, res) => {
+			eventArr.push(event);
+
+			return db.put({
+				_id: "0000",
+				_rev: doc._rev,
+				email: doc.email,
+				pwd: doc.pwd,
+				index: doc.index,
+				dailyLogs: doc.dailyLogs,
+				monthlyLogs: doc.monthlyLogs,
+				futureLogs: doc.futureLogs,
+				trackers: doc.trackers,
+				collections: doc.collections,
+				textBlocks: doc.textBlocks,
+				tasks: doc.tasks,
+				events: eventArr,
+				signifiers: doc.signifiers
+			}, (err, res) => {
 				if (err) {
+					console.log(err);
 					callback(err);
 				} else {
 					callback(null);
