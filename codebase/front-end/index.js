@@ -121,7 +121,7 @@ export function setupIndex(header, btn) {
 	navbar.singleMenu.style.visibility = "hidden";
 	navbar.doubleMenu.setAttribute ("disabled", "disabled");
 	navbar.doubleMenu.style.visibility = "hidden";
-	let headerButtons = header.querySelectorAll(".imgbutton");
+	let headerButtons = header.imgbuttons;
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.add("hide");
 	}
@@ -180,7 +180,7 @@ export function setupFutureLog(header, btn, newState){
 	navbar.singleMenu.style.visibility = "hidden";
 	navbar.doubleMenu.setAttribute ("disabled", "disabled");
 	navbar.doubleMenu.style.visibility = "hidden";
-	let headerButtons = header.querySelectorAll(".imgbutton");
+	let headerButtons = header.imgbuttons;
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.remove("hide");
 	}
@@ -226,7 +226,7 @@ export function setupMonthlyLog(header, btn, newState){
 	navbar.double.style.visibility = "hidden";
 	navbar.doubleMenu.setAttribute ("disabled", "disabled");
 	navbar.doubleMenu.style.visibility = "hidden";
-	let headerButtons = header.querySelectorAll(".imgbutton");
+	let headerButtons = header.imgbuttons;
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.remove("hide");
 	}
@@ -249,7 +249,7 @@ export function setupDailyLog(header, btn, newState){
 		console.log(success);
 	});
 	document.getElementById("targetMenu").style.display = "block";
-	let headerButtons = header.querySelectorAll(".imgbutton");
+	let headerButtons = header.imgbuttons;
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.remove("hide");
 	}
@@ -301,7 +301,7 @@ export function setupCollection(header, btn, newState){
 	navbar.singleMenu.style.visibility = "hidden";
 	navbar.doubleMenu.setAttribute ("disabled", "disabled");
 	navbar.doubleMenu.style.visibility = "hidden";
-	let headerButtons = header.shadowRoot.querySelectorAll(".imgbutton");
+	let headerButtons = header.imgbuttons;
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.remove("hide");
 	}

@@ -8,6 +8,7 @@ template.innerHTML = `
 		.navigation {
 			display: none; 
 		}
+
 		.nav-bar {
 			position: fixed;
 			width: 60px;
@@ -53,14 +54,12 @@ template.innerHTML = `
 		}
 
 		@media only screen and (max-width:900px) {
-
 			.nav-bar {
 				display:none;
 			}
 			
 			.navigation {
 				display: block;
-				background-color: rgba(236, 223, 207, 0.0);
 				height: 8vh;
 				padding: none;
 				margin: none;
@@ -79,25 +78,22 @@ template.innerHTML = `
 				left: 0;
 				margin: 0;
 				padding: 0;
-				background-color: white;
+				background-color: var(--navbar-background-color);
 			}
 	
-			.menuClosed{
+			.menuClosed {
 				-webkit-font-smoothing: antialiased;
 				transform: translate(-100%, 0);
 				transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
 			}
 	
-			.menuOpen{
+			.menuOpen {
 				-webkit-font-smoothing: antialiased;
 				transform-origin: 0 0;
 				transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
 			}
 	
 			#homeMenu {
-				background-color: transparent;
-				border:none;
-				cursor: pointer;
 				position: absolute;
 				width: 60px;
 				height: 60px;
@@ -108,9 +104,6 @@ template.innerHTML = `
 			}
 	
 			#singleMenu {
-				background-color: transparent;
-				border:none;
-				cursor: pointer;
 				position: absolute;
 				width: 60px;
 				height: 60px;
@@ -121,9 +114,6 @@ template.innerHTML = `
 			}
 	
 			#doubleMenu {
-				background-color: transparent;
-				border:none;
-				cursor: pointer;
 				position: absolute;
 				width: 60px;
 				height: 60px;
@@ -134,9 +124,6 @@ template.innerHTML = `
 			}
 	
 			#userMenu {
-				background-color: transparent;
-				border:none;
-				cursor: pointer;
 				position: absolute;
 				width: 65px;
 				height: 65px;
@@ -147,32 +134,80 @@ template.innerHTML = `
 				margin: 0 auto;
 			}
 	
-			  
-			  #menuToggle input:checked ~ ul
-			  {
-				transform: none;
+			#menuToggle {
+				flex-direction: column;
+				position: absolute;
+				top: 25px;
+				left: 20px;
+				z-index: 1;
 			  }
-	 
+			  
+			#menuToggle input {
+				display: flex;
+				width: 40px;
+				height: 32px;
+				position: absolute;
+				cursor: pointer;
+				opacity: 0;
+				z-index: 2;
+			  }
+			  
+			#menuToggle span {
+				display: flex;
+				width: 29px;
+				height: 2px;
+				margin-bottom: 5px;
+				position: relative;
+				border-radius: 3px;
+				background: var(--content-foreground-color);
+				z-index: 1;
+				transform-origin: 5px 0px;
+				transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+							background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+							opacity 0.55s ease;
+			}
+			  
+			#menuToggle span:first-child {
+				transform-origin: 0% 0%;
+			}
+			  
+			#menuToggle span:nth-last-child(2) {
+				transform-origin: 0% 100%;
+			}
+			  
+			#menuToggle input:checked ~ span {
+				opacity: 1;
+				transform: rotate(45deg) translate(-7px, -10px);
+			}
+			
+			#menuToggle input:checked ~ span:nth-last-child(3) {
+				opacity: 0;
+				transform: rotate(0deg) scale(0.2, 0.2);
+			}
+			
+			#menuToggle input:checked ~ span:nth-last-child(2) {
+				transform: rotate(-45deg) translate(-5px, 10px);
+			}
 		}
-	
+
 		@media only screen and (max-height: 1200px){
 			#homeMenu {
 				width: 40px;
 				height: 40px;
 			}
-	
+
 			#singleMenu {
 				width: 40px;
 				height: 40px;
 				top: 150px;
 			}
-	
+
 			#doubleMenu {
 				width: 40px;
 				height: 40px;
 				top: 230px;
 			}
-	
+
 			#userMenu {
 				position: absolute;
 				width: 45px;
@@ -180,25 +215,25 @@ template.innerHTML = `
 				top: calc(100% - 85px);
 			}
 		}
-	
+
 		@media only screen and (max-height: 800px){
 			#homeMenu {
 				width: 35px;
 				height: 35px;
 			}
-	
+
 			#singleMenu {
 				width: 35px;
 				height: 35px;
 				top: 130px;
 			}
-	
+
 			#doubleMenu {
 				width: 35px;
 				height: 35px;
 				top: 190px;
 			}
-	
+
 			#userMenu {
 				position: absolute;
 				width: 40px;
@@ -206,7 +241,6 @@ template.innerHTML = `
 				top: calc(100% - 65px);
 			}
 		}
-
 	</style> 
 
 	<nav class="nav-bar">
@@ -219,11 +253,18 @@ template.innerHTML = `
 		</div>
 	</nav>
 	<nav class="navigation">
+		<div id="menuToggle">
+			<input type="checkbox" />
+			<span></span>
+			<span></span>
+			<span></span>
+		</div>
+
 		<div id="menu" class="menuClosed">
-			<button id="homeMenu"></button>
-			<button id="singleMenu"></button>
-			<button id="doubleMenu"></button>
-			<button id="userMenu"></button>
+			<button id="homeMenu">  <img src="../public/resources/home_icon.png"></button>
+			<button id="singleMenu"><img src="../public/resources/left.png"></button>
+			<button id="doubleMenu"><img src="../public/resources/double_icon.png"></button>
+			<button id="userMenu">  <img src="../public/resources/user.png"></button>
 		</div>
 	</nav>
 `;
@@ -234,12 +275,16 @@ export class NavBar extends HTMLElement {
 		this.attachShadow({mode: 'open'});
 		this.shadowRoot.appendChild(template.content.cloneNode(true));
 
-
 		this.home = this.shadowRoot.querySelectorAll('button')[0];
 		this.target = this.shadowRoot.querySelectorAll('button')[1];
 		this.single = this.shadowRoot.querySelectorAll('button')[2];
 		this.double = this.shadowRoot.querySelectorAll('button')[3];
 		this.user = this.shadowRoot.querySelectorAll('button')[4];
+
+		this.shadowRoot.querySelector("#menuToggle input").addEventListener("change", () => {
+			this.toggleMenu();
+		});
+
 		this.menu = this.shadowRoot.querySelector('#menu');
 		this.homeMenu = this.shadowRoot.querySelector('#homeMenu');
 		this.singleMenu = this.shadowRoot.querySelector('#singleMenu');
@@ -269,22 +314,19 @@ export class NavBar extends HTMLElement {
 		this.homeMenu.addEventListener('click', () => {
 			this.goHome();
 			this.toggleMenu();
-			header.input.checked = false;
 		});
 		this.singleMenu.addEventListener('click', () => {
 			this.goBack();
 			this.toggleMenu();
-			header.input.checked = false;
 		});
 		this.doubleMenu.addEventListener('click', () => {
 			this.goFarBack();
 			this.toggleMenu();
-			header.input.checked = false;
 		});
 		this.userMenu.addEventListener('click', () => {
-			alert("hello"); 
+			let settingsMenu = document.querySelector("settings-menu");
+			settingsMenu.open();
 			this.toggleMenu();
-			header.input.checked = false;
 		});
 	}
 

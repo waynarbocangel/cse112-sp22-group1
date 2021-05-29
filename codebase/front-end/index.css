@@ -68,15 +68,6 @@ text-block{
 /*
 .noteContainer:before{content: '\f081';} */
 
-/* thomas's code */
-page-header {
-    display: block;
-    margin-left: 80px;
-    margin-right: 20px;
-    border-bottom: solid 2px var(--border-color); /*rgba(0, 0, 0, 0.05);*/
-	text-align: left;
-}
-
 @media only screen and (max-width:900px) {
 	#topbar{
 		margin-left: 20px;

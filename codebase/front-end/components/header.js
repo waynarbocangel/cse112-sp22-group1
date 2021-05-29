@@ -1,13 +1,26 @@
 import * as localStorage from "../localStorage/userOperations.js";
-import {navbar} from "../index.js";
+import { navbar } from "../index.js";
 
 export class PageHeader extends HTMLElement {
 	constructor() {
 		super();
+		this.attachShadow({ mode: 'open' });
 	}
 
 	connectedCallback() {
 		this.innerHTML = `
+			<style>
+				page-header {
+					display: block;
+					margin-left: 80px;
+					margin-right: 20px;
+					border-bottom: solid 2px var(--border-color);
+					text-align: left;
+				}
+			</style>
+			`;
+
+		this.shadowRoot.innerHTML = `
 			<style>
 				@font-face {
 					font-family:"SF-Pro";
@@ -15,10 +28,6 @@ export class PageHeader extends HTMLElement {
 				}
 		
 				/* Top navigation */
-				#menuToggle {
-					display: none;
-				}
-
 				#container {
 					display: flex;
 					align-items: center;
@@ -140,62 +149,6 @@ export class PageHeader extends HTMLElement {
 					opacity: 0;
 				}
 
-				#menuToggle {
-					flex-direction: column;
-					position: absolute;
-					top: 45px;
-					left: 20px;
-					z-index: 1;
-				  }
-				  
-				#menuToggle input {
-					display: flex;
-					width: 40px;
-					height: 32px;
-					position: absolute;
-					cursor: pointer;
-					opacity: 0;
-					z-index: 2;
-				  }
-				  
-				#menuToggle span {
-					display: flex;
-					width: 29px;
-					height: 2px;
-					margin-bottom: 5px;
-					position: relative;
-					background: grey;
-					border-radius: 3px;
-					z-index: 1;
-					transform-origin: 5px 0px;
-					transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
-								background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
-								opacity 0.55s ease;
-				}
-				  
-				#menuToggle span:first-child {
-					transform-origin: 0% 0%;
-				}
-				  
-				#menuToggle span:nth-last-child(2) {
-					transform-origin: 0% 100%;
-				}
-				  
-				#menuToggle input:checked ~ span {
-					opacity: 1;
-					transform: rotate(45deg) translate(-7px, -10px);
-					background: #36383F;
-				}
-				
-				#menuToggle input:checked ~ span:nth-last-child(3) {
-					opacity: 0;
-					transform: rotate(0deg) scale(0.2, 0.2);
-				}
-				
-				#menuToggle input:checked ~ span:nth-last-child(2) {
-					transform: rotate(-45deg) translate(-5px, 10px);
-				}
-				
 				@media screen and (max-width: 1250px) {
 					.search_bar input {
 						width: 220px;
@@ -222,10 +175,6 @@ export class PageHeader extends HTMLElement {
 					.header{
 						margin-left: 35px;
 						margin-right: 35px;
-					}
-
-					#menuToggle{
-						display: inline;
 					}
 
 					.plus{
@@ -292,14 +241,6 @@ export class PageHeader extends HTMLElement {
 			</style>
 
 			<div id="container">
-				<div id="menuToggle">
-					<input type="checkbox" />
-					<span></span>
-					<span></span>
-					<span></span>
-				
-				</div>
-
 				<span class="header">
 					<button class="imgbutton" id="header_back"><img src="../public/resources/left-chevron.png"></button>
 			
@@ -317,28 +258,22 @@ export class PageHeader extends HTMLElement {
 			</div>
 		`;
 
-		this.h1 = this.querySelector("h1");
+		this.h1 = this.shadowRoot.querySelector("h1");
 
 		this.createFutureLog = this.createFutureLog.bind(this);
-		this.futureLogButton = this.querySelector(".plus");
-		this.menu = this.querySelector("#menuToggle");
-		this.input = this.querySelector("#menuToggle input");
-		
-		this.menu.onclick = () => {
-			console.log(this.input.checked);
-			navbar.toggleMenu();
-		};
-
+		this.futureLogButton = this.shadowRoot.querySelector(".plus");
 		this.futureLogButton.addEventListener("click", () => {
 			this.createFutureLog();
 		});
+
+		this.imgbuttons = this.shadowRoot.querySelectorAll(".imgbutton");
 	}
 
-	makeEditabe(){
+	makeEditabe() {
 		this.h1.contentEditable = true;
 	}
 
-	makeUneditable(){
+	makeUneditable() {
 		this.h1.contentEditable = false;
 	}
 
