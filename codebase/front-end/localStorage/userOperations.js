@@ -29,7 +29,9 @@ import {updateEventBlockPouch} from "./updateFiles/updateEventBlock.js";
 import {updateSignifierPouch} from "./updateFiles/updateSignifier.js";
 
 
+//const PouchDB = require('pouchdb-7.2.1.min.js');
 export let db = new PouchDB("Users");
+
 
 export function deleteDB(){
     db.destroy( (err, res) => {
