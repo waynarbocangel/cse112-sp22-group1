@@ -40,6 +40,7 @@ export class PageHeader extends HTMLElement {
 				#container {
 					display: flex;
 					align-items: center;
+					height: 75px;
 				}
 
 				.header {
