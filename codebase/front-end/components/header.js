@@ -17,6 +17,15 @@ export class PageHeader extends HTMLElement {
 					border-bottom: solid 2px var(--border-color);
 					text-align: left;
 				}
+
+				@media screen and (max-width: 900px) {
+					page-header {
+						margin-left: 20px;
+						padding-top: 30px;
+						padding-bottom: 10px;
+					}
+					
+				}
 			</style>
 			`;
 
@@ -48,9 +57,8 @@ export class PageHeader extends HTMLElement {
 					margin-left: 5px;
 				}
 
-				.plus {
+				button.plus {
 					display: inline-block;
-					top: 20px;
 					width: 23px;
 					height: 23px;
 					margin-right: 10px;
@@ -63,7 +71,7 @@ export class PageHeader extends HTMLElement {
 				.imgbutton img {
 					opacity: 20%;
 					filter: var(--icon-filter);
-					height: 20px;
+					height: 100%;
 				}
 		
 				.imgbutton:hover img {
@@ -175,11 +183,14 @@ export class PageHeader extends HTMLElement {
 					.header{
 						margin-left: 35px;
 						margin-right: 35px;
+						text-align: center;
+						flex: 1;
 					}
 
-					.plus{
+					.plus {
 						position: absolute;
-						top: 42px;
+						width: 23px;
+						height: 23px;
 						right: 20px;
 					}
 
@@ -189,12 +200,7 @@ export class PageHeader extends HTMLElement {
 						letter-spacing: 1.5px;
 					}
 
-					button.imgbutton img {
-						height: 15px;
-					}
-
 					button.imgbutton {
-						height: 15px;
 						padding: 0;
 					}
 					#header_back{
@@ -221,14 +227,13 @@ export class PageHeader extends HTMLElement {
 					}
 
 					button.imgbutton img {
-						height: 15px;
 					}
 
 					button.imgbutton {
-						height: 15px;
 						padding: 0;
 					}
-					#header_back{
+
+					#header_back {
 						margin-left: 0;
 						margin-right: 1px;
 					}
