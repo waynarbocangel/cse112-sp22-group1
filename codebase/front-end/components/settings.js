@@ -19,7 +19,6 @@ const themeColors = {
         "--navbar-foreground-color":  "#FFFFFF",
         "--navbar-background-color":  "#F7F2EC",
         "--icon-filter": "",
-
     }
 }
 
@@ -43,12 +42,12 @@ export class SettingsMenu extends HTMLElement {
                     right: 0;
                     background-color: #0000007F;
                     z-index: 10;
-                    cursor: pointer;
                     user-select: none;
                 }
 
                 #close {
                     position: absolute;
+                    color: var(--content-foreground-color);
 
                     width: 40px;
                     height: 40px;
@@ -58,6 +57,7 @@ export class SettingsMenu extends HTMLElement {
 
                     border: none;
                     background-color: rgba(0,0,0,0);
+                    cursor: pointer;
                 }
 
                 #menu {
@@ -75,11 +75,9 @@ export class SettingsMenu extends HTMLElement {
                     text-align: center;
                     margin-left: 10px;
                     margin-right: 10px;
-                    border-bottom: 2px solid;
+                    border-bottom: 2px solid var(--border-color);
                 }
-
             </style>
-
 
             <div id="overlay">
                 <div id="menu">
@@ -87,7 +85,6 @@ export class SettingsMenu extends HTMLElement {
                         <h1> Settings </h1>
                         <button id="close"> X </button>
                     </div>
-
                     
                     <form id="theme">
                         <input type="radio" name="themeradio" id="darkmode"> <label>Darkmode</label></input><br>
@@ -102,12 +99,7 @@ export class SettingsMenu extends HTMLElement {
         this.lightmodeButton = this.shadowRoot.querySelector("#lightmode");
         this.lightmodeButton.addEventListener('change', () => this.updateTheme('lightmode'));
 
-
-
         this.shadowRoot.querySelector("#close").addEventListener('click', () => {this.close(); });
-
-
-
     }
 
     updateTheme(theme) {
