@@ -1,129 +1,280 @@
-import {router} from "../router.js";
-import {currentObject} from "../index.js";
+import { router } from "../router.js";
+import { currentObject, header } from "../index.js";
 import * as localStorage from "../localStorage/userOperations.js";
 const template = document.createElement('template');
 
 template.innerHTML = `
 	<style>
+		.navigation {
+			display: none; 
+		}
+
 		.nav-bar {
-			position: absolute;
+			position: fixed;
 			width: 60px;
 			height: 100%;
 			top: 0;
 			bottom: 0;
 			left: 0;
-
-			background: rgba(236, 223, 207, 0.4);
-			
-
+			display: block;
+			background-color: var(--navbar-background-color);
 		}
 
-		#home {
-			background-image: url(../public/resources/home_icon.png);
-			background-size: cover;
+		button {
+			display: block;
 			background-color: transparent;
-			border:none;
-
-			position: absolute;
+			border: none;
+			padding: 0;
 			width: 32px;
 			height: 32px;
-			left: 15px;
-			top: 20px;
+			margin: 32px auto;
 		}
 
-		#target {
-			background-image: url(../public/resources/target_icon.png);
-			background-size: cover;
-			background-color: transparent;
-			background-blend-mode: multiply;
-			border:none;
-
-			position: absolute;
-			width: 35px;
-			height: 35px;
-			left: 15px;
-			top: 90px;
+		button img {
+			height: 100%;
+			filter: var(--icon-filter);
+			opacity: 50%;
 		}
 
-		#single {
-			background-image: url(../public/resources/left.png);
-			background-size: cover;
-			background-color: transparent;
-			background-blend-mode: multiply;
-			border:none;
-
-			position: absolute;
-			width: 32px;
-			height: 32px;
-			left: 15px;
-			top: 160px;
+		button:hover img {
+			opacity: 100%;
+			transition: opacity 150ms;
 		}
 
-		#double {
-			background-image: url(../public/resources/double_icon.png);
-			background-size: cover;
-			background-color: transparent;
-			background-blend-mode: multiply;
-			border:none;
-
+		#bottom {
 			position: absolute;
-			width: 35px;
-			height: 35px;
-			left: 15px;
-			top: 230px;
+			bottom: 10px;
+			width: 100%;
 		}
 
 		#user {
-			background-image: url(../public/resources/user.png);
-			background-size: cover;
-			background-color: transparent;
-			background-blend-mode: multiply;
-			border:none;
-
-			position: absolute;
-			width: 33px;
-			height: 33px;
-			left: 13.5px;
-			bottom: 20px;
+			position: static;
+			margin: 0 auto;
 		}
 
-		ul {
-			list-style-type: none;
+		@media only screen and (max-width:900px) {
+			.nav-bar {
+				display:none;
+			}
+
+			.navigation {
+				display: block;
+				padding: none;
+				margin: none;
+				width: 30vh;
+				top: 0;
+				left: 0;
+				position:fixed;
+			}
+
+			#menu {
+				position: fixed;
+				width: 30%;
+				height: 100%;
+				box-shadow: 0 0 2px #85888C;
+				top: 0;
+				left: 0;
+				margin: 0;
+				padding: 0;
+				background-color: var(--navbar-background-color);
+				-webkit-font-smoothing: antialiased;
+			}
+
+			#menu.closed {
+				transform: translate(-100%, 0);
+				transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+			}
+
+			#menu.open {
+				transform-origin: 0 0;
+				transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+			}
+
+			#homeMenu {
+				position: absolute;
+				width: 60px;
+				height: 60px;
+				top: 70px;
+				left: 0;
+				right: 0;
+				margin: auto;
+			}
+
+			#singleMenu {
+				position: absolute;
+				width: 60px;
+				height: 60px;
+				top: 180px;
+				left: 0;
+				right: 0;
+				margin: auto;
+			}
+
+			#doubleMenu {
+				position: absolute;
+				width: 60px;
+				height: 60px;
+				top: 290px;
+				left: 0;
+				right: 0;
+				margin: auto;
+			}
+
+			#userMenu {
+				position: absolute;
+				width: 65px;
+				height: 65px;
+				top: calc(100% - 115px);
+				left: 0;
+				right: 0;
+				padding: 0;
+				margin: 0 auto;
+			}
+
+			#menuToggle {
+				flex-direction: column;
+				position: absolute;
+				top: 60px;
+				left: 30px;
+				z-index: 1;
+			  }
+
+			#menuToggle input {
+				display: flex;
+				width: 40px;
+				height: 32px;
+				position: absolute;
+				cursor: pointer;
+				opacity: 0;
+				z-index: 2;
+			  }
+
+			#menuToggle span {
+				display: flex;
+				width: 29px;
+				height: 2px;
+				margin-bottom: 5px;
+				position: relative;
+				border-radius: 3px;
+				background: var(--content-foreground-color);
+				z-index: 1;
+				transform-origin: 5px 0px;
+				transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+							background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+							opacity 0.55s ease;
+			}
+
+			#menuToggle span:first-child {
+				transform-origin: 0% 0%;
+			}
+
+			#menuToggle span:nth-last-child(2) {
+				transform-origin: 0% 100%;
+			}
+
+			#menuToggle input:checked ~ span {
+				opacity: 1;
+				transform: rotate(45deg) translate(-7px, -10px);
+			}
+
+			#menuToggle input:checked ~ span:nth-last-child(3) {
+				opacity: 0;
+				transform: rotate(0deg) scale(0.2, 0.2);
+			}
+
+			#menuToggle input:checked ~ span:nth-last-child(2) {
+				transform: rotate(-45deg) translate(-5px, 10px);
+			}
 		}
 
-		ul li {
-			opacity: 0.7;
-			transition: 150ms;
+		@media only screen and (max-height: 1200px){
+			#homeMenu {
+				width: 40px;
+				height: 40px;
+			}
+
+			#singleMenu {
+				width: 40px;
+				height: 40px;
+				top: 150px;
+			}
+
+			#doubleMenu {
+				width: 40px;
+				height: 40px;
+				top: 230px;
+			}
+
+			#userMenu {
+				position: absolute;
+				width: 45px;
+				height: 45px;
+				top: calc(100% - 85px);
+			}
 		}
 
-		ul li:hover{
-			opacity: 1;
-			transition: 150ms;
-		}
+		@media only screen and (max-height: 800px){
+			#homeMenu {
+				width: 35px;
+				height: 35px;
+			}
 
-		ul li button{
-			cursor: pointer;
-		}
+			#singleMenu {
+				width: 35px;
+				height: 35px;
+				top: 130px;
+			}
 
+			#doubleMenu {
+				width: 35px;
+				height: 35px;
+				top: 190px;
+			}
+
+			#userMenu {
+				position: absolute;
+				width: 40px;
+				height: 40px;
+				top: calc(100% - 65px);
+			}
+		}
 	</style> 
 
 	<nav class="nav-bar">
-		<ul>
-			<li><button id="home"></button></li>
-			<li><button id="target"></button></li>
-			<li><button id="single"></button></li>
-			<li><button id="double"></button></li>
-			<li><button id="user"></button></li>
-		</ul>
+		<button id="home">  <img src="../public/resources/home_icon.png"></button>
+		<button id="target"><img src="../public/resources/target_icon.png"></button>
+		<button id="single"><img src="../public/resources/left.png"></button>
+		<button id="double"><img src="../public/resources/double_icon.png"></button>
+		<div id="bottom">
+			<button id="user">  <img src="../public/resources/user.png"></button>
+		</div>
+	</nav>
+	<nav class="navigation">
+		<div id="menuToggle">
+			<input type="checkbox" />
+			<span></span>
+			<span></span>
+			<span></span>
+		</div>
+
+		<div id="menu" class="closed">
+			<button id="homeMenu">  <img src="../public/resources/home_icon.png"></button>
+			<button id="singleMenu"><img src="../public/resources/left.png"></button>
+			<button id="doubleMenu"><img src="../public/resources/double_icon.png"></button>
+			<button id="userMenu">  <img src="../public/resources/user.png"></button>
+		</div>
 	</nav>
 `;
 
 export class NavBar extends HTMLElement {
-	constructor () {
-		super ();
-		this.attachShadow({mode: 'open'});
-		this.shadowRoot.appendChild(template.content.cloneNode(true));
+	static get observedAttributes() {
+		return ['open'];
+	}
 
+	constructor() {
+		super();
+		this.attachShadow({ mode: 'open' });
+		this.shadowRoot.appendChild(template.content.cloneNode(true));
 
 		this.home = this.shadowRoot.querySelectorAll('button')[0];
 		this.target = this.shadowRoot.querySelectorAll('button')[1];
@@ -131,42 +282,114 @@ export class NavBar extends HTMLElement {
 		this.double = this.shadowRoot.querySelectorAll('button')[3];
 		this.user = this.shadowRoot.querySelectorAll('button')[4];
 
-
-		this.home.addEventListener('click', () => {
-			if (document.location.hash != null && document.location.hash != "#index" && document.location.hash !=''){
-				router.setState("", false);
-			}
+		this.menu = this.shadowRoot.querySelector('#menu');
+		this.homeMenu = this.shadowRoot.querySelector('#homeMenu');
+		this.singleMenu = this.shadowRoot.querySelector('#singleMenu');
+		this.doubleMenu = this.shadowRoot.querySelector('#doubleMenu');
+		this.userMenu = this.shadowRoot.querySelector('#userMenu');
+		this.menuToggle = this.shadowRoot.querySelector("#menuToggle input");
+		this.menuToggle.addEventListener("change", () => {
+			this.toggle();
 		});
+	}
 
+	connectedCallback() {
+		this.home.addEventListener('click', () => {
+			this.goHome();
+		});
 		this.target.addEventListener('click', () => {
-			const trackerMenu = document.querySelector("tracker-menu");
-			trackerMenu.toggle();
+			this.toggleTracker();
 		});
 		this.single.addEventListener('click', () => {
-			let parent = (document.location.hash.includes("#dailyLog")) ? "monthlyLog" : "futureLog";
-			router.setState(`#${parent}~${currentObject.parent}`, false);
+			this.goBack();
 		});
 		this.double.addEventListener('click', () => {
-			let parent = (document.location.hash.includes("#dailyLog")) ? "futureLog" : "index";
-			localStorage.readUser((err, user) => {
-				if (err == null) {
-					let userArr = [];
-					Array.prototype.push.apply(userArr, user.dailyLogs);
-					Array.prototype.push.apply(userArr, user.monthlyLogs);
-					Array.prototype.push.apply(userArr, user.futureLogs);
-					Array.prototype.push.apply(userArr, user.collections);
-					let parsed = userArr.filter(object => object.id == currentObject.parent);
-					let firstParent = parsed[0];
-					router.setState(`#${parent}~${firstParent.parent}`, false);
-				} else {
-					console.log(err);
-				}
-			});
-			
+			this.goFarBack();
 		});
 		this.user.addEventListener('click', () => {
-			alert("hello"); 
+			let settingsMenu = document.querySelector("settings-menu");
+
+			settingsMenu.toggle();
 		});
+
+		this.homeMenu.addEventListener('click', () => {
+			this.goHome();
+			this.open = false;
+		});
+		this.singleMenu.addEventListener('click', () => {
+			this.goBack();
+			this.open = false;
+		});
+		this.doubleMenu.addEventListener('click', () => {
+			this.goFarBack();
+			this.open = false;
+		});
+		this.userMenu.addEventListener('click', () => {
+			let settingsMenu = document.querySelector("settings-menu");
+			settingsMenu.toggle();
+		});
+	}
+
+	attributeChangedCallback(attr, oldVal, newVal) {
+		if (oldVal != newVal) {
+			this[attr] = newVal;
+		}
+	}
+
+	goHome() {
+		if (document.location.hash != null && document.location.hash != "#index" && document.location.hash != '') {
+			router.setState("", false);
+		}
+	}
+
+	goBack() {
+		let parent = (document.location.hash.includes("#dailyLog")) ? "monthlyLog" : "futureLog";
+		router.setState(`#${parent}~${currentObject.parent}`, false);
+	}
+
+	goFarBack() {
+		let parent = (document.location.hash.includes("#dailyLog")) ? "futureLog" : "index";
+		localStorage.readUser((err, user) => {
+			if (err == null) {
+				let userArr = [];
+				Array.prototype.push.apply(userArr, user.dailyLogs);
+				Array.prototype.push.apply(userArr, user.monthlyLogs);
+				Array.prototype.push.apply(userArr, user.futureLogs);
+				Array.prototype.push.apply(userArr, user.collections);
+				let parsed = userArr.filter(object => object.id == currentObject.parent);
+				let firstParent = parsed[0];
+				router.setState(`#${parent}~${firstParent.parent}`, false);
+			} else {
+				console.log(err);
+			}
+		});
+	}
+
+	toggleTracker() {
+		const trackerMenu = document.querySelector("tracker-menu");
+		trackerMenu.toggle();
+	}
+
+	toggle() {
+		this.open = !this.open;
+	}
+
+	get open() {
+		return this.hasAttribute('open');
+	}
+
+	set open(isOpen) {
+		this.menu.classList.toggle('open', isOpen);
+		this.menu.classList.toggle('closed', !isOpen);
+		this.menu.setAttribute('aria-hidden', !isOpen)
+		if (isOpen) {
+			this.setAttribute('open', 'true');
+			this.focus();
+			this.menuToggle.checked = true;
+		} else {
+			this.removeAttribute('open');
+			this.menuToggle.checked = false;
+		}
 	}
 }
 

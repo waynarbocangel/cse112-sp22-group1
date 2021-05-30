@@ -4,18 +4,17 @@
     <meta charset="utf-8">
     <title>testerfile</title>
     <link rel="stylesheet" href="./index.css">
-	<script src="//cdn.jsdelivr.net/npm/pouchdb@7.2.1/dist/pouchdb.min.js"></script>
+	<script src="./localStorage/pouchdb-7.2.1.min.js"></script>
 	<script type="module" src="./index.js"></script>
 </head>
 <body>
-    <div id="sidebar"></div>
+    <nav-bar></nav-bar>
 
-    <div id="topbar"></div>
+    <page-header></page-header>
 	<div id="contentWrapper" contenteditable="false"></div>
-	<div id="trackerWrapper"></div>
-
-    <script src="./components/header.js" type="module"></script>
-    <script src="./components/tracker.js" type="module"></script>
+    <tracker-menu></tracker-menu>
+    <button id="targetMenu" style="display: none;"></button>
+    <settings-menu></settings-menu>
 
 </body>
 </html>

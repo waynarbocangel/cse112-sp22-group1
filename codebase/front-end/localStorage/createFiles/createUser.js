@@ -12,8 +12,8 @@ export function createUserPouch (db, userObject, callback) {
 			collections: userObject.collections,
 			trackers: userObject.trackers,
 			textBlocks: userObject.textBlocks,
-			taskBlocks: userObject.taskBlocks,
-			eventBlocks: userObject.eventBlocks,
+			tasks: userObject.tasks,
+			events: userObject.events,
 			signifiers: userObject.signifiers
 		}
 	).then((res) => {

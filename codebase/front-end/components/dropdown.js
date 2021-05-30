@@ -15,26 +15,27 @@ export class DropdownBlock extends HTMLElement {
 			}
 
 			#wrapper{
-				user-select: none; /* standard syntax */
-				-webkit-user-select: none; /* webkit (safari, chrome) browsers */
-				-moz-user-select: none; /* mozilla browsers */
-				-khtml-user-select: none; /* webkit (konqueror) browsers */
+				padding-bottom: 0;
+				user-select: none; 
+				-webkit-user-select: none;
+				-moz-user-select: none; 
+				-khtml-user-select: none; 
 				-ms-user-select: none;
 			}
 
 			#title{
 				display: inline-block;
 				font-family: "SF-Pro";
-				font-size: calc(25pt - ${level * 3}pt);
+				font-size: calc(20pt - ${level * 2}pt);
 				font-weight: calc(900 - ${level * 200});
-				letter-spacing: calc(1.5px - ${level * 0.35}px);
+				letter-spacing: calc(1.2px - ${level * 0.35}px);
 				cursor: pointer;
-				border-bottom: 2px solid rgba(0,0,0,0.4);
+				border-bottom: 2px solid var(--content-foreground-color); /*rgba(0,0,0,0.4);*/
 				transition: 0.2s;
 			}
 
 			#title:hover{
-				border-bottom: 2px solid rgba(0,0,0,0.9);
+				border-bottom: 2px solid var(--content-foreground-color); /*rgba(0,0,0,0.9);*/
 				transition: 0.2s;
 			}
 
@@ -49,15 +50,15 @@ export class DropdownBlock extends HTMLElement {
             #arrow img {
                 max-width: calc(24px - ${level * 3}px);
                 max-height: calc(24px - ${level * 3}px);
+
+                filter: var(--icon-filter);
             }
             :not(.closed) #arrow img {
                 transform: rotate(0deg);
-                transition: 0.2s;
+                transition: transform 0.2s;
             }
 
             .closed #arrow img {
-
-
                 transform: rotate(90deg);
                 transition: 0.2s;
             }
@@ -86,7 +87,7 @@ export class DropdownBlock extends HTMLElement {
 
 		</style>
         <div id="wrapper">
-			<div class="${(level > 1) ? "singleItemWrapper" : ""}">
+			<div id="titleWrapper" class="${(level > 1) ? "singleItemWrapper" : ""}">
 				<h1 id="title"></h1>
 				<button id="arrow"><img src="../public/resources/right-chevron.png" /></button>
 			</div>
@@ -98,6 +99,7 @@ export class DropdownBlock extends HTMLElement {
         this.contentWrapper = this.shadowRoot.getElementById("contentWrapper");
         this.header = this.shadowRoot.querySelector("h1");
         this.title = title;
+		this.titleWrapper = this.shadowRoot.querySelector("#titleWrapper");
     }
 
     connectedCallback() {

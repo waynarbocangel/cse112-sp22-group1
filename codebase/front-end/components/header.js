@@ -1,77 +1,103 @@
 import * as localStorage from "../localStorage/userOperations.js";
+import { navbar } from "../index.js";
 
 export class PageHeader extends HTMLElement {
 	constructor() {
 		super();
-		let template = document.createElement("template");
-		template.innerHTML = `
+		this.attachShadow({ mode: 'open' });
+	}
+
+	connectedCallback() {
+		this.innerHTML = `
+			<style>
+				page-header {
+					display: block;
+					margin-left: 80px;
+					margin-right: 20px;
+					border-bottom: solid 2px var(--border-color);
+					text-align: left;
+				}
+
+				@media screen and (max-width: 900px) {
+					page-header {
+						margin-left: 20px;
+						padding-top: 30px;
+						padding-bottom: 10px;
+					}
+					
+				}
+			</style>
+			`;
+
+		this.shadowRoot.innerHTML = `
 			<style>
 				@font-face {
 					font-family:"SF-Pro";
 					src: url("./public/fonts/SF-Pro.ttf");
 				}
-				@media screen and (max-width: 900px) {
-					.search_bar {
-						display: none;
-					}
-				
-				}
-				
-				@media screen and (min-width: 600px) {
-					.search_bar {
-						float: right;
-					}
-				}
 		
 				/* Top navigation */
+				#container {
+					display: flex;
+					align-items: center;
+					height: 75px;
+				}
+
 				.header {
 					font-family: "SF-Pro";
 					position: relative;
-					top: 1em;
-					margin-top: 100px;
-					margin-left: 0;
+					flex: 2;	/* Use half of the space for the title */
 				}
 		
 				button {
-					vertical-align: bottom;
+					user-select: none;
+					vertical-align: middle;
 					border: none;
 					background-color: rgba(0,0,0,0);
-				}
-		
-				button.imgbutton{
-					height: 20px;
-				}
-		
-				button.imgbutton img {
-					filter: opacity(50%);
-					height: 20px;
-				}
-		
-				button.imgbutton:hover img {
-					filter: opacity(100%);
-					transition: 150ms;
-				}
-		
-				button {
 					display: inline;
-					margin-top: 0;
-					margin-bottom: 0;
+					margin-left: 5px;
+				}
+
+				button.plus {
+					display: inline-block;
+					width: 23px;
+					height: 23px;
+					margin-right: 10px;
+				}
+				
+				.imgbutton {
+					height: 20px;
+				}
+		
+				.imgbutton img {
+					opacity: 20%;
+					filter: var(--icon-filter);
+					height: 100%;
+				}
+		
+				.imgbutton:hover img {
+					opacity: 100%;
+					transition: opacity 150ms;
 				}
 		
 				h1 {
 					display: inline;
-					font-size: 48px;
+					font-size: 40px;
 					font-weight: bold;
-					letter-spacing: 1.8px;
+					letter-spacing: 1.7px;
 					vertical-align: middle;
+					z-index: 0;
+					outline: none;
 				}
 		
 				.search_bar {
-					margin-top: 15px;
-					margin-right: 0;
-					height: 30px;
+					display: flex;
+					align-items: center;
+
+					margin: 15px auto;
+					padding: 0 5px;
 					border-radius: 5px;
-					border-color: rgba(0, 0, 0, 0.1);
+					border-color: var(--content-foreground-color); /*rgba(0, 0, 0, 0.1);*/
 					border-width: 2px;
 					border-style: solid;
 					opacity: 60%;
@@ -81,22 +107,17 @@ export class PageHeader extends HTMLElement {
 					display: inline-block;
 				
 					opacity: 50%;
-		
 					height: 21px;
-					line-height: 36px;
-					vertical-align: text-bottom;
 		
-					/* TODO: unjank */
-					position: relative;
-					top: 0;
-					right: 15px;
-					margin-left: 10px;
+					vertical-align: middle;
+
+					filter: var(--icon-filter);
 				}
 		
 				.search_bar input{
-					/* TODO: hard coded */
-					margin-top: -6px;
+
 					background-color: rgba(0, 0, 0, 0);
+					color: var(--content-foreground-color);
 					font-size: 14pt;
 					opacity: 90%;
 					height: 35px;
@@ -104,7 +125,6 @@ export class PageHeader extends HTMLElement {
 					width: 400px;
 					border: solid;
 					border-radius: 5px;
-					margin-left: 10px;
 					border-color: rgba(0, 0, 0, 0);
 					outline: none;
 				}
@@ -112,12 +132,13 @@ export class PageHeader extends HTMLElement {
 				/* Fade in for search bar */
 				.search_bar:hover img {
 					opacity: 50%;
-					transition: 150ms;
+					transition: opacity 150ms;
 				}
 		
 				.search_bar:hover {
 					transition: 150ms;
 					opacity: 90%;
+					
 				}
 		
 				.search_bar input:focus .search_bar{
@@ -127,12 +148,12 @@ export class PageHeader extends HTMLElement {
 		
 				#header_back{
 					margin-left: 0;
-					margin-right: 10px;
+					margin-right: 5px;
 				}
 		
 				#header_forward{
 					margin-right: 0;
-					margin-left: 10px;
+					margin-left: 5px;
 				}
 		
 				.hide{
@@ -140,50 +161,111 @@ export class PageHeader extends HTMLElement {
 					opacity: 0;
 				}
 
-				.plus {
-					position: relative;
-					display: inline-block;
-					float: right;
-
-					background-image: url(../public/resources/target_icon.png);
-					background-size: cover;
-					background-color: transparent;
-					background-blend-mode: multiply;
-					top: 12px;
-					width: 33px;
-					height: 33px;
-					opacity: 50%;
-					transition: opacity .2s;
+				@media screen and (max-width: 1250px) {
+					.search_bar input {
+						width: 220px;
+					}
 				}
 
-				.plus:hover {
-					opacity: 100%;
-					transition: opacity .2s;
+				@media screen and (max-width: 1080px) {
+					.search_bar input {
+						width: 170px;
+					}
+				}
+
+				@media screen and (max-width: 1020px) {
+					.search_bar {
+						display: none;
+					}
+				}
+
+				@media screen and (max-width: 900px) {
+					.search_bar {
+						display: none;
+					}
+
+					.header{
+						margin-left: 35px;
+						margin-right: 35px;
+						text-align: center;
+						flex: 1;
+					}
+
+					.plus {
+						position: absolute;
+						width: 23px;
+						height: 23px;
+						right: 20px;
+					}
+
+					#title_page{
+						top: 5px;
+						font-size: 35px;
+						letter-spacing: 1.5px;
+					}
+
+					button.imgbutton {
+						padding: 0;
+					}
+					#header_back{
+						margin-left: 0;
+						margin-right: 1px;
+					}
+			
+					#header_forward{
+						margin-right: 0;
+						margin-left: 1px;
+					}
+				}
+
+				@media screen and (max-width: 700px) {
+					.plus{
+						position: absolute;
+					}
+
+					#title_page{
+						top: 5px;
+						font-size: 22px;
+						letter-spacing: 1px;
+					}
+
+					button.imgbutton img {
+					}
+
+					button.imgbutton {
+						padding: 0;
+					}
+
+					#header_back {
+						margin-left: 0;
+						margin-right: 1px;
+					}
+			
+					#header_forward{
+						margin-right: 0;
+						margin-left: 1px;
+					}
 				}
 			</style>
 
+			<div id="container">
+				<span class="header">
+					<button class="imgbutton" id="header_back"><img src="../public/resources/left-chevron.png"></button>
 			
-
-			<span class="header">
-				<button class="imgbutton" id="header_back"><img src="../public/resources/left-chevron.png"></button>
-		
-				<h1 id="title_page">Template Page Title</h1>
-		
-				<button class="imgbutton" id="header_forward"><img src="../public/resources/right-chevron.png"></button>
-			</span>
-
+					<h1 id="title_page">Template Page Title</h1>
 			
-		
-			<span class="search_bar">
-				<input type="text" placeholder="Search">
-				<img src="../public/resources/search_icon.png">
-			</span>
-			<button class="plus">
-			</button>
+					<button class="imgbutton" id="header_forward"><img src="../public/resources/right-chevron.png"></button>
+				</span>
+			
+				<button class="imgbutton plus"><img src="../public/resources/plusIcon.png"></button>
+			
+				<span class="search_bar">
+					<input type="text" placeholder="Search">
+					<img src="../public/resources/search_icon.png">
+				</span>
+			</div>
 		`;
 
-		this.attachShadow({ mode: 'open' });
-		this.shadowRoot.appendChild(template.content.cloneNode(true));
 		this.h1 = this.shadowRoot.querySelector("h1");
 
 		this.createFutureLog = this.createFutureLog.bind(this);
@@ -191,6 +273,16 @@ export class PageHeader extends HTMLElement {
 		this.futureLogButton.addEventListener("click", () => {
 			this.createFutureLog();
 		});
+
+		this.imgbuttons = this.shadowRoot.querySelectorAll(".imgbutton");
+	}
+
+	makeEditabe() {
+		this.h1.contentEditable = true;
+	}
+
+	makeUneditable() {
+		this.h1.contentEditable = false;
 	}
 
 	set title(title) {
@@ -202,17 +294,27 @@ export class PageHeader extends HTMLElement {
 	}
 
 	createFutureLog() {
-		localStorage.createFutureLog( new Date(2021, 5, 22), new Date(2021, 8, 23), [], [], [], (err, futureLog) => {
+		localStorage.createFutureLog(new Date(2021, 5, 22), new Date(2021, 8, 23), [], [], [], (err, futureLog) => {
 			console.log(futureLog);
-			localStorage.readUser( (err, res) => {
+			localStorage.readUser((err, res) => {
 				if (err) {
 					console.log(err);
 				} else {
 					console.log(res);
+					// localStorage.createCollection("testing createCollection", "1", [], (err, collection) => {
+					// 	console.log(collection);
+					// 	localStorage.readUser((err, res) => {
+					// 		if(err) {
+					// 			console.log(err);
+					// 		} else {
+					// 			console.log(res);
+					// 		}
+					// 	});
+					// });
 				}
 			})
 		});
-		
+
 	}
 }
 

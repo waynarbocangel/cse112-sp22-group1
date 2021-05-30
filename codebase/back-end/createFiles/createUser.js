@@ -25,8 +25,8 @@ function createUser (email, pwd, callback) {
 				trackers: [],
 				collections: [],
 				textBlocks: [],
-				eventBlocks: [],
-				taskBlocks: [],
+				events: [],
+				tasks: [],
 				signifiers: []
 			});
 	

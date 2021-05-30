@@ -1,9 +1,9 @@
 import {makeid} from "./makeId.js";
 
-export function createSignifierPouch (db, meaning, symbol, callback) {
+export function createEventPouch (db, parent, date, signifier, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
-			callback(err);
+			callback(err, null);
 		} else {
 			console.log(doc);
 			let id = makeid();
@@ -21,14 +21,32 @@ export function createSignifierPouch (db, meaning, symbol, callback) {
 			while(arrays.filter(element => element.id == id).length > 0){
 				id = makeid();
 			}
-			const signifierObject = {
+			const eventObject = {
 				id: id,
-				objectType: "signifier",
-				meaning: meaning,
-				symbol: symbol
-			}
-			
-			doc.taskBlocks.push(TaskBlockObject);
+				objectType: "event",
+				tabLevel: 0,
+				parent: parent,
+				date: date,
+				signifier: signifier
+			};
+
+			let userArr = [];
+			Array.prototype.push.apply(userArr, doc.dailyLogs);
+			Array.prototype.push.apply(userArr, doc.monthlyLogs);
+			Array.prototype.push.apply(userArr, doc.futureLogs);
+			Array.prototype.push.apply(userArr, doc.trackers);
+			Array.prototype.push.apply(userArr, doc.collections);
+
+			let parentArr = userArr.filter(object => object.id == parent);
+
+			/*for(let i = 0; i < parentArr[0].contents.length; i++){
+				if(parentArr[0].contents[i] == null) {
+					parentArr[0].contents.push(id);
+				} else {
+					parentArr[0].contents.splice(index, 0, id);
+				}
+			}*/
+			doc.events.push(eventObject);
 
 			return db.put(
 				{
@@ -48,6 +66,9 @@ export function createSignifierPouch (db, meaning, symbol, callback) {
 					signifiers: doc.signifiers
 				}
 			);
+			callback(null, eventObject);
 		}
-	});
+	})/*.then((res) => {
+		callback(null, eventObject);
+	});*/
 }

@@ -1,6 +1,6 @@
 import * as localStorage from "./localStorage/userOperations.js";
 import {fade, unfade} from "./transitions.js";
-import {setupIndex, setupDailyLog, setupMonthlyLog, setupFutureLog, navbar, header, url, pageNumber, getCurrentObject} from "./index.js";
+import {setupIndex, setupDailyLog, setupMonthlyLog, setupFutureLog, navbar, header, trackerMenu, url, pageNumber, getCurrentObject} from "./index.js";
 
 export const router = {};
 export let state = "";
@@ -9,8 +9,8 @@ router.setState = function(newState, prev) {
 	getCurrentObject(newState);
 	state = newState;
 	setTimeout(() => {
-		if (document.getElementById("trackerWrapper").childNodes.length > 0) {
-			document.getElementById("trackerWrapper").removeChild(document.getElementById("trackerWrapper").childNodes[0]);
+		if (trackerMenu.open) {
+			trackerMenu.clear();
 		}
 		while(document.getElementById("contentWrapper").childNodes.length > 0){
 			document.getElementById("contentWrapper").removeChild(document.getElementById("contentWrapper").childNodes[0]);

@@ -13,34 +13,34 @@ function updateUser(userObject, callback){
 			callback(error);
 		} else {
 			let newCollections = [];
-			for(let i = 0; i < userObject.collections.lenght; i++){
+			for(let i = 0; i < userObject.collections.length; i++){
 				let collection = userObject.collection[i];
 				collection.title = security.encrypt(collection.title, userObject.pwd);
 				newCollections.push(collection);
 			}
 			let newTextBlocks = [];
-			for(let i = 0; i < userObject.textBlocks.lenght; i++){
+			for(let i = 0; i < userObject.textBlocks.length; i++){
 				let block = userObject.textBlocks[i];
 				block.text = security.encrypt(block.text, userObject.pwd);
 				newTextBlocks.push(block);
 			}
-			let newTaskBlocks = [];
-			for(let i = 0; i < userObject.taskBlocks.lenght; i++){
-				let block = userObject.taskBlocks[i];
+			let newTasks = [];
+			for(let i = 0; i < userObject.tasks.length; i++){
+				let block = userObject.tasks[i];
 				block.text = security.encrypt(block.text, userObject.pwd);
-				newTextBlocks.push(block);
+				newTasks.push(block);
 			}
-			let newEventBlocks = [];
-			for(let i = 0; i < userObject.eventBlocks.lenght; i++){
-				let block = userObject.eventBlocks[i];
+			let newEvents = [];
+			for(let i = 0; i < userObject.events.lenght; i++){
+				let block = userObject.events[i];
 				block.text = security.encrypt(block.text, userObject.pwd);
-				newTextBlocks.push(block);
+				newEvents.push(block);
 			}
 			let newSignifiers = [];
 			for(let i = 0; i < userObject.signifiers.lenght; i++){
 				let signifier = userObject.signifiers[i];
 				signifier.text = security.encrypt(signifier.meaning, userObject.pwd);
-				newTextBlocks.push(signifier);
+				newSignifiers.push(signifier);
 			}
 			user.email = userObject.email;
 			user.dailyLogs =  userObject.dailyLogs;
@@ -49,8 +49,8 @@ function updateUser(userObject, callback){
 			user.collections = newCollections;
 			user.trackers = userObject.trackers;
 			user.textBlocks = newTextBlocks;
-			user.taskBlocks = newTaskBlocks;
-			user.eventBlocks = newEventBlocks;
+			user.tasks = newTasks;
+			user.events = newEvents;
 			user.signifiers = newSignifiers;
 
 			user.save((err, userObject) => {
