@@ -5,12 +5,10 @@ export class PageHeader extends HTMLElement {
 	constructor() {
 		super();
 		this.attachShadow({ mode: 'open' });
-	}
 
-	connectedCallback() {
-		this.innerHTML = `
+		this.shadowRoot.innerHTML = `
 			<style>
-				page-header {
+				:host {
 					display: block;
 					margin-left: 80px;
 					margin-right: 20px;
@@ -19,18 +17,13 @@ export class PageHeader extends HTMLElement {
 				}
 
 				@media screen and (max-width: 900px) {
-					page-header {
+					:host {
 						margin-left: 20px;
 						padding-top: 30px;
 						padding-bottom: 10px;
 					}
-					
 				}
-			</style>
-			`;
 
-		this.shadowRoot.innerHTML = `
-			<style>
 				@font-face {
 					font-family:"SF-Pro";
 					src: url("./public/fonts/SF-Pro.ttf");
@@ -113,7 +106,7 @@ export class PageHeader extends HTMLElement {
 
 					filter: var(--icon-filter);
 				}
-		
+
 				.search_bar input{
 
 					background-color: rgba(0, 0, 0, 0);

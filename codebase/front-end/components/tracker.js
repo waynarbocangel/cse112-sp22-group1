@@ -44,7 +44,7 @@ export class TrackerMenu extends HTMLElement {
 
                 margin: 0 20px;
                 height: 75px;
-				border-bottom: solid var(--tracker-border-color); /*rgba(157, 148, 241, 0.7);*/
+				border-bottom: 2px solid var(--tracker-border-color); /*rgba(157, 148, 241, 0.7);*/
             }
             
             .tracker_header h1 {
