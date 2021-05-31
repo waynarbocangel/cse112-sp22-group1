@@ -40,7 +40,6 @@ export class TextBlock extends HTMLElement{
 			this.hashPressed = false;
 			this.timeSetter = false;
 			this.dateSetter = false;
-			this.setupTabLevel();
 			callback(true);
 		})
         
