@@ -25,8 +25,8 @@ export class ShortcutPage extends HTMLElement {
                 top: 0;
                 width: 40vw;
                 height: 100vh;
-                background-color: var(--tracker-background-color); /* #2B2D42 */
-                color: var(--tracker-foreground-color);
+                background-color: var(--shortcuts-background-color); /* #2B2D42 */
+                color: var(--shortcuts-foreground-color);
                 font-family: "SF-Pro";
             }
 
@@ -40,16 +40,16 @@ export class ShortcutPage extends HTMLElement {
                 transition: transform .4s ease-in-out /*cubic-bezier(0, .52, 0, 1);*/
             }
             
-            .tracker_header {
+            .shortcuts_header {
                 display: flex;
                 justify-content: flex-start;
 
                 margin: 0 20px;
                 height: 75px;
-				border-bottom: solid var(--tracker-border-color); /*rgba(157, 148, 241, 0.7);*/
+				border-bottom: solid var(--shortcuts-border-color); /*rgba(157, 148, 241, 0.7);*/
             }
             
-            .tracker_header h1 {
+            .shortcuts_header h1 {
                 text-align: center;
                 flex: 1;
                 font-size: 24pt;
@@ -71,7 +71,7 @@ export class ShortcutPage extends HTMLElement {
                 opacity: 100%;
             }
 
-            .tracker_menu {
+            .shortcuts_menu {
                 overflow-y: auto;
             }
 
@@ -84,9 +84,8 @@ export class ShortcutPage extends HTMLElement {
             }
         </style>
         <div class="wrapper closed">
-        <div class="tracker_header">
-                <button class="close_button"> <img src="../public/resources/right-chevron.png"> </button>
-                <h1 class="tracker_h1">Help</h1>
+        <div class="shortcuts_header">
+                <h1 class="shortcuts_h1">Help</h1>
         </div>
         <div>
             <h2 class="help_nav">Page navigation</h2>
