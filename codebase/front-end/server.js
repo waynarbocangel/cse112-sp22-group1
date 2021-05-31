@@ -12,6 +12,14 @@ app.get("/login", (req, res) => {
 	res.sendFile(__dirname + "/login/login.html");
 });
 
+app.get("/testers", (req, res) => {
+	res.sendFile(__dirname + "/testers.html");
+});
+
+app.get("/", (req, res) => {
+	res.sendFile(__dirname + "index.html");
+});
+
 app.get("/success", (req, res) => {
-	res.send("success");
+	res.redirect("/");
 });

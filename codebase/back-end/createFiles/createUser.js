@@ -15,14 +15,18 @@ function createUser (email, pwd, callback) {
 			const newUser = new schema.User({
 				email: email,
 				pwd: security.passHash(pwd),
+				index: {
+					objectType: "index",
+					contents: []
+				},
 				dailyLogs: [],
 				monthlyLogs: [],
 				futureLogs: [],
 				trackers: [],
 				collections: [],
 				textBlocks: [],
-				eventBlocks: [],
-				taskBlocks: [],
+				events: [],
+				tasks: [],
 				signifiers: []
 			});
 	

@@ -1,47 +1,59 @@
 import {makeid} from "./makeId.js";
+let dailyObject;
 
-export function createDailyLogPouch (db, parent, content, trackers, callback) {
+export function createDailyLogPouch (db, parent, content, trackers, date, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
-			callback(err);
+			callback(err, null);
 		} else {
-			console.log(doc);
 			let id = makeid();
 			let arrays = [];
-			arrays.push(...doc.userObject.dailyLogs);
-			arrays.push(...doc.userObject.monthlyLogs);
-			arrays.push(...doc.userObject.futureLogs);
-			arrays.push(...doc.userObject.trackers);
-			arrays.push(...doc.userObject.collections);
-			arrays.push(...doc.userObject.textBlocks);
-			arrays.push(...doc.userObject.taskBlocks);
-			arrays.push(...doc.userObject.eventtBlocks);
-			arrays.push(...doc.userObject.signifiers);
-			while(arrays.filter((element) => element.id == id).length > 0){
+			Array.prototype.push.apply(arrays, doc.dailyLogs);
+			Array.prototype.push.apply(arrays, doc.monthlyLogs);
+			Array.prototype.push.apply(arrays, doc.futureLogs);
+			Array.prototype.push.apply(arrays, doc.collections);
+			Array.prototype.push.apply(arrays, doc.trackers);
+			Array.prototype.push.apply(arrays, doc.textBlocks);
+			Array.prototype.push.apply(arrays, doc.tasks);
+			Array.prototype.push.apply(arrays, doc.events);
+			Array.prototype.push.apply(arrays, doc.signifiers);
+			
+			while(arrays.filter(element => element.id == id).length > 0){
 				id = makeid();
 			}
-			const dailyObject = {
+			dailyObject = {
 				id: id,
-				date: Date(),
+				objectType: "dailyLog",
+				date: date,
 				parent: parent,
 				content: content,
 				trackers: trackers
 			};
-		}
-	});
-	
-	
 
-	db.get("0000", (err, doc) => {
-		if (err) {
-			callback(err);
-		} else {
-			db.put({_rev: doc._rev,
-				_id: "0000"}, (res) => {
-				doc.userObject.dailyLogs.push(dailyObject);
-				console.log(res);
-				callback(res);
+			doc.dailyLogs.push(dailyObject);
+			return db.put(
+				{
+					_id: "0000",
+					_rev: doc._rev,
+					email: doc.email,
+					pwd: doc.pwd,
+					index: doc.index,
+					dailyLogs: doc.dailyLogs,
+					monthlyLogs: doc.monthlyLogs,
+					futureLogs: doc.futureLogs,
+					collections: doc.collections,
+					trackers: doc.trackers,
+					textBlocks: doc.textBlocks,
+					tasks: doc.tasks,
+					events: doc.events,
+					signifiers: doc.signifiers
+				}
+			).then((res) => {
+			}).catch((err) => {
+				callback(err, null);
 			});
 		}
+	}).then((res) => {
+		callback(null, dailyObject);
 	});
 }

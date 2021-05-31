@@ -4,7 +4,8 @@ export function updateTrackerPouch (db, tracker, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			db.put({_id: "0000", _rev: doc._rev, trackers: doc.trackers.push(tracker)}, (err, res) => {
+			const trackerArr = doc.trackers.filter(element => element.id != tracker.id);
+			db.put({_id: "0000", _rev: doc._rev, trackers: trackerArr.push(tracker)}, (err, res) => {
 				if (err) {
 					callback(err);
 				} else {

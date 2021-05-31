@@ -1,47 +1,102 @@
 import {makeid} from "./makeId.js";
+import * as localStorage from "./../userOperations.js";
 
-export function createTextBlockPouch (db, parent, content, trackers, callback) {
+let textBlockObject;
+
+export function createTextBlockPouch (db, parent, index, content, tabLevel, kind, objectReference, signifier, date, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
-			callback(err);
+			callback(err, null);
 		} else {
-			console.log(doc);
+			console.log(parent);
 			let id = makeid();
 			let arrays = [];
-			arrays.push(...doc.userObject.dailyLogs);
-			arrays.push(...doc.userObject.monthlyLogs);
-			arrays.push(...doc.userObject.futureLogs);
-			arrays.push(...doc.userObject.trackers);
-			arrays.push(...doc.userObject.collections);
-			arrays.push(...doc.userObject.textBlocks);
-			arrays.push(...doc.userObject.taskBlocks);
-			arrays.push(...doc.userObject.eventtBlocks);
-			arrays.push(...doc.userObject.signifiers);
-			while(arrays.filter((element) => element.id == id).length > 0){
+			Array.prototype.push.apply(arrays, doc.dailyLogs);
+			Array.prototype.push.apply(arrays, doc.monthlyLogs);
+			Array.prototype.push.apply(arrays, doc.futureLogs);
+			Array.prototype.push.apply(arrays, doc.collections);
+			Array.prototype.push.apply(arrays, doc.trackers);
+			Array.prototype.push.apply(arrays, doc.textBlocks);
+			Array.prototype.push.apply(arrays, doc.tasks);
+			Array.prototype.push.apply(arrays, doc.events);
+			Array.prototype.push.apply(arrays, doc.signifiers);
+			
+			while(arrays.filter(element => element.id == id).length > 0){
 				id = makeid();
 			}
-			const textBlockObject = {
+			textBlockObject = {
 				id: id,
+				objectType: "textBlock",
+				tabLevel: tabLevel,
 				parent: parent,
 				kind: kind,
-				text: text,
+				objectReference: objectReference,
+				text: content,
 				signifier: signifier
 			};
-		}
-	});
-	
-	
+			
+			if (kind == "task") {
+				localStorage.createTask(id, "", 0, null, (err, task) => {
+					if (err) {
+						callback(err, null);
+					} else {
+						textBlockObject.objectReference = task.id;
+					}
+				})
+			} else if (kind = "event") {
+				localStorage.createEvent(id, date, null, (err, event) => {
+					if (err) {
+						callback(err, null);
+					} else {
+						textBlockObject.objectReference = event.id;
+					}
+				})
+			}
+			
+			let userArr = [];
+			Array.prototype.push.apply(userArr, doc.dailyLogs);
+			Array.prototype.push.apply(userArr, doc.monthlyLogs);
+			Array.prototype.push.apply(userArr, doc.futureLogs);
+			Array.prototype.push.apply(userArr, doc.trackers);
+			Array.prototype.push.apply(userArr, doc.collections);
 
-	db.get("0000", (err, doc) => {
-		if (err) {
-			callback(err);
-		} else {
-			db.put({_rev: doc._rev,
-				_id: "0000"}, (res) => {
-				doc.userObject.textBlocks.push(textBlockObject);
-				console.log(res);
-				callback(res);
-			});
+			let parentArr = userArr.filter(object => object.id == parent);
+			if (parent == null){
+				if(index == null) {
+					doc.index.contents.push(id);
+				} else {
+					doc.index.contents.splice(index, 0, id);
+				}
+			} else if(index == null) {
+				parentArr[0].contents.push(id);
+			} else {
+				parentArr[0].contents.splice(index, 0, id);
+			}
+			doc.textBlocks.push(textBlockObject);
+
+			return db.put(
+				{
+					_id: "0000",
+					_rev: doc._rev,
+					email: doc.email,
+					pwd: doc.pwd,
+					index: doc.index,
+					dailyLogs: doc.dailyLogs,
+					monthlyLogs: doc.monthlyLogs,
+					futureLogs: doc.futureLogs,
+					collections: doc.collections,
+					trackers: doc.trackers,
+					textBlocks: doc.textBlocks,
+					tasks: doc.tasks,
+					events: doc.events,
+					signifiers: doc.signifiers
+				}
+			);
+			console.log("saving at createtextblock");
+			callback(null, textBlockObject);
 		}
-	});
+	})/*.then((res) => {
+		callback(null, textBlockObject);
+		console.log("callback back from createTextblock");
+	});*/
 }

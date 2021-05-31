@@ -4,7 +4,8 @@ export function updateTextBlockPouch (db, textBlock, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			db.put({_id: "0000", _rev: doc._rev, textBlocks: doc.textBlocks.push(textBlock)}, (err, res) => {
+			const textBlockArr = doc.textBlocks.filter(element => element.id != textBlock.id);
+			db.put({_id: "0000", _rev: doc._rev, textBlocks: textBlockArr.push(textBlock)}, (err, res) => {
 				if (err) {
 					callback(err);
 				} else {
