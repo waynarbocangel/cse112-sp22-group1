@@ -4,10 +4,10 @@ const themeColors = {
         "--content-foreground-color": "#D4D4D4",
         "--content-background-color": "#2e3030",
         "--tracker-foreground-color": "#FFFFFF",
-        "--tracker-background-color": "#1e2020", 
-        "--tracker-border-color":     "#404040",
-        "--navbar-foreground-color":  "#FFFFFF",
-        "--navbar-background-color":  "#1e2020",
+        "--tracker-background-color": "#1e2020",
+        "--tracker-border-color": "#404040",
+        "--navbar-foreground-color": "#FFFFFF",
+        "--navbar-background-color": "#1e2020",
         "--icon-filter": "invert()",
     },
 
@@ -16,10 +16,10 @@ const themeColors = {
         "--content-foreground-color": "#000000",
         "--content-background-color": "#FFFFFF",
         "--tracker-foreground-color": "#FFFFFF",
-        "--tracker-border-color":     "#7671B6",
+        "--tracker-border-color": "#48486f",
         "--tracker-background-color": "#2B2D42",
-        "--navbar-foreground-color":  "#FFFFFF",
-        "--navbar-background-color":  "#F7F2EC",
+        "--navbar-foreground-color": "#FFFFFF",
+        "--navbar-background-color": "#F7F2EC",
         "--icon-filter": "",
     },
 
@@ -29,9 +29,9 @@ const themeColors = {
         "--content-background-color": "#000000",
         "--tracker-foreground-color": "#FFFFFF",
         "--tracker-background-color": "#0000FF",
-        "--tracker-border-color":     "#FFFFFF",
-        "--navbar-foreground-color":  "#FFFFFF",
-        "--navbar-background-color":  "#008F00",
+        "--tracker-border-color": "#FFFFFF",
+        "--navbar-foreground-color": "#FFFFFF",
+        "--navbar-background-color": "#008F00",
         "--icon-filter": "invert()",
     },
 
@@ -41,9 +41,9 @@ const themeColors = {
         "--content-background-color": "#FFFFFF",
         "--tracker-foreground-color": "#FFFFFF", //"#9FEDD7",
         "--tracker-background-color": "#026670",
-        "--tracker-border-color":     "#7671B6",
-        "--navbar-foreground-color":  "#FEF9C7",
-        "--navbar-background-color":  "#FCE181",
+        "--tracker-border-color": "#7671B6",
+        "--navbar-foreground-color": "#FEF9C7",
+        "--navbar-background-color": "#FCE181",
         "--icon-filter": "",
     },
 
@@ -51,30 +51,41 @@ const themeColors = {
         "--border-color": "#8E8D8A",
         "--content-foreground-color": "#000000",
         "--content-background-color": "#EAE7DC",
-        
+
         "--tracker-foreground-color": "#FFFFFF", //"#9FEDD7",
         "--tracker-background-color": "#48131A",
-        "--tracker-border-color":     "#6F474E",
+        "--tracker-border-color": "#6F474E",
 
-        "--navbar-foreground-color":  "#000000",
-        "--navbar-background-color":  "#D8C3A5",
+        "--navbar-foreground-color": "#000000",
+        "--navbar-background-color": "#D8C3A5",
         "--icon-filter": "",
     },
 
     theme6: {
-        "--border-color": "#34375c", 
+        "--border-color": "#34375c",
         "--content-foreground-color": "#AAABB8",
         "--content-background-color": "#25274D",
-        
+
         "--tracker-foreground-color": "#AAABB8",
         "--tracker-background-color": "#283D6C", //283d6c
-        "--tracker-border-color":     "#29648A",
+        "--tracker-border-color": "#29648A",
 
-        "--navbar-foreground-color":  "#000000",
-        "--navbar-background-color":  "#464866",
+        "--navbar-foreground-color": "#000000",
+        "--navbar-background-color": "#464866",
         "--icon-filter": "invert()",
     },
 }
+
+/*
+<form id="theme">
+    <input type="radio" name="themeradio" id="darkmode">     <label for="darkmode">Darkmode</label></input><br>
+    <input type="radio" name="themeradio" id="lightmode" checked>    <label for="lightmode">Noobmode</label></input><br>
+    <input type="radio" name="themeradio" id="highcontrast"> <label for="highcontrast">High Contrast</label></input><br>
+    <input type="radio" name="themeradio" id="theme4">       <label for="theme4">Theme 4</label></input><br>
+    <input type="radio" name="themeradio" id="theme5">       <label for="theme5">Theme 5</label></input><br>
+    <input type="radio" name="themeradio" id="theme6">       <label for="theme6">Theme 6</label></input><br>
+</form>
+*/
 
 export class SettingsMenu extends HTMLElement {
     static get observedAttributes() {
@@ -84,9 +95,6 @@ export class SettingsMenu extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
-    }
-
-    connectedCallback() {
         this.shadowRoot.innerHTML = `
             <style>
                 @font-face {
@@ -98,7 +106,7 @@ export class SettingsMenu extends HTMLElement {
                     font-family: "SF-Pro";
                 }
 
-                #overlay {
+                .overlay {
                     position: fixed;
                     width: 100%;
                     height: 100%;
@@ -123,7 +131,8 @@ export class SettingsMenu extends HTMLElement {
                     cursor: pointer;
                 }
 
-                #menu {
+                .menu {
+                    display: flex;
                     position: absolute;
                     top: 50%;
                     left: 50%;
@@ -134,18 +143,41 @@ export class SettingsMenu extends HTMLElement {
                     background-color: var(--content-background-color);
                 }
 
-                h1 {
-                    text-align: center;
-                    flex: 2;
+                .sidebar {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+
+                    left: 0;
+                    top: 0;
+                    bottom: 0;
+                    background-color: var(--navbar-background-color);
                 }
 
-                #header {
+                .content {
+                    flex: 1;
+                }
+
+                h1 {
+                    text-align: center;
+                    flex: 1;
+                }
+
+                .header {
                     display: flex;
                     align-items: center;
                     height: 75px;
                     margin-left: 10px;
                     margin-right: 10px;
                     border-bottom: 2px solid var(--border-color);
+                }
+
+                ::slotted(settings-tab[selected]) {
+                    background-color: var(--content-background-color);
+                }
+                
+                ::slotted(settings-tab:hover) {
+                    background-color: var(--settings-hover-color);
                 }
 
                 #theme {
@@ -157,21 +189,22 @@ export class SettingsMenu extends HTMLElement {
                 }
             </style>
 
-            <div id="overlay">
-                <div id="menu">
-                    <div id="header">
-                        <h1> Settings </h1>
-                        <button id="close"> X </button>
+            <div class="overlay">
+                <div class="menu">
+                    <div class="sidebar">
+                        <slot name="settings-tab"></slot>
                     </div>
-                    
-                    <form id="theme">
-                        <input type="radio" name="themeradio" id="darkmode">     <label for="darkmode">Darkmode</label></input><br>
-                        <input type="radio" name="themeradio" id="lightmode" checked>    <label for="lightmode">Noobmode</label></input><br>
-                        <input type="radio" name="themeradio" id="highcontrast"> <label for="highcontrast">High Contrast</label></input><br>
-                        <input type="radio" name="themeradio" id="theme4">       <label for="theme4">Theme 4</label></input><br>
-                        <input type="radio" name="themeradio" id="theme5">       <label for="theme5">Theme 5</label></input><br>
-                        <input type="radio" name="themeradio" id="theme6">       <label for="theme6">Theme 6</label></input><br>
-                    </form>
+
+                    <div class="content">
+                        <div class="header">
+                            <h1>Settings</h1>
+                            <button id="close"> X </button>
+                        </div>
+
+                        <div class="options">
+                            <slot name="settings-panel"></slot>
+                        </div>
+                    </div>
                 </div>
             </div>
         `;
@@ -182,7 +215,87 @@ export class SettingsMenu extends HTMLElement {
         }
 
         this.shadowRoot.getElementById("close").addEventListener('click', () => { this.hide(); });
+
+        this.tabSlot = this.shadowRoot.querySelector('slot[name=settings-tab]');
+        this.panelSlot = this.shadowRoot.querySelector('slot[name=settings-panel]');
+
+        this.changeTab = this.changeTab.bind(this);
+        this.linkPanels = this.linkPanels.bind(this);
+
+        this.tabSlot.addEventListener('slotchange', () => this.linkPanels);
+        this.panelSlot.addEventListener('slotchange', () => this.linkPanels);
+
+        this.headerTitle = this.shadowRoot.querySelector('.header h1');
+    }
+
+    connectedCallback() {
         this.hide();
+
+        Promise.all([customElements.whenDefined('settings-tab'), customElements.whenDefined('settings-panel')])
+            .then(() => this.linkPanels());
+
+        this.addEventListener('click', event => {
+            console.log('clicked');
+            if (event.target.getAttribute('role') !== 'tab') {
+                return;
+            }
+
+            this.changeTab(event.target);
+        })
+    }
+
+    tabs() {
+        return this.querySelectorAll('settings-tab');
+    }
+
+    panels() {
+        return this.querySelectorAll('settings-panel');
+    }
+
+    linkPanels() {
+        let tabs = this.tabs();
+
+        if (tabs.length === 0) return;
+
+        let selectedTab = undefined;
+        for (let tab of tabs) {
+            let panel = tab.nextElementSibling;
+            tab.setAttribute('aria-controls', panel.id);
+            panel.setAttribute('aria-labelledby', tab.id);
+
+            if (selectedTab === undefined && tab.selected) {
+                selectedTab = tab;
+            }
+        }
+
+        if (selectedTab === undefined) {
+            selectedTab = tabs.item(0);
+        }
+
+        this.changeTab(selectedTab);
+    }
+
+    changeTab(selectedTab) {
+        let tabs = Array.from(this.tabs());
+        let panels = Array.from(this.panels());
+
+        // deselect all the tabs and hide all the panels
+        tabs.forEach(tab => tab.selected = false);
+        panels.forEach(panel => panel.hidden = true);
+
+        let panelId = selectedTab.getAttribute('aria-controls');
+        let selectedPanel = this.querySelector(`#${panelId}`);
+
+        if (!selectedPanel) {
+            // oh no
+            console.log('panel not found');
+        }
+
+        this.headerTitle.innerText = selectedTab.getAttribute('title');
+
+        selectedTab.selected = true;
+        selectedPanel.hidden = false;
+        selectedTab.focus();
     }
 
     attributeChangedCallback(attr, oldVal, newVal) {
@@ -230,3 +343,79 @@ export class SettingsMenu extends HTMLElement {
 }
 
 customElements.define('settings-menu', SettingsMenu);
+
+// used to generate an id
+let tabId = 0;
+
+let settingsTabTemplate = document.createElement('template');
+settingsTabTemplate.innerHTML = `
+<style>
+    :host {
+        padding: 10px;
+    }
+
+    ::slotted(img) {
+        pointer-events: none;
+        width: 32px;
+        height: 32px;
+    }
+</style>
+
+<slot name="icon"></slot>
+`;
+
+export class SettingsTab extends HTMLElement {
+    static get observedAttributes() {
+        return ['selected'];
+    }
+
+    constructor() {
+        super();
+        this.attachShadow({mode:'open'});
+        this.shadowRoot.appendChild(settingsTabTemplate.content.cloneNode(true));
+    }
+
+    connectedCallback() {
+        this.setAttribute('role', 'tab');
+        if (!this.id) {
+            this.id = `settings-tab-generated-${tabId++}`;
+        }
+
+        this.setAttribute('aria-selected', 'false');
+    }
+
+    attributeChangedCallback() {
+        const value = this.hasAttribute('selected');
+        this.setAttribute('aria-selected', value);
+    }
+
+    set selected(value) {
+        value = Boolean(value);
+        if (value) {
+            this.setAttribute('selected', '');
+        } else {
+            this.removeAttribute('selected');
+        }
+    }
+
+    get selected() {
+        return this.hasAttribute('selected');
+    }
+}
+customElements.define('settings-tab', SettingsTab);
+
+let panelId = 0;
+
+export class SettingsPanel extends HTMLElement {
+    constructor() {
+        super();
+    }
+
+    connectedCallback() {
+        this.setAttribute('role', 'tabpanel');
+        if (!this.id) {
+            this.id = `settings-panel-generated-${panelId++}`;
+        }
+    }
+}
+customElements.define('settings-panel', SettingsPanel);
