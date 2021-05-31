@@ -117,7 +117,7 @@ export class ShortcutPage extends HTMLElement {
     </div>
     `;
 
-    this.closeButton = this.shadowRoot.querySelector(".close_button");
+        this.closeButton = this.shadowRoot.querySelector(".close_button");
     }
 
     attributeChangedCallback(attr, oldVal, newVal) {
