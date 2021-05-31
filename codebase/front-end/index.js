@@ -3,13 +3,15 @@ import { TrackerMenu } from "./components/tracker.js";
 import { NavBar } from "./components/navbar.js";
 import { PageHeader } from "./components/header.js";
 import { DropdownBlock } from './components/dropdown.js';
-import { router, state } from './router.js';
+import { router } from './router.js';
 import { createEditor } from './components/blockController.js';
+import { TrackerBlock } from './components/trackerBlock.js';
 
 document.querySelector("body").style.display = "none";
 
 export let navbar = new NavBar();
 export let header = new PageHeader();
+//export let trackerBlock = new TrackerBlock();
 export let url = "";
 export let pageNumber = 1;
 
@@ -21,6 +23,7 @@ document.getElementById("sidebar").appendChild(navbar);
 document.getElementById("targetMenu").onclick = () => {
 	navbar.toggleTracker();
 };
+//document.getElementById("")
 router.setState(document.location.hash, false);
 
 window.onpopstate = () => {
@@ -34,7 +37,6 @@ export function getCurrentObject(urlFromRouter) {
 		urlparse = urlFromRouter.split("~");
 	}
 	if (urlparse != undefined){
-		//console.log("current object id is " + urlparse[1]);
 		id = urlparse[1];
 	}
 	localStorage.readUser((err, user) => {
@@ -52,8 +54,6 @@ export function getCurrentObject(urlFromRouter) {
 				currentObject = parsed[0];
 			} else {
 				currentObject = user.index;
-				//console.log(currentObject.objectType);
-				//console.log("user is " ,user);
 			}
 		}
 	});
@@ -61,7 +61,6 @@ export function getCurrentObject(urlFromRouter) {
 }
 
 export function setupIndex(header, btn) {
-	//getCurrentObject(null);
 	localStorage.readUser((err, user) => {
 		if (err) {
 			console.log(err);
@@ -136,7 +135,6 @@ export function setupIndex(header, btn) {
 }
 
 export function setupFutureLog(header, btn, newState){
-	//getCurrentObject(newState);
 	localStorage.readUser((err, user) => {
 		if (err) {
 			console.log(err);
@@ -196,7 +194,38 @@ export function setupFutureLog(header, btn, newState){
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.remove("hide");
 	}
-	document.getElementById("trackerWrapper").appendChild(new TrackerMenu("Future Log Trackers"));
+
+	let futureLogTrackerMenu = new TrackerMenu("Future Log Trackers");
+	document.getElementById("trackerWrapper").appendChild(futureLogTrackerMenu);
+	let trackerBlockWrapper = futureLogTrackerMenu.shadowRoot.getElementById("editor");
+
+	localStorage.readUser((err, user) => {
+		if (err) {
+			console.log(err);
+		} else {
+			let userArr = user.trackers;
+			let trackerArr = [];
+			for (let i = 0; i < currentObject.trackers.length; i++) {
+				console.log("hello");
+				trackerArr.push(userArr.filter(object => object.id == currentObject.trackers[i])[0]);
+			}
+			console.log(trackerArr);
+			setTimeout(() => {
+				for(let i = 0; i < trackerArr.length; i++) {
+					let currentTracker = trackerArr[i];
+					let dropdownTracker = new TrackerBlock(currentTracker.title, currentObject.id, 1);
+					trackerBlockWrapper.appendChild(dropdownTracker);
+				}
+				createEditor(trackerBlockWrapper, null, null, (success) => {
+					console.log(success);
+				});
+			}, 10);
+		}
+	});
+	// futureLogTrackerMenu.shadowRoot.querySelector("div > div.tracker_header_content").appendChild(new TrackerBlock([], currentObject.id));
+	for(let i = 0; i < currentObject.trackers.length; i++){
+		// futureLogTrackerMenu.shadowRoot.querySelector("div").appendChild(new TrackerBlock(currentObject.trackers[i].content, currentObject.id));
+	}
 }
 
 export function setupMonthlyLog(header, btn, newState){

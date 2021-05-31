@@ -118,8 +118,8 @@ export function createSignifier(meaning, symbol, callback) {
 	})
 }
 
-export function createTask(/*index,*/ parent, text, complete, signifier, callback) {
-	createTaskPouch(db, /*index,*/ parent, text, complete, signifier, (error, task) => {
+export function createTask(parent, text, complete, signifier, callback) {
+	createTaskPouch(db, parent, text, complete, signifier, (error, task) => {
 		callback(error, task);
 	})
 }
@@ -130,9 +130,9 @@ export function createTextBlock(parent, subParent, index, content, tabLevel, kin
 	});
 }
 
-export function createTracker(content, parent, callback) {
-	createTrackerPouch(db, content, parent, (user) => {
-		callback(user);
+export function createTracker(title, content, parent, callback) {
+	createTrackerPouch(db, title, content, parent, (err, tracker) => {
+		callback(err, tracker);
 	})
 }
 

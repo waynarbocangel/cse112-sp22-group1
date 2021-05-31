@@ -146,4 +146,4 @@ export class DropdownBlock extends HTMLElement {
     }
 }
 
-customElements.define('drop-down', DropdownBlock);
+window.customElements.define('drop-down', DropdownBlock);

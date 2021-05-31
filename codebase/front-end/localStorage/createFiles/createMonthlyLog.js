@@ -20,6 +20,8 @@ export function createMonthlyLogPouch (db, parent, content, days, trackers, date
 			Array.prototype.push.apply(arrays, doc.tasks);
 			Array.prototype.push.apply(arrays, doc.events);
 			Array.prototype.push.apply(arrays, doc.signifiers);
+			Array.prototype.push.apply(arrays, doc.imageBlocks);
+			Array.prototype.push.apply(arrays, doc.audioBlocks);
 			
 			while(arrays.filter(element => element.id == id).length > 0){
 				id = makeid();
@@ -42,12 +44,15 @@ export function createMonthlyLogPouch (db, parent, content, days, trackers, date
 					_rev: doc._rev,
 					email: doc.email,
 					pwd: doc.pwd,
+					theme: doc.theme,
 					index: doc.index,
 					dailyLogs: doc.dailyLogs,
 					monthlyLogs: doc.monthlyLogs,
 					futureLogs: doc.futureLogs,
 					collections: doc.collections,
 					trackers: doc.trackers,
+					imageBlocks: doc.imageBlocks,
+					audioBlocks: doc.audioBlocks,
 					textBlocks: doc.textBlocks,
 					tasks: doc.tasks,
 					events: doc.events,
@@ -78,12 +83,15 @@ export function createMonthlyLogPouch (db, parent, content, days, trackers, date
 						_rev: doc._rev,
 						email: doc.email,
 						pwd: doc.pwd,
+						theme: doc.theme,
 						index: doc.index,
 						dailyLogs: doc.dailyLogs,
 						monthlyLogs: doc.monthlyLogs,
 						futureLogs: doc.futureLogs,
 						collections: doc.collections,
 						trackers: doc.trackers,
+						imageBlocks: doc.imageBlocks,
+						audioBlocks: doc.audioBlocks,
 						textBlocks: doc.textBlocks,
 						tasks: doc.tasks,
 						events: doc.events,

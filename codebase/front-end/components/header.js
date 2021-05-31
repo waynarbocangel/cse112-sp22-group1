@@ -402,4 +402,4 @@ export class PageHeader extends HTMLElement {
 	}
 }
 
-customElements.define('page-header', PageHeader);
+window.customElements.define('page-header', PageHeader);

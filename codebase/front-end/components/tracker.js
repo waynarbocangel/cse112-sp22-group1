@@ -1,3 +1,7 @@
+import { TrackerBlock } from "./trackerBlock.js";
+import { createEditor } from './blockController.js';
+import { currentObject } from "../index.js";
+
 // tracker side menu web component
 export class TrackerMenu extends HTMLElement {
     static get observedAttributes() {
@@ -18,14 +22,14 @@ export class TrackerMenu extends HTMLElement {
                 position: fixed;
                 z-index: 1000;
                 top: 0;
-                width: 35vw;
+                width: 500px;
 				padding-left: 20px;
 				padding-right: 20px;
                 height: 100vh;
 				background-color: #2B2D42;
                 font-family: "SF-Pro";
-                transform: translate3d(135vw, 0, 0);
-                transition: transform .4s ease-in-out /*cubic-bezier(0, .52, 0, 1);*/
+                transform: translate3d(calc(100vw + 500px), 0, 0);
+                transition: transform .4s ease-in-out;
             }
 
 			.noteContainer{
@@ -38,7 +42,7 @@ export class TrackerMenu extends HTMLElement {
 			}
                         
             .wrapper.open {
-                transform: translate3d(calc(65vw - 39px), 0, 0);
+                transform: translate3d(calc(100vw - 500px), 0, 0);
                 transition: transform .4s ease-in-out /*cubic-bezier(0, .52, 0, 1);*/
             }
             
@@ -48,7 +52,7 @@ export class TrackerMenu extends HTMLElement {
                 opacity: 95%;
 				padding-left: 0;
 				padding-right: 0;
-                width: 35vw;
+                width: 100%;
             }
             
             .tracker_header {
@@ -110,6 +114,19 @@ export class TrackerMenu extends HTMLElement {
                 filter: opacity(100%);
                 transition: 150ms;
             }
+
+			@media screen and (max-width: 900px) {
+				.wrapper{
+					width: calc(100% - 40px);
+					transform: translate3d(calc(200vw), 0, 0);
+					transition: transform .4s ease-in-out;
+				}
+
+				.wrapper.open{
+					transform: translate3d(0, 0, 0);
+					transition: transform .4s ease-in-out;
+				}
+			}
         </style>
 
         <div class="wrapper">
@@ -136,6 +153,7 @@ export class TrackerMenu extends HTMLElement {
     }
 
     connectedCallback() {
+        //console.log('can this event print');
         this.closeButton.addEventListener("click", this.close);
     }
 
@@ -152,7 +170,7 @@ export class TrackerMenu extends HTMLElement {
 
     set open(isOpen) {
         this.shadowRoot.querySelector('.wrapper').classList.toggle('open', isOpen);
-        this.shadowRoot.querySelector('.wrapper').setAttribute('aria-hidden', !isOpen)
+        this.shadowRoot.querySelector('.wrapper').setAttribute('aria-hidden', !isOpen);
         if (isOpen) {
             this.setAttribute('open', '');
             this.focus();
@@ -166,7 +184,7 @@ export class TrackerMenu extends HTMLElement {
     }
 
     set content(placeholder) {
-
+        
     }
 
     appendBlock() {
@@ -178,5 +196,5 @@ export class TrackerMenu extends HTMLElement {
     }
 }
 
-customElements.define('tracker-menu', TrackerMenu);
+window.customElements.define('tracker-menu', TrackerMenu);
 

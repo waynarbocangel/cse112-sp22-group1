@@ -24,8 +24,8 @@ export function updateCollectionPouch (db, collection, callback) {
 			collections: doc.collections,
 			trackers: doc.trackers,
 			textBlocks: doc.textBlocks,
-			taskBlocks: doc.taskBlocks,
-			eventBlocks: doc.eventBlocks,
+			tasks: doc.taskBlocks,
+			events: doc.eventBlocks,
 			signifiers: doc.signifiers}, (err, res) => {
 				if (err) {
 					callback(err);

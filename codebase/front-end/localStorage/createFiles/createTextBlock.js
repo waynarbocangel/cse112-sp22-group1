@@ -19,6 +19,8 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 			Array.prototype.push.apply(arrays, doc.tasks);
 			Array.prototype.push.apply(arrays, doc.events);
 			Array.prototype.push.apply(arrays, doc.signifiers);
+			Array.prototype.push.apply(arrays, doc.imageBlocks);
+			Array.prototype.push.apply(arrays, doc.audioBlocks);
 			
 			while(arrays.filter(element => element.id == id).length > 0){
 				id = makeid();
@@ -91,12 +93,15 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 											_rev: user._rev,
 											email: user.email,
 											pwd: user.pwd,
+											theme: user.theme,
 											index: user.index,
 											dailyLogs: user.dailyLogs,
 											monthlyLogs: user.monthlyLogs,
 											futureLogs: user.futureLogs,
 											collections: user.collections,
 											trackers: user.trackers,
+											imageBlocks: user.imageBlocks,
+											audioBlocks: user.audioBlocks,
 											textBlocks: user.textBlocks,
 											tasks: user.tasks,
 											events: user.events,
@@ -166,12 +171,15 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 											_rev: user._rev,
 											email: user.email,
 											pwd: user.pwd,
+											theme: user.theme,
 											index: user.index,
 											dailyLogs: user.dailyLogs,
 											monthlyLogs: user.monthlyLogs,
 											futureLogs: user.futureLogs,
 											collections: user.collections,
 											trackers: user.trackers,
+											imageBlocks: user.imageBlocks,
+											audioBlocks: user.audioBlocks,
 											textBlocks: user.textBlocks,
 											tasks: user.tasks,
 											events: user.events,
@@ -232,12 +240,15 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 						_rev: doc._rev,
 						email: doc.email,
 						pwd: doc.pwd,
+						theme: doc.theme,
 						index: doc.index,
 						dailyLogs: doc.dailyLogs,
 						monthlyLogs: doc.monthlyLogs,
 						futureLogs: doc.futureLogs,
 						collections: doc.collections,
 						trackers: doc.trackers,
+						imageBlocks: doc.imageBlocks,
+						audioBlocks: doc.audioBlocks,
 						textBlocks: doc.textBlocks,
 						tasks: doc.tasks,
 						events: doc.events,

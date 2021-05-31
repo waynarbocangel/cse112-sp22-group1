@@ -1,5 +1,6 @@
 import * as shadow from "./shadow.js";
 import * as localStorage from "../localStorage/userOperations.js";
+import {currentObject} from "../index.js";
 
 const tabSize = 20;
 const paddingSize = 10;
@@ -44,6 +45,7 @@ export class TextBlock extends HTMLElement {
 			this.hashPressed = false;
 			this.timeSetter = false;
 			this.dateSetter = false;
+			this.eventDelete = true;
 			this.setupTabLevel();
 			callback(true);
 		})
@@ -355,15 +357,19 @@ export class TextBlock extends HTMLElement {
 			textBlock.classList.remove("eventNodateFocused");
 			this.editorIcons.classList.add("unfocusedIcons");
 			console.log("item is ",this.item);
+			let date = null;
 			if(this.kind == "event"){
-
+				date = getDate(this, this.eventDelete);
+				console.log(date);
+			}
+			if (!this.eventDelete){
+				this.eventDelete = true;
 			}
 			if(this.item != null){
 				if (textBlock.textContent != "" ) {
 					console.log("hello my very old friend " + textBlock.textContent);
 					this.item.kind = this.kind;
 					this.item.text = textBlock.textContent;
-					let date = null;
 					setTimeout( () => {
 						localStorage.updateTextBlock(this.item, date, (res) => {
 							console.log(res);
@@ -378,7 +384,7 @@ export class TextBlock extends HTMLElement {
 				}
 			} else if (textBlock.textContent != "") {
 
-				localStorage.createTextBlock(this.controller.parent.id, this.controller.subParent, this.controller.currentBlockIndex, textBlock.textContent, this.tabLevel, this.kind, null, null, null, (err, block) => {
+				localStorage.createTextBlock(this.controller.parent.id, this.controller.subParent, this.controller.currentBlockIndex, textBlock.textContent, this.tabLevel, this.kind, null, null, date, (err, block) => {
 					if (err) {
 						console.log(err);
 					} else {
@@ -508,6 +514,15 @@ export class TextBlock extends HTMLElement {
 				} else if (content == "/collection") {
 					alert("New Collection will be created");
 					e.preventDefault();
+				} else if (content == "/tracker") {
+					localStorage.createTracker("Practice Tracker", [], currentObject.id, (err, tracker) => {
+						if (err) {
+							console.log(err);
+						} else {
+							console.log(tracker);
+						}
+					});
+					e.preventDefault();
 				} else {
 					this.controller.resetPosition = false;
 					this.controller.addNewBlock();
@@ -529,6 +544,7 @@ export class TextBlock extends HTMLElement {
 				e.preventDefault();
 			} else if (key == "@" && this.kind == "event") {
 				if (!this.atPressed) {
+					this.eventDelete = false;
 					this.atPressed = true;
 					this.timeSetter = true;
 					let dateFiller = "";
@@ -547,6 +563,7 @@ export class TextBlock extends HTMLElement {
 				}
 			} else if (key == "#" && this.kind == "event") {
 				if (!this.hashPressed) {
+					this.eventDelete = false;
 					this.hashPressed = true;
 					this.dateSetter = true;
 					let dateFiller = "";
@@ -563,56 +580,10 @@ export class TextBlock extends HTMLElement {
 					e.stopPropagation();
 					e.preventDefault();
 				}
-			} else if (this.atPressed && this.kind == "event") {
-				if (key.match(/[^0123456789:]/g) && !protectedKeys.includes(key)) {
-					e.stopPropagation();
-					e.preventDefault();
-				} 
-				// else {
-				// 	let start = 0;
-				// 	for (let i = 0; i < textBlock.textContent.length; i++) {
-				// 		if (textBlock.textContent.charCodeAt(i) == 56688) {
-				// 			start = i;
-				// 			break;
-				// 		}
-				// 	}
-				// 	let end = textBlock.textContent.length - 1;
-				// 	if (this.dateSetter) {
-				// 		let dateIndex = 0;
-				// 		for (let i = 0; i < textBlock.textContent.length; i++) {
-				// 			if (textBlock.textContent.charCodeAt(i) == 56517) {
-				// 				dateIndex = i;
-				// 				break;
-				// 			}
-				// 		}
-				// 		if (dateIndex >= end) {
-				// 			end = dateIndex;
-				// 		}
-				// 	}
-				// 	let stringShiftIndexBack = 1;
-				// 	let stringShiftIndexFront = 1;
-				// 	let previousCharacter = textBlock.textContent.substring(this.characterIndex - stringShiftIndexBack, this.characterIndex);
-				// 	let nextCharacter = textBlock.textContent.substring(this.characterIndex, this.characterIndex + stringShiftIndexFront);
-				// 	while (previousCharacter.match(/[0-9]/g)) {
-				// 		stringShiftIndexBack += 1;
-				// 		previousCharacter = textBlock.textContent.substring(this.characterIndex - stringShiftIndexBack, this.characterIndex);
-				// 	}
-				// 	while (previousCharacter.match(/[:]/g)) {
-				// 		stringShiftIndexBack += 1;
-				// 		previousCharacter = textBlock.textContent.substring(this.characterIndex - stringShiftIndexBack, this.characterIndex);
-				// 	}
-				// 	while (nextCharacter.match(/[0-9]/g)) {
-				// 		stringShiftIndexFront += 1;
-				// 		nextCharacter = textBlock.textContent.substring(this.characterIndex, this.characterIndex + stringShiftIndexFront);
-				// 	}
-				// 	while (nextCharacter.match(/[:]/g)) {
-				// 		stringShiftIndexFront += 1;
-				// 		nextCharacter = textBlock.textContent.substring(this.characterIndex, this.characterIndex + stringShiftIndexFront);
-				// 	}
-
-				// 	let carretPosition = this.characterIndex - start;
-				// }
-			} else if (this.hashPressed && this.kind == "event" && key.match(/[.:"'=-,`~|[{!@#$%^&*()_+<>?¡™£¢∞⁄€‹›ﬁﬂ‡°·‚—±»’”∏¨Áˇ‰´„ŒÍÎ˝§¶•ªÒÚÆ¿˘¯Â˜ı◊Ç˛º–≠“‘«æ…¬˚∆˙©ƒ∂ßåœ∑´®†¥¨ˆøπ÷≥≤µ˜∫√ç≈}]/g) && !protectedKeys.includes(key)) {
+			} else if (this.atPressed && this.kind == "event" && key.match(/[^0123456789:]/g) && !protectedKeys.includes(key)) {
+				e.stopPropagation();
+				e.preventDefault()
+			} else if (this.hashPressed && this.kind == "event" && key.match(/[.:"'=,`~|[{}]/g) && !protectedKeys.includes(key)) {
 				e.stopPropagation();
 				e.preventDefault();
 			}
@@ -650,24 +621,105 @@ function includesClock(block, text, first) {
 			}
 		}
 	}
-	console.log(block.timeSetter);
-	console.log(block.dateSetter);
 }
 
-function getDate(textBlock){
-	if (textBlock.timeSetter) {
-		let start = 0;
-		for (let i = 0; i < textBlock.textContent.length; i++) {
-			if (textBlock.textContent.charCodeAt(i) == 56688) {
-				start = i;
+function getDate(textBlock, deleteString){
+	let date = null;
+	let text = textBlock.shadowRoot.querySelector("#textBlock");
+	if (textBlock.dateSetter && deleteString){
+		let start = 1;
+		for (let i = 0; i < text.textContent.length; i++) {
+			if (text.textContent.charCodeAt(i) == 56517) {
+				start = i + 1;
 				break;
 			}
 		}
-		let end = textBlock.textContent.length - 1;
-		if (this.dateSetter) {
+		let end = text.textContent.length;
+		if (textBlock.dateSetter) {
+			let timeIndex = 0;
+			for (let i = 0; i < text.textContent.length; i++) {
+				if (text.textContent.charCodeAt(i) == 56688) {
+					timeIndex = i;
+					break;
+				}
+			}
+			if (timeIndex >= end) {
+				end = timeIndex;
+			}
+		}
+		let newString = text.textContent.substring(start, end);
+		newString = newString.replaceAll(" ", "");
+		let valid = false;
+		let dayArray = ["today", "tomorrow", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+		if (dayArray.includes(newString.toLowerCase())){
+			valid = true;
+		} else {
+			valid = true;
+			if (newString.length != 10){
+				valid = false;
+			} else {
+				if (newString.charAt(0).match(/[^01]/g)){
+					valid = false;
+				} else if (newString.charAt(0) == 1 && newString.charAt(1).match(/[^01]/g)) {
+					valid = false;
+				} else if (newString.charAt(1).match(/[^0123456789]/g)) {
+					valid = false;
+				} else if (newString.charAt(2) != "/" || newString.charAt(5) != "/") {
+					valid = false;
+				} else if (newString.charAt(6).match(/[^0123456789]/g) || newString.charAt(7).match(/[^0123456789]/g) || newString.charAt(8).match(/[^0123456789]/g) || newString.charAt(9).match(/[^0123456789]/g)){
+					valid = false;
+				} else if (newString.charAt(0) == 0 && newString.charAt(1) == 2 && newString.charAt(3).match(/[^012]/g)){
+					valid = false;
+				} else if (newString.charAt(3).match(/[^0123]/g)) {
+					valid = false;
+				} else if (newString.charAt(4).match(/[^0123456789]/g)) {
+					valid = false;
+				} else if (days((newString.substring(0, 2), newString.substring(6)) == 28 || days(newString.substring(0, 2), newString.substring(6)) == 29) && newString.charAt(3).match(/[^012]/g)){
+					valid = false;
+				} else if (days(newString.substring(0, 2), newString.substring(6)) == 31 && newString.charAt(3) == 3 && newString.charAt(4).match(/[^01]/g)){
+					valid = false;
+				} else if (days(newString.substring(0, 2), newString.substring(6)) == 30 && newString.charAt(3) == 3 && newString.charAt(4).match(/[^0]/g)){
+					valid = false;
+				} else if (days(newString.substring(0, 2), newString.substring(6)) == 28 && newString.charAt(3) == 2 && newString.charAt(4).match(/[^012345678]/g)){
+					valid = false;
+				}
+			}
+		}
+		if (!valid && deleteString) {
+			let newString = `${text.textContent.substring(0, start - 1)}${text.textContent.substring(end + 1)}`;
+			console.log("\n\n\n\n\n\n\n\n\n");
+			text.innerHTML = newString;
+			textBlock.timeSetter = false;
+			textBlock.atPressed = false;
+		} else {
+			if (dayArray.includes(newString.toLowerCase())) {
+				if (newString.toLowerCase() == "today"){
+					date = new Date();
+				} else if (newString.toLowerCase() == "tomorrow") {
+					date = new Date();
+					date.setDate(date.getDate() + 1);
+				} else {
+					date = getNextDayOfTheWeek(newString);
+				}
+			} else {
+				date = new Date(newString);
+			}
+		}
+	}
+
+	if (textBlock.timeSetter && deleteString) {
+		let start = 1;
+		for (let i = 0; i < text.textContent.length; i++) {
+			if (text.textContent.charCodeAt(i) == 56688) {
+				start = i + 1;
+				break;
+			}
+		}
+		let end = text.textContent.length;
+		if (textBlock.dateSetter) {
 			let dateIndex = 0;
-			for (let i = 0; i < textBlock.textContent.length; i++) {
-				if (textBlock.textContent.charCodeAt(i) == 56517) {
+			for (let i = 0; i < text.textContent.length; i++) {
+				if (text.textContent.charCodeAt(i) == 56517) {
 					dateIndex = i;
 					break;
 				}
@@ -676,8 +728,9 @@ function getDate(textBlock){
 				end = dateIndex;
 			}
 		}
-		let newString = textBlock.textContent.substring(start, end);
+		let newString = text.textContent.substring(start, end);
 		newString = newString.replaceAll(" ", "");
+		console.log(newString);
 		let valid = true;
 		if (newString.length != 5){
 			valid = false;
@@ -696,87 +749,45 @@ function getDate(textBlock){
 				valid = false;
 			}
 		}
-		if (!valid) {
-			let newString = `${textBlock.substring(0, start)}${textBlock.substring(end, textBlock.textContent.length - 1)}`;
-			block.innerHTML = newString;
-			block.timeSetter = false;
-			block.atPressed = false;
+		if (!valid && deleteString) {
+			let newString = `${text.textContent.substring(0, start - 1)}${text.textContent.substring(end + 1)}`;
+			text.innerHTML = newString;
+			textBlock.timeSetter = false;
+			textBlock.atPressed = false;
+		} else {
+			if (date == null) {
+				date = new Date();
+			}
+			date.setHours(newString.substring(0, 2), newString.substring(3));
 		}
 	}
+	return date;
+}
 
-	if (textBlock.dateSetter){
-		let start = 0;
-		for (let i = 0; i < textBlock.textContent.length; i++) {
-			if (textBlock.textContent.charCodeAt(i) == 56517) {
-				start = i;
-				break;
-			}
-		}
-		let end = textBlock.textContent.length - 1;
-		if (this.dateSetter) {
-			let timeIndex = 0;
-			for (let i = 0; i < textBlock.textContent.length; i++) {
-				if (textBlock.textContent.charCodeAt(i) == 56688) {
-					timeIndex = i;
-					break;
-				}
-			}
-			if (timeIndex >= end) {
-				end = timeIndex;
-			}
-		}
-		let newString = textBlock.textContent.substring(start, end);
-		newString = newString.replaceAll(" ", "");
-		let valid = false;
-		let dayArray = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
-		if (dayArray.includes(newString.toLowercase())){
-			valid = true;
-		} else {
-			valid = true;
-			if (newString.length != 8){
-				valid = false;
-			} else {
-				if (newString.charAt(0).match(/[^01]/g)){
-					valid = false;
-				} else if (newString.charAt(0) == 1 && newString.charAt(1).match(/[^01]/g)) {
-					valid = false;
-				} else if (newString.charAt(1).match(/[^0123456789]/g)) {
-					valid = false;
-				} else if (newString.charAt(2).match(/[^/]/g)) {
-					valid = false;
-				} else if (newString.charAt(0) == 0 && newString.charAt(1) == 2 && newString.charAt(3).match(/[^012]/g)){
-					valid = false;
-				} else if (newString.charAt(3).match(/[^0123]/g)) {
-					valid = false;
-				} else if (newString.charAt(0) == 0 && newString.charAt(1) == 2 && newString.charAt(3) == 2 && newString.charAt(4).match(/[^01234567]/g)) {
-					valid = false;
-				}
-			}
-		}
-		if (newString.length != 5){
-			valid = false;
-		} else {
-			if (newString.charAt(0).match(/[^012]/g)) {
-				valid = false;
-			} else if (newString.charAt(0) == 2 && newString.charAt(1).match(/[^0123]/g)) {
-				valid = false;
-			} else if (newString.charAt(1).match(/[^0123456789]/g)) {
-				valid = false;
-			} else if (newString.charAt(2) != ":") {
-				valid = false;
-			} else if (newString.charAt(3).match(/[^012345]/g)) {
-				valid = false;
-			} else if (newString.charAt(4).match(/[^0123456789]/g)){
-				valid = false;
-			}
-		}
-		if (!valid) {
-			let newString = `${textBlock.substring(0, start)}${textBlock.substring(end, textBlock.textContent.length - 1)}`;
-			block.innerHTML = newString;
-			block.timeSetter = false;
-			block.atPressed = false;
-		}
+function isLeapyear(year){
+	return (year % 100 === 0) ? (year % 400 === 0) : (year % 4 === 0);
+}
+
+function days(month, year){
+	if (month == "3" || month == "5" || month == "8" || month == "10" ){
+		return 30;
+	} else if (month == "1" && isLeapyear(year)) {
+		return 29;
+	}  else if (month == "1") {
+		return 28;
+	} else {
+		return 31;
 	}
+}
+
+function getNextDayOfTheWeek(dayName, excludeToday = true, refDate = new Date()) {
+    const dayOfWeek = ["sunday","monday","tuesday","wednesday","thursday","friday","saturday"]
+                      .indexOf(dayName.toLowerCase());
+    if (dayOfWeek < 0) return;
+    refDate.setHours(0,0,0,0);
+    refDate.setDate(refDate.getDate() + +!!excludeToday + 
+                    (dayOfWeek + 7 - refDate.getDay() - +!!excludeToday) % 7);
+    return refDate;
 }
 
 window.customElements.define('text-block', TextBlock);

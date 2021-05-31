@@ -31,23 +31,43 @@ function updateUser(userObject, callback){
 				newTasks.push(block);
 			}
 			let newEvents = [];
-			for(let i = 0; i < userObject.events.lenght; i++){
+			for(let i = 0; i < userObject.events.length; i++){
 				let block = userObject.events[i];
 				block.text = security.encrypt(block.text, userObject.pwd);
 				newEvents.push(block);
 			}
 			let newSignifiers = [];
-			for(let i = 0; i < userObject.signifiers.lenght; i++){
+			for(let i = 0; i < userObject.signifiers.length; i++){
 				let signifier = userObject.signifiers[i];
 				signifier.text = security.encrypt(signifier.meaning, userObject.pwd);
 				newSignifiers.push(signifier);
+			}
+			let newImageBlocks = [];
+			for(let i = 0; i < userObject.imageBlocks.length; i++){
+				let imageBlock = userObject.imageBlocks[i];
+				imageBlock.data = security.encrypt(imageBlock.data, userObject.pwd);
+				newImageBlocks.push(imageBlock);
+			}
+			let newAudioBlocks = [];
+			for(let i = 0; i < userObject.audioBlocks.length; i++){
+				let audioBlock = userObject.audioBlocks[i];
+				audioBlock.data = security.encrypt(audioBlock.data, userObject.pwd);
+				newAudioBlocks.push(audioBlock);
+			}
+			let newTrackers = [];
+			for(let i = 0; i < userObject.trackers.length; i++){
+				let tracker = userObject.trackers[i];
+				tracker.title = security.encrypt(tracker.title, userObject.pwd);
+				newTrackers.push(tracker);
 			}
 			user.email = userObject.email;
 			user.dailyLogs =  userObject.dailyLogs;
 			user.monthlyLogs = userObject.monthlyLogs;
 			user.futureLogs = userObject.futureLogs;
 			user.collections = newCollections;
-			user.trackers = userObject.trackers;
+			user.trackers = newTrackers;
+			user.imageBlocks = newImageBlocks;
+			user.audioBlocks = newAudioBlocks;
 			user.textBlocks = newTextBlocks;
 			user.tasks = newTasks;
 			user.events = newEvents;

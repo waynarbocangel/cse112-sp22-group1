@@ -15,6 +15,7 @@ function createUser (email, pwd, callback) {
 			const newUser = new schema.User({
 				email: email,
 				pwd: security.passHash(pwd),
+				theme: "lightTheme",
 				index: {
 					objectType: "index",
 					contents: []
@@ -24,6 +25,8 @@ function createUser (email, pwd, callback) {
 				futureLogs: [],
 				trackers: [],
 				collections: [],
+				imageBlocks: [],
+				audioBlocks: [],
 				textBlocks: [],
 				events: [],
 				tasks: [],

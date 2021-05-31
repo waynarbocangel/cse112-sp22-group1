@@ -1,9 +1,11 @@
 import {makeid} from "./makeId.js";
+let trackerObject;
 
-export function createTrackerPouch (db, content, parent, callback) {
+export function createTrackerPouch (db, title, content, parent, callback) {
+	console.log('making tracjer');
 	db.get("0000", (err, doc) => {
 		if (err) {
-			callback(err);
+			callback(err, null);
 		} else {
 			let id = makeid();
 			let arrays = [];
@@ -16,17 +18,25 @@ export function createTrackerPouch (db, content, parent, callback) {
 			Array.prototype.push.apply(arrays, doc.tasks);
 			Array.prototype.push.apply(arrays, doc.events);
 			Array.prototype.push.apply(arrays, doc.signifiers);
+			Array.prototype.push.apply(arrays, doc.imageBlocks);
+			Array.prototype.push.apply(arrays, doc.audioBlocks);
 			
 			while(arrays.filter(element => element.id == id).length > 0){
 				id = makeid();
 			}
-			const trackerObject = {
+			trackerObject = {
 				id: id,
 				objectType: "tracker",
+				title: title,
 				content: content,
 				parent: parent
 			};
-
+			console.log(arrays);
+			console.log(parent);
+			let parentObject = arrays.filter(element => element.id == parent);
+			console.log(parentObject);
+			parentObject[0].trackers.push(trackerObject.id);
+			
 			doc.trackers.push(trackerObject);
 			//tracker array of parent should be updated in callback of this funciton
 			return db.put(
@@ -42,8 +52,8 @@ export function createTrackerPouch (db, content, parent, callback) {
 					collections: doc.collections,
 					trackers: doc.trackers,
 					textBlocks: doc.textBlocks,
-					taskBlocks: doc.tasks,
-					eventBlocks: doc.events,
+					tasks: doc.tasks,
+					events: doc.events,
 					signifiers: doc.signifiers
 				}
 			).then((res) => {
@@ -54,6 +64,7 @@ export function createTrackerPouch (db, content, parent, callback) {
 		}
 	}).then((res) => {
 		console.log(res);
+		console.log(trackerObject);
 		callback(null, trackerObject);
 	});
 }

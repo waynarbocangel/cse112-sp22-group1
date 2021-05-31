@@ -137,8 +137,9 @@ export function updateTextBlockPouch (db, textBlock, date, callback) {
 					Array.prototype.push.apply(eventArr, doc.events);
 					let events = eventArr.filter(element => element.id == textBlock.objectReference);
 					let event = events[0];
-					console.log("event is ", doc.events);
+					console.log("event is ", doc);
 					event.title = textBlock.text;
+					event.date = date;
 					localStorage.updateEvent(event, (err) => {
 						if (err) {
 							console.log(err);

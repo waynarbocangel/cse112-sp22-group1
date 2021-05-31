@@ -19,8 +19,8 @@ export function updateMonthlyLogPouch (db, log, callback) {
 				trackers: doc.trackers,
 				collections: doc.collections,
 				textBlocks: doc.textBlocks,
-				eventBlocks: doc.eventBlocks,
-				taskBlocks: doc.taskBlocks,
+				events: doc.eventBlocks,
+				tasks: doc.taskBlocks,
 				signifiers: doc.signifiers
 			}, (err, res) => {
 				if (err) {

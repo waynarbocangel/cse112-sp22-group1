@@ -61,8 +61,8 @@ export function updateUserFromMongo(db, callback){
 						trackers: user.trackers,
 						collections: newCollections,
 						textBlocks: newTextBlocks,
-						eventBlocks: newEventBlocks,
-						taskBlocks: newTaskBlocks,
+						events: newEventBlocks,
+						tasks: newTaskBlocks,
 						signifiers: newSignifiers}, (err, res) => {
 						if (err) {
 							callback(err);
