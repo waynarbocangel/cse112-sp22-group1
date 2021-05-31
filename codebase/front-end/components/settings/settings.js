@@ -1,91 +1,41 @@
-const themeColors = {
-    darkmode: {
-        "--border-color": "#292929",
-        "--content-foreground-color": "#D4D4D4",
-        "--content-background-color": "#2e3030",
-        "--tracker-foreground-color": "#FFFFFF",
-        "--tracker-background-color": "#1e2020",
-        "--tracker-border-color": "#404040",
-        "--navbar-foreground-color": "#FFFFFF",
-        "--navbar-background-color": "#1e2020",
-        "--icon-filter": "invert()",
-    },
+import {ThemePanel} from './themePanel.js';
 
-    lightmode: {
-        "--border-color": "#F2F2F2",
-        "--content-foreground-color": "#000000",
-        "--content-background-color": "#FFFFFF",
-        "--tracker-foreground-color": "#FFFFFF",
-        "--tracker-border-color": "#48486f",
-        "--tracker-background-color": "#2B2D42",
-        "--navbar-foreground-color": "#FFFFFF",
-        "--navbar-background-color": "#F7F2EC",
-        "--icon-filter": "",
-    },
 
-    highcontrast: {
-        "--border-color": "#F2F2F2",
-        "--content-foreground-color": "#FFFFFF",
-        "--content-background-color": "#000000",
-        "--tracker-foreground-color": "#FFFFFF",
-        "--tracker-background-color": "#0000FF",
-        "--tracker-border-color": "#FFFFFF",
-        "--navbar-foreground-color": "#FFFFFF",
-        "--navbar-background-color": "#008F00",
-        "--icon-filter": "invert()",
-    },
+/* Settings Menu
 
-    theme4: {
-        "--border-color": "#F2F2F2",
-        "--content-foreground-color": "#000000",
-        "--content-background-color": "#FFFFFF",
-        "--tracker-foreground-color": "#FFFFFF", //"#9FEDD7",
-        "--tracker-background-color": "#026670",
-        "--tracker-border-color": "#7671B6",
-        "--navbar-foreground-color": "#FEF9C7",
-        "--navbar-background-color": "#FCE181",
-        "--icon-filter": "",
-    },
+    To add a tab to the menu:
+    
+    Add a <settings-tab> with the 'slot' and 'title' attributes set:
 
-    theme5: {
-        "--border-color": "#8E8D8A",
-        "--content-foreground-color": "#000000",
-        "--content-background-color": "#EAE7DC",
+        <settings-tab slot="settings-tab" title="YOUR TITLE">
 
-        "--tracker-foreground-color": "#FFFFFF", //"#9FEDD7",
-        "--tracker-background-color": "#48131A",
-        "--tracker-border-color": "#6F474E",
+            Add an <img> with slot="icon"
+                <img slot="icon" src="public/resources/YOUR_IMG.png">
+        </settings-tab>
 
-        "--navbar-foreground-color": "#000000",
-        "--navbar-background-color": "#D8C3A5",
-        "--icon-filter": "",
-    },
+    Add a <settings-panel> tag right after the <settings-tab>:
 
-    theme6: {
-        "--border-color": "#34375c",
-        "--content-foreground-color": "#AAABB8",
-        "--content-background-color": "#25274D",
-
-        "--tracker-foreground-color": "#AAABB8",
-        "--tracker-background-color": "#283D6C", //283d6c
-        "--tracker-border-color": "#29648A",
-
-        "--navbar-foreground-color": "#000000",
-        "--navbar-background-color": "#464866",
-        "--icon-filter": "invert()",
-    },
-}
-
-/*
-<form id="theme">
-    <input type="radio" name="themeradio" id="darkmode">     <label for="darkmode">Darkmode</label></input><br>
-    <input type="radio" name="themeradio" id="lightmode" checked>    <label for="lightmode">Noobmode</label></input><br>
-    <input type="radio" name="themeradio" id="highcontrast"> <label for="highcontrast">High Contrast</label></input><br>
-    <input type="radio" name="themeradio" id="theme4">       <label for="theme4">Theme 4</label></input><br>
-    <input type="radio" name="themeradio" id="theme5">       <label for="theme5">Theme 5</label></input><br>
-    <input type="radio" name="themeradio" id="theme6">       <label for="theme6">Theme 6</label></input><br>
-</form>
+        <settings-panel slot="settings-panel">
+            
+            Inside this tag, add your web component. See themePanel.js for an example.
+            <your-panel></your-panel>
+        </settings-panel>
 */
+const settingsTemplate = `
+    <settings-tab slot="settings-tab" title="Settings">
+        <img slot="icon" src="public/resources/generalSettingsIcon.png">
+    </settings-tab>
+    <settings-panel slot="settings-panel">
+        Hello
+    </settings-panel>
+
+    <settings-tab slot="settings-tab" title="Theme">
+        <img slot="icon" src="public/resources/palette.png">
+    </settings-tab>
+    <settings-panel slot="settings-panel">
+        <theme-panel></theme-panel>
+    </settings-panel>
+`;
 
 export class SettingsMenu extends HTMLElement {
     static get observedAttributes() {
@@ -95,6 +45,8 @@ export class SettingsMenu extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
+
+        this.outerHTML
         this.shadowRoot.innerHTML = `
             <style>
                 @font-face {
@@ -127,7 +79,7 @@ export class SettingsMenu extends HTMLElement {
 
 
                     border: none;
-                    background-color: rgba(0,0,0,0);
+                    background-color: transparent;
                     cursor: pointer;
                 }
 
@@ -155,7 +107,15 @@ export class SettingsMenu extends HTMLElement {
                 }
 
                 .content {
+                    display: flex;
+                    flex-direction: column;
                     flex: 1;
+                }
+
+                .options {
+                    display: flex;
+                    flex: 1;
+                    overflow-y: auto;
                 }
 
                 h1 {
@@ -166,7 +126,7 @@ export class SettingsMenu extends HTMLElement {
                 .header {
                     display: flex;
                     align-items: center;
-                    height: 75px;
+                    height: 60px;
                     margin-left: 10px;
                     margin-right: 10px;
                     border-bottom: 2px solid var(--border-color);
@@ -176,16 +136,9 @@ export class SettingsMenu extends HTMLElement {
                     background-color: var(--content-background-color);
                 }
                 
-                ::slotted(settings-tab:hover) {
-                    background-color: var(--settings-hover-color);
-                }
-
-                #theme {
-                    margin: 20px;
-                }
-
-                input {
-                    line-height: 18px;
+                ::slotted(settings-panel) {
+                    flex: 1;
+                    overflow-y: auto;
                 }
             </style>
 
@@ -209,11 +162,6 @@ export class SettingsMenu extends HTMLElement {
             </div>
         `;
 
-        let themeRadios = this.shadowRoot.querySelectorAll("input[type=radio]");
-        for (let themeRadio of themeRadios) {
-            themeRadio.addEventListener('change', () => this.updateTheme(themeRadio.id));
-        }
-
         this.shadowRoot.getElementById("close").addEventListener('click', () => { this.hide(); });
 
         this.tabSlot = this.shadowRoot.querySelector('slot[name=settings-tab]');
@@ -229,6 +177,8 @@ export class SettingsMenu extends HTMLElement {
     }
 
     connectedCallback() {
+        this.innerHTML = settingsTemplate;
+
         this.hide();
 
         Promise.all([customElements.whenDefined('settings-tab'), customElements.whenDefined('settings-panel')])
@@ -304,14 +254,6 @@ export class SettingsMenu extends HTMLElement {
         }
     }
 
-    updateTheme(theme) {
-        let root = document.documentElement;
-
-        for (let key in themeColors[theme]) {
-            root.style.setProperty(key, themeColors[theme][key]);
-        }
-    }
-
     get open() {
         return this.hasAttribute('open');
     }
@@ -358,6 +300,13 @@ settingsTabTemplate.innerHTML = `
         pointer-events: none;
         width: 32px;
         height: 32px;
+        opacity: 50%;
+        filter: var(--icon-filter);
+    }
+
+    :host(:hover) ::slotted(img) {
+        opacity: 100%;
+        transition: opacity 150ms;
     }
 </style>
 

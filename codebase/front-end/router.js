@@ -9,9 +9,7 @@ router.setState = function(newState, prev) {
 	getCurrentObject(newState);
 	state = newState;
 	setTimeout(() => {
-		if (trackerMenu.open) {
-			trackerMenu.clear();
-		}
+		trackerMenu.clear();
 		while(document.getElementById("contentWrapper").childNodes.length > 0){
 			document.getElementById("contentWrapper").removeChild(document.getElementById("contentWrapper").childNodes[0]);
 		}
