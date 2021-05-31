@@ -262,6 +262,7 @@ export class PageHeader extends HTMLElement {
 				<span class="search_bar">
 					<input type="text" placeholder="Search">
 					<img src="../public/resources/search_icon.png">
+					<img src="../public/resources/question_mark.png">
 				</span>
 			</div>
 		`;
