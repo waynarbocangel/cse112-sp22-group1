@@ -2,7 +2,7 @@ import * as localStorage from "./localStorage/userOperations.js";
 import { TrackerMenu } from "./components/tracker.js";
 import { NavBar } from "./components/navbar.js";
 import { PageHeader } from "./components/header.js";
-import { SettingsMenu } from "./components/settings.js";
+import { SettingsMenu, SettingsPanel, SettingsTab } from './components/settings.js';
 import { DropdownBlock } from './components/dropdown.js';
 import { router, state } from './router.js';
 import { createEditor } from './components/blockController.js';
@@ -26,6 +26,20 @@ router.setState(document.location.hash, false);
 window.onpopstate = () => {
 	router.setState(document.location.hash, true);
 };
+
+export let settingsMenu = document.createElement('settings-menu');
+let settingsTemplate = document.createElement('template');
+settingsTemplate.innerHTML = `
+<settings-tab slot="settings-tab" title="Settings"><img slot="icon" src="public/resources/generalSettingsIcon.png"></settings-tab>
+<settings-panel slot="settings-panel">Hello</settings-panel>
+
+<settings-tab slot="settings-tab" title="Theme"><img slot="icon" src="public/resources/palette.png"></settings-tab>
+<settings-panel slot="settings-panel">Theme settings</settings-panel>
+`;
+
+settingsMenu.appendChild(settingsTemplate.content.cloneNode(true));
+document.body.appendChild(settingsMenu);
+
 
 export function getCurrentObject(urlFromRouter) {
 	let urlparse = undefined;
