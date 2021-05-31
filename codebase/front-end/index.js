@@ -2,22 +2,22 @@ import * as localStorage from "./localStorage/userOperations.js";
 import { TrackerMenu } from "./components/tracker.js";
 import { NavBar } from "./components/navbar.js";
 import { PageHeader } from "./components/header.js";
+import { SettingsMenu } from "./components/settings.js";
 import { DropdownBlock } from './components/dropdown.js';
 import { router, state } from './router.js';
 import { createEditor } from './components/blockController.js';
 
 document.querySelector("body").style.display = "none";
 
-export let navbar = new NavBar();
-export let header = new PageHeader();
+export let navbar = document.querySelector('nav-bar');
+export let header = document.querySelector('page-header');
+export let trackerMenu = document.querySelector('tracker-menu');
 export let url = "";
 export let pageNumber = 1;
 
 export let currentObject;
 let contentWrapper = document.getElementById("contentWrapper");
 
-document.getElementById("topbar").appendChild(header);
-document.getElementById("sidebar").appendChild(navbar);
 document.getElementById("targetMenu").onclick = () => {
 	navbar.toggleTracker();
 };
@@ -129,7 +129,7 @@ export function setupIndex(header, btn) {
 	navbar.singleMenu.style.visibility = "hidden";
 	navbar.doubleMenu.setAttribute ("disabled", "disabled");
 	navbar.doubleMenu.style.visibility = "hidden";
-	let headerButtons = header.shadowRoot.querySelectorAll(".imgbutton");
+	let headerButtons = header.imgbuttons;
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.add("hide");
 	}
@@ -189,11 +189,12 @@ export function setupFutureLog(header, btn, newState){
 	navbar.singleMenu.style.visibility = "hidden";
 	navbar.doubleMenu.setAttribute ("disabled", "disabled");
 	navbar.doubleMenu.style.visibility = "hidden";
-	let headerButtons = header.shadowRoot.querySelectorAll(".imgbutton");
+	let headerButtons = header.imgbuttons;
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.remove("hide");
 	}
-	document.getElementById("trackerWrapper").appendChild(new TrackerMenu("Future Log Trackers"));
+
+	trackerMenu.title = "Future Log Trackers";
 }
 
 export function setupMonthlyLog(header, btn, newState){
@@ -235,11 +236,12 @@ export function setupMonthlyLog(header, btn, newState){
 	navbar.double.style.visibility = "hidden";
 	navbar.doubleMenu.setAttribute ("disabled", "disabled");
 	navbar.doubleMenu.style.visibility = "hidden";
-	let headerButtons = header.shadowRoot.querySelectorAll(".imgbutton");
+	let headerButtons = header.imgbuttons;
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.remove("hide");
 	}
-	document.getElementById("trackerWrapper").appendChild(new TrackerMenu("Monthly Log Trackers"));
+
+	trackerMenu.title = "Monthly Log Trackers";
 }
 
 export function setupDailyLog(header, btn, newState){
@@ -259,17 +261,18 @@ export function setupDailyLog(header, btn, newState){
 		console.log(success);
 	});
 	document.getElementById("targetMenu").style.display = "block";
-	let headerButtons = header.shadowRoot.querySelectorAll(".imgbutton");
+	let headerButtons = header.imgbuttons;
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.remove("hide");
 	}
-	let tracker = new TrackerMenu("Daily Log Trackers");
+
+	trackerMenu.title = "Daily Log Trackers";
+
 	setTimeout(() => {
-		let trackerContent = tracker.shadowRoot.getElementById('editor');
-		createEditor(trackerContent, tracker, null, (success) => {
+		let trackerContent = trackerMenu.shadowRoot.getElementById('editor');
+		createEditor(trackerContent, trackerMenu,(success) => {
 			console.log(success);
 		});
-		document.getElementById("trackerWrapper").appendChild(tracker);
 	}, 20);
 	
 }
@@ -311,7 +314,7 @@ export function setupCollection(header, btn, newState){
 	navbar.singleMenu.style.visibility = "hidden";
 	navbar.doubleMenu.setAttribute ("disabled", "disabled");
 	navbar.doubleMenu.style.visibility = "hidden";
-	let headerButtons = header.shadowRoot.querySelectorAll(".imgbutton");
+	let headerButtons = header.imgbuttons;
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.remove("hide");
 	}

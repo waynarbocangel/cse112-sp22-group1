@@ -1,6 +1,3 @@
-import * as shadow from "./shadow.js";
-import * as localStorage from "./../localStorage/userOperations.js";
-
 const tabSize = 20;
 const paddingSize = 10;
 
@@ -43,7 +40,6 @@ export class TextBlock extends HTMLElement{
 			this.hashPressed = false;
 			this.timeSetter = false;
 			this.dateSetter = false;
-			this.setupTabLevel();
 			callback(true);
 		})
         

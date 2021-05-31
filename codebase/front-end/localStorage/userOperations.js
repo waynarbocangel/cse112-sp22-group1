@@ -31,6 +31,7 @@ import {updateSignifierPouch} from "./updateFiles/updateSignifier.js";
 
 export let db = new PouchDB("Users");
 
+
 export function deleteDB(){
     db.destroy( (err, res) => {
 		if (err) {
@@ -218,12 +219,16 @@ export function deleteTrackerFromContainer(container, index, callback){
 }
 
 //-------------------------------Update Functions----------------------------------
-export function updateUser(callback){
-	updateUserPouch(db, callback);
+export function updateUser(){
+	updateUserPouch(db, (user) => {
+		return res.send(user);
+	});
 }
 
-export function updateUserOnline(callback){
-	updateUserFromMongo(db, callback);
+export function updateUserOnline(){
+	updateUserFromMongo(db, (user) => {
+		return res.send(user);
+	});
 }
 
 export function updateDailyLog(dailyLog, callback) {
