@@ -1,4 +1,4 @@
-import * as block from "../components/block.js"
+import * as block from "../components/navbar.js"
 
 describe('Basic user flow for SPA ', () => {
     
@@ -7,6 +7,7 @@ describe('Basic user flow for SPA ', () => {
       await page.waitForTimeout(500);
     });
 
+    
 
 
 
