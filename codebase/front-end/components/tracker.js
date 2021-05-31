@@ -8,6 +8,7 @@ export class TrackerMenu extends HTMLElement {
         super();
 		this.attachShadow({ mode: 'open' });
         this.close = this.close.bind(this);
+        this.clear = this.clear.bind(this);
 		this.shadowRoot.innerHTML = `
         <style>
 			@font-face {
@@ -15,118 +16,81 @@ export class TrackerMenu extends HTMLElement {
 				src: url("./public/fonts/SF-Pro.ttf");
 			}
             .wrapper {
+                display: flex;
+                flex-direction: column;
                 position: fixed;
-                z-index: 1000;
+                z-index: 5;
                 top: 0;
-                width: 35vw;
-				padding-left: 20px;
-				padding-right: 20px;
+                width: 40vw;
                 height: 100vh;
-				background-color: #2B2D42;
+				background-color: var(--tracker-background-color); /* #2B2D42 */
+                color: var(--tracker-foreground-color);
                 font-family: "SF-Pro";
-                transform: translate3d(135vw, 0, 0);
-                transition: transform .4s ease-in-out /*cubic-bezier(0, .52, 0, 1);*/
             }
 
-			.noteContainer{
-				margin-top: 7px;
-				margin-bottom: 7px;
-				margin-left: 20px;
-				display: list-item;
-				list-style-type: circle;
-				list-style-position: outside;
-			}
-                        
-            .wrapper.open {
-                transform: translate3d(calc(65vw - 39px), 0, 0);
+            .wrapper.closed {
+                transform: translate3d(140vw, 0, 0);
                 transition: transform .4s ease-in-out /*cubic-bezier(0, .52, 0, 1);*/
             }
-            
-            #tracker_menu {
-                background-color: #2B2D42;
-                color: white;
-                opacity: 95%;
-				padding-left: 0;
-				padding-right: 0;
-                width: 35vw;
+                        
+            .wrapper.open {
+                transform: translate3d(60vw, 0, 0);
+                transition: transform .4s ease-in-out /*cubic-bezier(0, .52, 0, 1);*/
             }
             
             .tracker_header {
-                top: 0;
-				right: 10px;
-				margin-bottom: 15px;
-                background-color: #2B2D42;
-                color: white;
-                opacity: 95%;
-				border-bottom: solid rgba(157, 148, 241, 0.7);
-            }
-            
-            .tracker_header_content {
-                position: relative;
-            }
-            
-            .tracker_header .close_button {
-				display: inline-block;
-                margin-top: 25px;
-				vertical-align: top;
-                margin-left: 0;
-                line-height: 16px;
-            }
-            
-            #trackerTitleWrapper {
-                display: inline-block;
-				left: 20px;
-				position: relative;
-				width: calc(100% - 90px);
-				right: 10px;
-            }
+                display: flex;
+                justify-content: flex-start;
 
-			#trackerTitleWrapper h1{
+                margin: 0 20px;
+                height: 75px;
+				border-bottom: solid var(--tracker-border-color); /*rgba(157, 148, 241, 0.7);*/
+            }
+            
+            .tracker_header h1 {
                 text-align: center;
-				margin: 20px auto 10px;
+                flex: 1;
                 font-size: 24pt;
-				line-height: 30pt;
 			}
-            
-            .tracker_header .close_button img {
-                filter: invert() opacity(50%);
-				width: 15px;
-            }
-            
-            .tracker_header .close_button img:hover {
-                filter: invert() opacity(100%);
-            }
 
             button {
+                margin: 0;
                 border: none;
                 background-color: rgba(0,0,0,0);
             }
-            
-            button.imgbutton img {
-                filter: opacity(50%);
+
+            .close_button img {
+                filter: invert();
+                opacity: 50%;
+				width: 15px;
             }
             
-            button.imgbutton:hover img {
-                filter: opacity(100%);
-                transition: 150ms;
+            .close_button:hover img {
+                opacity: 100%;
+            }
+
+            .tracker_menu {
+                overflow-y: auto;
+            }
+            
+            #editor {
+                margin: 20px 20px 0px;
             }
         </style>
 
-        <div class="wrapper">
+        <div class="wrapper closed">
             <div class="tracker_header">
-                <div class="tracker_header_content">
                     <button class="close_button"> <img src="../public/resources/right-chevron.png"> </button>
-					<div id="trackerTitleWrapper">
-                    	<h1 class="tracker_h1">Future Log Tracker</h1>
-					</div>
-                </div>
+                    <h1 class="tracker_h1">Future Log Tracker</h1>
             </div>
-            <div id="tracker_menu"><div id="editor"></div></div>
+
+            <div class="tracker_menu"><div id="editor"></div></div>
         </div>
         `;
 
         this.title = title;
         this.closeButton = this.shadowRoot.querySelector(".close_button");
+        this.editor = this.shadowRoot.getElementById("editor");
     }
 
     attributeChangedCallback(attr, oldVal, newVal) {
@@ -139,9 +103,6 @@ export class TrackerMenu extends HTMLElement {
         this.closeButton.addEventListener("click", this.close);
     }
 
-    disconnectedCallback() {
-    }
-
     toggle() {
         this.open = !this.open;
     }
@@ -152,9 +113,10 @@ export class TrackerMenu extends HTMLElement {
 
     set open(isOpen) {
         this.shadowRoot.querySelector('.wrapper').classList.toggle('open', isOpen);
+        this.shadowRoot.querySelector('.wrapper').classList.toggle('closed', !isOpen);
         this.shadowRoot.querySelector('.wrapper').setAttribute('aria-hidden', !isOpen)
         if (isOpen) {
-            this.setAttribute('open', '');
+            this.setAttribute('open', 'true');
             this.focus();
         } else {
             this.removeAttribute('open');
@@ -165,16 +127,15 @@ export class TrackerMenu extends HTMLElement {
         this.shadowRoot.querySelector(".tracker_header h1").innerText = text;
     }
 
-    set content(placeholder) {
-
-    }
-
-    appendBlock() {
-        
-    }
-
     close() {
         this.open = false;
+    }
+
+    clear() {
+        this.close();
+        for (let child of this.editor.children) {
+            child.remove();
+        }
     }
 }
 
