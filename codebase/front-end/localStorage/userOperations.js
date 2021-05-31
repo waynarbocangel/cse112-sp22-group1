@@ -64,6 +64,8 @@ export function loginUser(email, pwd, callback){
 	});
 }
 
+
+//----------------creation functions-----------------------------
 export function createUser(email, pwd, callback){
     fetch(`http://localhost:3000/createUser`, {
 		headers:{
@@ -143,6 +145,8 @@ export function readUser(callback){
 	});
 }
 
+
+//------------------------------deletion functions-----------------------------
 export function deleteUser(){
 	deleteUserPouch(db, (user) => {
 		return res.send(user);

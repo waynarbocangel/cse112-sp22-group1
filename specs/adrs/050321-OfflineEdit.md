@@ -1,7 +1,9 @@
 # Offline User Edit Conflict Resolution
 
 Deciders: Carlos Guerrero, Liu He, Trisa Leung, Samuel Reda, Thomas Fischer
+
 Last Updated: May 3, 2021 1:21 AM
+
 State: Resolved
 
 # May 2, 2021
