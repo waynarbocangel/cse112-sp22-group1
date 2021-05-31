@@ -82,7 +82,7 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 											newContents.content.splice(index, 0, id);
 										}
 									}
-
+									
 									user.textBlocks.push(textBlockObject);
 
 									return db.put(
@@ -113,7 +113,7 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 					})
 				} else if (kind = "event") {
 					//index == null for now just for testing
-					localStorage.createEvent(null, id, date, null, (err, event) => {
+					localStorage.createEvent(content, id, date, null, (err, event) => {
 						if (err) {
 							callback(err, null);
 						} else {

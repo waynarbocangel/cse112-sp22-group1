@@ -94,8 +94,8 @@ export function createDailyLog(parent, content, trackers, date, callback){
 	});
 }
 
-export function createEvent(index, parent, date, signifier, callback) {
-	createEventPouch(db, index, parent, date, signifier, (error, event) => {
+export function createEvent(/*index,*/ title, parent, date, signifier, callback) {
+	createEventPouch(db, /*index,*/title, parent, date, signifier, (error, event) => {
 		callback(error, event);
 	})
 }
@@ -118,8 +118,8 @@ export function createSignifier(meaning, symbol, callback) {
 	})
 }
 
-export function createTask(parent, text, complete, signifier, callback) {
-	createTaskPouch(db, parent, text, complete, signifier, (error, task) => {
+export function createTask(/*index,*/ parent, text, complete, signifier, callback) {
+	createTaskPouch(db, /*index,*/ parent, text, complete, signifier, (error, task) => {
 		callback(error, task);
 	})
 }
@@ -350,28 +350,28 @@ export function updateTaskByID(id, callback){
 	});
 }
 
-export function updateTextBlock(block, callback){
-	updateTextBlockPouch(db, block, callback);
+export function updateTextBlock(block, date, callback){
+	updateTextBlockPouch(db, block, date, callback);
 }
 
-export function updateTextBlockByID(id, callback){
+export function updateTextBlockByID(id, date, callback){
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
 			const text = doc.userObject.textBlocks.filter(element => element.id == id);
-			updateTextBlockPouch(db, text[0], callback);	
+			updateTextBlockPouch(db, text[0], date, callback);	
 		}
 	});
 }
 
-export function updateTextBlockFromContainer(container, index, callback){
+export function updateTextBlockFromContainer(container, index, date, callback){
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
 			const text = doc.userObject.textBlocks.filter(element => element.id == container.content[index]);
-			updateTextBlockPouch(db, text[0], callback);		
+			updateTextBlockPouch(db, text[0], date, callback);		
 		}
 	});
 }

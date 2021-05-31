@@ -1,14 +1,17 @@
 import * as localStorage from "../userOperations.js";
 
 export function deleteTextBlockPouch(db, id, callback) {
+	console.log("delete textblock is being deleted");
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
 			const textBlockArr = doc.textBlocks.filter(textBlock => textBlock.id == id);
 			let block = null;
+			console.log("textblockArr is ", textBlockArr);
 			if (textBlockArr.length > 0) {
 				block = textBlockArr[0];
+
 				if(block.kind == "task"){
 					localStorage.deleteTaskByID(block.objectReference, (error) => {
 						if (!error){
@@ -18,10 +21,12 @@ export function deleteTextBlockPouch(db, id, callback) {
 						}
 					});
 				} else if (block.kind == "event"){
+					console.log("delteeevntbyID");
 					localStorage.deleteEventByID(block.objectReference, (error) => {
 						if (!error){
 							deleteBlock(db, block, id, callback);
 						} else {
+							console.log(error);
 							callback(error);
 						}
 					})
@@ -72,7 +77,7 @@ function deleteBlock(db, block, id, callback){
 			
 			user.textBlocks = newTextBlocks;
 			
-			db.put(
+			return db.put(
 				{
 					_id: "0000",
 					_rev: user._rev,
@@ -89,8 +94,14 @@ function deleteBlock(db, block, id, callback){
 					events: user.events,
 					signifiers: user.signifiers
 				}
-			).then(res => {callback(null)}).catch(err => {callback(err)});
+			).then(res => {
+				console.log(res);
+				callback(null);
+			}).catch(err => {
+				console.log(err);
+				callback(err)});
 		} else {
+			console.log(err);
 			callback(err);
 		}
 	});

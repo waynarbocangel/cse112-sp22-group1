@@ -5,7 +5,6 @@ export function createTrackerPouch (db, content, parent, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			console.log(doc);
 			let id = makeid();
 			let arrays = [];
 			Array.prototype.push.apply(arrays, doc.dailyLogs);
@@ -29,7 +28,7 @@ export function createTrackerPouch (db, content, parent, callback) {
 			};
 
 			doc.trackers.push(trackerObject);
-
+			//tracker array of parent should be updated in callback of this funciton
 			return db.put(
 				{
 					_id: "0000",
@@ -47,7 +46,14 @@ export function createTrackerPouch (db, content, parent, callback) {
 					eventBlocks: doc.events,
 					signifiers: doc.signifiers
 				}
-			);
+			).then((res) => {
+			}).catch((err) => {
+				console.log(err);
+				callback(err, null);
+			});
 		}
+	}).then((res) => {
+		console.log(res);
+		callback(null, trackerObject);
 	});
 }

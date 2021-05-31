@@ -1,6 +1,5 @@
-import { text } from "express";
-import * as localStorage from "./../localStorage/userOperations.js";
 import * as shadow from "./shadow.js";
+import * as localStorage from "../localStorage/userOperations.js";
 
 const tabSize = 20;
 const paddingSize = 10;
@@ -350,25 +349,29 @@ export class TextBlock extends HTMLElement {
 			e.preventDefault();
 		};
 
+		
 		textBlock.onblur = () => {
 			this.editorIcons.classList.remove("focusedIcons");
 			textBlock.classList.remove("eventNodateFocused");
 			this.editorIcons.classList.add("unfocusedIcons");
-
+			console.log("item is ",this.item);
 			if(this.kind == "event"){
 
 			}
-
-			if (this.item != null) {
-				console.log("hello my very old friend");
-				if (textBlock.textContent != "") {
+			if(this.item != null){
+				if (textBlock.textContent != "" ) {
+					console.log("hello my very old friend " + textBlock.textContent);
 					this.item.kind = this.kind;
 					this.item.text = textBlock.textContent;
-
-					localStorage.updateTextBlock(this.item, (res) => {
-						console.log(res);
-					})
+					let date = null;
+					setTimeout( () => {
+						localStorage.updateTextBlock(this.item, date, (res) => {
+							console.log(res);
+						})
+					}, 150);
 				} else {
+					console.log("goodbye my very old friend " + textBlock.textContent);
+
 					localStorage.deleteTextBlock(this.item, (res) => {
 						console.log(res);
 					})

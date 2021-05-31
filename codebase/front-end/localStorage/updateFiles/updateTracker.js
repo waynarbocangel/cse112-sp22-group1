@@ -7,7 +7,7 @@ export function updateTrackerPouch (db, tracker, callback) {
 			let trackerArr = doc.trackers.filter(element => element.id != tracker.id);
 			trackerArr.push(tracker);
 
-			db.put({_id: "0000", 
+			return db.put({_id: "0000", 
 				_rev: doc._rev, 
 				email: doc.email,
 				pwd: doc.email,
