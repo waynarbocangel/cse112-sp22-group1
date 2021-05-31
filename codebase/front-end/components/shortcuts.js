@@ -74,6 +74,14 @@ export class ShortcutPage extends HTMLElement {
             .tracker_menu {
                 overflow-y: auto;
             }
+
+            .page_img {
+                float: left;
+            }
+
+            .page_nav_info {
+                padding: 2%;
+            }
         </style>
         <div class="wrapper closed">
         <div class="tracker_header">
@@ -83,12 +91,28 @@ export class ShortcutPage extends HTMLElement {
         <div>
             <h2 class="help_nav">Page navigation</h2>
             <ul>
+                <li class="page_nav_info">
+                    <img src="../public/resources/home_icon" class="page_img" />
+                    <span class="page_text">
+                        return home
+                    </span>
+                </li>
             </ul>
         </div>
 
         <div>
             <h2 class="help_nav">Text editor</h2>
             <ul>
+                <li><strong>#, /h1</strong> header 1</li>
+                <li><strong>##, /h2</strong> header 2</li>
+                <li><strong>###, /h3</strong> header 2</li>
+                <li><strong>/note, -</strong> creates a bullet point</li>
+                <li><strong>/event</strong> creates an event, includes space for time and date; can be clicked to cross out</li>
+                <li><strong>/task </strong> creates a task with a checkbox</li>
+                <li><strong>/futurelog </strong> creates a new future log</li>
+                <li><strong>/monthlylog</strong> creates a new monthly log</li>
+                <li><strong>/dailylog</strong> creates a new dailylog</li>
+                <li><strong>/collection</strong> creates a nrew collection</li>
             </ul>
         </div>
     </div>
@@ -96,4 +120,40 @@ export class ShortcutPage extends HTMLElement {
 
     this.closeButton = this.shadowRoot.querySelector(".close_button");
     }
+
+    attributeChangedCallback(attr, oldVal, newVal) {
+        if (oldVal !== newVal) {
+            this[attr] = this.hasAttribute(attr);
+        }
+    }
+
+    connectedCallback() {
+        this.closeButton.addEventListener("click", this.close);
+    }
+
+    toggle() {
+        this.open = !this.open;
+    }
+
+    get open() {
+        return this.hasAttribute('open');
+    }
+
+    set open(isOpen) {
+        this.shadowRoot.querySelector('.wrapper').classList.toggle('open', isOpen);
+        this.shadowRoot.querySelector('.wrapper').classList.toggle('closed', !isOpen);
+        this.shadowRoot.querySelector('.wrapper').setAttribute('aria-hidden', !isOpen)
+        if (isOpen) {
+            this.setAttribute('open', 'true');
+            this.focus();
+        } else {
+            this.removeAttribute('open');
+        }
+    }
+
+    close() {
+        this.open = false;
+    }
 }
+
+customElements.define('shortcuts', ShortcutPage);
