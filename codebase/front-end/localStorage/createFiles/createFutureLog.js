@@ -109,7 +109,7 @@ function addMonth(startDate, endDate, futureLog, callback){
 					newStartDate = new Date(newStartDate.getFullYear(), newStartDate.getMonth() + 1, 0);
 				}
 				addMonth(newStartDate, endDate, futureLog, (monthsIDArray) => {
-					monthsIDArray.splice(0, 0, month.id);
+					monthsIDArray.splice(0, 0, {id: month.id, content: [], monthlyLog: month.id});
 					callback(monthsIDArray);
 				});
 			}

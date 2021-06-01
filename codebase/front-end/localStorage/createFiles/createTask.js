@@ -1,4 +1,5 @@
 import {makeid} from "./makeId.js";
+let taskObject;
 
 export function createTaskPouch (db, parent, text, complete, signifier, callback) {
 	db.get("0000", (err, doc) => {
@@ -21,10 +22,9 @@ export function createTaskPouch (db, parent, text, complete, signifier, callback
 			while(arrays.filter((element) => element.id == id).length > 0){
 				id = makeid();
 			}
-			const taskObject = {
+			taskObject = {
 				id: id,
 				objectType: "task",
-				tabLevel: 0,
 				parent: parent,
 				text: text,
 				complete: complete,
@@ -32,7 +32,7 @@ export function createTaskPouch (db, parent, text, complete, signifier, callback
 			};
 
 
-			let userArr = [];
+			/*let userArr = [];
 			Array.prototype.push.apply(userArr, doc.dailyLogs);
 			Array.prototype.push.apply(userArr, doc.monthlyLogs);
 			Array.prototype.push.apply(userArr, doc.futureLogs);
@@ -45,7 +45,8 @@ export function createTaskPouch (db, parent, text, complete, signifier, callback
 				parentArr[0].contents.push(id);
 			} else {
 				parentArr[0].contents.splice(index, 0, id);
-			}
+			}*/
+			
 			doc.tasks.push(taskObject);
 				
 			return db.put(
@@ -65,9 +66,14 @@ export function createTaskPouch (db, parent, text, complete, signifier, callback
 					events: doc.events,
 					signifiers: doc.signifiers
 				}
-			);
+			).then((res) => {
+			}).catch((err) => {
+				console.log(err);
+				callback(err, null);
+			});
 		}
 	}).then((res) => {
+		console.log(res);
 		callback(null, taskObject);
 	});
 }

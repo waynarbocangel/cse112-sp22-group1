@@ -10,16 +10,11 @@ export function deleteTaskPouch(db, id, index, callback) {
 			}
 
 			let userArr = [];
-					Array.prototype.push.apply(userArr, doc.dailyLogs);
-					Array.prototype.push.apply(userArr, doc.monthlyLogs);
-					Array.prototype.push.apply(userArr, doc.futureLogs);
-					Array.prototype.push.apply(userArr, doc.trackers);
-					Array.prototype.push.apply(userArr, doc.collections);
-
-			let parentArr = userArr.filter(object => object.id == parent);
-			
-			const parent = parentArr[0];
-			const newContents = parent.contents.filter(obj => obj != id);
+			Array.prototype.push.apply(userArr, doc.dailyLogs);
+			Array.prototype.push.apply(userArr, doc.monthlyLogs);
+			Array.prototype.push.apply(userArr, doc.futureLogs);
+			Array.prototype.push.apply(userArr, doc.trackers);
+			Array.prototype.push.apply(userArr, doc.collections);
 
 			const newTasks = doc.tasks.filter(task => task.id != id);
 			

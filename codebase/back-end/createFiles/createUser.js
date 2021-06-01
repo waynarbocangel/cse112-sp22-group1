@@ -1,7 +1,8 @@
 require("dotenv").config();
-const mongoose = require("mongoose");
-const security = require(__dirname + "/../security/securityFunctions.js");
-const schema = require(__dirname + "/../schema.js");
+var mongoose = require("mongoose");
+var security = require(__dirname + "/../security/securityFunctions.js");
+var schema = require(__dirname + "/../schema.js");
+var newUser;
 
 
 mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
@@ -11,8 +12,10 @@ function createUser (email, pwd, callback) {
 	schema.User.findOne({email: email}, (error, user) => {
 		if (error){
 			callback(error);
-		} else if (user == null) {
-			const newUser = new schema.User({
+		} 
+		// Create a new user
+		else if (user == null) {
+			newUser = new schema.User({
 				email: email,
 				pwd: security.passHash(pwd),
 				index: {
@@ -29,7 +32,7 @@ function createUser (email, pwd, callback) {
 				tasks: [],
 				signifiers: []
 			});
-	
+			
 			newUser.save((err, user) => {
 				if (err) {
 					callback(err);
@@ -37,14 +40,13 @@ function createUser (email, pwd, callback) {
 					callback(user);
 				}
 			});
-		} else {
+		} 
+		// Email already has account
+		else {
 			callback({error: "This email already has an account!"});
 		}
 	});
 }
-
-//createUser('abc', '123', (response) =>{console.log(response)} );
-
 
 module.exports = {
 	createUser: createUser

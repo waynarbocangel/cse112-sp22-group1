@@ -31,6 +31,7 @@ import {updateSignifierPouch} from "./updateFiles/updateSignifier.js";
 
 export let db = new PouchDB("Users");
 
+
 export function deleteDB(){
     db.destroy( (err, res) => {
 		if (err) {
@@ -64,6 +65,8 @@ export function loginUser(email, pwd, callback){
 	});
 }
 
+
+//----------------creation functions-----------------------------
 export function createUser(email, pwd, callback){
     fetch(`http://localhost:3000/createUser`, {
 		headers:{
@@ -94,8 +97,8 @@ export function createDailyLog(parent, content, trackers, date, callback){
 	});
 }
 
-export function createEvent(parent, date, signifier, callback) {
-	createEventPouch(db, parent, date, signifier, (error, event) => {
+export function createEvent(index, parent, date, signifier, callback) {
+	createEventPouch(db, index, parent, date, signifier, (error, event) => {
 		callback(error, event);
 	})
 }
@@ -124,8 +127,8 @@ export function createTask(parent, text, complete, signifier, callback) {
 	})
 }
 
-export function createTextBlock(parent, index, content, tabLevel, kind, signifier, date, callback){
-	createTextBlockPouch(db, parent, index, content, tabLevel, kind, signifier, (error, textBlock) => {
+export function createTextBlock(parent, subParent, index, content, tabLevel, kind, objectReference, signifier, date, callback){
+	createTextBlockPouch(db, parent, subParent, index, content, tabLevel, kind, objectReference, signifier, date, (error, textBlock) => {
 		callback(error, textBlock);
 	});
 }
@@ -138,10 +141,13 @@ export function createTracker(content, parent, callback) {
 
 export function readUser(callback){
 	readUserPouch(db, (err, user) => {
+		//console.log("user is ", user);
 		callback(err, user);
 	});
 }
 
+
+//------------------------------deletion functions-----------------------------
 export function deleteUser(){
 	deleteUserPouch(db, (user) => {
 		return res.send(user);
@@ -226,9 +232,7 @@ export function updateUserOnline(){
 }
 
 export function updateDailyLog(dailyLog, callback) {
-	updateDailyLogPouch(dailyLog, (user) => {
-		return res.send(user);
-	})
+	updateDailyLogPouch(dailyLog, callback);
 }
 
 export function updateDailyLogByID (id, callback){

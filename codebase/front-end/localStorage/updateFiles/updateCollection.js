@@ -11,8 +11,8 @@ export function updateCollectionPouch (db, collection, callback) {
 				} else {
 					callback(res);
 				}
-			});*/
-			doc.collections = collectionArr;
+			}
+
 			return db.put(
 				{
 					_id: "0000",

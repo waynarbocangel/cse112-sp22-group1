@@ -17,7 +17,7 @@ app.get("/testers", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-	res.sendFile(__dirname + "index.html");
+	res.sendFile(__dirname + "/index.html");
 });
 
 app.get("/success", (req, res) => {
