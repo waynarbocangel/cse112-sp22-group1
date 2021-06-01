@@ -81,7 +81,7 @@ export class PageHeader extends HTMLElement {
 					margin: 15px auto 15px 10px;
 					padding: 0 5px;
 					border-radius: 5px;
-					border-color: var(--content-foreground-color); /*rgba(0, 0, 0, 0.1);*/
+					border-color: var(--border-color); /*rgba(0, 0, 0, 0.1);*/
 					border-width: 2px;
 					border-style: solid;
 					opacity: 60%;
