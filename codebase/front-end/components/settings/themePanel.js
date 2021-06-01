@@ -63,15 +63,17 @@ const themeColors = {
 
     theme6: {
         "--border-color": "#34375c",
-        "--content-foreground-color": "#AAABB8",
-        "--content-background-color": "#25274D",
-
-        "--tracker-foreground-color": "#AAABB8",
-        "--tracker-background-color": "#283D6C", //283d6c
-        "--tracker-border-color": "#29648A",
-
+        "--content-foreground-color": "#E3E3E8",
+        "--content-background-color": "#1A1A3D",
+        "--tracker-foreground-color": "#E3E3E8",
+        "--tracker-background-color": "#25274D",
+        "--tracker-border-color": "#464866",
         "--navbar-foreground-color": "#000000",
-        "--navbar-background-color": "#464866",
+        "--navbar-background-color": "#25274D",
+
+        /* TODO: change placeholder text colors in other themes */
+        "--content-placeholder-color": "#505b84",
+
         "--icon-filter": "invert()",
     },
 }
@@ -89,7 +91,6 @@ export class ThemePanel extends HTMLElement {
 
             :host {
                 display: block;
-                margin: 20px;
                 font-family: "SF-Pro";
             }
 

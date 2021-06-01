@@ -15,61 +15,45 @@ export class TrackerMenu extends HTMLElement {
         this.clear = this.clear.bind(this);
 		this.shadowRoot.innerHTML = `
         <style>
-			@font-face {
-				font-family:"SF-Pro";
-				src: url("./public/fonts/SF-Pro.ttf");
-			}
             .wrapper {
                 display: flex;
                 flex-direction: column;
                 position: fixed;
-                z-index: 5;
                 top: 0;
-                width: 500px;
-				padding-left: 20px;
-				padding-right: 20px;
+                right: 0;
+                z-index: 5;
+                width: 40%;
+                min-width: 40ch;
                 height: 100vh;
-				background-color: var(--tracker-background-color); /* #2B2D42 */
+                background-color: var(--tracker-background-color); /* #2B2D42 */
                 color: var(--tracker-foreground-color);
                 font-family: "SF-Pro";
-                transform: translate3d(calc(100vw + 540px), 0, 0);
-                transition: transform .4s ease-in-out;
+                transition: transform .4s ease-in-out
             }
 
             .wrapper.closed {
-                transform: translate3d(calc(100vw + 540px), 0, 0);
-                transition: transform .4s ease-in-out /*cubic-bezier(0, .52, 0, 1);*/
+                transform: translate3d(100%, 0, 0);
             }
                         
             .wrapper.open {
-                transform: translate3d(calc(100vw - 540px), 0, 0);
-                transition: transform .4s ease-in-out /*cubic-bezier(0, .52, 0, 1);*/
+                transform: translate3d(0, 0, 0);
             }
-            
-            #tracker_menu {
-                background-color: #2B2D42;
-                color: white;
-                opacity: 95%;
-				padding-left: 0;
-				padding-right: 0;
-                width: 100%;
-            }
-            
+
             .tracker_header {
                 display: flex;
                 justify-content: flex-start;
 
                 margin: 0 20px;
+                padding: 0 20px;
                 height: 75px;
-				border-bottom: 2px solid var(--tracker-border-color); /*rgba(157, 148, 241, 0.7);*/
+                border-bottom: 2px solid var(--tracker-border-color); /*rgba(157, 148, 241, 0.7);*/
             }
             
             .tracker_header h1 {
                 text-align: center;
                 flex: 1;
                 font-size: 24pt;
-				paddign-right: 27px;
-			}
+            }
 
             button {
                 margin: 0;
@@ -80,7 +64,7 @@ export class TrackerMenu extends HTMLElement {
             .close_button img {
                 filter: invert();
                 opacity: 50%;
-				width: 15px;
+                width: 15px;
             }
             
             .close_button:hover img {
@@ -95,19 +79,12 @@ export class TrackerMenu extends HTMLElement {
                 margin: 20px 20px 0px;
             }
 
-			@media screen and (max-width: 900px) {
-				.wrapper{
-					width: calc(100% - 40px);
-					transform: translate3d(calc(200vw), 0, 0);
-					transition: transform .4s ease-in-out;
-				}
-
-				.wrapper.open{
-					transform: translate3d(0, 0, 0);
-					transition: transform .4s ease-in-out;
-				}
-			}
-        </style>
+            @media screen and (max-width: 900px) {
+                .wrapper{
+                    width: 100%;
+                }
+            }
+            </style>
 
         <div class="wrapper closed">
             <div class="tracker_header">
@@ -145,6 +122,7 @@ export class TrackerMenu extends HTMLElement {
 
     set open(isOpen) {
         this.shadowRoot.querySelector('.wrapper').classList.toggle('open', isOpen);
+        this.shadowRoot.querySelector('.wrapper').classList.toggle('closed', !isOpen);
         this.shadowRoot.querySelector('.wrapper').setAttribute('aria-hidden', !isOpen);
         if (isOpen) {
             this.setAttribute('open', 'true');

@@ -1,4 +1,5 @@
 import {ThemePanel} from './themePanel.js';
+import {GeneralSettingsPanel} from './generalSettingsPanel.js';
 
 
 /* Settings Menu
@@ -26,7 +27,7 @@ const settingsTemplate = `
         <img slot="icon" src="public/resources/generalSettingsIcon.png">
     </settings-tab>
     <settings-panel slot="settings-panel">
-        Hello
+        <general-settings-panel>
     </settings-panel>
 
     <settings-tab slot="settings-tab" title="Theme">
@@ -118,6 +119,7 @@ export class SettingsMenu extends HTMLElement {
                     display: flex;
                     flex: 1;
                     overflow-y: auto;
+                    padding: 20px;
                 }
 
                 h1 {
@@ -187,7 +189,6 @@ export class SettingsMenu extends HTMLElement {
             .then(() => this.linkPanels());
 
         this.addEventListener('click', event => {
-            console.log('clicked');
             if (event.target.getAttribute('role') !== 'tab') {
                 return;
             }
