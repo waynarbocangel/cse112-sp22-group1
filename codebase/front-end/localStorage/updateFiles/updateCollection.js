@@ -12,7 +12,7 @@ export function updateCollectionPouch (db, collection, callback) {
 					callback(res);
 				}
 			}
-
+*/
 			return db.put(
 				{
 					_id: "0000",

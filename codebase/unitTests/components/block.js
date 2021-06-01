@@ -1,3 +1,4 @@
+global.fetch = require('node-fetch');
 const tabSize = 20;
 const paddingSize = 10;
 
