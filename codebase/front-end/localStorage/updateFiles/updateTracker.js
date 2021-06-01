@@ -10,7 +10,7 @@ export function updateTrackerPouch (db, tracker, callback) {
 			return db.put({_id: "0000", 
 				_rev: doc._rev, 
 				email: doc.email,
-				pwd: doc.email,
+				pwd: doc.pwd,
 				theme: doc.email,
 				index: doc.index,
 				dailyLogs: doc.dailyLogs,

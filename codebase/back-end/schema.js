@@ -6,7 +6,7 @@ mongoose.set("useCreateIndex", true);
 const userSchema = {
 	email: String,
 	pwd: String,
-	currentTheme: String,
+	theme: String,
 	index: {
 		objectType: String,
 		contents: [String]

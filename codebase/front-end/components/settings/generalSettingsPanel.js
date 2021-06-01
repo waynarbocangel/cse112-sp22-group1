@@ -1,3 +1,4 @@
+import * as localStorage from "../../localStorage/userOperations.js";
 export class GeneralSettingsPanel extends HTMLElement {
     constructor() {
         super();
@@ -44,7 +45,24 @@ export class GeneralSettingsPanel extends HTMLElement {
         for (let themeRadio of themeRadios) {
             themeRadio.addEventListener('change', () => this.updateTheme(themeRadio.id));
         }
+
+		this.logoutButton = this.shadowRoot.getElementById("logout");
+
     }
+
+	connectedCallback(){
+		this.logoutButton.onclick = () => {
+			if(!navigator.onLine){
+				if(confirm("You're logging out while offline, all your local changes will be deleted if you continue!")){
+					localStorage.deleteDB();
+					window.location.href = "http://localhost:8080/login";
+				}
+			} else {
+				localStorage.deleteDB();
+				window.location.href = "http://localhost:8080/login";
+			}
+		}
+	}
 
     updateTheme(theme) {
         let root = document.documentElement;

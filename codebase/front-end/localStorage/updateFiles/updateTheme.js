@@ -1,17 +1,15 @@
-export function updateSignifierPouch (db, signifier, callback) {
-	console.log(signifier);
+export function updateThemePouch (db, theme, callback) {
+	console.log(theme);
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
-			let signifierArr = doc.signifiers.filter(element => element.id != signifier.id);
-			signifierArr.push(signifier);
 
 			return db.put({_id: "0000", 
 				_rev: doc._rev, 
 				email: doc.email,
 				pwd: doc.pwd,
-				theme: doc.theme,
+				theme: theme,
 				index: doc.index,
 				dailyLogs: doc.dailyLogs,
 				monthlyLogs: doc.monthlyLogs,
@@ -23,7 +21,7 @@ export function updateSignifierPouch (db, signifier, callback) {
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: doc.events,
-				signifiers: signifierArr
+				signifiers: doc.signifiers
 			}, (err, res) => {
 				if (err) {
 					callback(err);

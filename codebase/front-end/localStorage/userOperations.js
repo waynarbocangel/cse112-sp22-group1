@@ -34,10 +34,12 @@ import {updateEventPouch} from "./updateFiles/updateEvent.js";
 import {updateSignifierPouch} from "./updateFiles/updateSignifier.js";
 import {updateImageBlockPouch} from "./updateFiles/updateImageBlock.js";
 import {updateAudioBlockPouch} from "./updateFiles/updateAudioBlock.js";
+import {updateThemePouch} from "./updateFiles/updateTheme.js";
 
 export let db = new PouchDB("Users");
 
 export function deleteDB(){
+	updateUserFromMongo();
     db.destroy( (err, res) => {
 		if (err) {
 			console.log(err);
@@ -335,6 +337,11 @@ export function updateUserFromMongo(){
 	});
 }
 
+export function updateTheme(theme){
+	updateThemePouch(db, theme, (err) => {
+		updateUserFromMongo();
+	})
+}
 
 export function updateImageBlock(imageBlock, callback){
 	updateImageBlockPouch(db, imageBlock, (err) => {

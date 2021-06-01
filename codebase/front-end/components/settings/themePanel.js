@@ -1,3 +1,4 @@
+import * as localStorage from "../../localStorage/userOperations.js";
 const themeColors = {
     darkmode: {
         "--border-color": "#292929",
@@ -112,23 +113,34 @@ export class ThemePanel extends HTMLElement {
 
         <form id="theme">
             <input type="radio" name="themeradio" id="darkmode">     <label for="darkmode">Darkmode</label></input><br>
-            <input type="radio" name="themeradio" id="lightmode" checked>    <label for="lightmode">Noobmode</label></input><br>
+            <input type="radio" name="themeradio" id="lightmode">    <label for="lightmode">Noobmode</label></input><br>
             <input type="radio" name="themeradio" id="highcontrast"> <label for="highcontrast">High Contrast</label></input><br>
             <input type="radio" name="themeradio" id="theme4">       <label for="theme4">Theme 4</label></input><br>
             <input type="radio" name="themeradio" id="theme5">       <label for="theme5">Theme 5</label></input><br>
             <input type="radio" name="themeradio" id="theme6">       <label for="theme6">Theme 6</label></input><br>
         </form>
         `;
+        this.themeRadios = this.shadowRoot.querySelectorAll("input[type=radio]");
+    }
 
-        let themeRadios = this.shadowRoot.querySelectorAll("input[type=radio]");
-        for (let themeRadio of themeRadios) {
+	connectedCallback() {
+		for (let themeRadio of this.themeRadios) {
             themeRadio.addEventListener('change', () => this.updateTheme(themeRadio.id));
         }
-    }
+		localStorage.readUser((err, user) => {
+			if (!err){
+				let pickedTheme = this.shadowRoot.getElementById(user.theme);
+				pickedTheme.checked = true;
+				this.updateTheme(user.theme);
+			} else {
+				console.log(err);
+			}
+		});
+	}
 
     updateTheme(theme) {
         let root = document.documentElement;
-
+		localStorage.updateTheme(theme);
         for (let key in themeColors[theme]) {
             root.style.setProperty(key, themeColors[theme][key]);
         }
