@@ -1,6 +1,7 @@
 import { TrackerBlock } from "./trackerBlock.js";
 import { createEditor } from './blockController.js';
 import { currentObject } from "../index.js";
+import * as localStorage from "../localStorage/userOperations.js";
 
 // tracker side menu web component
 export class TrackerMenu extends HTMLElement {
@@ -19,6 +20,34 @@ export class TrackerMenu extends HTMLElement {
 				font-family:"SF-Pro";
 				src: url("./public/fonts/SF-Pro.ttf");
 			}
+
+			text-block {
+				display: block;
+				margin: 0;
+				padding: 0;
+				width: 100%;
+				left: 0;
+				right: 0;
+			}
+			
+			.noteContainer {
+				margin-top: 7px;
+				margin-bottom: 7px;
+				margin-left: 65px;
+				display: list-item;
+				list-style-type: disc;
+				list-style-position: outside;
+			}
+			
+			.eventContainer {
+				margin-top: 7px;
+				margin-bottom: 7px;
+				margin-left: 65px;
+				display: list-item;
+				list-style-type: circle;
+				list-style-position: outside;
+			}
+
             .wrapper {
                 display: flex;
                 flex-direction: column;
@@ -81,6 +110,7 @@ export class TrackerMenu extends HTMLElement {
                 filter: invert();
                 opacity: 50%;
 				width: 15px;
+				cursor: pointer;
             }
             
             .close_button:hover img {
@@ -119,9 +149,10 @@ export class TrackerMenu extends HTMLElement {
         </div>
         `;
 
-        this.title = title;
+        this.titleText = title;
         this.closeButton = this.shadowRoot.querySelector(".close_button");
         this.editor = this.shadowRoot.getElementById("editor");
+		this.isInsideTracker = false;
     }
 
     attributeChangedCallback(attr, oldVal, newVal) {
@@ -132,7 +163,45 @@ export class TrackerMenu extends HTMLElement {
 
     connectedCallback() {
         //console.log('can this event print');
-        this.closeButton.addEventListener("click", this.close);
+        this.closeButton.addEventListener("click", () => {
+			if (!this.isInsideTracker) {
+				this.close();
+			} else {
+				this.isInsideTracker = false;
+				this.clear();
+				let trackerBlockWrapper = this.shadowRoot.getElementById("editor");
+				localStorage.readUser((err, user) => {
+					if (err) {
+						console.log(err);
+					} else {
+						let userArr = user.trackers;
+						let trackerArr = [];
+						for (let i = 0; i < currentObject.trackers.length; i++) {
+							console.log("hello");
+							trackerArr.push(userArr.filter(object => object.id == currentObject.trackers[i])[0]);
+						}
+						console.log(trackerArr);
+						setTimeout(() => {
+							for(let i = 0; i < trackerArr.length; i++) {
+								let currentTracker = trackerArr[i];
+								let dropdownTracker = new TrackerBlock(currentTracker.title, currentObject.id, currentTracker, this);
+								trackerBlockWrapper.appendChild(dropdownTracker);
+							}
+							createEditor(trackerBlockWrapper, null, null, (success) => {
+								console.log(success);
+							});
+						}, 10);
+					}
+				});
+				if (currentObject.objectType == "futureLog") {
+					this.titleText = "Future Log Trackers";
+				} else if (currentObject.objectType == "monthlyLog") {
+					this.titleText = "Monthly Log Trackers";
+				} else {
+					this.titleText = "Daily Log Trackers";
+				}
+			}
+		});
     }
 
     toggle() {
@@ -163,12 +232,10 @@ export class TrackerMenu extends HTMLElement {
     }
 
     clear() {
-        this.close();
-        for (let child of this.editor.children) {
-            child.remove();
+        while (this.editor.childNodes.length > 0) {
+            this.editor.childNodes[0].remove();
         }
     }
 }
 
 window.customElements.define('tracker-menu', TrackerMenu);
-

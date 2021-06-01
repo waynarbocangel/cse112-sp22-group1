@@ -1,48 +1,12 @@
-import * as localStorage from "../userOperations.js";
-
-export function deleteTextBlockPouch(db, id, callback) {
-	console.log("delete textblock is being deleted");
-	db.get("0000", (err, doc) => {
-		if (err) {
-			callback(err);
-		} else {
-			const textBlockArr = doc.textBlocks.filter(textBlock => textBlock.id == id);
-			let block = null;
-			console.log("textblockArr is ", textBlockArr);
-			if (textBlockArr.length > 0) {
-				block = textBlockArr[0];
-
-				if(block.kind == "task"){
-					localStorage.deleteTaskByID(block.objectReference, (error) => {
-						if (!error){
-							deleteBlock(db, block, id, callback);
-						} else {
-							callback(error);
-						}
-					});
-				} else if (block.kind == "event"){
-					console.log("delteeevntbyID");
-					localStorage.deleteEventByID(block.objectReference, (error) => {
-						if (!error){
-							deleteBlock(db, block, id, callback);
-						} else {
-							console.log(error);
-							callback(error);
-						}
-					})
-				} else {
-					deleteBlock(db, block, id, callback);
-				}
-			}
-		}
-	}).then((res) => {
-		callback(null);
-	});
-}
-
-function deleteBlock(db, block, id, callback){
+export function deleteAudioBlockPouch(db, id, callback) {
 	localStorage.readUser((err, user) => {
 		if (err == null){
+			const audioBlockArr = doc.audioBlocks.filter(audioBlock => audioBlock.id == id);
+			let block = null;
+			if (audioBlockArr.length > 0) {
+				block = audioBlockArr[0];
+			}
+
 			let userArr = [];
 			Array.prototype.push.apply(userArr, user.dailyLogs);
 			Array.prototype.push.apply(userArr, user.monthlyLogs);
@@ -51,8 +15,8 @@ function deleteBlock(db, block, id, callback){
 			Array.prototype.push.apply(userArr, user.collections);
 
 			let parentArr = userArr.filter(object => object.id == block.parent);
-
 			let parent = parentArr[0];
+
 			if (parent.objectType == "dailyLog"){
 				let newContents = parent.content.filter(obj => obj != id);
 				parent.content = newContents;
@@ -73,9 +37,8 @@ function deleteBlock(db, block, id, callback){
 			}
 			
 
-			let newTextBlocks = user.textBlocks.filter(textBlock => textBlock.id != id);
-			
-			user.textBlocks = newTextBlocks;
+			let newAudioBlocks = user.audioBlocks.filter(audioBlock => audioBlock.id != id);
+			user.audioBlocks = newAudioBlocks;
 			
 			return db.put(
 				{

@@ -1,4 +1,5 @@
 import {router} from "../router.js";
+import {navbar} from "../index.js";
 const tabspace = 3;
 
 export class DropdownBlock extends HTMLElement {
@@ -127,6 +128,7 @@ export class DropdownBlock extends HTMLElement {
 
 	navigateToObject() {
 		router.setState(`#${this.item.objectType}~${this.item.id}`, false);
+		navbar.open = false;
 	}
 
     display() {

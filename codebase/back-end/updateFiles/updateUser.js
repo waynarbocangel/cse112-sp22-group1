@@ -15,8 +15,11 @@ function updateUser(userObject, callback){
 			let newCollections = [];
 			for(let i = 0; i < userObject.collections.length; i++){
 				let collection = userObject.collection[i];
-				collection.title = security.encrypt(collection.title, userObject.pwd);
-				newCollections.push(collection);
+				let oldCollection = user.collection[i];
+				if (collection.id == oldCollection.id){
+					collection.title = security.encrypt(collection.title, userObject.pwd);
+					newCollections.push(collection);
+				}
 			}
 			let newTextBlocks = [];
 			for(let i = 0; i < userObject.textBlocks.length; i++){
@@ -60,7 +63,10 @@ function updateUser(userObject, callback){
 				tracker.title = security.encrypt(tracker.title, userObject.pwd);
 				newTrackers.push(tracker);
 			}
+			user.index = userObject.index;
+			user.pwd = user.pwd;
 			user.email = userObject.email;
+			user.theme = userObject.theme;
 			user.dailyLogs =  userObject.dailyLogs;
 			user.monthlyLogs = userObject.monthlyLogs;
 			user.futureLogs = userObject.futureLogs;

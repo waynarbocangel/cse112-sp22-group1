@@ -1,8 +1,8 @@
 import * as localStorage from "../localStorage/userOperations.js";
-//import { trackerBlock } from "../index.js";
+import {createEditor} from "./blockController.js";
 
 export class TrackerBlock extends HTMLElement {
-	constructor(title, parent) {
+	constructor(title, parent, tracker, trackerMenu) {
 		super();
 		let template = document.createElement("template");
 		template.innerHTML = `
@@ -44,7 +44,8 @@ export class TrackerBlock extends HTMLElement {
 			</div>
 		`;
 		this.parent = parent;
-
+		this.item = tracker;
+		this.trackerMenu = trackerMenu;
 		this.attachShadow({mode: 'open'});
 		this.shadowRoot.appendChild(template.content.cloneNode(true));
 		this.trackerButton = this.shadowRoot.querySelector(".plus");
@@ -57,13 +58,21 @@ export class TrackerBlock extends HTMLElement {
 	connectedCallback() {
 		console.log('inside callback');
 		//this.trackerButton = this.shadowRoot.getElementById("plus");
-		this.plusButton.addEventListener('click', () => {
+		this.plusButton.onclick = () => {
 			this.createTracker();
-		});
+		};
+
+		this.titleSpan.onclick = () => {
+			this.trackerMenu.clear();
+			this.trackerMenu.title = this.titleSpan.innerHTML;
+			this.trackerMenu.isInsideTracker = true;
+			createEditor(this.trackerMenu.shadowRoot.getElementById("editor"), this.item, null, (success) => {
+
+			});
+		};
 	}
 
 	createTracker() {
-		console.log("this is being called");
 		localStorage.createTracker(this.title.innerHTML, [], this.parent, (err, tracker) => {
 			if (err) {
 				console.log(err);

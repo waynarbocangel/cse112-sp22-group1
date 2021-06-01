@@ -16,6 +16,7 @@ export let url = "";
 export let pageNumber = 1;
 
 export let currentObject;
+
 let contentWrapper = document.getElementById("contentWrapper");
 document.getElementById("topbar").appendChild(header);
 document.getElementById("sidebar").appendChild(navbar);
@@ -42,7 +43,7 @@ export function getCurrentObject(urlFromRouter) {
 		if (err) {
 			window.location.href = "http://localhost:8080/login";
 		} else {
-			console.log("user is ", user);
+			localStorage.updateUserFromMongo();
 			if (id != null){
 				let userArr = [];
 				Array.prototype.push.apply(userArr, user.dailyLogs);
@@ -64,7 +65,7 @@ export function setupIndex(header, btn) {
 		if (err) {
 			console.log(err);
 		} else {
-
+			console.log(user.futureLogs);
 			let userArr = [];
 			Array.prototype.push.apply(userArr, user.futureLogs);
 			Array.prototype.push.apply(userArr, user.collections);
@@ -78,8 +79,9 @@ export function setupIndex(header, btn) {
 			let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 			for(let i = 0; i < parentArr.length; i++) {
-
+				console.log("inside for loop");
 				if (parentArr[i].objectType == "futureLog") {
+					console.log("inside if stmt");
 					let futureLogStart = new Date(parentArr[i].startDate);
 					let futureLogEnd = new Date(parentArr[i].endDate);
 					let dropdown = new DropdownBlock(`Future Log ${monthNames[futureLogStart.getMonth()]} ${futureLogStart.getFullYear()} - ${monthNames[futureLogEnd.getMonth()]} ${futureLogEnd.getFullYear()}`, parentArr[i], 1);
@@ -129,7 +131,9 @@ export function setupIndex(header, btn) {
 	navbar.doubleMenu.style.visibility = "hidden";
 	let headerButtons = header.imgbuttons;
 	for (let i = 0; i < headerButtons.length; i++){
-		headerButtons[i].classList.add("hide");
+		if (!headerButtons[i].classList.contains("plus")){
+			headerButtons[i].classList.add("hide");
+		}
 	}
 }
 
@@ -205,14 +209,13 @@ export function setupFutureLog(header, btn, newState){
 			let userArr = user.trackers;
 			let trackerArr = [];
 			for (let i = 0; i < currentObject.trackers.length; i++) {
-				console.log("hello");
 				trackerArr.push(userArr.filter(object => object.id == currentObject.trackers[i])[0]);
 			}
 			console.log(trackerArr);
 			setTimeout(() => {
 				for(let i = 0; i < trackerArr.length; i++) {
 					let currentTracker = trackerArr[i];
-					let dropdownTracker = new TrackerBlock(currentTracker.title, currentObject.id, 1);
+					let dropdownTracker = new TrackerBlock(currentTracker.title, currentObject.id, currentTracker, futureLogTrackerMenu);
 					trackerBlockWrapper.appendChild(dropdownTracker);
 				}
 				createEditor(trackerBlockWrapper, null, null, (success) => {
@@ -270,7 +273,7 @@ export function setupMonthlyLog(header, btn, newState){
 		headerButtons[i].classList.remove("hide");
 	}
 
-	let monthlyLogTrackerMenu = new TrackerMenu("Future Log Trackers");
+	let monthlyLogTrackerMenu = new TrackerMenu("Monthly Log Trackers");
 	document.getElementById("trackerWrapper").appendChild(monthlyLogTrackerMenu);
 	let trackerBlockWrapper = monthlyLogTrackerMenu.shadowRoot.getElementById("editor");
 	localStorage.readUser((err, user) => {
@@ -320,7 +323,7 @@ export function setupDailyLog(header, btn, newState){
 		headerButtons[i].classList.remove("hide");
 	}
 
-	let monthlyLogTrackerMenu = new TrackerMenu("Future Log Trackers");
+	let monthlyLogTrackerMenu = new TrackerMenu("Daily Log Trackers");
 	document.getElementById("trackerWrapper").appendChild(monthlyLogTrackerMenu);
 	let trackerBlockWrapper = monthlyLogTrackerMenu.shadowRoot.getElementById("editor");
 	localStorage.readUser((err, user) => {

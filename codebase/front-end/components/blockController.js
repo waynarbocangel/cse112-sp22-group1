@@ -90,7 +90,7 @@ export function createEditor (container, parent, subParent, callback) {
 				Array.prototype.push.apply(arrays, doc.collections);
 				Array.prototype.push.apply(arrays, doc.trackers);
 
-				if(parent != null && parent.objectType != "index") {
+				if(parent != null && (parent.objectType == "dailyLog" || parent.objectType == "collection")) {
 					let itemArrs = arrays.filter(element => element.id == parent.id);
 						
 					if(itemArrs.length > 0){

@@ -1,8 +1,6 @@
 import {makeid} from "./makeId.js";
-let trackerObject;
 
-export function createTrackerPouch (db, title, content, parent, callback) {
-	console.log('making tracjer');
+export function createAudioBlockPouch (db, parent, arrangement, data, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err, null);
@@ -24,21 +22,19 @@ export function createTrackerPouch (db, title, content, parent, callback) {
 			while(arrays.filter(element => element.id == id).length > 0){
 				id = makeid();
 			}
-			trackerObject = {
+			audioBlockObject = {
 				id: id,
-				objectType: "tracker",
-				title: title,
-				content: content,
-				parent: parent
+				objectType: "imageBlock",
+				parent: parent,
+				arrangement: arrangement,
+				data: data
 			};
-			console.log(arrays);
-			console.log(parent);
-			let parentObject = arrays.filter(element => element.id == parent);
-			console.log(parentObject);
-			parentObject[0].trackers.push(trackerObject.id);
-			
-			doc.trackers.push(trackerObject);
-			//tracker array of parent should be updated in callback of this funciton
+
+			let newAudioBlocks = []
+			Array.prototype.push.apply(newAudioBlocks, doc.audioBlocks);
+
+			newAudioBlocks.push(audioBlockObject);
+
 			return db.put(
 				{
 					_id: "0000",
@@ -53,7 +49,7 @@ export function createTrackerPouch (db, title, content, parent, callback) {
 					collections: doc.collections,
 					trackers: doc.trackers,
 					imageBlocks: doc.imageBlocks,
-					audioBlocks: doc.audioBlocks,
+					audioBlocks: newAudioBlocks,
 					textBlocks: doc.textBlocks,
 					tasks: doc.tasks,
 					events: doc.events,
@@ -67,7 +63,6 @@ export function createTrackerPouch (db, title, content, parent, callback) {
 		}
 	}).then((res) => {
 		console.log(res);
-		console.log(trackerObject);
-		callback(null, trackerObject);
+		callback(null, audioBlockObject);
 	});
 }

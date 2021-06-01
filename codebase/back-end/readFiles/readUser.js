@@ -1,19 +1,10 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 const schema = require(__dirname + "/../schema.js");
+const security = require(__dirname + "/../security/securityFunctions.js");
 
 mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
 mongoose.set("useCreateIndex", true);
-
-function readUserPouch (db, callback) {
-	db.get("0000", (err, doc) => {
-		if (err) {
-			callback(err);
-		} else {
-			callback(doc);
-		}
-	});
-}
 
 function readUser (userData, callback) {
 	schema.User.findOne({email: userData.email}, (error, user) => {
@@ -63,7 +54,7 @@ function readUser (userData, callback) {
 				newAudioBlocks.push(audioBlock);
 			}
 			let newTrackers = [];
-			for(let i = 0; i < user.Trackers.length; i++){
+			for(let i = 0; i < user.trackers.length; i++){
 				let tracker = user.trackers[i];
 				tracker.title = security.decrypt(tracker.title, userData.pwd);
 				newTrackers.push(tracker);
@@ -76,7 +67,7 @@ function readUser (userData, callback) {
 				dailyLogs: user.dailyLogs,
 				monthlyLogs: user.monthlyLogs,
 				futureLogs: user.futureLogs,
-				trackers: newTrackers,
+				trackers: user.trackers,
 				collections: newCollections,
 				imageBlocks: newImageBlocks,
 				audioBlocks: newAudioBlocks,
@@ -91,6 +82,5 @@ function readUser (userData, callback) {
 }
 
 module.exports = {
-	readUser: readUser,
-	readUserPouch: readUserPouch
+	readUser: readUser
 }

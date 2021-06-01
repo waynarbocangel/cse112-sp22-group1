@@ -1,8 +1,6 @@
 import {makeid} from "./makeId.js";
-let trackerObject;
 
-export function createTrackerPouch (db, title, content, parent, callback) {
-	console.log('making tracjer');
+export function createImageBlockPouch (db, parent, arrangement, data, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err, null);
@@ -24,21 +22,19 @@ export function createTrackerPouch (db, title, content, parent, callback) {
 			while(arrays.filter(element => element.id == id).length > 0){
 				id = makeid();
 			}
-			trackerObject = {
+			imageBlockObject = {
 				id: id,
-				objectType: "tracker",
-				title: title,
-				content: content,
-				parent: parent
+				objectType: "imageBlock",
+				parent: parent,
+				arrangement: arrangement,
+				data: data
 			};
-			console.log(arrays);
-			console.log(parent);
-			let parentObject = arrays.filter(element => element.id == parent);
-			console.log(parentObject);
-			parentObject[0].trackers.push(trackerObject.id);
-			
-			doc.trackers.push(trackerObject);
-			//tracker array of parent should be updated in callback of this funciton
+
+			let newImageBlocks = []
+			Array.prototype.push.apply(newImageBlocks, doc.imageBlocks);
+
+			newImageBlocks.push(imageBlockObject);
+
 			return db.put(
 				{
 					_id: "0000",
@@ -52,7 +48,7 @@ export function createTrackerPouch (db, title, content, parent, callback) {
 					futureLogs: doc.futureLogs,
 					collections: doc.collections,
 					trackers: doc.trackers,
-					imageBlocks: doc.imageBlocks,
+					imageBlocks: newImageBlocks,
 					audioBlocks: doc.audioBlocks,
 					textBlocks: doc.textBlocks,
 					tasks: doc.tasks,
@@ -67,7 +63,6 @@ export function createTrackerPouch (db, title, content, parent, callback) {
 		}
 	}).then((res) => {
 		console.log(res);
-		console.log(trackerObject);
-		callback(null, trackerObject);
+		callback(null, imageBlockObject);
 	});
 }
