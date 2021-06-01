@@ -1,5 +1,5 @@
-import {router} from "../router.js";
-import {currentObject, header} from "../index.js";
+import { router } from "../router.js";
+import { currentObject, header } from "../index.js";
 import * as localStorage from "../localStorage/userOperations.js";
 const template = document.createElement('template');
 
@@ -17,116 +17,43 @@ template.innerHTML = `
 			bottom: 0;
 			left: 0;
 			display: block;
-			background: rgba(236, 223, 207, 0.4);
-			
-
+			background-color: var(--navbar-background-color);
 		}
 
-		#home {
-			background-image: url(../public/resources/home_icon.png);
-			background-size: cover;
+		button {
+			display: block;
 			background-color: transparent;
-			border:none;
-
-			position: absolute;
+			border: none;
+			padding: 0;
 			width: 32px;
 			height: 32px;
-			left: 15px;
-			top: 20px;
-		}
-
-		#target {
-			background-image: url(../public/resources/target_icon.png);
-			background-size: cover;
-			background-color: transparent;
-			background-blend-mode: multiply;
-			border:none;
-
-			position: absolute;
-			width: 35px;
-			height: 35px;
-			left: 15px;
-			top: 90px;
-		}
-
-		#single {
-			background-image: url(../public/resources/left.png);
-			background-size: cover;
-			background-color: transparent;
-			background-blend-mode: multiply;
-			border:none;
-
-			position: absolute;
-			width: 32px;
-			height: 32px;
-			left: 15px;
-			top: 160px;
-		}
-
-		#double {
-			background-image: url(../public/resources/double_icon.png);
-			background-size: cover;
-			background-color: transparent;
-			background-blend-mode: multiply;
-			border:none;
-
-			position: absolute;
-			width: 35px;
-			height: 35px;
-			left: 15px;
-			top: 230px;
-		}
-
-		#user {
-			background-image: url(../public/resources/user.png);
-			background-size: cover;
-			background-color: transparent;
-			background-blend-mode: multiply;
-			border:none;
-
-			position: absolute;
-			width: 33px;
-			height: 33px;
-			left: 13.5px;
-			bottom: 20px;
-		}
-
-		ul {
-			list-style-type: none;
-		}
-
-		ul li {
-			opacity: 0.7;
-			transition: 150ms;
-		}
-
-		ul li:hover{
-			opacity: 1;
-			transition: 150ms;
-		}
-
-		ul li button{
+			margin: 32px auto;
 			cursor: pointer;
 		}
 
-		@media only screen and (max-width:900px) {
+		button img {
+			height: 100%;
+			filter: var(--icon-filter);
+			opacity: 50%;
+		}
 
-			.nav-bar {
-				display:none;
-			}
-			
-			.navigation {
-				display: block;
-				background-color: rgba(236, 223, 207, 0.0);
-				height: 8vh;
-				padding: none;
-				margin: none;
-				width: 30%;
-				top: 0;
-				left: 0;
-				position:fixed;
-			}
-			  
+		button:hover img {
+			opacity: 100%;
+			transition: opacity 25ms;
+		}
+
+		#bottom {
+			position: absolute;
+			bottom: 10px;
+			width: 100%;
+		}
+
+		#user {
+			position: static;
+			margin: 0 auto;
+		}
+
+		@media only screen and (max-width:900px) {
 			#menu {
 				position: fixed;
 				width: 30%;
@@ -136,27 +63,35 @@ template.innerHTML = `
 				left: 0;
 				margin: 0;
 				padding: 0;
-				background-color: white;
-			}
-	
-			.menuClosed{
+				background-color: var(--navbar-background-color);
 				-webkit-font-smoothing: antialiased;
+			}
+
+			#menu.closed {
 				transform: translate(-100%, 0);
 				transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
 			}
-	
-			.menuOpen{
-				-webkit-font-smoothing: antialiased;
+
+			#menu.open {
 				transform-origin: 0 0;
 				transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
 			}
-	
+
+			.nav-bar {
+				display:none;
+			}
+
+			.navigation {
+				display: block;
+				padding: none;
+				margin: none;
+				width: 30vh;
+				top: 0;
+				left: 0;
+				position:fixed;
+			}
+
 			#homeMenu {
-				background-image: url(../public/resources/home_icon.png);
-				background-size: cover;
-				background-color: transparent;
-				border:none;
-				cursor: pointer;
 				position: absolute;
 				width: 60px;
 				height: 60px;
@@ -165,13 +100,8 @@ template.innerHTML = `
 				right: 0;
 				margin: auto;
 			}
-	
+
 			#singleMenu {
-				background-image: url(../public/resources/left.png);
-				background-size: cover;
-				background-color: transparent;
-				border:none;
-				cursor: pointer;
 				position: absolute;
 				width: 60px;
 				height: 60px;
@@ -180,13 +110,8 @@ template.innerHTML = `
 				right: 0;
 				margin: auto;
 			}
-	
+
 			#doubleMenu {
-				background-image: url(../public/resources/double_icon.png);
-				background-size: cover;
-				background-color: transparent;
-				border:none;
-				cursor: pointer;
 				position: absolute;
 				width: 60px;
 				height: 60px;
@@ -195,13 +120,8 @@ template.innerHTML = `
 				right: 0;
 				margin: auto;
 			}
-	
+
 			#userMenu {
-				background-image: url(../public/resources/user.png);
-				background-size: cover;
-				background-color: transparent;
-				border:none;
-				cursor: pointer;
 				position: absolute;
 				width: 65px;
 				height: 65px;
@@ -211,33 +131,26 @@ template.innerHTML = `
 				padding: 0;
 				margin: 0 auto;
 			}
-	
-			  
-			  #menuToggle input:checked ~ ul
-			  {
-				transform: none;
-			  }
-	 
 		}
-	
+
 		@media only screen and (max-height: 1200px){
 			#homeMenu {
 				width: 40px;
 				height: 40px;
 			}
-	
+
 			#singleMenu {
 				width: 40px;
 				height: 40px;
 				top: 150px;
 			}
-	
+
 			#doubleMenu {
 				width: 40px;
 				height: 40px;
 				top: 230px;
 			}
-	
+
 			#userMenu {
 				position: absolute;
 				width: 45px;
@@ -245,25 +158,25 @@ template.innerHTML = `
 				top: calc(100% - 85px);
 			}
 		}
-	
+
 		@media only screen and (max-height: 800px){
 			#homeMenu {
 				width: 35px;
 				height: 35px;
 			}
-	
+
 			#singleMenu {
 				width: 35px;
 				height: 35px;
 				top: 130px;
 			}
-	
+
 			#doubleMenu {
 				width: 35px;
 				height: 35px;
 				top: 190px;
 			}
-	
+
 			#userMenu {
 				position: absolute;
 				width: 40px;
@@ -271,40 +184,43 @@ template.innerHTML = `
 				top: calc(100% - 65px);
 			}
 		}
-
 	</style> 
 
 	<nav class="nav-bar">
-		<ul>
-			<li><button id="home"></button></li>
-			<li><button id="target"></button></li>
-			<li><button id="single"></button></li>
-			<li><button id="double"></button></li>
-			<li><button id="user"></button></li>
-		</ul>
+		<button id="home">  <img src="../public/resources/home_icon.png"></button>
+		<button id="target"><img src="../public/resources/target_icon.png"></button>
+		<button id="single"><img src="../public/resources/left.png"></button>
+		<button id="double"><img src="../public/resources/double_icon.png"></button>
+		<div id="bottom">
+			<button id="user">  <img src="../public/resources/user.png"></button>
+		</div>
 	</nav>
 	<nav class="navigation">
-		<div id="menu" class="menuClosed">
-			<button id="homeMenu"></button>
-			<button id="singleMenu"></button>
-			<button id="doubleMenu"></button>
-			<button id="userMenu"></button>
+		<div id="menu" class="closed">
+			<button id="homeMenu">  <img src="../public/resources/home_icon.png"></button>
+			<button id="singleMenu"><img src="../public/resources/left.png"></button>
+			<button id="doubleMenu"><img src="../public/resources/double_icon.png"></button>
+			<button id="userMenu">  <img src="../public/resources/user.png"></button>
 		</div>
 	</nav>
 `;
 
 export class NavBar extends HTMLElement {
-	constructor () {
-		super ();
-		this.attachShadow({mode: 'open'});
-		this.shadowRoot.appendChild(template.content.cloneNode(true));
+	static get observedAttributes() {
+		return ['open'];
+	}
 
+	constructor() {
+		super();
+		this.attachShadow({ mode: 'open' });
+		this.shadowRoot.appendChild(template.content.cloneNode(true));
 
 		this.home = this.shadowRoot.querySelectorAll('button')[0];
 		this.target = this.shadowRoot.querySelectorAll('button')[1];
 		this.single = this.shadowRoot.querySelectorAll('button')[2];
 		this.double = this.shadowRoot.querySelectorAll('button')[3];
 		this.user = this.shadowRoot.querySelectorAll('button')[4];
+
 		this.menu = this.shadowRoot.querySelector('#menu');
 		this.homeMenu = this.shadowRoot.querySelector('#homeMenu');
 		this.singleMenu = this.shadowRoot.querySelector('#singleMenu');
@@ -326,43 +242,47 @@ export class NavBar extends HTMLElement {
 			this.goFarBack();
 		});
 		this.user.addEventListener('click', () => {
-			alert("hello"); 
+			let settingsMenu = document.querySelector("settings-menu");
+
+			settingsMenu.toggle();
 		});
 
 		this.homeMenu.addEventListener('click', () => {
 			this.goHome();
-			this.toggleMenu();
-			header.input.checked = false;
+			this.open = false;
 		});
 		this.singleMenu.addEventListener('click', () => {
 			this.goBack();
-			this.toggleMenu();
-			header.input.checked = false;
+			this.open = false;
 		});
 		this.doubleMenu.addEventListener('click', () => {
 			this.goFarBack();
-			this.toggleMenu();
-			header.input.checked = false;
+			this.open = false;
 		});
 		this.userMenu.addEventListener('click', () => {
-			alert("hello"); 
-			this.toggleMenu();
-			header.input.checked = false;
+			let settingsMenu = document.querySelector("settings-menu");
+			settingsMenu.toggle();
 		});
 	}
 
-	goHome(){
-		if (document.location.hash != null && document.location.hash != "#index" && document.location.hash !=''){
+	attributeChangedCallback(attr, oldVal, newVal) {
+		if (oldVal != newVal) {
+			this[attr] = newVal;
+		}
+	}
+
+	goHome() {
+		if (document.location.hash != null && document.location.hash != "#index" && document.location.hash != '') {
 			router.setState("", false);
 		}
 	}
 
-	goBack(){
+	goBack() {
 		let parent = (document.location.hash.includes("#dailyLog")) ? "monthlyLog" : "futureLog";
 		router.setState(`#${parent}~${currentObject.parent}`, false);
 	}
 
-	goFarBack(){
+	goFarBack() {
 		let parent = (document.location.hash.includes("#dailyLog")) ? "futureLog" : "index";
 		localStorage.readUser((err, user) => {
 			if (err == null) {
@@ -385,16 +305,27 @@ export class NavBar extends HTMLElement {
 		trackerMenu.toggle();
 	}
 
-	toggleMenu() {
-		if (this.menu.classList.contains("menuClosed")){
-			this.menu.classList.remove("menuClosed");
-			this.menu.classList.add("menuOpen");
-		} else {
-			this.menu.classList.remove("menuOpen");
-			this.menu.classList.add("menuClosed");
-		}
+	toggle() {
+		this.open = !this.open;
 	}
 
+	get open() {
+		return this.hasAttribute('open');
+	}
+
+	set open(isOpen) {
+		this.menu.classList.toggle('open', isOpen);
+		this.menu.classList.toggle('closed', !isOpen);
+		this.menu.setAttribute('aria-hidden', !isOpen)
+		if (isOpen) {
+			this.setAttribute('open', 'true');
+			this.focus();
+			header.menuToggle.checked = true;
+		} else {
+			this.removeAttribute('open');
+			header.menuToggle.checked = false;
+		}
+	}
 }
 
 customElements.define('nav-bar', NavBar);

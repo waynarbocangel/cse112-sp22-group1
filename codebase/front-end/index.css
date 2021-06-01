@@ -1,33 +1,34 @@
+@import "./theme.css";
 @font-face {
-    font-family:"SF-Pro";
-    src: url("./public/fonts/SF-Pro.ttf");
+	font-family: "SF-Pro";
+	src: url("./public/fonts/SF-Pro.ttf");
 }
 
-html{
+html {
 	overflow: hidden;
 }
 
 html, body, section, .full-height {
-    height: 100%;
-    user-select: all;
-} 
+	height: 100%;
+}
 
-body{
-    margin: 0;
+body {
+	margin: 0;
 	overflow: auto;
 	position: relative;
 	z-index: -2;
 }
 
-div{
-    font-size: 18px;
-    line-height: 26px;
+div {
+	font-size: 18px;
+	line-height: 26px;
 }
+
 #contentWrapper {
-    border: none;
-    overflow: auto;
-    outline: none;
-    display: block;
+	border: none;
+	overflow: auto;
+	outline: none;
+	display: block;
 	margin-top: 10px;
 	margin-left: 80px;
 	margin-right: 20px;
@@ -35,7 +36,7 @@ div{
 	z-index: -1;
 }
 
-text-block{
+text-block {
 	display: block;
 	margin: 0;
 	padding: 0;
@@ -44,60 +45,47 @@ text-block{
 	right: 0;
 }
 
-.noteContainer{
-    margin-top: 7px;
-    margin-bottom: 7px;
-    margin-left: 65px;
-    display: list-item;
-    list-style-type: disc;
-    list-style-position: outside;
-}
-
-.eventContainer{
+.noteContainer {
 	margin-top: 7px;
-    margin-bottom: 7px;
-    margin-left: 65px;
-    display: list-item;
-    list-style-type: circle;
-    list-style-position: outside;
+	margin-bottom: 7px;
+	margin-left: 65px;
+	display: list-item;
+	list-style-type: disc;
+	list-style-position: outside;
 }
 
+.eventContainer {
+	margin-top: 7px;
+	margin-bottom: 7px;
+	margin-left: 65px;
+	display: list-item;
+	list-style-type: circle;
+	list-style-position: outside;
+}
 
 /*
 .noteContainer:before{content: '\f081';} */
 
-
-/* thomas's code */
-#topbar{
-	margin-top: 15px;
-	margin-left: 80px;
-	margin-right: 20px;
-	vertical-align: middle;
-	border-bottom: solid 2px rgba(0, 0, 0, 0.05);
-	height: 60px;
-	text-align: left;
-}
-
 @media only screen and (max-width:900px) {
-	#topbar{
-		margin-left: 20px;
+	#topbar {
+		margin-left: 0;
 		text-align: center;
 	}
-
-	#contentWrapper{
+	#contentWrapper {
 		margin-left: 20px;
 	}
 }
 
 /* Fade-in buttons */
-#targetMenu{
+
+#targetMenu {
 	display: none;
 	opacity: 0;
 }
 
-
 @media only screen and (max-width:900px) {
-	#targetMenu{
+	/* TODO: use img instead of background-image for theme */
+	#targetMenu {
 		display: block;
 		position: fixed;
 		bottom: 20px;
@@ -119,50 +107,30 @@ text-block{
 		background-blend-mode: multiply;
 		transition: 0.2s;
 	}
-	
-	#targetMenu:hover{
+	#targetMenu:hover {
 		opacity: 1;
 		transition: 0.2s;
 	}
 }
 
 /* Side navigation */
-#sidebar {
+
+nav-bar {
 	overflow: hidden;
 	position: relative;
 	z-index: 1;
 }
 
 .sidebar button {
-    display: block;
-    color: #818181;
-    padding: 10px 0px;
-    margin: 10px auto;
+	display: block;
+	color: #818181;
+	padding: 10px 0;
+	margin: 10px auto;
 }
 
 /* Text editor, to be integrated */
+
 main {
-    margin-left: 100px;
-    margin-top: 100px;
-}
-
-/* Test code */
-.dropdown-button {
-    display: inline-block;
-    padding: 10px;
-    border-radius: 20px;
-    border: none;
-    background-color: white;
-    transition: 1000ms;
-}
-
-.dropdown-button:hover {
-    background-color: tomato;
-    transition: 250ms;
-}
-
-.dropdown-button:active {
-    border: solid;
-    border-color: gray;
-    transition: 250ms;
+	margin-left: 100px;
+	margin-top: 100px;
 }

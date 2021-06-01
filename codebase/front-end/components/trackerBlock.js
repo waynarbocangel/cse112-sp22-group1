@@ -29,6 +29,7 @@ export class TrackerBlock extends HTMLElement {
 					margin-right: 7px;
 					height: 15px;
 					cursor: pointer;
+					filter: var(--icon-filter);
 				}
 
 				@media screen and (max-width: 700px) {

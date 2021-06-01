@@ -2,6 +2,7 @@ import * as localStorage from "./localStorage/userOperations.js";
 import { TrackerMenu } from "./components/tracker.js";
 import { NavBar } from "./components/navbar.js";
 import { PageHeader } from "./components/header.js";
+import { SettingsMenu, SettingsPanel, SettingsTab } from './components/settings/settings.js';
 import { DropdownBlock } from './components/dropdown.js';
 import { router } from './router.js';
 import { createEditor } from './components/blockController.js';
@@ -11,13 +12,11 @@ document.querySelector("body").style.display = "none";
 
 export let navbar = new NavBar();
 export let header = new PageHeader();
-//export let trackerBlock = new TrackerBlock();
 export let url = "";
 export let pageNumber = 1;
 
 export let currentObject;
 let contentWrapper = document.getElementById("contentWrapper");
-
 document.getElementById("topbar").appendChild(header);
 document.getElementById("sidebar").appendChild(navbar);
 document.getElementById("targetMenu").onclick = () => {
@@ -105,7 +104,7 @@ export function setupIndex(header, btn) {
 			}
 		}
 	});
-
+	console.log("we are here");
 	header.title = "Index";
 	url = "/";
 	pageNumber = 1;
@@ -128,7 +127,7 @@ export function setupIndex(header, btn) {
 	navbar.singleMenu.style.visibility = "hidden";
 	navbar.doubleMenu.setAttribute ("disabled", "disabled");
 	navbar.doubleMenu.style.visibility = "hidden";
-	let headerButtons = header.shadowRoot.querySelectorAll(".imgbutton");
+	let headerButtons = header.imgbuttons;
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.add("hide");
 	}
@@ -190,11 +189,11 @@ export function setupFutureLog(header, btn, newState){
 	navbar.singleMenu.style.visibility = "hidden";
 	navbar.doubleMenu.setAttribute ("disabled", "disabled");
 	navbar.doubleMenu.style.visibility = "hidden";
-	let headerButtons = header.shadowRoot.querySelectorAll(".imgbutton");
+	let headerButtons = header.imgbuttons;
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.remove("hide");
 	}
-
+	
 	let futureLogTrackerMenu = new TrackerMenu("Future Log Trackers");
 	document.getElementById("trackerWrapper").appendChild(futureLogTrackerMenu);
 	let trackerBlockWrapper = futureLogTrackerMenu.shadowRoot.getElementById("editor");
@@ -222,10 +221,6 @@ export function setupFutureLog(header, btn, newState){
 			}, 10);
 		}
 	});
-	// futureLogTrackerMenu.shadowRoot.querySelector("div > div.tracker_header_content").appendChild(new TrackerBlock([], currentObject.id));
-	for(let i = 0; i < currentObject.trackers.length; i++){
-		// futureLogTrackerMenu.shadowRoot.querySelector("div").appendChild(new TrackerBlock(currentObject.trackers[i].content, currentObject.id));
-	}
 }
 
 export function setupMonthlyLog(header, btn, newState){
@@ -270,11 +265,37 @@ export function setupMonthlyLog(header, btn, newState){
 	navbar.double.style.visibility = "hidden";
 	navbar.doubleMenu.setAttribute ("disabled", "disabled");
 	navbar.doubleMenu.style.visibility = "hidden";
-	let headerButtons = header.shadowRoot.querySelectorAll(".imgbutton");
+	let headerButtons = header.imgbuttons;
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.remove("hide");
 	}
-	document.getElementById("trackerWrapper").appendChild(new TrackerMenu("Monthly Log Trackers"));
+
+	let monthlyLogTrackerMenu = new TrackerMenu("Future Log Trackers");
+	document.getElementById("trackerWrapper").appendChild(monthlyLogTrackerMenu);
+	let trackerBlockWrapper = monthlyLogTrackerMenu.shadowRoot.getElementById("editor");
+	localStorage.readUser((err, user) => {
+		if (err) {
+			console.log(err);
+		} else {
+			let userArr = user.trackers;
+			let trackerArr = [];
+			for (let i = 0; i < currentObject.trackers.length; i++) {
+				console.log("hello");
+				trackerArr.push(userArr.filter(object => object.id == currentObject.trackers[i])[0]);
+			}
+			console.log(trackerArr);
+			setTimeout(() => {
+				for(let i = 0; i < trackerArr.length; i++) {
+					let currentTracker = trackerArr[i];
+					let dropdownTracker = new TrackerBlock(currentTracker.title, currentObject.id, 1);
+					trackerBlockWrapper.appendChild(dropdownTracker);
+				}
+				createEditor(trackerBlockWrapper, null, null, (success) => {
+					console.log(success);
+				});
+			}, 10);
+		}
+	});
 }
 
 export function setupDailyLog(header, btn, newState){
@@ -294,18 +315,37 @@ export function setupDailyLog(header, btn, newState){
 		console.log(success);
 	});
 	document.getElementById("targetMenu").style.display = "block";
-	let headerButtons = header.shadowRoot.querySelectorAll(".imgbutton");
+	let headerButtons = header.imgbuttons;
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.remove("hide");
 	}
-	let tracker = new TrackerMenu("Daily Log Trackers");
-	setTimeout(() => {
-		let trackerContent = tracker.shadowRoot.getElementById('editor');
-		createEditor(trackerContent, tracker, null, (success) => {
-			console.log(success);
-		});
-		document.getElementById("trackerWrapper").appendChild(tracker);
-	}, 20);
+
+	let monthlyLogTrackerMenu = new TrackerMenu("Future Log Trackers");
+	document.getElementById("trackerWrapper").appendChild(monthlyLogTrackerMenu);
+	let trackerBlockWrapper = monthlyLogTrackerMenu.shadowRoot.getElementById("editor");
+	localStorage.readUser((err, user) => {
+		if (err) {
+			console.log(err);
+		} else {
+			let userArr = user.trackers;
+			let trackerArr = [];
+			for (let i = 0; i < currentObject.trackers.length; i++) {
+				console.log("hello");
+				trackerArr.push(userArr.filter(object => object.id == currentObject.trackers[i])[0]);
+			}
+			console.log(trackerArr);
+			setTimeout(() => {
+				for(let i = 0; i < trackerArr.length; i++) {
+					let currentTracker = trackerArr[i];
+					let dropdownTracker = new TrackerBlock(currentTracker.title, currentObject.id, 1);
+					trackerBlockWrapper.appendChild(dropdownTracker);
+				}
+				createEditor(trackerBlockWrapper, null, null, (success) => {
+					console.log(success);
+				});
+			}, 10);
+		}
+	});
 	
 }
 
@@ -346,7 +386,7 @@ export function setupCollection(header, btn, newState){
 	navbar.singleMenu.style.visibility = "hidden";
 	navbar.doubleMenu.setAttribute ("disabled", "disabled");
 	navbar.doubleMenu.style.visibility = "hidden";
-	let headerButtons = header.shadowRoot.querySelectorAll(".imgbutton");
+	let headerButtons = header.imgbuttons;
 	for (let i = 0; i < headerButtons.length; i++){
 		headerButtons[i].classList.remove("hide");
 	}
