@@ -30,6 +30,11 @@ window.onpopstate = () => {
 	router.setState(document.location.hash, true);
 };
 
+/**
+ * Gets the current object at the current url.
+ * 
+ * @param {String} urlFromRouter The current url.
+ */
 export function getCurrentObject(urlFromRouter) {
 	let urlparse = undefined;
 	let id = null;
@@ -60,7 +65,12 @@ export function getCurrentObject(urlFromRouter) {
 
 }
 
-export function setupIndex(header, btn) {
+/**
+ * Sets up the index page with the futureLogs and collections of the user.
+ * 
+ * @param {Array} btn An array of the buttons in the index page's navbar.
+ */
+export function setupIndex(btn) {
 	localStorage.readUser((err, user) => {
 		if (err) {
 			console.log(err);
@@ -137,7 +147,13 @@ export function setupIndex(header, btn) {
 	}
 }
 
-export function setupFutureLog(header, btn, newState){
+/**
+ * Sets up the futureLog page with the mothlyLogs, textBlocks, and trackers of the user.
+ * 
+ * @param {Array} btn An array of the buttons in the futureLog page's navbar.
+ * @param {String} newState The new url to go to.
+ */
+export function setupFutureLog(btn, newState){
 	localStorage.readUser((err, user) => {
 		if (err) {
 			console.log(err);
@@ -226,7 +242,13 @@ export function setupFutureLog(header, btn, newState){
 	});
 }
 
-export function setupMonthlyLog(header, btn, newState){
+/**
+ * Sets up the monthlyLog page with the dailyLogs, textBlocks, and trackers of the user.
+ * 
+ * @param {Array} btn An array of the buttons in the monthlyLog page's navbar.
+ * @param {String} newState The new url to go to.
+ */
+export function setupMonthlyLog(btn, newState){
 	localStorage.readUser((err, user) => {
 		if (err) {
 			console.log(err);
@@ -301,7 +323,13 @@ export function setupMonthlyLog(header, btn, newState){
 	});
 }
 
-export function setupDailyLog(header, btn, newState){
+/**
+ * Sets up the daillyLog page with the textBlocks, and trackers of the user.
+ * 
+ * @param {Array} btn An array of the buttons in the dailyLog page's navbar.
+ * @param {String} newState The new url to go to.
+ */
+export function setupDailyLog(btn, newState){
 	let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 	let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 	header.title = `${weekDays[new Date(currentObject.date).getDay()]} ${monthNames[new Date(currentObject.date).getMonth()]} ${new Date(currentObject.date).getUTCDate()}, ${new Date(currentObject.date).getFullYear()}`;
@@ -352,7 +380,14 @@ export function setupDailyLog(header, btn, newState){
 	
 }
 
-export function setupCollection(header, btn, newState){
+
+/**
+ * Sets up the collection page with the textBlocks and trackers of the user.
+ * 
+ * @param {Array} btn An array of the buttons in the collection page's navbar.
+ * @param {String} newState The new url to go to.
+ */
+export function setupCollection(btn, newState){
 	/*localStorage.readUser((err, user) => {
 		if (err) {
 			console.log(err);
@@ -394,8 +429,4 @@ export function setupCollection(header, btn, newState){
 		headerButtons[i].classList.remove("hide");
 	}
 	//document.getElementById("trackerWrapper").appendChild(new TrackerMenu("Future Log Trackers"));
-}
-
-export function setupTrackers(header, btn, newState) {
-	
 }

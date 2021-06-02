@@ -5,6 +5,12 @@ import {setupIndex, setupDailyLog, setupMonthlyLog, setupFutureLog, navbar, head
 export const router = {};
 export let state = "";
 
+/**
+ * Sets the new state based on the new url to render and the previous url.
+ * 
+ * @param {String} newState The url to render.
+ * @param {String} prev The url that was last rendered.
+ */
 router.setState = function(newState, prev) {
 	getCurrentObject(newState);
 	state = newState;
@@ -25,16 +31,16 @@ router.setState = function(newState, prev) {
 
 				//index page
 				if(state == null || state == "#index" || state =='') {
-					setupIndex(header, btn);
+					setupIndex(btn);
 				}
 				else if(state.includes("#dailyLog")) {
-					setupDailyLog(header, btn, newState);
+					setupDailyLog(btn, newState);
 				}
 				else if(state.includes("#monthlyLog")) {
-					setupMonthlyLog(header, btn, newState);
+					setupMonthlyLog(btn, newState);
 				}
 				else if(state.includes("#futureLog")) {
-					setupFutureLog(header, btn, newState);
+					setupFutureLog(btn, newState);
 				}
 				if (!prev){
 					history.pushState({page: pageNumber}, "", url);
