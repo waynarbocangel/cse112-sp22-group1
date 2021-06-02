@@ -1,5 +1,3 @@
-import * as block from "../components/navbar.js"
-
 describe('Basic user flow for SPA ', () => {
     
     beforeAll(async () => {
@@ -7,6 +5,9 @@ describe('Basic user flow for SPA ', () => {
       await page.waitForTimeout(500);
     });
 
+    test(' 1 and 1', ()=>{
+      expect(1).toBe(1);
+    });
     
 
 
