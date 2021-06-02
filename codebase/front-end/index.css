@@ -1,184 +1,135 @@
-@charset "utf-8";
-
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    user-select: none;
+@import "./theme.css";
+@font-face {
+	font-family: "SF-Pro";
+	src: url("./public/fonts/SF-Pro.ttf");
 }
+
+html {
+	overflow: hidden;
+}
+
+html, body, section, .full-height {
+	height: 100%;
+}
+
 body {
-	background-color:white;
-    overflow: hidden;
+	margin: 0;
+	overflow: auto;
+	position: relative;
+	z-index: -2;
 }
 
-#wrapper {
-	width: 100%;
-	float: left;
+div {
+	font-size: 18px;
+	line-height: 26px;
+}
+
+#contentWrapper {
+	border: none;
+	overflow: auto;
+	outline: none;
 	display: block;
- 
-	
- }
-
-
-#Index h1 {
-	text-align: center;
-	
+	margin-top: 10px;
+	margin-left: 80px;
+	margin-right: 20px;
+	position: relative;
+	z-index: -1;
 }
 
-form {
-
-   margin: none;
-   width: 100%;
-}
-
-ul {
+text-block {
+	display: block;
+	margin: 0;
+	padding: 0;
 	width: 100%;
-	text-align: left;
-	float: left;
-	margin-left: 75px;
+	left: 0;
+	right: 0;
 }
 
-/* ul {
-	
-	margin-left:350px;
-   	margin-right: auto;
-	width: 400px;
-	
-}
- */
-
-
- #navBarIcon{
-	position:fixed;
-	top: 1px;
-	left: 1px;
-	margin-left: 40px;
-	margin-top: 25px;
-	
-}
-#plusSign{
-	float: right;
-	margin-right: 40px;
-	margin-top: 25px;
+.noteContainer {
+	margin-top: 7px;
+	margin-bottom: 7px;
+	margin-left: 65px;
+	display: list-item;
+	list-style-type: disc;
+	list-style-position: outside;
 }
 
-
-.arrow {
-	
-	border: solid black;
-	border-width: 0 3px 3px 0;
-	display: inline-block;
-	padding: 3px;
-	width : 5px;
-	height: 5px
-  }
-  
-  .right {
-	transform: rotate(-45deg);
-	-webkit-transform: rotate(-45deg);
-  }
-  
-  .left {
-	transform: rotate(135deg);
-	-webkit-transform: rotate(135deg);
-  }
-  
-  .up {
-	transform: rotate(-135deg);
-	-webkit-transform: rotate(-135deg);
-  }
-  
-  .down {
-	transform: rotate(45deg);
-	-webkit-transform: rotate(45deg);
-  }
-
-  .input-group{
-    display: flex;
-    align-items : center;
+.eventContainer {
+	margin-top: 7px;
+	margin-bottom: 7px;
+	margin-left: 65px;
+	display: list-item;
+	list-style-type: circle;
+	list-style-position: outside;
 }
 
+/*
+.noteContainer:before{content: '\f081';} */
 
-/* Media queries 1 for responsiveness */
-
-@media screen and (max-width: 768px) {
-	*{
-		margin: 0;
-		padding: 0;
-		box-sizing: border-box;
-		user-select: none;
-	}
-	body {
-		background-color:white;
-		overflow: hidden;
-	}
-	#wrapper {
-	   width: 100%;
-	   float: left;
-	   display: block;
-	
-	   
-	}
-
-	#Index h1 {
+@media only screen and (max-width:900px) {
+	#topbar {
+		margin-left: 20px;
 		text-align: center;
-		
 	}
-
- 	form {
-	
-	   margin: none;
-	   width:100%;
+	#contentWrapper {
+		margin-left: 20px;
 	}
- 
-	ul {
-		width: 100%;
-		text-align: left;
-		float: left;
-		margin-left: 50px;
-	}
-	#navBarIcon{
-		float: left;
-		top: 1px;
-		left: 1px;
-		margin-left: 40px;
-		margin-top: 25px;
-		
-	}
-	#plusSign{
-		float: right;
-		margin-right: 40px;
-		margin-top: 25px;
-	}
-	.arrow {
-		
-		border: solid black;
-		border-width: 0 3px 3px 0;
-		display: inline-block;
-		padding: 3px;
-		width : 5px;
-		height: 5px
-	  }
-	  
-	  .right {
-		transform: rotate(-45deg);
-		-webkit-transform: rotate(-45deg);
-	  }
-	  
-	  .left {
-		transform: rotate(135deg);
-		-webkit-transform: rotate(135deg);
-	  }
-	  
-	  .up {
-		transform: rotate(-135deg);
-		-webkit-transform: rotate(-135deg);
-	  }
-	  
-	  .down {
-		transform: rotate(45deg);
-		-webkit-transform: rotate(45deg);
-	  }
 }
- 
 
+/* Fade-in buttons */
+
+#targetMenu {
+	display: none;
+}
+
+@media only screen and (max-width:900px) {
+	/* TODO: use img instead of background-image for theme */
+	#targetMenu {
+		display: block;
+		position: fixed;
+		bottom: 20px;
+		right: 20px;
+		width: 60px;
+		height: 60px;
+		border-radius: 80px;
+		border: 1px solid transparent;
+		box-shadow: 1px 5px 10px 5px rgba(0, 0, 0, 0.1);
+		background-image: url(./public/resources/target_icon.png);
+		background-size: 35px;
+		background-repeat: no-repeat;
+		background-position-x: 14px;
+		background-position-y: 7px;
+		background-color: transparent;
+		cursor: pointer;
+		opacity: 0.7;
+		-webkit-font-smoothing: antialiased;
+		background-blend-mode: multiply;
+		transition: 0.2s;
+	}
+	#targetMenu:hover {
+		opacity: 1;
+		transition: 0.2s;
+	}
+}
+
+/* Side navigation */
+
+nav-bar {
+	overflow: hidden;
+	position: relative;
+	z-index: 1;
+}
+
+.sidebar button {
+	display: block;
+	color: #818181;
+	padding: 10px 0;
+	margin: 10px auto;
+}
+
+/* Text editor, to be integrated */
+
+main {
+	margin-left: 100px;
+	margin-top: 100px;
+}
