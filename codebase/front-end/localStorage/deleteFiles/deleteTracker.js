@@ -3,11 +3,16 @@ export function deleteTrackerPouch(db, id, callback) {
 		if (err) {
 			callback(err);
 		} else {
+<<<<<<< HEAD
 			/*const trackerArr = doc.userObject.trackers.filter(tracker => tracker.id == id);
+=======
+			const trackerArr = doc.trackers.filter(tracker => tracker.id == id);
+>>>>>>> front-end_drop
 			const block = null;
 			if (trackerArr.length > 0) {
 				block = taskBlockArr[0];
 			}
+<<<<<<< HEAD
 			let userArr = [];
 					Array.prototype.push.apply(userArr, doc.userObject.dailyLogs);
 					Array.prototype.push.apply(userArr, doc.userObject.monthlyLogs);
@@ -41,6 +46,25 @@ export function deleteTrackerPouch(db, id, callback) {
 			}
 			
 			doc.trackers = newTrackers;
+=======
+
+			let userArr = [];
+			Array.prototype.push.apply(userArr, doc.dailyLogs);
+			Array.prototype.push.apply(userArr, doc.monthlyLogs);
+			Array.prototype.push.apply(userArr, doc.futureLogs);
+			Array.prototype.push.apply(userArr, doc.trackers);
+			Array.prototype.push.apply(userArr, doc.collections);
+
+			let parentArr = userArr.filter(object => object.id == block.parent);
+			
+			let parent = parentArr[0];
+			const newTrackers = parent.trackers.filter(obj => obj != id);
+			parent.trackers = newTrackers;
+
+			const newTrackerList = doc.trackers.filter(tracker => tracker.id != id);
+			
+			doc.trackers = newTrackerList;
+>>>>>>> front-end_drop
 
 			return db.put(
 				{

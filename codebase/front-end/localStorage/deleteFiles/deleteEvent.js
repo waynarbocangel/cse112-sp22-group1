@@ -9,6 +9,7 @@ export function deleteEventPouch(db, id, callback) {
 				block = eventArr[0];
 			}
 			let userArr = [];
+<<<<<<< HEAD
 					Array.prototype.push.apply(userArr, doc.dailyLogs);
 					Array.prototype.push.apply(userArr, doc.monthlyLogs);
 					Array.prototype.push.apply(userArr, doc.futureLogs);
@@ -19,6 +20,9 @@ export function deleteEventPouch(db, id, callback) {
 			
 			const parent = parentArr[0];
 			const newContents = parent.contents.filter(obj => obj != id);
+=======
+			Array.prototype.push.apply(userArr, doc.textBlocks);
+>>>>>>> front-end_drop
 
 			const newEvents = doc.events.filter(event => event.id != id);
 			
@@ -44,4 +48,8 @@ export function deleteEventPouch(db, id, callback) {
 			);
 		}
 	})
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> front-end_drop

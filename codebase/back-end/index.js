@@ -1,7 +1,11 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
+<<<<<<< HEAD
 const deleteUser = require(__dirname + "/deleteFiles/deleteUser");
+=======
+const deleteUser = require(__dirname + "/deleteFiles/deleteUser.js");
+>>>>>>> front-end_drop
 const createUser = require(__dirname + "/createFiles/createUser.js");
 const updateUser = require(__dirname + "/updateFiles/updateUser.js");
 const readUser = require(__dirname + "/readFiles/readUser.js");

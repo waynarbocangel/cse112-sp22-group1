@@ -31,6 +31,10 @@ import {updateSignifierPouch} from "./updateFiles/updateSignifier.js";
 
 export let db = new PouchDB("Users");
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> front-end_drop
 export function deleteDB(){
     db.destroy( (err, res) => {
 		if (err) {
@@ -64,6 +68,11 @@ export function loginUser(email, pwd, callback){
 	});
 }
 
+<<<<<<< HEAD
+=======
+
+//----------------creation functions-----------------------------
+>>>>>>> front-end_drop
 export function createUser(email, pwd, callback){
     fetch(`http://localhost:3000/createUser`, {
 		headers:{
@@ -94,8 +103,13 @@ export function createDailyLog(parent, content, trackers, date, callback){
 	});
 }
 
+<<<<<<< HEAD
 export function createEvent(parent, date, signifier, callback) {
 	createEventPouch(db, parent, date, signifier, (error, event) => {
+=======
+export function createEvent(index, parent, date, signifier, callback) {
+	createEventPouch(db, index, parent, date, signifier, (error, event) => {
+>>>>>>> front-end_drop
 		callback(error, event);
 	})
 }
@@ -124,8 +138,13 @@ export function createTask(parent, text, complete, signifier, callback) {
 	})
 }
 
+<<<<<<< HEAD
 export function createTextBlock(parent, index, content, tabLevel, kind, signifier, date, callback){
 	createTextBlockPouch(db, parent, index, content, tabLevel, kind, signifier, (error, textBlock) => {
+=======
+export function createTextBlock(parent, subParent, index, content, tabLevel, kind, objectReference, signifier, date, callback){
+	createTextBlockPouch(db, parent, subParent, index, content, tabLevel, kind, objectReference, signifier, date, (error, textBlock) => {
+>>>>>>> front-end_drop
 		callback(error, textBlock);
 	});
 }
@@ -138,10 +157,19 @@ export function createTracker(content, parent, callback) {
 
 export function readUser(callback){
 	readUserPouch(db, (err, user) => {
+<<<<<<< HEAD
+=======
+		//console.log("user is ", user);
+>>>>>>> front-end_drop
 		callback(err, user);
 	});
 }
 
+<<<<<<< HEAD
+=======
+
+//------------------------------deletion functions-----------------------------
+>>>>>>> front-end_drop
 export function deleteUser(){
 	deleteUserPouch(db, (user) => {
 		return res.send(user);
@@ -226,9 +254,13 @@ export function updateUserOnline(){
 }
 
 export function updateDailyLog(dailyLog, callback) {
+<<<<<<< HEAD
 	updateDailyLogPouch(dailyLog, (user) => {
 		return res.send(user);
 	})
+=======
+	updateDailyLogPouch(dailyLog, callback);
+>>>>>>> front-end_drop
 }
 
 export function updateDailyLogByID (id, callback){
