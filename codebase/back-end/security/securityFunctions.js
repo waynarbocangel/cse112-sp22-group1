@@ -58,10 +58,13 @@ function authenticate(userData, callback){
     })
 }
 
+
+
+
 //for exporting
 module.exports = {
     passHash: passHash,
     encrypt: encrypt,
     decrypt: decrypt,
-    authenticate: authenticate
+    authenticate: authenticate,
 }
