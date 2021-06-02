@@ -4,10 +4,6 @@ export function updateSignifierPouch (db, signifier, callback) {
 		if (err) {
 			callback(err);
 		} else {
-<<<<<<< HEAD
-			const signifierArr = doc.signifiers.filter(element => element.id != signifier.id);
-			db.put({_id: "0000", _rev: doc._rev, signifiers: signifierArr.push(signifier)}, (err, res) => {
-=======
 			let signifierArr = doc.signifiers.filter(element => element.id != signifier.id);
 			signifierArr.push(signifier);
 
@@ -26,7 +22,6 @@ export function updateSignifierPouch (db, signifier, callback) {
 				events: doc.events,
 				signifiers: signifierArr
 			}, (err, res) => {
->>>>>>> front-end_drop
 				if (err) {
 					callback(err);
 				} else {

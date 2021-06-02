@@ -15,8 +15,6 @@
     "mongoose": "^5.12.7",
     "nodemon": "^2.0.7",
     "pouchdb": "^7.2.2"
-<<<<<<< HEAD
-=======
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
@@ -28,6 +26,5 @@
   "jest": {
     "preset": "jest-puppeteer",
     "verbose": true
->>>>>>> front-end_drop
   }
 }

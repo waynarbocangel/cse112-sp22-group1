@@ -11,13 +11,8 @@ export function updateCollectionPouch (db, collection, callback) {
 				} else {
 					callback(res);
 				}
-<<<<<<< HEAD
-			});*/
-			doc.collections = collectionArr;
-=======
 			}
 
->>>>>>> front-end_drop
 			return db.put(
 				{
 					_id: "0000",

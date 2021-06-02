@@ -3,19 +3,11 @@ import * as localStorage from "./../userOperations.js";
 
 let textBlockObject;
 
-<<<<<<< HEAD
-export function createTextBlockPouch (db, parent, index, content, tabLevel, kind, objectReference, signifier, date, callback) {
-=======
 export function createTextBlockPouch (db, parent, subParent, index, content, tabLevel, kind, objectReference, signifier, date, callback) {
->>>>>>> front-end_drop
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err, null);
 		} else {
-<<<<<<< HEAD
-			console.log(parent);
-=======
->>>>>>> front-end_drop
 			let id = makeid();
 			let arrays = [];
 			Array.prototype.push.apply(arrays, doc.dailyLogs);
@@ -42,72 +34,6 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 				signifier: signifier
 			};
 			
-<<<<<<< HEAD
-			if (kind == "task") {
-				localStorage.createTask(id, "", 0, null, (err, task) => {
-					if (err) {
-						callback(err, null);
-					} else {
-						textBlockObject.objectReference = task.id;
-					}
-				})
-			} else if (kind = "event") {
-				localStorage.createEvent(id, date, null, (err, event) => {
-					if (err) {
-						callback(err, null);
-					} else {
-						textBlockObject.objectReference = event.id;
-					}
-				})
-			}
-			
-			let userArr = [];
-			Array.prototype.push.apply(userArr, doc.dailyLogs);
-			Array.prototype.push.apply(userArr, doc.monthlyLogs);
-			Array.prototype.push.apply(userArr, doc.futureLogs);
-			Array.prototype.push.apply(userArr, doc.trackers);
-			Array.prototype.push.apply(userArr, doc.collections);
-
-			let parentArr = userArr.filter(object => object.id == parent);
-			if (parent == null){
-				if(index == null) {
-					doc.index.contents.push(id);
-				} else {
-					doc.index.contents.splice(index, 0, id);
-				}
-			} else if(index == null) {
-				parentArr[0].contents.push(id);
-			} else {
-				parentArr[0].contents.splice(index, 0, id);
-			}
-			doc.textBlocks.push(textBlockObject);
-
-			return db.put(
-				{
-					_id: "0000",
-					_rev: doc._rev,
-					email: doc.email,
-					pwd: doc.pwd,
-					index: doc.index,
-					dailyLogs: doc.dailyLogs,
-					monthlyLogs: doc.monthlyLogs,
-					futureLogs: doc.futureLogs,
-					collections: doc.collections,
-					trackers: doc.trackers,
-					textBlocks: doc.textBlocks,
-					tasks: doc.tasks,
-					events: doc.events,
-					signifiers: doc.signifiers
-				}
-			);
-			console.log("saving at createtextblock");
-			callback(null, textBlockObject);
-		}
-	})/*.then((res) => {
-		callback(null, textBlockObject);
-		console.log("callback back from createTextblock");
-	});*/
-=======
 			if(kind == "task" || kind == "event"){
 				if (kind == "task") {
 					//index == null for now just for testing
@@ -327,5 +253,4 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 		console.log(textBlockObject);
 		callback(null, textBlockObject);
 	});
->>>>>>> front-end_drop
 }

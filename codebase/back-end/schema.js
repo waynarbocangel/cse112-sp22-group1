@@ -8,11 +8,7 @@ const userSchema = {
 	pwd: String,
 	index: {
 		objectType: String,
-<<<<<<< HEAD
-		contents: [String] //only futurelog and collection
-=======
 		contents: [String]
->>>>>>> front-end_drop
 	},
 	dailyLogs: [
 		{
@@ -30,16 +26,11 @@ const userSchema = {
 			objectType: String,
 			parent: String,
 			date: Date,
-<<<<<<< HEAD
-			content: [String],
-			days: [String],
-=======
 			days: [{
 				id: String,
 				content: [String],
 				dailyLog: [String]
 			}],
->>>>>>> front-end_drop
 			trackers: [String]
 		}
 	],
@@ -49,16 +40,11 @@ const userSchema = {
 			objectType: String,
 			startDate: Date,
 			endDate: Date,
-<<<<<<< HEAD
-			months: [String],
-			content: [String],
-=======
 			months: [{
 				id: String,
 				content: [String],
 				monthlyLog: [String]
 			}],
->>>>>>> front-end_drop
 			trackers: [String]
 		}
 	],
@@ -85,10 +71,7 @@ const userSchema = {
 			objectType: String,
 			tabLevel: Number,
 			parent: String,
-<<<<<<< HEAD
-=======
 			subParent: String,
->>>>>>> front-end_drop
 			kind: String,
 			objectReference: String,
 			text: String,
@@ -99,11 +82,7 @@ const userSchema = {
 		{
 			id: String,
 			objectType: String,
-<<<<<<< HEAD
-			tabLevel: Number,
-=======
 			title: String,
->>>>>>> front-end_drop
 			parent: String,
 			date: Date,
 			signifier: String
@@ -113,10 +92,6 @@ const userSchema = {
 		{
 			id: String,
 			objectType: String,
-<<<<<<< HEAD
-			tabLevel: Number,
-=======
->>>>>>> front-end_drop
 			parent: String,
 			text: String,
 			complete: Number,

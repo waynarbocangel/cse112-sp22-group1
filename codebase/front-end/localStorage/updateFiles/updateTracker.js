@@ -4,10 +4,6 @@ export function updateTrackerPouch (db, tracker, callback) {
 		if (err) {
 			callback(err);
 		} else {
-<<<<<<< HEAD
-			const trackerArr = doc.trackers.filter(element => element.id != tracker.id);
-			db.put({_id: "0000", _rev: doc._rev, trackers: trackerArr.push(tracker)}, (err, res) => {
-=======
 			let trackerArr = doc.trackers.filter(element => element.id != tracker.id);
 			trackerArr.push(tracker);
 
@@ -25,7 +21,6 @@ export function updateTrackerPouch (db, tracker, callback) {
 				tasks: doc.tasks,
 				events: doc.events,
 				signifiers: doc.signifers}, (err, res) => {
->>>>>>> front-end_drop
 				if (err) {
 					callback(err);
 				} else {
