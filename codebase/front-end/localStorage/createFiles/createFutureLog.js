@@ -3,6 +3,17 @@ import * as localStorage from "./../userOperations.js";
 import {restart} from "./createMonthlyLog.js";
 let futureObject;
 
+/**
+ * Creates and stores a new futureLog created from the given parameters.
+ *
+ * @param {database} db The local pouch database.
+ * @param {Date} startDate The start date of the futureLog.
+ * @param {Date} endDate The end date of the futureLog.
+ * @param {Array} months The id's of the months that are included by the futureLog.
+ * @param {Array} content The id's of the textBlocks included in the futureLog.
+ * @param {Array} trackers The id's of the trackers included by the futureLog.
+ * @callback (err,futureLog) Eihter sends the newly created futureLog or an error if there is one to the callback.
+ */
 export function createFutureLogPouch (db, startDate, endDate, months, content, trackers, callback) {
 	db.get("0000").then((doc) => {
 		let id = makeid();

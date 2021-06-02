@@ -1,8 +1,22 @@
 import {makeid} from "./makeId.js";
 import * as localStorage from "./../userOperations.js";
-
 let textBlockObject;
 
+/**
+ * Creates and stores a new event created from the given parameters.
+ *
+ * @param {database} db The local pouch database.
+ * @param {String} parent The id of the parent of the new textBlock.
+ * @param {String} subParent The id of the child within the parent's content list.
+ * @param {Number} index The index of where the textBlock should be stored in its parent.
+ * @param {String} content The task description to be inserted if kind was a task (optional)
+ * @param {Number} tablevel The tablevel of the textBlock.
+ * @param {String} kind The kind of textBlock (task, event, or paragraph)
+ * @param {String} objectReference The id of the task or event linked to the textBlock.
+ * @param {String} signifier The signifier used by the textBlock.
+ * @param {Date} date The date of the event if the textBlock kind was an event (opional).
+ * @callback (err,textBlock) Eihter sends the newly created textBlock or an error if there is one to the callback.
+ */
 export function createTextBlockPouch (db, parent, subParent, index, content, tabLevel, kind, objectReference, signifier, date, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {

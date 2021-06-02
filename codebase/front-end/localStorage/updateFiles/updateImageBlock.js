@@ -1,5 +1,12 @@
 import * as localStorage from "../userOperations.js";
 
+/**
+ * Finds and update the imageBlock passed in.
+ *
+ * @param {database} db The local pouch database.
+ * @param {Object} imageBlock The imageBlock to be deleted.
+ * @callback (res) Sends an error if there is one to the callback.
+ */
 export function updateImageBlockPouch (db, imageBlock, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {

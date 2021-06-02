@@ -4,6 +4,16 @@ import * as localStorage from "../userOperations.js";
 let monthlyObject;
 let startProcessed = false;
 
+/**
+ * Creates and stores a new monthlyLog created from the given parameters.
+ *
+ * @param {database} db The local pouch database.
+ * @param {String} parent The id of the parent of the new monthlyLog.
+ * @param {Array} days The id's of the days included in the monthlyLog.
+ * @param {Array} trackers The id's of the trackers included in the monthlyLog.
+ * @param {Date} date The date of the monthlyLog.
+ * @callback (err,monthlyLog) Eihter sends the newly created monthlyLog or an error if there is one to the callback.
+ */
 export function createMonthlyLogPouch (db, parent, content, days, trackers, date, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {

@@ -1,5 +1,12 @@
 import * as localStorage from "../userOperations.js";
 
+/**
+ * Finds and deletes the event.
+ *
+ * @param {database} db The local pouch database.
+ * @param {String} id The id of the object to be deleted.
+ * @callback (res) Sends an error if there is one to the callback.
+ */
 export function deleteEventPouch(db, id, callback) {
 	console.log("deleteEvent" + id);
 	db.get("0000", (err, doc) => {

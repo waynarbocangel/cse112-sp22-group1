@@ -1,5 +1,14 @@
 import {makeid} from "./makeId.js";
 
+/**
+ * Creates and stores a new imageBlock created from the given parameters.
+ *
+ * @param {database} db The local pouch database.
+ * @param {String} parent The id of the parent of the new imageBlock.
+ * @param {String} arrangement arrangement of the imageBlock.
+ * @param {Buffer} date image of the imageBlock stored as a buffer.
+ * @callback (err,imageBlock) Eihter sends the newly created imageBlock or an error if there is one to the callback.
+ */
 export function createImageBlockPouch (db, parent, arrangement, data, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {

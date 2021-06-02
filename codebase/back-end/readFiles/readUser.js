@@ -6,6 +6,12 @@ const security = require(__dirname + "/../security/securityFunctions.js");
 mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
 mongoose.set("useCreateIndex", true);
 
+/**
+ * Reads the user from the online db and sends it to the callback.
+ * 
+ * @param {Object} userData The user data object to read from the online db.
+ * @callback (response) Either sends the user as an object from the online db or and error, if there is one, to the callback.
+ */
 function readUser (userData, callback) {
 	schema.User.findOne({email: userData.email}, (error, user) => {
 		if (error) {

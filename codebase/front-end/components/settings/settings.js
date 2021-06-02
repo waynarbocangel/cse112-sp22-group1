@@ -1,5 +1,6 @@
 import {ThemePanel} from './themePanel.js';
 import {GeneralSettingsPanel} from './generalSettingsPanel.js';
+import {fade, unfade} from '../../transitions.js';
 
 
 /* Settings Menu
@@ -23,6 +24,11 @@ import {GeneralSettingsPanel} from './generalSettingsPanel.js';
         </settings-panel>
 */
 const settingsTemplate = `
+	<style>
+		settings-tab {
+			cursor: pointer;
+		}
+	</style>
     <settings-tab slot="settings-tab" title="Settings">
         <img slot="icon" src="public/resources/generalSettingsIcon.png">
     </settings-tab>
@@ -84,6 +90,18 @@ export class SettingsMenu extends HTMLElement {
                     cursor: pointer;
                 }
 
+				#dismiss {
+					filter: var(--icon-filter);
+					width: 20px;
+					opacity: 0.5;
+					transition: 0.2s;
+				}
+
+				#dismiss:hover {
+					opacity: 1;
+					transition: 0.2s;
+				}
+
                 .menu {
                     display: flex;
                     position: absolute;
@@ -91,8 +109,10 @@ export class SettingsMenu extends HTMLElement {
 					overflow: hidden;
                     top: 50%;
                     left: 50%;
-                    width: 50%;
-                    height: 50%;
+                    width: 80%;
+                    height: 80%;
+					max-width: 800px;
+					max-height: 800px;
                     transform: translate(-50%,-50%);
                     -ms-transform: translate(-50%,-50%);
                     background-color: var(--content-background-color);
@@ -155,7 +175,7 @@ export class SettingsMenu extends HTMLElement {
                     <div class="content">
                         <div class="header">
                             <h1>Settings</h1>
-                            <button id="close">X</button>
+                            <button id="close"><img id="dismiss" src="../../public/resources/xIcon.png" /></button>
                         </div>
 
                         <div class="options">
@@ -183,7 +203,11 @@ export class SettingsMenu extends HTMLElement {
     connectedCallback() {
         this.innerHTML = settingsTemplate;
 
-        this.hide();
+        this.classList.toggle('open', false);
+        this.setAttribute('aria-hidden', true);
+		
+		this.style.display = "none";
+		this.removeAttribute('open');
 
         Promise.all([customElements.whenDefined('settings-tab'), customElements.whenDefined('settings-panel')])
             .then(() => this.linkPanels());
@@ -263,14 +287,16 @@ export class SettingsMenu extends HTMLElement {
 
     set open(isOpen) {
         this.classList.toggle('open', isOpen);
-        this.setAttribute('aria-hidden', !isOpen)
+        this.setAttribute('aria-hidden', !isOpen);
         if (isOpen) {
-            this.style.display = '';
-            this.setAttribute('open', 'true');
-            this.focus();
+			this.setAttribute('open', 'true');
+			unfade(this, () => {
+				this.focus();
+			});
         } else {
-            this.style.display = 'none';
-            this.removeAttribute('open');
+			fade(this, () => {
+				this.removeAttribute('open');
+			});
         }
     }
 

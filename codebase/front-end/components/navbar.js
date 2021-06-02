@@ -27,7 +27,7 @@ template.innerHTML = `
 			padding: 0;
 			width: 32px;
 			height: 32px;
-			margin: 32px auto;
+			margin: 20px auto 44px auto;
 			cursor: pointer;
 		}
 

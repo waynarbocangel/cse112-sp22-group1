@@ -1,5 +1,12 @@
 import * as localStorage from "../userOperations.js";
 
+/**
+ * Finds and deletes the textBlock.
+ *
+ * @param {database} db The local pouch database.
+ * @param {String} id The id of the object to be deleted.
+ * @callback (res) Sends an error if there is one to the callback.
+ */
 export function deleteTextBlockPouch(db, id, callback) {
 	console.log("delete textblock is being deleted");
 	db.get("0000", (err, doc) => {

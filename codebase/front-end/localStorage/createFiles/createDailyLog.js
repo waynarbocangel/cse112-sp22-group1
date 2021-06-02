@@ -1,6 +1,16 @@
 import {makeid} from "./makeId.js";
 let dailyObject;
 
+/**
+ * Creates and stores a new dailyLog created from the given parameters.
+ *
+ * @param {database} db The local pouch database.
+ * @param {String} parent The id of the parent of the new dailyLog.
+ * @param {Array} content Array of textBlocks that should appear in dailyLog.
+ * @param {Array} trackers Array of trackers that should appear in dailyLog.
+ * @param {Date} date The date of the dailyLog.
+ * @callback (err,dailyLog) Eihter sends the newly created dailyLog or an error if there is one to the callback.
+ */
 export function createDailyLogPouch (db, parent, content, trackers, date, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {

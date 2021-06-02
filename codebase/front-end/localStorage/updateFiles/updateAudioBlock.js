@@ -1,5 +1,12 @@
 import * as localStorage from "../userOperations.js";
 
+/**
+ * Finds and update the audioBlock passed in.
+ *
+ * @param {database} db The local pouch database.
+ * @param {Object} audioBlock The audioBlock to be deleted.
+ * @callback (res) Sends an error if there is one to the callback.
+ */
 export function updateAudioBlockPouch (db, audioBlock, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {

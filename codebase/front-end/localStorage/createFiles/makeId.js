@@ -1,3 +1,9 @@
+
+/**
+ * Creates and returns a random id of length 30.
+ *
+ * @return Returns a randomly generated id of length 30.
+ */
 export function makeid() {
 	let length = 30;
     let result = [];

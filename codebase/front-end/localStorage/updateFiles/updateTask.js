@@ -1,5 +1,12 @@
 import * as localStorage from "../userOperations.js";
 
+/**
+ * Finds and update the task passed in.
+ *
+ * @param {database} db The local pouch database.
+ * @param {Object} task The task to be deleted.
+ * @callback (res) Sends an error if there is one to the callback.
+ */
 export function updateTaskPouch (db, task, callback) {
 	console.log("task when calling update task", task);
 	db.get("0000", (err, doc) => {

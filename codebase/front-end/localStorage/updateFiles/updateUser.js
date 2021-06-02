@@ -1,3 +1,10 @@
+
+/**
+ * Updates the user in the local db.
+ *
+ * @param {database} db The local pouch database.
+ * @callback (res) Sends an error if there is one to the callback.
+ */
 export function  updateUserPouch(db, callback){
 	db.get("0000", (err, doc) => {
 		if (err) {
@@ -11,6 +18,12 @@ export function  updateUserPouch(db, callback){
 	});
 }
 
+/**
+ * Finds and update the user in the local db from the online db.
+ *
+ * @param {database} db The local pouch database.
+ * @callback (res) Sends an error if there is one to the callback.
+ */
 export function updateUserOnline(db, callback){
 	db.get("0000", (err, doc) => {
 		if (err) {

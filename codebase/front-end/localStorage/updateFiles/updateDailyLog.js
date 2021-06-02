@@ -1,3 +1,11 @@
+
+/**
+ * Finds and update the dailyLog passed in.
+ *
+ * @param {database} db The local pouch database.
+ * @param {Object} dailyLog The dailyLog to be deleted.
+ * @callback (res) Sends an error if there is one to the callback.
+ */
 export function updateDailyLogPouch (db, log, callback) {
 	console.log(log);
 	db.get("0000", (err, doc) => {

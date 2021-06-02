@@ -17,6 +17,7 @@ export class DropdownBlock extends HTMLElement {
 
 			#wrapper{
 				padding-bottom: 0;
+				width: calc(100% - 70px);
 				user-select: none; 
 				-webkit-user-select: none;
 				-moz-user-select: none; 
@@ -27,6 +28,7 @@ export class DropdownBlock extends HTMLElement {
 			#title{
 				display: inline-block;
 				font-family: "SF-Pro";
+				margin-left: 7.5px;
 				font-size: calc(20pt - ${level * 2}pt);
 				font-weight: calc(900 - ${level * 200});
 				letter-spacing: calc(1.2px - ${level * 0.35}px);
@@ -49,8 +51,8 @@ export class DropdownBlock extends HTMLElement {
             }
 
             #arrow img {
-                max-width: calc(24px - ${level * 3}px);
-                max-height: calc(24px - ${level * 3}px);
+                max-width: calc(22px - ${level * 3}px);
+                max-height: calc(22px - ${level * 3}px);
 
                 filter: var(--icon-filter);
             }
@@ -86,14 +88,38 @@ export class DropdownBlock extends HTMLElement {
 				border-top: 1px solid rgba(0,0,0,0.08);
 			}
 
+			#editorIcons{
+				position: relative;
+				display: inline;
+				float: left;
+				top: calc(17.5px - ${level * 1}px);
+				vertical-align: top;
+			}
+			
+			#editorIcons img{
+				margin-right: 7px;
+				height: 15px;
+				cursor: pointer;
+				filter: var(--icon-filter);
+			}
+			.unfocusedIcons{
+				opacity: 0.5;
+				transition: 0.2s;
+			}
+	
+			#editorIcons img:hover{
+				opacity: 0.8;
+				transition: opacity 0.2s;
+			}
 		</style>
+		<div id="editorIcons" class="paragraphIcons"><img src="../public/resources/plusIcon.png" class="unfocusedIcons"/><img src="../public/resources/sixDotIcon.png" class="unfocusedIcons"/></div>
         <div id="wrapper">
 			<div id="titleWrapper" class="${(level > 1) ? "singleItemWrapper" : ""}">
 				<h1 id="title"></h1>
 				<button id="arrow"><img src="../public/resources/right-chevron.png" /></button>
 			</div>
             <div id="contentWrapper"></div>
-        </div>
+
         `;
         this.button = this.shadowRoot.getElementById("arrow");
         this.wrapper = this.shadowRoot.getElementById("wrapper");

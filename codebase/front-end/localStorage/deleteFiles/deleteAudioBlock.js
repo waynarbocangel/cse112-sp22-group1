@@ -1,3 +1,11 @@
+
+/**
+ * Finds and deletes the audioBlock.
+ *
+ * @param {database} db The local pouch database.
+ * @param {String} id The id of the object to be deleted.
+ * @callback (res) Sends an error if there is one to the callback.
+ */
 export function deleteAudioBlockPouch(db, id, callback) {
 	localStorage.readUser((err, user) => {
 		if (err == null){

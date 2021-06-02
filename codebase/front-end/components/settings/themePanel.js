@@ -95,29 +95,51 @@ export class ThemePanel extends HTMLElement {
                 font-family: "SF-Pro";
             }
 
-            .option-subheading {
-                text-align: left;
+            form {
                 margin: 0;
-                border-bottom: 2px solid var(--border-color);
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+				align-content: center;
+				flex-direction: row;
             }
 
-            form {
-                margin: 10px 0px;
-            }
+			label{
+				flex-direction: column;
+				text-align: center;
+				font-size: 16pt;
+				margin-left: 20px;
+				margin-right: 20px;
+				margin-bottom: 30px;
+				cursor: pointer;
+			}
+
+			.themeImg{
+				width: 250px;
+				margin-top: 10px;
+				padding: 1px;
+				border-radius: 5px;
+				transition: 0.2s;
+			}
+
+			input[type="radio"]{
+				display: none;
+			}
+
+			input[type="radio"]:checked+label img.themeImg{
+				border: 8px solid var(--content-foreground-color);
+				transition: 0.2s;
+			}
 
         </style>
 
-        <div class="option-subheading">
-            <h3> Color Scheme </h3>
-        </div>
-
         <form id="theme">
-            <input type="radio" name="themeradio" id="darkmode">     <label for="darkmode">Darkmode</label></input><br>
-            <input type="radio" name="themeradio" id="lightmode">    <label for="lightmode">Noobmode</label></input><br>
-            <input type="radio" name="themeradio" id="highcontrast"> <label for="highcontrast">High Contrast</label></input><br>
-            <input type="radio" name="themeradio" id="theme4">       <label for="theme4">Theme 4</label></input><br>
-            <input type="radio" name="themeradio" id="theme5">       <label for="theme5">Theme 5</label></input><br>
-            <input type="radio" name="themeradio" id="theme6">       <label for="theme6">Theme 6</label></input><br>
+            <input type="radio" name="themeradio" id="darkmode" /><label for="darkmode">Cool Dark<br /><img class="themeImg" src="../../public/resources/coolDark.png" /></label><br>
+            <input type="radio" name="themeradio" id="lightmode" /><label for="lightmode">Minimal Light<br /><img class="themeImg" src="../../public/resources/minimalLight.png" /></label><br>
+            <input type="radio" name="themeradio" id="highcontrast" /><label for="highcontrast">High Contrast<br /><img class="themeImg" src="../../public/resources/highContrast.png" /></label><br>
+            <input type="radio" name="themeradio" id="theme4" /><label for="theme4">Snazzy Light<br /><img class="themeImg" src="../../public/resources/snazzyLight.png" /></label><br>
+            <input type="radio" name="themeradio" id="theme5" /><label for="theme5">Classy Light<br /><img class="themeImg" src="../../public/resources/classyLight.png" /></label><br>
+            <input type="radio" name="themeradio" id="theme6" /><label for="theme6">Night Owl<br /><img class="themeImg" src="../../public/resources/nightOwl.png" /></label><br>
         </form>
         `;
         this.themeRadios = this.shadowRoot.querySelectorAll("input[type=radio]");
@@ -130,7 +152,7 @@ export class ThemePanel extends HTMLElement {
 		localStorage.readUser((err, user) => {
 			if (!err){
 				let pickedTheme = this.shadowRoot.getElementById(user.theme);
-				pickedTheme.checked = true;
+				pickedTheme.toggleAttribute("checked", true);
 				this.updateTheme(user.theme);
 			} else {
 				console.log(err);

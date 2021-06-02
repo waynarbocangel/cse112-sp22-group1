@@ -1,3 +1,11 @@
+
+/**
+ * Finds and deletes the collection.
+ *
+ * @param {database} db The local pouch database.
+ * @param {String} id The id of the object to be deleted.
+ * @callback (res) Sends an error if there is one to the callback.
+ */
 export function deleteCollectionPouch(db, id, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {

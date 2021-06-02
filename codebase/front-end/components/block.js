@@ -46,6 +46,8 @@ export class TextBlock extends HTMLElement {
 			this.timeSetter = false;
 			this.dateSetter = false;
 			this.eventDelete = true;
+			this.signifier = this.shadowRoot.getElementById("signifier");
+			this.signifier.innerHTML = "&#x1F7E0;";
 			this.setupTabLevel();
 			callback(true);
 		})
@@ -353,9 +355,11 @@ export class TextBlock extends HTMLElement {
 
 		
 		textBlock.onblur = () => {
-			this.editorIcons.classList.remove("focusedIcons");
 			textBlock.classList.remove("eventNodateFocused");
-			this.editorIcons.classList.add("unfocusedIcons");
+			for (let i = 0; i < this.editorIcons.childNodes.length - 1; i++){
+				this.editorIcons.childNodes[i].classList.remove("focusedIcons");
+				this.editorIcons.childNodes[i].classList.add("unfocusedIcons");
+			}
 			console.log("item is ",this.item);
 			let date = null;
 			if(this.kind == "event"){
@@ -451,8 +455,10 @@ export class TextBlock extends HTMLElement {
 		textBlock.onfocus = (e) => {
 			this.controller.resetPosition = false;
 			this.setCurrentSpot();
-			this.editorIcons.classList.remove("unfocusedIcons");
-			this.editorIcons.classList.add("focusedIcons");
+			for (let i = 0; i < this.editorIcons.childNodes.length - 1; i++){
+				this.editorIcons.childNodes[i].classList.remove("unfocusedIcons");
+				this.editorIcons.childNodes[i].classList.add("focusedIcons");
+			}
 			this.controller.currentBlockIndex = this.controller.blockArray.indexOf(this);
 			this.controller.currentTabLevel = this.tabLevel;
 			if (this.classList.contains("noteContainer") || this.classList.contains("eventContainer") || this.checkBox.style.display != "none") {

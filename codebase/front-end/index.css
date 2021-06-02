@@ -48,7 +48,7 @@ text-block {
 .noteContainer {
 	margin-top: 7px;
 	margin-bottom: 7px;
-	margin-left: 65px;
+	margin-left: 87px;
 	display: list-item;
 	list-style-type: disc;
 	list-style-position: outside;
@@ -57,7 +57,7 @@ text-block {
 .eventContainer {
 	margin-top: 7px;
 	margin-bottom: 7px;
-	margin-left: 65px;
+	margin-left: 87px;
 	display: list-item;
 	list-style-type: circle;
 	list-style-position: outside;

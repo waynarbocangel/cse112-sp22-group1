@@ -1,3 +1,11 @@
+
+/**
+ * Finds and update the collection passed in.
+ *
+ * @param {database} db The local pouch database.
+ * @param {Object} collection The collection to be deleted.
+ * @callback (res) Sends an error if there is one to the callback.
+ */
 export function updateCollectionPouch (db, collection, callback) {
 	console.log(collection);
 	db.get("0000", (err, doc) => {

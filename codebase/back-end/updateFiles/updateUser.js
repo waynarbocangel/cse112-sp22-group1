@@ -6,6 +6,12 @@ const schema = require(__dirname + "/../schema.js");
 mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
 mongoose.set("useCreateIndex", true);
 
+/**
+ * Updated the user from the local db to send to the online db.
+ * 
+ * @param {Object} userObject The new version of user to replace in the online db.
+ * @callback (response) Either sends the user replaced in the online db or an error, if there is one, to the callback.
+ */
 function updateUser(userObject, callback){
 	console.log(userObject);
 	schema.User.findOne({email: userObject.email}, (error, user) => {
