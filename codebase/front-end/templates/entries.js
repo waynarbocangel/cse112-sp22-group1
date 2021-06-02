@@ -1,113 +1,227 @@
 const template = document.createElement('template');
 
 template.innerHTML = `
-<html>
-<head>
     <style>
         @font-face {
             font-family:"SF-Pro";
             src: url("./public/fonts/SF-Pro.ttf");
         }
+        :host {
+                font-family: "SF-Pro";
+        }
+        
+        /* The Popup background */
+        .popup {
 
-        body {
-            width: 540px;
-            margin: auto;
-            font-family: 'Handlee', cursive;  
-            background: #666;
-            color: #666;
-        }
-        
-        article {
-            margin: 50px auto;
-            padding: 20px 40px;
-            position: relative;
-            box-shadow: 0 0 10px rgba(0, 0, 0, .15);
-            background: #fcf59b;
-            background: -webkit-linear-gradient(top, #81cbbc, #fcf59b 2%);
-            -webkit-background-size: 100% 40px;
-        }
-        
-        article, 
-        article:before,
-        article:after {
-            -webkit-border-bottom-left-radius: 20px 500px;
-            -webkit-border-bottom-right-radius: 500px 30px;
-            -webkit-border-top-right-radius: 5px 100px;
-        }
-        
-        article:after,
-        article:before {
-            content: ' ';
-            width: 100%;
-            height: 100%;
-            position: absolute;
+            font-family:'SF-Pro';
+            background: white;
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
             left: 0;
             top: 0;
-            z-index: -1;
-            box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
         }
-        
-        article:before {
-            -webkit-transform: rotate(4deg);
-            background: #fcf6a7;
+
+        /* Pop up  window */
+        .popup-content {
+            background-color: #fefefe;
+            margin: auto;
+            position: fixed;
+            border: 1px solid #888;
+            width: 40%;
+            height: 70%;
+            left: 30vw;
         }
-        
-        article:after {
-            -webkit-transform: rotate(-4deg);
-            background: #fcf7b1;
-        }
-        
-        p {
-            line-height: 2.5em;
-        }
-        
-        h1 {
-            padding-top: 8px;
-            margin-bottom: -8px;
-        }
-        
-        article:focus {
-            outline: none;
-            color: black;
-            border-radius:0;
-        }
-        
-        article:focus:after,
-        article:focus:before {
-            content:none;
-        }
-        .link {
-            background:  #fcf59b;
-            text-align: center;
-            border-radius: 10px;
-            box-shadow: 0px 0px 2px 3px rgba(0, 0, 0, .35);
-        }
-        .link a {
-            letter-spacing: 1px;
-            font-size: 1.2em;
+
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 3vw;
             font-weight: bold;
-            color: #121212;
+            position: absolute;
+            right: 2vw;
+            top: 2vh;
+            
         }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Set Label For each log*/
+        label[for=month],label[for=future],label[for=daily] {
+            font-size: 3vw;
+            white-space: nowrap;
+            position: absolute;
+            text-align: center;	
+            font-weight: 1000;
+            left:7.8vw;	
+            top:5vh;	
+        }
+
+        /* Monthly Log Start */
+        label[for=pick-month] {
+            font-size: 2vw;
+            white-space: nowrap;
+            position: absolute;
+            text-align: center;	
+            left:7.5vw;	
+            top: 23vh;	
+            font-weight: 400;
+        }
+
+        input[type=month] {
+            position: absolute;
+            top: 33vh;
+            left:7.5vw;
+            width:25vw;
+            height: 5vh;
+            padding-left: 20px;
+        }
+
+        input[type=submit] {
+            background-color: #4CAF50;
+            border: none;
+            font-size: 1.5vw;
+            color: white;
+            padding: 13 26px;
+            text-decoration: none;
+            margin: 4px 2px;
+            cursor: pointer;
+            position: absolute;
+            bottom:10%;				
+            left:16vw;
+        }
+        
+        form.monthly {
+            display:none;
+        }
+
+        /* Monthly Log End */
+
+
+        /* Future Log Start */
+        label[for=future-from] {
+            font-size: 2vw;
+            white-space: nowrap;
+            position: absolute;
+            text-align: center;	
+            left:7.5vw;	
+            top: 18vh;	
+            font-weight: 400;
+        }
+
+        label[for=future-to] {
+            font-size: 2vw;
+            white-space: nowrap;
+            position: absolute;
+            text-align: center;	
+            left:7.5vw;	
+            top: 34vh;	
+            font-weight: 400;
+        }
+
+        input[name=future-from] {
+            position: absolute;
+            top: 25vh;
+            left:7.5vw;
+            width:25vw;
+            height: 5vh;
+            padding-left: 20px;
+        }
+
+        input[name=future-to] {
+            position: absolute;
+            top: 41vh;
+            left:7.5vw;
+            width:25vw;
+            height: 5vh;
+            padding-left: 20px;
+        }
+
+        form.future {
+            display:none;
+        }
+
+        /* Future Log End */
+
+        /* Daily Log Start */
+        label[for=daily-title] {
+            font-size: 2vw;
+            white-space: nowrap;
+            position: absolute;
+            text-align: center;	
+            left:7.5vw;	
+            top: 23vh;	
+            font-weight: 400;
+        }
+
+        input[name=daily] {
+            position: absolute;
+            top: 33vh;
+            left:7.5vw;
+            width:25vw;
+            height: 5vh;
+            padding-left: 20px;
+        }
+        /* Daily Log End */
+
     </style>
-    
-    
-    <link href='https://fonts.googleapis.com/css?family=Handlee' rel='stylesheet' type='text/css'>
-    </head>
-    <body>
-        <article contenteditable>
-        <h1>Journal entry #1</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    </article>
 
-    <div class="link"> 
-        <p>Created by:
-            <a href="http://nikolaivanovwd.com" rel="follow"
-            title="nikolaivanovwd.com" target="_blank">nikola ivanov
-        </p>
-</div>
 
-    </body>
-</html>
+    
+    <button id="myBtn">Open Monthly</button>
+
+    <!-- The Modal -->
+    <div id="popup" class="popup">
+
+    <!-- Modal content -->
+        <div class="popup-content">
+            <span class="close">&times;</span>
+
+            <!-- Monthly Log -->
+            <form class="monthly">
+                <label for="month">New Monthly Log </label>
+                <br><br>
+                <label for="pick-month"> Pick a Month:</label>
+                <input type="month" id="monthly" name="monthly">
+                <br><br>
+                <input type="submit" value="Create"> 
+            </form>
+
+            <!-- Future Log -->
+            <form class="future">
+                <label for="month">New Future Log </label>
+                <br><br>
+                <label for="future-from"> From:</label>
+                <input type="date" id="future-from" name="future-from">
+                <br><br>
+                <label for="future-to"> To:</label>
+                <input type="date" id="future-to" name="future-to">
+                <input type="submit" value="Create"> 
+            </form>
+
+            <!-- Daily Log -->
+            <form class="daily">
+                <label for="daily">New Daily Log </label>
+                <br><br>
+                <label for="daily-title">Title:</label><br><br>
+                <input type="text" id="daily" name="daily">
+                <input type="submit" value="Create"> 
+            </form>
+        </div>
+
+    </div>
+
 `;
 
 
@@ -118,6 +232,30 @@ export class entries extends HTMLElement {
 		this.attachShadow({mode: 'open'});
 		this.shadowRoot.appendChild(template.content.cloneNode(true));
 
+        this.popup = this.shadowRoot.getElementById("popup");
+			
+        // Get the button that opens the popup
+        this.btn = this.shadowRoot.getElementById("myBtn");
+        
+        // Get the <span> element that closes the popup
+        this.span = this.shadowRoot.getElementsByClassName("close")[0];
+        
+        // When the user clicks the button, open the popup 
+        this.btn.addEventListener('click', () => {
+			this.popup.style.display = "block";
+		});
+
+        // When the user clicks on <span> (x), close the popup
+        this.span.addEventListener('click', () => {
+			this.popup.style.display = "none";
+		});
+
+        // When the user clicks anywhere outside of the popup, close it
+        this.window.addEventListener('click',()=> {
+            if (event.target == popup) {
+                this.popup.style.display = "none";
+              }
+        });
 	}
 }
 
