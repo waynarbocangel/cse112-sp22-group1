@@ -96,6 +96,42 @@ export class ShortcutPage extends HTMLElement {
                         return home
                     </span>
                 </li>
+                <li class="page_nav_info">
+                    <img src="../public/resources/double_icon.png" class="page_img" />
+                    <span class="page_text">
+                        on daily log's sidebar, return to future log
+                    </span>
+                </li>
+                <li class="page_nav_info">
+                    <img src="../public/resources/left_chevron.png" class="page_img" />
+                    <span class="page_text">
+                        on daily log's sidebar, return to monthly log. on the monthly log sidebar, return to future log. additionally used with a right chevron to navigate between days or months, depending on what log you are on.
+                    </span>
+                </li>
+                <li class="page_nav_info">
+                    <img src="../public/resources/right_chevron.png" class="page_img" />
+                    <span class="page_text">
+                    used with a left chevron to navigate between days or months, depending on what log you are on.
+                    </span>
+                </li>
+                <li class="page_nav_info">
+                    <img src="../public/resources/icon.png" class="page_img" />
+                    <span class="page_text">
+                        settings
+                    </span>
+                </li>
+                <li class="page_nav_info">
+                    <img src="../public/resources/plusIcon.png" class="page_img" />
+                    <span class="page_text">
+                    add a new view
+                    </span>
+                </li>
+                <li class="page_nav_info">
+                    <img src="../public/resources/tracker_icon.png" class="page_img" />
+                    <span class="page_text">
+                    open up your trackers.
+                    </span>
+                </li>
             </ul>
         </div>
 
@@ -106,8 +142,8 @@ export class ShortcutPage extends HTMLElement {
                 <li><strong>##, /h2</strong> header 2</li>
                 <li><strong>###, /h3</strong> header 2</li>
                 <li><strong>/note, -</strong> creates a bullet point</li>
-                <li><strong>/event</strong> creates an event, includes space for time and date; can be clicked to cross out</li>
-                <li><strong>/task </strong> creates a task with a checkbox</li>
+                <li><strong>/event, --</strong> creates an event, includes space for time and date; can be clicked to cross out</li>
+                <li><strong>/task, =- </strong> creates a task with a checkbox</li>
                 <li><strong>/futurelog </strong> creates a new future log</li>
                 <li><strong>/monthlylog</strong> creates a new monthly log</li>
                 <li><strong>/dailylog</strong> creates a new dailylog</li>
