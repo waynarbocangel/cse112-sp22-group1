@@ -1,6 +1,8 @@
 const template = document.createElement('template');
 
 template.innerHTML = `
+<html>
+<head>
     <style>
         @font-face {
             font-family:"SF-Pro";
@@ -64,7 +66,7 @@ template.innerHTML = `
             position: absolute;
             text-align: center;	
             font-weight: 1000;
-            left:7.8vw;	
+            left:8.7vw;	
             top:5vh;	
         }
 
@@ -91,15 +93,13 @@ template.innerHTML = `
         input[type=submit] {
             background-color: #4CAF50;
             border: none;
-            font-size: 1.5vw;
+            font-size: 1.7vw;
+            font-weight:400;
             color: white;
-            padding: 13 26px;
-            text-decoration: none;
-            margin: 4px 2px;
             cursor: pointer;
             position: absolute;
-            bottom:10%;				
-            left:16vw;
+            bottom:5vh;				
+            left:17vw;
         }
         
         form.monthly {
@@ -126,7 +126,7 @@ template.innerHTML = `
             position: absolute;
             text-align: center;	
             left:7.5vw;	
-            top: 34vh;	
+            top: 36vh;	
             font-weight: 400;
         }
 
@@ -141,7 +141,7 @@ template.innerHTML = `
 
         input[name=future-to] {
             position: absolute;
-            top: 41vh;
+            top: 43vh;
             left:7.5vw;
             width:25vw;
             height: 5vh;
@@ -149,12 +149,18 @@ template.innerHTML = `
         }
 
         form.future {
-            display:none;
+            display:default;
         }
 
         /* Future Log End */
 
         /* Daily Log Start */
+        form.daily {
+            display:none;
+        }
+
+
+        /* Daily Log End */
         label[for=daily-title] {
             font-size: 2vw;
             white-space: nowrap;
@@ -173,18 +179,21 @@ template.innerHTML = `
             height: 5vh;
             padding-left: 20px;
         }
-        /* Daily Log End */
+        
+
 
     </style>
 
+</head>
 
+<body>	
     
-    <button id="myBtn">Open Monthly</button>
+    <button id="myBtn">Open</button>
 
     <!-- The Modal -->
     <div id="popup" class="popup">
 
-    <!-- Modal content -->
+      <!-- Modal content -->
         <div class="popup-content">
             <span class="close">&times;</span>
 
@@ -217,16 +226,17 @@ template.innerHTML = `
                 <label for="daily-title">Title:</label><br><br>
                 <input type="text" id="daily" name="daily">
                 <input type="submit" value="Create"> 
-            </form>
+              </form>
         </div>
 
     </div>
-
+    </body>
+</html>
 `;
 
 
 
-export class entries extends HTMLElement {
+export class create_entries extends HTMLElement {
 	constructor () {
 		super ();
 		this.attachShadow({mode: 'open'});
@@ -238,7 +248,7 @@ export class entries extends HTMLElement {
         this.btn = this.shadowRoot.getElementById("myBtn");
         
         // Get the <span> element that closes the popup
-        this.span = this.shadowRoot.getElementsByClassName("close")[0];
+        this.span = this.shadowRoot.querySelectorAll('span')[0];
         
         // When the user clicks the button, open the popup 
         this.btn.addEventListener('click', () => {
@@ -251,6 +261,7 @@ export class entries extends HTMLElement {
 		});
 
         // When the user clicks anywhere outside of the popup, close it
+        // NOTE: THIS IS NOT WORKING
         this.window.addEventListener('click',()=> {
             if (event.target == popup) {
                 this.popup.style.display = "none";
@@ -259,4 +270,4 @@ export class entries extends HTMLElement {
 	}
 }
 
-customElements.define('entries', entries);
+customElements.define('create-entries', create_entries);
