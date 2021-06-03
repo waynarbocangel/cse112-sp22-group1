@@ -11,6 +11,22 @@ describe('Basic user flow for SPA ', () => {
     test(' 1 and 1', ()=>{
       expect(1).toBe(1);
     });
+
+    // Test Navigation
+    test('Create Future Log', () => {
+      // TODO
+    });
+
+    test ('Create Daily Log', () => {
+
+    });
+
+    test ('Change Theme', () => {
+
+    });
+
+    
+
     
     
 
