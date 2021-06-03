@@ -4,7 +4,7 @@
   "description": "This is the server for the CSE 110 Team 11 project for spring 2021",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --detectOpenHandles"
   },
   "author": "CSE 110 Team 11 Spring 2021",
   "license": "ISC",
@@ -18,8 +18,9 @@
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
-    "@babel/preset-env": "^7.14.2",
+    "@babel/preset-env": "^7.14.4",
     "babel-jest": "^26.6.3",
+    "jest": "^27.0.3",
     "jest-puppeteer": "^5.0.3",
     "puppeteer": "^9.1.1"
   },
