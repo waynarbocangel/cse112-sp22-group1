@@ -1,4 +1,5 @@
-// jest-puppeteer.config.js
+// This isjest-puppeteer.config.js
+
 module.exports = {
   launch: {
     headless: false,
