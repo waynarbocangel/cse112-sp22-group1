@@ -9,7 +9,7 @@ mongoose.set("useCreateIndex", true);
 
 /**
  * Creates a user in the remote db.
- * 
+ *
  * @param {String} email The email of the new user.
  * @param {String} pwd The pwd of the new user.
  * @callback (error) Sends an error if there is one.
