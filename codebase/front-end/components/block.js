@@ -54,6 +54,9 @@ export class TextBlock extends HTMLElement {
 
 	}
 
+	/**
+	 * keeps track of current location of textBlock(?)
+	 */
 	setCurrentSpot() {
 		let container = this.shadowRoot.getElementById("textBlock");
 		let range = shadow.getRange(this.shadowRoot);
@@ -74,6 +77,12 @@ export class TextBlock extends HTMLElement {
 
 	}
 
+	/**
+	 * moves the textBlock to the location it was last dragged to(?)
+	 * 
+	 * @param {*} newSpot 
+	 * @param {*} up 
+	 */
 	moveToSpot(newSpot, up) {
 		let container = this.shadowRoot.getElementById("textBlock");
 		if (container.childNodes.length > 0) {
@@ -123,6 +132,9 @@ export class TextBlock extends HTMLElement {
 
 	}
 
+	/**
+	 * sets up textBlock styling for header 1 text 
+	 */
 	setupHeader1() {
 		let textBlock = this.shadowRoot.getElementById("textBlock");
 		while (this.editorIcons.classList.length > 0) {
@@ -144,6 +156,9 @@ export class TextBlock extends HTMLElement {
 		this.checkBox.style.display = "none";
 	}
 
+	/**
+	 * sets up textBlock styling for header 2 text
+	 */
 	setupHeader2() {
 		let textBlock = this.shadowRoot.getElementById("textBlock");
 		while (this.editorIcons.classList.length > 0) {
@@ -165,6 +180,9 @@ export class TextBlock extends HTMLElement {
 		this.checkBox.style.display = "none";
 	}
 
+	/**
+	 * sets up textBlock syling for header 3 text
+	 */
 	setupHeader3() {
 		let textBlock = this.shadowRoot.getElementById("textBlock");
 		while (this.editorIcons.classList.length > 0) {
@@ -186,6 +204,9 @@ export class TextBlock extends HTMLElement {
 		this.checkBox.style.display = "none";
 	}
 
+	/**
+	 * sets up textBlock styling for note text and adds bullet
+	 */
 	setupNote() {
 		let textBlock = this.shadowRoot.getElementById("textBlock");
 		while (this.editorIcons.classList.length > 0) {
@@ -208,6 +229,9 @@ export class TextBlock extends HTMLElement {
 		this.checkBox.style.display = "none";
 	}
 
+	/**
+	 * sets up textBlock styling for event text and handles event date and time parsing
+	 */
 	setupEvent() {
 		let textBlock = this.shadowRoot.getElementById("textBlock");
 		while (this.editorIcons.classList.length > 0) {
@@ -241,6 +265,9 @@ export class TextBlock extends HTMLElement {
 		this.checkBox.style.display = "none";
 	}
 
+	/**
+	 * sets up textBlock styling for task text and adds task check off block
+	 */
 	setupTask() {
 		let textBlock = this.shadowRoot.getElementById("textBlock");
 		while (this.editorIcons.classList.length > 0) {
@@ -262,6 +289,10 @@ export class TextBlock extends HTMLElement {
 		this.checkBox.style.display = "inline";
 	}
 
+	/**
+	 * removes any styling from a textBlock in case one type of textblock
+	 * is converted to a different one
+	 */
 	removeStyles() {
 		let textBlock = this.shadowRoot.getElementById("textBlock");
 		while (this.editorIcons.classList.length > 0) {
@@ -283,6 +314,9 @@ export class TextBlock extends HTMLElement {
 		this.checkBox.style.display = "none";
 	}
 
+	/**
+	 * sets the textBlocks indenting using the tab level as a multiple
+	 */
 	setupTabLevel() {
 		this.style.position = "relative";
 		this.style.left = (this.tabLevel * tabSize) + "px";
@@ -290,6 +324,10 @@ export class TextBlock extends HTMLElement {
 		this.setCurrentSpot();
 	}
 
+	/**
+	 * when a textBlock is created, the editor is added to the page and if the block is a task
+	 * then the text is crossed off
+	 */
 	connectedCallback() {
 
 		let textBlock = this.shadowRoot.getElementById("textBlock");
@@ -337,6 +375,11 @@ export class TextBlock extends HTMLElement {
 			e.preventDefault();
 		}
 
+		/**
+		 * Gets the user's clipboard data, filters for valid editor text, and pastes it to the textBlock.
+		 * 
+		 * @param {User} e 
+		 */
 		textBlock.onpaste = (e) => {
 			// Get user's pasted data
 			let data = e.clipboardData.getData('text/html') ||
@@ -353,7 +396,10 @@ export class TextBlock extends HTMLElement {
 			e.preventDefault();
 		};
 
-		
+		/**
+		 * Handles the creation, update, or deletion of a textBlock when the user stops interacting
+		 * with a textBlock and moves on.
+		 */
 		textBlock.onblur = () => {
 			textBlock.classList.remove("eventNodateFocused");
 			for (let i = 0; i < this.editorIcons.childNodes.length - 1; i++){
@@ -399,7 +445,9 @@ export class TextBlock extends HTMLElement {
 			}
 		};
 
-
+		/**
+		 * Handles the times when the user wants to create an event with an associated time and/or date.
+		 */
 		textBlock.addEventListener("input", () => {
 			let content = textBlock.innerHTML;
 			if (this.kind == "event") {
@@ -452,6 +500,11 @@ export class TextBlock extends HTMLElement {
 			}
 		});
 
+		/**
+		 * Handles providing the framework for editor populaing.
+		 * 
+		 * @param {*} e 
+		 */
 		textBlock.onfocus = (e) => {
 			this.controller.resetPosition = false;
 			this.setCurrentSpot();
@@ -472,7 +525,12 @@ export class TextBlock extends HTMLElement {
 		};
 
 
-
+		/**
+		 * if "tab" is hit, then the tab level is increased and the textBlock styling is
+		 * set up for each type of block type(?)
+		 * 
+		 * @param {*} e 
+		 */
 		textBlock.onkeydown = (e) => {
 			let key = e.key || e.keyCode;
 			if (key == "Backspace" || key == "Delete") {
@@ -607,6 +665,13 @@ export class TextBlock extends HTMLElement {
 	}
 }
 
+/**
+ * handles time and parsing from event text for event creation 
+ * 
+ * @param {Object} block the textblock instanse to set the time and date for 
+ * @param {String} text the text to parse the time and date from
+ * @param {Boolean} first boolean to check if the text had a time or not (?)
+ */
 function includesClock(block, text, first) {
 	for (let i = 0; i < text.length; i++) {
 		if (text.charCodeAt(i) == 56517) {
@@ -629,6 +694,13 @@ function includesClock(block, text, first) {
 	}
 }
 
+/**
+ * gets the datge from the textblock text
+ * 
+ * @param {Object} textBlock block to set the time for
+ * @param {Boolean} deleteString check to see if the date string shuld be removed from the text(?)
+ * @returns 
+ */
 function getDate(textBlock, deleteString){
 	let date = null;
 	let text = textBlock.shadowRoot.querySelector("#textBlock");
@@ -770,10 +842,23 @@ function getDate(textBlock, deleteString){
 	return date;
 }
 
+/**
+ * handles instances when event year is a leap year
+ * 
+ * @param {Number} year year in event creation text
+ * @returns true if year is leapyear false otherwise
+ */
 function isLeapyear(year){
 	return (year % 100 === 0) ? (year % 400 === 0) : (year % 4 === 0);
 }
 
+/**
+ * calculates the number of days depending on month and year
+ * 
+ * @param {Number} month 
+ * @param {Number} year 
+ * @returns the number of days for month and year
+ */
 function days(month, year){
 	if (month == "3" || month == "5" || month == "8" || month == "10" ){
 		return 30;
@@ -786,6 +871,14 @@ function days(month, year){
 	}
 }
 
+/**
+ * handles when user user day of week as date for event creation
+ * 
+ * @param {String} dayName the weekday provided in event creation
+ * @param {Boolean} excludeToday boolean to check if current day should be included or not
+ * @param {Date} refDate current date
+ * @returns 
+ */
 function getNextDayOfTheWeek(dayName, excludeToday = true, refDate = new Date()) {
     const dayOfWeek = ["sunday","monday","tuesday","wednesday","thursday","friday","saturday"]
                       .indexOf(dayName.toLowerCase());

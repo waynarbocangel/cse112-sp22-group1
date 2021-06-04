@@ -97,12 +97,7 @@ export class TrackerMenu extends HTMLElement {
             .close_button img {
                 filter: invert();
                 opacity: 50%;
-<<<<<<< HEAD
-				width: 15px;
-				cursor: pointer;
-=======
                 width: 15px;
->>>>>>> dev-thomas
             }
             
             .close_button:hover img {
@@ -140,12 +135,23 @@ export class TrackerMenu extends HTMLElement {
 		this.isInsideTracker = false;
     }
 
+	/**
+	 * changes attribute if the value parameters differ
+	 * 
+	 * @param {String} attr attribute to change 
+	 * @param {String} oldVal old value passed in
+	 * @param {String} newVal new value passed in
+	 */
     attributeChangedCallback(attr, oldVal, newVal) {
         if (oldVal !== newVal) {
             this[attr] = this.hasAttribute(attr);
         }
     }
 
+	/**
+	 * when a tracker instance is created it listens to when tracker is clicked
+	 * and if it is toggled when clicked it will close, otherwise it will toggle
+	 */
     connectedCallback() {
         //console.log('can this event print');
         this.closeButton.addEventListener("click", () => {
@@ -189,14 +195,25 @@ export class TrackerMenu extends HTMLElement {
 		});
     }
 
+	/**
+	 * toggles the tracker menu to the opposite state that it is in
+	 */
     toggle() {
         this.open = !this.open;
     }
 
+	/**
+	 * returns the attributes that are open(?)
+	 */
     get open() {
         return this.hasAttribute('open');
     }
 
+	/**
+	 * sets or removes attributes based on whether parameter is true or false
+	 * 
+	 * @param {Boolean} isOpen parameter to decide setting or removing attributes
+	 */
     set open(isOpen) {
         this.shadowRoot.querySelector('.wrapper').classList.toggle('open', isOpen);
         this.shadowRoot.querySelector('.wrapper').classList.toggle('closed', !isOpen);
@@ -209,14 +226,23 @@ export class TrackerMenu extends HTMLElement {
         }
     }
 
+	/**
+	 * sets tracker title
+	 */
     set title(text) {
         this.shadowRoot.querySelector(".tracker_header h1").innerText = text;
     }
 
+	/**
+	 * closes tracker
+	 */
     close() {
         this.open = false;
     }
 
+	/**
+	 * clears tracker items
+	 */
     clear() {
         while (this.editor.childNodes.length > 0) {
             this.editor.childNodes[0].remove();

@@ -349,30 +349,50 @@ export class PageHeader extends HTMLElement {
 		this.menuToggle = this.shadowRoot.querySelector("#menuToggle input");
 	}
 
+	/**
+	 * when header is created, the callback will listen to when the menu is toggled
+	 */
 	connectedCallback() {
 		this.menuToggle.addEventListener("change", () => {
 			navbar.toggle();
 		});
 	}
 
+	/**
+	 * makes header content editable
+	 */
 	makeEditabe() {
 		this.h1.contentEditable = true;
 	}
 
+	/**
+	 * makes header content uneditable
+	 */
 	makeUneditable() {
 		this.h1.contentEditable = false;
 	}
 
+	/**
+	 * sets header title based on current page
+	 * 
+	 * @param {String} title the title to set
+	 */
 	set title(title) {
 		console.log("this");
 		this.shadowRoot.getElementById("title_page").innerHTML = title;
 		console.log(this.h1);
 	}
 
+	/**
+	 * gets the header's current title
+	 */
 	get title() {
 		return this.h1.innerText;
 	}
 
+	/**
+	 * creates a futureLog
+	 */
 	createFutureLog() {
 		localStorage.createFutureLog(new Date(2021, 5, 22), new Date(2021, 8, 23), [], [], [], (err, futureLog) => {
 			console.log(futureLog);

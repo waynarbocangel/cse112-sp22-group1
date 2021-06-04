@@ -228,6 +228,9 @@ export class NavBar extends HTMLElement {
 		this.userMenu = this.shadowRoot.querySelector('#userMenu');
 	}
 
+	/**
+	 * when a navbar instance is created sets event listeners for all header buttons in the callback
+	 */
 	connectedCallback() {
 		this.home.addEventListener('click', () => {
 			this.goHome();
@@ -265,23 +268,39 @@ export class NavBar extends HTMLElement {
 		});
 	}
 
+	/**
+	 * to switches header attribute value if the value parameters differ
+	 * 
+	 * @param {String} attr attribute to change
+	 * @param {Object} oldVal old value passed in
+	 * @param {Obejct} newVal new value passed in
+	 */
 	attributeChangedCallback(attr, oldVal, newVal) {
 		if (oldVal != newVal) {
 			this[attr] = newVal;
 		}
 	}
 
+	/**
+	 * goes to home page when the home button is pressed
+	 */
 	goHome() {
 		if (document.location.hash != null && document.location.hash != "#index" && document.location.hash != '') {
 			router.setState("", false);
 		}
 	}
 
+	/**
+	 * goes to the previous page when the back button is pressed
+	 */
 	goBack() {
 		let parent = (document.location.hash.includes("#dailyLog")) ? "monthlyLog" : "futureLog";
 		router.setState(`#${parent}~${currentObject.parent}`, false);
 	}
 
+	/**
+	 * goes to the futureLog if you are on a dailyLog when double arrow button is clicked
+	 */
 	goFarBack() {
 		let parent = (document.location.hash.includes("#dailyLog")) ? "futureLog" : "index";
 		localStorage.readUser((err, user) => {
@@ -300,19 +319,33 @@ export class NavBar extends HTMLElement {
 		});
 	}
 
+	/**
+	 * displays tracker menu when called
+	 */
 	toggleTracker() {
 		const trackerMenu = document.querySelector("tracker-menu");
 		trackerMenu.toggle();
 	}
 
+	/**
+	 * displays header when called
+	 */
 	toggle() {
 		this.open = !this.open;
 	}
 
+	/**
+	 * returns attributes that are open(?)
+	 */
 	get open() {
 		return this.hasAttribute('open');
 	}
 
+	/**
+	 * menu is toggeled if parameter is true
+	 * 
+	 * @param {Boolean} isOpen boolean to check if menu should be toggled or not
+	 */
 	set open(isOpen) {
 		this.menu.classList.toggle('open', isOpen);
 		this.menu.classList.toggle('closed', !isOpen);

@@ -55,6 +55,9 @@ export class TrackerBlock extends HTMLElement {
 		this.titleSpan.innerHTML = title;
 	}
 
+	/**
+	 * when a tracker block is created the callback will check when a tracker add button is clicked
+	 */
 	connectedCallback() {
 		console.log('inside callback');
 		//this.trackerButton = this.shadowRoot.getElementById("plus");
@@ -72,6 +75,9 @@ export class TrackerBlock extends HTMLElement {
 		};
 	}
 
+	/**
+	 * creates a tracker for when the add button is clicked
+	 */
 	createTracker() {
 		localStorage.createTracker(this.title.innerHTML, [], this.parent, (err, tracker) => {
 			if (err) {
