@@ -129,6 +129,11 @@ export class DropdownBlock extends HTMLElement {
 		this.titleWrapper = this.shadowRoot.querySelector("#titleWrapper");
     }
 
+	/**
+	 * when creating a new dropdown instance, it displays the dropdown,
+	 * listens to when the dropdown button is clicked to display items inside dropdown,
+	 * and listens to when a dropdown header is clicked to navigate to the page for the dropdown object
+	 */
     connectedCallback() {
 		this.removeAttribute('closed');
         this.button.addEventListener("click", () => { this.toggleItems(); });
@@ -136,14 +141,23 @@ export class DropdownBlock extends HTMLElement {
 		// this.contentWrapper.style.display = 'none';
     }
 
+	/**
+	 * sets the title for the dropdown
+	 */
     set title(title) {
         this.header.innerText = title;
     }
 
+	/**
+	 * hides the items inside the dropdown
+	 */
     get closed() {
         return this.wrapper.hasAttribute('closed');
     }
 
+	/**
+	 * Opens the dropdown if it is open or opens it, if it is closed.
+	 */
     set closed(isClosed) {
         if (isClosed) {
             this.hide();
@@ -152,19 +166,31 @@ export class DropdownBlock extends HTMLElement {
         }
     }
 
+	/**
+	 * when an object is clicked, it will toggle the page for that object
+	 */
 	navigateToObject() {
 		router.setState(`#${this.item.objectType}~${this.item.id}`, false);
 		navbar.open = false;
 	}
 
+	/**
+	 * displays the dropdown when called
+	 */
     display() {
         this.wrapper.classList.toggle('closed', true);
     }
 
+	/**
+	 * closes the dropdown when called
+	 */
     hide() {
         this.wrapper.classList.toggle('closed', false);
     }
 
+	/**
+	 * displays the items inside the dropdown when called or hides them if already shown
+	 */
     toggleItems() {
         this.wrapper.classList.toggle('closed');
 
