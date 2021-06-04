@@ -115,7 +115,7 @@ export function createEditor (container, parent, subParent, callback) {
 						}
 						
 
-						populateEditor(controller, objectArr, (res) => {
+						populateEditor(controller, objectArr, doc.signifiers, (res) => {
 							console.log(res);
 							let newBlock = new TextBlock(controller, null, (success) => {
 								if (success){
@@ -130,7 +130,8 @@ export function createEditor (container, parent, subParent, callback) {
 						})
 					}
 				} else {
-					let newBlock = new TextBlock(controller, null, (success) => {
+					let generalSignifier = doc.signifiers.filter(signifer => signifer.meaning == "general")[0];
+					let newBlock = new TextBlock(controller, null, generalSignifier, (success) => {
 						if (success){
 							container.appendChild(newBlock);
 							controller.blockArray.push(newBlock);
@@ -149,15 +150,16 @@ export function createEditor (container, parent, subParent, callback) {
 	}, 20);
 }
 
-export function populateEditor (controller, items, callback) {
-	populateEditorRecursive(controller, items, 0, (res) => {
+export function populateEditor (controller, items, signifers, callback) {
+	populateEditorRecursive(controller, items, 0, signifers, (res) => {
 		callback(res);
 	});
 }
 
-function populateEditorRecursive(controller, items, index, callback) {
+function populateEditorRecursive(controller, items, index, signifers, callback) {
 	if(index < items.length) {
-		controller.createNewBlock(items[index], (block) => {
+		let signifier = signifers.filter(signifier => signifier.id == item[index].signifier)[0];
+		controller.createNewBlock(items[index], signifier, (block) => {
 	 		block.tabLevel = items[index].tabLevel
 	 		block.setupTabLevel();
 			

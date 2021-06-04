@@ -53,7 +53,7 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 			if(kind == "task" || kind == "event"){
 				if (kind == "task") {
 					//index == null for now just for testing
-					localStorage.createTask(id, content, 0, null, (err, task) => {
+					localStorage.createTask(id, content, 0, null, false, (err, task) => {
 						if (err) {
 							console.log(err);
 							callback(err, null);

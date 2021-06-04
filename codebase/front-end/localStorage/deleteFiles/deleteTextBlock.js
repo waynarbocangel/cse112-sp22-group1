@@ -20,7 +20,7 @@ export function deleteTextBlockPouch(db, id, callback) {
 				block = textBlockArr[0];
 
 				if(block.kind == "task"){
-					localStorage.deleteTaskByID(block.objectReference, (error) => {
+					localStorage.deleteTaskByID(block.objectReference, false, (error) => {
 						if (!error){
 							deleteBlock(db, block, id, callback);
 						} else {
@@ -29,7 +29,7 @@ export function deleteTextBlockPouch(db, id, callback) {
 					});
 				} else if (block.kind == "event"){
 					console.log("delteeevntbyID");
-					localStorage.deleteEventByID(block.objectReference, (error) => {
+					localStorage.deleteEventByID(block.objectReference, false, (error) => {
 						if (!error){
 							deleteBlock(db, block, id, callback);
 						} else {

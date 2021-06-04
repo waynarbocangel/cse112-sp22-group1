@@ -147,7 +147,16 @@ export class ThemePanel extends HTMLElement {
 
 	connectedCallback() {
 		for (let themeRadio of this.themeRadios) {
-            themeRadio.addEventListener('change', () => this.updateTheme(themeRadio.id));
+            themeRadio.addEventListener('change', () => {
+				localStorage.updateTheme(themeRadio.id, true, (err) => {
+					if (!err){
+						this.updateTheme(themeRadio.id);
+					} else {
+						console.log(err);
+					}
+				});
+				
+			});
         }
 		localStorage.readUser((err, user) => {
 			if (!err){
@@ -162,10 +171,9 @@ export class ThemePanel extends HTMLElement {
 
     updateTheme(theme) {
         let root = document.documentElement;
-		localStorage.updateTheme(theme);
-        for (let key in themeColors[theme]) {
-            root.style.setProperty(key, themeColors[theme][key]);
-        }
+		for (let key in themeColors[theme]) {
+			root.style.setProperty(key, themeColors[theme][key]);
+		}
     }
 }
 

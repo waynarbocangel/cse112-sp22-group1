@@ -43,25 +43,7 @@ export function createEventPouch (db, title, parent, date, signifier, callback) 
 				signifier: signifier
 			};
 
-			/*let userArr = [];
-			Array.prototype.push.apply(userArr, doc.textBlocks);
-
-			let parentArr = userArr.filter(object => object.id == parent);
-			let parentObj = null;
-			for(let i = 0; i < userArr.length; i++){
-				if (userArr[i].id == parent) {
-					parentObj = userArr[i];
-				}
-			}
-			//parentArr will be empty since createTextBlock isn't done running when createEvent is run
-			//but not when we are updating a task textblock to an event textblock
-			if(parentObj != null){
-				if(index == null) {
-					parentObj.content.push(id);
-				} else {
-					parentObj.content.splice(index, 0, id);
-				}
-			}*/
+			
 			doc.events.push(eventObject);
 
 			return db.put(

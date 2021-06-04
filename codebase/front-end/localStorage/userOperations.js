@@ -22,7 +22,7 @@ import {deleteUserPouch} from "./deleteFiles/deleteUser.js";
 import {deleteImageBlockPouch} from "./deleteFiles/deleteImageBlock.js";
 import {deleteAudioBlockPouch} from "./deleteFiles/deleteAudioBlock.js";
 //---------------importing from update-------------------------------------------
-import {updateUserPouch, updateUserOnline} from "./updateFiles/updateUser.js";
+import {updateUserOnline} from "./updateFiles/updateUser.js";
 import {updateDailyLogPouch} from "./updateFiles/updateDailyLog.js";
 import {updateMonthlyLogPouch} from "./updateFiles/updateMonthlyLog.js";
 import {updateFutureLogPouch} from "./updateFiles/updateFutureLog.js";
@@ -118,9 +118,11 @@ export function createUser(email, pwd, callback){
  * @param {Buffer} data The image data stored as a buffer.
  * @callback (error,imageBlock) Either sends the imageBlock or an error, if there is one, to the callback.
  */
-export function createImageBlock(parent, arrangement, data, callback){
+export function createImageBlock(parent, arrangement, data, shouldUpdate, callback){
 	createImageBlockPouch(db, parent, arrangement, data, (err, image) => {
-		updateUserFromMongo();
+		if (shouldUpdate) {
+			updateUserFromMongo();
+		}
 		callback(err, image);
 	});
 }
@@ -133,9 +135,11 @@ export function createImageBlock(parent, arrangement, data, callback){
  * @param {Buffer} data The audio data stored as a buffer.
  * @callback (error,audioBlock) Either sends the audioBlock or an error, if there is one, to the callback.
  */
-export function createAudioBlock(parent, arrangement, data, callback){
+export function createAudioBlock(parent, arrangement, data, shouldUpdate, callback){
 	createAudioBlockPouch(db, parent, arrangement, data, (err, audio) => {
-		updateUserFromMongo();
+		if(shouldUpdate) {
+			updateUserFromMongo();
+		}
 		callback(err, audio);
 	});
 }
@@ -148,9 +152,11 @@ export function createAudioBlock(parent, arrangement, data, callback){
  * @param {Array} content The array of textBlocks included in the collection.
  * @callback (error,collection) Either sends the collection or an error, if there is one, to the callback.
  */
-export function createCollection(title, parent, content, callback){
+export function createCollection(title, parent, content, shouldUpdate, callback){
 	createCollectionPouch(db, title, parent, content, (err, collection) => {
-		updateUserFromMongo();
+		if (shouldUpdate) {
+			updateUserFromMongo();
+		}
 		callback(err, collection);
 	});
 }
@@ -164,9 +170,11 @@ export function createCollection(title, parent, content, callback){
  * @param {Date} date The date of the dailyLog
  * @callback (error,dailyLog) Either sends the dailyLog or an error, if there is one, to the callback.
  */
-export function createDailyLog(parent, content, trackers, date, callback){
+export function createDailyLog(parent, content, trackers, date, shouldUpdate, callback){
     createDailyLogPouch(db, parent, content, trackers, date, (err, day) => {
-		updateUserFromMongo();
+		if (shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err, day);
 	});
 }
@@ -180,9 +188,11 @@ export function createDailyLog(parent, content, trackers, date, callback){
  * @param {String} signifier The id of the signifier for the new event.
  * @callback (error,event) Either sends the event or an error, if there is one, to the callback.
  */
-export function createEvent(title, parent, date, signifier, callback) {
+export function createEvent(title, parent, date, signifier, shouldUpdate, callback) {
 	createEventPouch(db, title, parent, date, signifier, (error, event) => {
-		updateUserFromMongo();
+		if (shouldUpdate) {
+			updateUserFromMongo();
+		}
 		callback(error, event);
 	})
 }
@@ -197,9 +207,11 @@ export function createEvent(title, parent, date, signifier, callback) {
  * @param {Array} trackers The id's of the trackers included in the new futureLog.
  * @callback (error,futureLog) Either sends the futureLog or an error, if there is one, to the callback.
  */
-export function createFutureLog(startDate, endDate, months, content, trackers, callback) {
+export function createFutureLog(startDate, endDate, months, content, trackers, shouldUpdate, callback) {
 	createFutureLogPouch(db, startDate, endDate, months, content, trackers, (err, futureLog) => {
-		updateUserFromMongo();
+		if (shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err, futureLog);
 	})
 }
@@ -213,9 +225,11 @@ export function createFutureLog(startDate, endDate, months, content, trackers, c
  * @param {Date} date The date of the monthlyLog
  * @callback (error,monthlyLog) Either sends the monthlyLog or an error, if there is one, to the callback.
  */
-export function createMonthlyLog(parent, content, days, trackers, date, callback) {
+export function createMonthlyLog(parent, content, days, trackers, date, shouldUpdate, callback) {
 	createMonthlyLogPouch(db, parent, content, days, trackers, date, (error, month) => {
-		updateUserFromMongo();
+		if (shouldUpdate) {
+			updateUserFromMongo();
+		}
 		callback(error, month);
 	})
 }
@@ -227,9 +241,11 @@ export function createMonthlyLog(parent, content, days, trackers, date, callback
  * @param {String} symbol The string of the new signifier.
  * @callback (error,signifier) Either sends the signifier or an error, if there is one, to the callback.
  */
-export function createSignifier(meaning, symbol, callback) {
+export function createSignifier(meaning, symbol, shouldUpdate, callback) {
 	createSignifierPouch(db, meaning, symbol, (err, signifier) => {
-		updateUserFromMongo();
+		if (shouldUpdate) {
+			updateUserFromMongo();
+		}
 		callback(err, signifier);
 	})
 }
@@ -243,9 +259,11 @@ export function createSignifier(meaning, symbol, callback) {
  * @param {String} signifier The id of the signifier for the new task.
  * @callback (error,dailyLog) Either sends the dailyLog or an error, if there is one, to the callback.
  */
-export function createTask(parent, text, complete, signifier, callback) {
+export function createTask(parent, text, complete, signifier, shouldUpdate, callback) {
 	createTaskPouch(db, parent, text, complete, signifier, (error, task) => {
-		updateUserFromMongo();
+		if (shouldUpdate) {
+			updateUserFromMongo();
+		}
 		callback(error, task);
 	})
 }
@@ -264,9 +282,11 @@ export function createTask(parent, text, complete, signifier, callback) {
  * @param {Date} date The date to be inserted if kind was an event (optional).
  * @callback (error,textBlock) Either sends the textBlock or an error, if there is one, to the callback.
  */
-export function createTextBlock(parent, subParent, index, content, tabLevel, kind, objectReference, signifier, date, callback){
+export function createTextBlock(parent, subParent, index, content, tabLevel, kind, objectReference, signifier, date, shouldUpdate, callback){
 	createTextBlockPouch(db, parent, subParent, index, content, tabLevel, kind, objectReference, signifier, date, (error, textBlock) => {
-		updateUserFromMongo();
+		if (shouldUpdate) {
+			updateUserFromMongo();
+		}
 		callback(error, textBlock);
 	});
 }
@@ -279,9 +299,11 @@ export function createTextBlock(parent, subParent, index, content, tabLevel, kin
  * @param {String} parent The id of the parent of the new tracker.
  * @callback (error,tracker) Either sends the tracker or an error, if there is one, to the callback.
  */
-export function createTracker(title, content, parent, callback) {
+export function createTracker(title, content, parent, shouldUpdate, callback) {
 	createTrackerPouch(db, title, content, parent, (err, tracker) => {
-		updateUserFromMongo();
+		if (shouldUpdate) {
+			updateUserFromMongo();
+		}
 		callback(err, tracker);
 	})
 }
@@ -293,7 +315,6 @@ export function createTracker(title, content, parent, callback) {
  */
 export function readUser(callback){
 	readUserPouch(db, (err, user) => {
-		updateUserFromMongo();
 		callback(err, user);
 	});
 }
@@ -305,6 +326,7 @@ export function readUser(callback){
  */
 export function deleteUser(callback){
 	deleteUserPouch(db, (user) => {
+		updateUserFromMongo();
 		callback(user);
 	});
 }
@@ -315,9 +337,11 @@ export function deleteUser(callback){
  * @param {Object} imageBlock The object to be deleted.
  * @callback (error) Returns an error if there is one.
  */
-export function deleteImageBlock(imageBlock, callback){
+export function deleteImageBlock(imageBlock, shouldUpdate, callback){
 	deleteImageBlockPouch(db, imageBlock.id, (err) => {
-		updateUserFromMongo();
+		if(shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -328,9 +352,11 @@ export function deleteImageBlock(imageBlock, callback){
  * @param {String} id The id of object to be deleted.
  * @callback (error) Returns an error if there is one.
  */
-export function deleteImageBlockByID(id, callback){
+export function deleteImageBlockByID(id, shouldUpdate, callback){
 	deleteImageBlockPouch(db, id, (err) => {
-		updateUserFromMongo();
+		if (shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -341,9 +367,11 @@ export function deleteImageBlockByID(id, callback){
  * @param {Object} audioBlock The object to be deleted.
  * @callback (error) Returns an error if there is one.
  */
-export function deleteAudioBlock(audioBlock, callback){
+export function deleteAudioBlock(audioBlock, shouldUpdate, callback){
 	deleteAudioBlockPouch(db, audioBlock.id, (err) => {
-		updateUserFromMongo();
+		if (shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -354,9 +382,11 @@ export function deleteAudioBlock(audioBlock, callback){
  * @param {String} id The id of the object to be deleted.
  * @callback (error) Returns an error if there is one.
  */
-export function deleteAudioBlockByID(id, callback){
+export function deleteAudioBlockByID(id, shouldUpdate, callback){
 	deleteAudioBlockPouch(db, id, (err) => {
-		updateUserFromMongo();
+		if (shouldUpdate) {
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -367,9 +397,11 @@ export function deleteAudioBlockByID(id, callback){
  * @param {Object} collection The object to be deleted.
  * @callback (error) Returns an error if there is one.
  */
-export function deleteCollection(collection, callback){
+export function deleteCollection(collection, shouldUpdate, callback){
 	deleteCollectionPouch(db, collection.id, (err) => {
-		updateUserFromMongo();
+		if (shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -380,9 +412,11 @@ export function deleteCollection(collection, callback){
  * @param {Object} imageBlock The object to be deleted.
  * @callback (error) Returns an error if there is one.
  */
-export function deleteCollectionByID (id, callback){
+export function deleteCollectionByID (id, shouldUpdate, callback){
 	deleteCollectionPouch(db, id, (err) => {
-		updateUserFromMongo();
+		if(shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -393,9 +427,11 @@ export function deleteCollectionByID (id, callback){
  * @param {Object} event The object to be deleted.
  * @callback (error) Returns an error if there is one.
  */
-export function deleteEvent(event, callback){
+export function deleteEvent(event, shouldUpdate, callback){
 	deleteEventPouch(db, event.id, (err) => {
-		updateUserFromMongo();
+		if (shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -406,9 +442,11 @@ export function deleteEvent(event, callback){
  * @param {String} id The id of the object to be deleted.
  * @callback (error) Returns an error if there is one.
  */
-export function deleteEventByID(id, callback){
+export function deleteEventByID(id, shouldUpdate, callback){
 	deleteEventPouch(db, id, (err) => {
-		updateUserFromMongo();
+		if(shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -420,9 +458,11 @@ export function deleteEventByID(id, callback){
  * @param {index} index The index in the container to delete the event.
  * @callback (error) Returns an error if there is one.
  */
-export function deleteEventAtIndex(container, index, callback){
+export function deleteEventAtIndex(container, index, shouldUpdate, callback){
 	deleteEventPouch(db, container.content[index], (err) => {
-		updateUserFromMongo();
+		if(shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -433,9 +473,11 @@ export function deleteEventAtIndex(container, index, callback){
  * @param {Object} signifier The object to be deleted.
  * @callback (error) Returns an error if there is one.
  */
-export function deleteSignifier(signifier, callback){
+export function deleteSignifier(signifier, shouldUpdate, callback){
 	deleteSignifierPouch(db, signifier.id, (err) => {
-		updateUserFromMongo();
+		if(shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -446,9 +488,11 @@ export function deleteSignifier(signifier, callback){
  * @param {String} id The id of the object to be deleted.
  * @callback (error) Returns an error if there is one.
  */
-export function deleteSignifierByID(id, callback){
+export function deleteSignifierByID(id, shouldUpdate, callback){
 	deleteSignifierPouch(db, id, (err) => {
-		updateUserFromMongo();
+		if(shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -459,9 +503,11 @@ export function deleteSignifierByID(id, callback){
  * @param {Object} block The object to delete the signifier from.
  * @callback (error) Returns an error if there is one.
  */
-export function deleteSignifierAtBlock(block, callback){
+export function deleteSignifierAtBlock(block, shouldUpdate, callback){
 	deleteSignifierPouch(db, block.signifier, (err) => {
-		updateUserFromMongo();
+		if(shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -472,9 +518,11 @@ export function deleteSignifierAtBlock(block, callback){
  * @param {Object} task The object to be deleted.
  * @callback (error) Returns an error if there is one.
  */
-export function deleteTask(task, callback){
+export function deleteTask(task, shouldUpdate, callback){
 	deleteTaskPouch(db, task.id, (err) => {
-		updateUserFromMongo();
+		if(shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -485,9 +533,11 @@ export function deleteTask(task, callback){
  * @param {String} id The id of the object to be deleted.
  * @callback (error) Returns an error if there is one.
  */
-export function deleteTaskByID(id, callback){
+export function deleteTaskByID(id, shouldUpdate, callback){
 	deleteTaskPouch(db, id, (err) => {
-		updateUserFromMongo();
+		if(shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -498,9 +548,11 @@ export function deleteTaskByID(id, callback){
  * @param {Object} textBlock The object to be deleted.
  * @callback (error) Returns an error if there is one.
  */
-export function deleteTextBlock(block, callback){
+export function deleteTextBlock(block, shouldUpdate, callback){
 	deleteTextBlockPouch(db, block.id, (err) => {
-		updateUserFromMongo();
+		if(shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -511,9 +563,11 @@ export function deleteTextBlock(block, callback){
  * @param {String} id The id of the object to be deleted.
  * @callback (error) Returns an error if there is one.
  */
-export function deleteTextBlockByID(id, callback){
+export function deleteTextBlockByID(id, shouldUpdate, callback){
 	deleteTextBlockPouch(db, id, (err) => {
-		updateUserFromMongo();
+		if(shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -525,9 +579,11 @@ export function deleteTextBlockByID(id, callback){
  * @param {Number} index The index in the container of the textBlock to be deleted.
  * @callback (error) Returns an error if there is one.
  */
-export function deleteTextBlockFromContainer(container, index, callback){
+export function deleteTextBlockFromContainer(container, index, shouldUpdate, callback){
 	deleteTextBlockPouch(db, container.contents[index], (err) => {
-		updateUserFromMongo();
+		if(shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -538,9 +594,11 @@ export function deleteTextBlockFromContainer(container, index, callback){
  * @param {Object} tracker The object to be deleted.
  * @callback (error) Returns an error if there is one.
  */
-export function deleteTracker(tracker, callback){
+export function deleteTracker(tracker, shouldUpdate, callback){
 	deleteTrackerPouch(db, tracker.id, (err) => {
-		updateUserFromMongo();
+		if(shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -551,9 +609,11 @@ export function deleteTracker(tracker, callback){
  * @param {String} id The id of the object to be deleted.
  * @callback (error) Returns an error if there is one.
  */
-export function deleteTrackerByID(id, callback){
+export function deleteTrackerByID(id, shouldUpdate, callback){
 	deleteTrackerPouch(db, id, (err) => {
-		updateUserFromMongo();
+		if(shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -565,28 +625,16 @@ export function deleteTrackerByID(id, callback){
  * @param {Number} index The index in the container of the tracker to be deleted.
  * @callback (error) Returns an error if there is one.
  */
-export function deleteTrackerFromContainer(container, index, callback){
+export function deleteTrackerFromContainer(container, index, shouldUpdate, callback){
 	deleteTrackerPouch(db, container.trackers[index], (err) => {
-		updateUserFromMogo();
+		if(shouldUpdate){
+			updateUserFromMogo();
+		}
 		callback(err);
 	});
 }
 
 //-------------------------------Update Functions----------------------------------
-
-/**
- * Updates the user 
- * 
- * @param {Array} container The array to delete the textBlock from.
- * @param {Number} index The index in the container of the textBlock to be deleted.
- * @callback (error) Returns an error if there is one.
- */
-export function updateUser(callback){
-	updateUserPouch(db, (err) => {
-		updateUserFromMongo();
-		callback(err);
-	});
-}
 
 /**
  * Updates the user from the onling db.
@@ -601,10 +649,14 @@ export function updateUserFromMongo(){
  * Updates the theme of the app.
  * 
  * @param {String} theme The name of the theme to switch to.
+ * @callback (err) possible error
  */
-export function updateTheme(theme){
+export function updateTheme(theme, shouldUpdate, callback){
 	updateThemePouch(db, theme, (err) => {
-		updateUserFromMongo();
+		if(shouldUpdate){
+			updateUserFromMongo();
+		}
+		callback(err);
 	})
 }
 
@@ -614,9 +666,11 @@ export function updateTheme(theme){
  * @param {Object} imageBlock The new version of the imageBlock.
  * @callback (error) Sends an error, if there is one, to the callback.
  */
-export function updateImageBlock(imageBlock, callback){
+export function updateImageBlock(imageBlock, shouldUpdate, callback){
 	updateImageBlockPouch(db, imageBlock, (err) => {
-		updateUserFromMongo();
+		if(shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -627,14 +681,16 @@ export function updateImageBlock(imageBlock, callback){
  * @param {String} id The id of the new version of the imageBlock.
  * @callback (error) Sends an error, if there is one, to the callback.
  */
-export function updateImageBlockByID(id, callback){
+export function updateImageBlockByID(id, shouldUpdate, callback){
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
 			let imageBlock = doc.userObject.imageBlocks.filter(element => element.id == id);
 			updateImageBlockPouch(db, imageBlock[0], (err) => {
-				updateUserFromMongo();
+				if(shouldUpdate){
+					updateUserFromMongo();
+				}
 				callback(err);
 			});
 		}
@@ -647,9 +703,11 @@ export function updateImageBlockByID(id, callback){
  * @param {Object} audioBlock The new version of the imageBlock.
  * @callback (error) Sends an error, if there is one, to the callback.
  */
-export function updateAudioBlock(audioBlock, callback){
+export function updateAudioBlock(audioBlock, shouldUpdate, callback){
 	updateAudioBlockPouch(db, audioBlock, (err) => {
-		updateUserFromMongo();
+		if(shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -660,14 +718,16 @@ export function updateAudioBlock(audioBlock, callback){
  * @param {String} id The id of the new version of the audioBlock.
  * @callback (error) Sends an error, if there is one, to the callback.
  */
-export function updateAudioBlockByID(id, callback){
+export function updateAudioBlockByID(id, shouldUpdate, callback){
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
 			let audioBlock = doc.userObject.audioBlocks.filter(element => element.id == id);
 			updateAudioBlockPouch(db, audioBlock[0], (err) => {
-				updateUserFromMongo();
+				if(shouldUpdate){
+					updateUserFromMongo();
+				}
 				callback(err);
 			});
 		}
@@ -680,9 +740,11 @@ export function updateAudioBlockByID(id, callback){
  * @param {Object} dailyLog The new version of the imageBlock.
  * @callback (error) Sends an error, if there is one, to the callback.
  */
-export function updateDailyLog(dailyLog, callback) {
+export function updateDailyLog(dailyLog, shouldUpdate, callback) {
 	updateDailyLogPouch(db, dailyLog, (err) => {
-		updateUserFromMongo();
+		if(shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -693,14 +755,16 @@ export function updateDailyLog(dailyLog, callback) {
  * @param {String} id The id of the new version of the dailyLog.
  * @callback (error) Sends an error, if there is one, to the callback.
  */
-export function updateDailyLogByID (id, callback){
+export function updateDailyLogByID (id, shouldUpdate, callback){
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
 			const dailyLog = doc.userObject.dailyLogs.filter(element => element.id == id);
 			updateDailyLogPouch(db, dailyLog[0], (err) => {
-				updateUserFromMongo();
+				if(shouldUpdate){
+					updateUserFromMongo();
+				}
 				callback(err);
 			});	
 		}
@@ -713,9 +777,11 @@ export function updateDailyLogByID (id, callback){
  * @param {Object} monthlyLog The new version of the imageBlock.
  * @callback (error) Sends an error, if there is one, to the callback.
  */
-export function updateMonthlyLog(monthlyLog, callback) {
+export function updateMonthlyLog(monthlyLog, shouldUpdate, callback) {
 	updateMonthlyLogPouch(db, monthlyLog, (err) => {
-		updateUserFromMongo();
+		if(shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -726,14 +792,16 @@ export function updateMonthlyLog(monthlyLog, callback) {
  * @param {String} id The id of the new version of the monthlyLog.
  * @callback (error) Sends an error, if there is one, to the callback.
  */
-export function updateMonthlyLogByID (id, callback){
+export function updateMonthlyLogByID (id, shouldUpdate, callback){
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
 			const monthlyLog = doc.userObject.monthlyLogs.filter(element => element.id == id);
 			updateMonthlyLogPouch(db, monthlyLog[0], (err) => {
-				updateUserFromMongo();
+				if(shouldUpdate){
+					updateUserFromMongo();
+				}
 				callback(err);
 			});		
 		}
@@ -746,9 +814,11 @@ export function updateMonthlyLogByID (id, callback){
  * @param {Object} futureLog The id of the new version of the futureLog.
  * @callback (error) Sends an error, if there is one, to the callback.
  */
-export function updateFutureLog(futureLog, callback) {
+export function updateFutureLog(futureLog, shouldUpdate, callback) {
 	updateFutureLogPouch(db, futureLog, (err) => {
-		updateUserFromMongo();
+		if(shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -759,14 +829,16 @@ export function updateFutureLog(futureLog, callback) {
  * @param {String} id The id of the new version of the futureLog.
  * @callback (error) Sends an error, if there is one, to the callback.
  */
-export function updateFutureLogByID (id, callback){
+export function updateFutureLogByID (id, shouldUpdate, callback){
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
 			const futureLog = doc.userObject.futureLogs.filter(element => element.id == id);
 			updateFutureLogPouch(db, futureLog[0], (err) => {
-				updateUserFromMongo();
+				if(shouldUpdate){
+					updateUserFromMongo();
+				}
 				callback(err);
 			});
 		}
@@ -779,9 +851,11 @@ export function updateFutureLogByID (id, callback){
  * @param {Object} collection The new version of the imageBlock.
  * @callback (error) Sends an error, if there is one, to the callback.
  */
-export function updateCollection(collection, callback){
+export function updateCollection(collection, shouldUpdate, callback){
 	updateCollectionPouch(db, collection, (err) => {
-		updateUserFromMongo();
+		if(shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -792,14 +866,16 @@ export function updateCollection(collection, callback){
  * @param {String} id The id of the new version of the collection.
  * @callback (error) Sends an error, if there is one, to the callback.
  */
-export function updateCollectionByID (id, callback){
+export function updateCollectionByID (id, shouldUpdate, callback){
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
 			const collection = doc.userObject.collections.filter(element => element.id == id);
 			updateCollectionPouch(db, collection[0], (err) => {
-				updateUserFromMongo();
+				if(shouldUpdate){
+					updateUserFromMongo();
+				}
 				callback(err);
 			});		
 		}
@@ -812,9 +888,11 @@ export function updateCollectionByID (id, callback){
  * @param {Object} event The new version of the imageBlock.
  * @callback (error) Sends an error, if there is one, to the callback.
  */
-export function updateEvent(event, callback){
+export function updateEvent(event, shouldUpdate, callback){
 	updateEventPouch(db, event, (err) => {
-		updateUserFromMongo();
+		if(shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -825,14 +903,16 @@ export function updateEvent(event, callback){
  * @param {String} id The id of the new version of the event.
  * @callback (error) Sends an error, if there is one, to the callback.
  */
-export function updateEventByID(id, callback){
+export function updateEventByID(id, shouldUpdate, callback){
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
 			const event = doc.events.filter(element => element.id == id);
 			updateEventPouch(db, event[0], (err) => {
-				updateUserFromMongo();
+				if(shouldUpdate){
+					updateUserFromMongo();
+				}
 				callback(err);
 			});		
 		}
@@ -846,14 +926,16 @@ export function updateEventByID(id, callback){
  * @param {Number} index The index at which the event is at in the container.
  * @callback (error) Sends an error, if there is one, to the callback.
  */
-export function updateEventAtIndex(container, index, callback){
+export function updateEventAtIndex(container, index, shouldUpdate, callback){
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
 			const event = doc.events.filter(element => element.id == container.content[index]);
 			updateEventPouch(db, event[0], (err) => {
-				updateUserFromMongo();
+				if(shouldUpdate){
+					updateUserFromMongo();
+				}
 				callback(err);
 			});		
 		}
@@ -866,9 +948,11 @@ export function updateEventAtIndex(container, index, callback){
  * @param {Object} signifier The new version of the imageBlock.
  * @callback (error) Sends an error, if there is one, to the callback.
  */
-export function updateSignifier(signifier, callback){
+export function updateSignifier(signifier, shouldUpdate, callback){
 	updateSignifierPouch(db, signifier, (err) => {
-		updateUserFromMongo();
+		if(shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -879,14 +963,16 @@ export function updateSignifier(signifier, callback){
  * @param {String} id The id of the new version of the signifier.
  * @callback (error) Sends an error, if there is one, to the callback.
  */
-export function updateSignifierByID(id, callback){
+export function updateSignifierByID(id, shouldUpdate, callback){
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
 			const signifier = doc.userObject.signifiers.filter(element => element.id == id);
 			updateSignifierPouch(db, signifier[0], (err) => {
-				updateUserFromMongo();
+				if(shouldUpdate){
+					updateUserFromMongo();
+				}
 				callback(err);
 			});		
 		}
@@ -899,14 +985,16 @@ export function updateSignifierByID(id, callback){
  * @param {Object} block The block to update the signifier at.
  * @callback (error) Sends an error, if there is one, to the callback.
  */
-export function updateSignifierAtBlock(block, callback){
+export function updateSignifierAtBlock(block, shouldUpdate, callback){
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
 			const signifier = doc.userObject.signifiers.filter(element => element.id == block.signifier);
 			updateSignifierPouch(db, signifier[0], (err) => {
-				updateUserFromMongo();
+				if(shouldUpdate){
+					updateUserFromMongo();
+				}
 				callback(err);
 			});
 		}
@@ -919,9 +1007,11 @@ export function updateSignifierAtBlock(block, callback){
  * @param {Object} task The id of the new version of the imageBlock.
  * @callback (error) Sends an error, if there is one, to the callback.
  */
-export function updateTask(task, callback){
+export function updateTask(task, shouldUpdate, callback){
 	updateTaskPouch(db, task, (err) => {
-		updateUserFromMongo();
+		if(shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -932,14 +1022,16 @@ export function updateTask(task, callback){
  * @param {String} id The id of the new version of the task.
  * @callback (error) Sends an error, if there is one, to the callback.
  */
-export function updateTaskByID(id, callback){
+export function updateTaskByID(id, shouldUpdate, callback){
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
 			const task = doc.tasks.filter(element => element.id == id);
 			updateTaskPouch(db, task[0], (err) => {
-				updateUserFromMongo();
+				if(shouldUpdate){
+					updateUserFromMongo();
+				}
 				callback(err)
 			});
 		}
@@ -953,10 +1045,12 @@ export function updateTaskByID(id, callback){
  * @param {Date} date The date to be inserted if the update is to make the textBlock have an event with a date.
  * @callback (error) Sends an error, if there is one, to the callback.
  */
-export function updateTextBlock(block, date, callback){
+export function updateTextBlock(block, date, shouldUpdate, callback){
 	updateTextBlockPouch(db, block, date, (err) => {
-		updateUserFromMongo();
-		callabck(err);
+		if(shouldUpdate){
+			updateUserFromMongo();
+		}
+		callback(err);
 	});
 }
 
@@ -967,14 +1061,16 @@ export function updateTextBlock(block, date, callback){
  * @param {Date} date The date to be inserted if the update is to make the textBlock have an event with a date.
  * @callback (error) Sends an error, if there is one, to the callback.
  */
-export function updateTextBlockByID(id, date, callback){
+export function updateTextBlockByID(id, date, shouldUpdate, callback){
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
 			const text = doc.userObject.textBlocks.filter(element => element.id == id);
 			updateTextBlockPouch(db, text[0], date, (err) => {
-				updateUserFromMongo();
+				if(shouldUpdate){
+					updateUserFromMongo();
+				}
 				callback(err);
 			});
 		}
@@ -988,14 +1084,16 @@ export function updateTextBlockByID(id, date, callback){
  * @param {Number} index The index in the container where the textBlock is at.
  * @callback (error) Sends an error, if there is one, to the callback.
  */
-export function updateTextBlockFromContainer(container, index, date, callback){
+export function updateTextBlockFromContainer(container, index, date, shouldUpdate, callback){
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
 			const text = doc.userObject.textBlocks.filter(element => element.id == container.content[index]);
 			updateTextBlockPouch(db, text[0], date, (err) => {
-				updateUserFromMongo();
+				if(shouldUpdate){
+					updateUserFromMongo();
+				}
 				callback(err);
 			});		
 		}
@@ -1008,9 +1106,11 @@ export function updateTextBlockFromContainer(container, index, date, callback){
  * @param {Object} tracker The new version of the tracker.
  * @callback (error) Sends an error, if there is one, to the callback.
  */
-export function updateTracker(tracker, callback){
+export function updateTracker(tracker, shouldUpdate, callback){
 	updateTrackerPouch(db, tracker, (err) => {
-		updateUserFromMongo();
+		if(shouldUpdate){
+			updateUserFromMongo();
+		}
 		callback(err);
 	});
 }
@@ -1021,14 +1121,16 @@ export function updateTracker(tracker, callback){
  * @param {String} id The id of the new version of the tracker.
  * @callback (error) Sends an error, if there is one, to the callback.
  */
-export function updateTrackerByID(id, callback){
+export function updateTrackerByID(id, shouldUpdate, callback){
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
 			const tracker = doc.userObject.trackers.filter(element => element.id == id);
 			updateTrackePouch(db, tracker[0], (err) => {
-				updateUserFromMongo();
+				if(shouldUpdate){
+					updateUserFromMongo();
+				}
 				callback(err);
 			});
 		}
@@ -1042,14 +1144,16 @@ export function updateTrackerByID(id, callback){
  * @param {Number} index The index in the container where the tracker is at.
  * @callback (error) Sends an error, if there is one, to the callback.
  */
-export function updateTrackerFromContainer(container, index, callback){
+export function updateTrackerFromContainer(container, index, shouldUpdate, callback){
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
 			const tracker = doc.userObject.trackers.filter(element => element.id == container.content[index]);
 			updateTrackerPouch(db, tracker[0], (err) => {
-				updateUserFromMongo();
+				if(shouldUpdate){
+					updateUserFromMongo();
+				}
 				callback(err);
 			});
 		}

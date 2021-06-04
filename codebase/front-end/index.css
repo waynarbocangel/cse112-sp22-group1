@@ -45,6 +45,15 @@ text-block {
 	right: 0;
 }
 
+creator-block {
+	display: block;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	left: 0;
+	right: 0;
+}
+
 .noteContainer {
 	margin-top: 7px;
 	margin-bottom: 7px;

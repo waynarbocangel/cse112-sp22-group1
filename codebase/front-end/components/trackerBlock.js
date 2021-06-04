@@ -7,11 +7,20 @@ export class TrackerBlock extends HTMLElement {
 		let template = document.createElement("template");
 		template.innerHTML = `
 			<style>
+				#container{
+					heigt: 35px;
+				}
 
 				#title{
+					position: relative;
+					display: inline-block;
 					cursor: pointer;
 					border-bottom: 2px solid rgba(255,255,255,0.4);
 					transition: 0.2s;
+					font-size: 18px;
+					line-height: 28px;
+					margin: 7px 0 12px;
+					vertical-align: top;
 				}
 	
 				#title:hover{
@@ -23,6 +32,7 @@ export class TrackerBlock extends HTMLElement {
 					position: relative;
 					display: inline;
 					vertical-align: top;
+					top: 10px;
 				}
 				
 				#editorIcons img{
@@ -40,7 +50,7 @@ export class TrackerBlock extends HTMLElement {
 			</style>
 			<div id="container">
 				<div id="editorIcons" class="paragraphIcons"><img src="../public/resources/plusIcon.png" class="unfocusedIcons"/><img src="../public/resources/sixDotIcon.png" class="unfocusedIcons"/></div>
-				<span id="title">Test</span>
+				<div id="title">Test</div>
 			</div>
 		`;
 		this.parent = parent;
@@ -56,8 +66,6 @@ export class TrackerBlock extends HTMLElement {
 	}
 
 	connectedCallback() {
-		console.log('inside callback');
-		//this.trackerButton = this.shadowRoot.getElementById("plus");
 		this.plusButton.onclick = () => {
 			this.createTracker();
 		};
@@ -73,7 +81,7 @@ export class TrackerBlock extends HTMLElement {
 	}
 
 	createTracker() {
-		localStorage.createTracker(this.title.innerHTML, [], this.parent, (err, tracker) => {
+		localStorage.createTracker(this.title.innerHTML, [], this.parent, true, (err, tracker) => {
 			if (err) {
 				console.log(err);
 			} else {

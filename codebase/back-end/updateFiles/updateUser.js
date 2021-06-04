@@ -13,7 +13,6 @@ mongoose.set("useCreateIndex", true);
  * @callback (response) Either sends the user replaced in the online db or an error, if there is one, to the callback.
  */
 function updateUser(userObject, callback){
-	console.log(userObject);
 	schema.User.findOne({email: userObject.email}, (error, user) => {
 		if (error) {
 			callback(error);

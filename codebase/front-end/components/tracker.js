@@ -1,7 +1,7 @@
 import { TrackerBlock } from "./trackerBlock.js";
-import { createEditor } from './blockController.js';
 import { currentObject } from "../index.js";
 import * as localStorage from "../localStorage/userOperations.js";
+import { CreatorBlock } from "./creator.js";
 
 // tracker side menu web component
 export class TrackerMenu extends HTMLElement {
@@ -29,11 +29,29 @@ export class TrackerMenu extends HTMLElement {
 				left: 0;
 				right: 0;
 			}
+
+			tracker-block{
+				display: block;
+				margin: 0;
+				padding: 0;
+				width: 100%;
+				left: 0;
+				right: 0;
+			}
+
+			creator-block{
+				display: block;
+				margin: 0;
+				padding: 0;
+				width: 100%;
+				left: 0;
+				right: 0;
+			}
 			
 			.noteContainer {
 				margin-top: 7px;
 				margin-bottom: 7px;
-				margin-left: 65px;
+				margin-left: 87px;
 				display: list-item;
 				list-style-type: disc;
 				list-style-position: outside;
@@ -42,7 +60,7 @@ export class TrackerMenu extends HTMLElement {
 			.eventContainer {
 				margin-top: 7px;
 				margin-bottom: 7px;
-				margin-left: 65px;
+				margin-left: 87px;
 				display: list-item;
 				list-style-type: circle;
 				list-style-position: outside;
@@ -97,12 +115,8 @@ export class TrackerMenu extends HTMLElement {
             .close_button img {
                 filter: invert();
                 opacity: 50%;
-<<<<<<< HEAD
 				width: 15px;
 				cursor: pointer;
-=======
-                width: 15px;
->>>>>>> dev-thomas
             }
             
             .close_button:hover img {
@@ -134,7 +148,7 @@ export class TrackerMenu extends HTMLElement {
         </div>
         `;
 
-        this.titleText = title;
+        this.title = title;
         this.closeButton = this.shadowRoot.querySelector(".close_button");
         this.editor = this.shadowRoot.getElementById("editor");
 		this.isInsideTracker = false;
@@ -172,18 +186,16 @@ export class TrackerMenu extends HTMLElement {
 								let dropdownTracker = new TrackerBlock(currentTracker.title, currentObject.id, currentTracker, this);
 								trackerBlockWrapper.appendChild(dropdownTracker);
 							}
-							createEditor(trackerBlockWrapper, null, null, (success) => {
-								console.log(success);
-							});
+							trackerBlockWrapper.appendChild(new CreatorBlock());
 						}, 10);
 					}
 				});
 				if (currentObject.objectType == "futureLog") {
-					this.titleText = "Future Log Trackers";
+					this.title = "Future Log Trackers";
 				} else if (currentObject.objectType == "monthlyLog") {
-					this.titleText = "Monthly Log Trackers";
+					this.title = "Monthly Log Trackers";
 				} else {
-					this.titleText = "Daily Log Trackers";
+					this.title = "Daily Log Trackers";
 				}
 			}
 		});

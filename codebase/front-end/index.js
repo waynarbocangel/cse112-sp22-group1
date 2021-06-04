@@ -7,6 +7,7 @@ import { DropdownBlock } from './components/dropdown.js';
 import { router } from './router.js';
 import { createEditor } from './components/blockController.js';
 import { TrackerBlock } from './components/trackerBlock.js';
+import { CreatorBlock } from './components/creator.js';
 
 document.querySelector("body").style.display = "none";
 
@@ -48,7 +49,6 @@ export function getCurrentObject(urlFromRouter) {
 		if (err) {
 			window.location.href = "http://localhost:8080/login";
 		} else {
-			localStorage.updateUserFromMongo();
 			if (id != null){
 				let userArr = [];
 				Array.prototype.push.apply(userArr, user.dailyLogs);
@@ -114,6 +114,7 @@ export function setupIndex(btn) {
 					}
 				}
 			}
+			contentWrapper.appendChild(new CreatorBlock());
 		}
 	});
 	console.log("we are here");
@@ -128,7 +129,6 @@ export function setupIndex(btn) {
 		btn[i].style.visibility = "visible";
 	}
 	document.getElementById("targetMenu").style.display = "none";
-	createEditor(contentWrapper, currentObject, null, (success) => {});
 	navbar.target.setAttribute ("disabled", "disabled");
 	navbar.target.style.visibility = "hidden";
 	navbar.single.setAttribute ("disabled", "disabled");
@@ -184,6 +184,7 @@ export function setupFutureLog(btn, newState){
 					dropdownMonth.contentWrapper.appendChild(dropdownDay);
 				}
 			}
+			contentWrapper.appendChild(new CreatorBlock());
 		}
 	});
 	document.getElementById("targetMenu").style.display = "block";
@@ -198,9 +199,6 @@ export function setupFutureLog(btn, newState){
 		btn[i].removeAttribute("disabled");
 		btn[i].style.visibility = "visible";
 	}
-	createEditor(contentWrapper, currentObject, null, (success) => {
-		console.log(success);
-	});
 	navbar.single.setAttribute ("disabled", "disabled");
 	navbar.single.style.visibility = "hidden";
 	navbar.double.setAttribute ("disabled", "disabled");
@@ -234,9 +232,7 @@ export function setupFutureLog(btn, newState){
 					let dropdownTracker = new TrackerBlock(currentTracker.title, currentObject.id, currentTracker, futureLogTrackerMenu);
 					trackerBlockWrapper.appendChild(dropdownTracker);
 				}
-				createEditor(trackerBlockWrapper, null, null, (success) => {
-					console.log(success);
-				});
+				trackerBlockWrapper.appendChild(new CreatorBlock());
 			}, 10);
 		}
 	});
@@ -270,6 +266,7 @@ export function setupMonthlyLog(btn, newState){
 					dropdownDay.titleWrapper.classList.add("singleItemWrapper");
 				}
 			}
+			contentWrapper.appendChild(new CreatorBlock());
 		}
 	});
 	let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -282,9 +279,6 @@ export function setupMonthlyLog(btn, newState){
 		btn[i].removeAttribute("disabled");
 		btn[i].style.visibility = "visible";
 	}
-	createEditor(contentWrapper, currentObject, null, (success) => {
-		console.log(success);
-	});
 	document.getElementById("targetMenu").style.display = "block";
 	navbar.double.setAttribute ("disabled", "disabled");
 	navbar.double.style.visibility = "hidden";
@@ -305,19 +299,16 @@ export function setupMonthlyLog(btn, newState){
 			let userArr = user.trackers;
 			let trackerArr = [];
 			for (let i = 0; i < currentObject.trackers.length; i++) {
-				console.log("hello");
 				trackerArr.push(userArr.filter(object => object.id == currentObject.trackers[i])[0]);
 			}
-			console.log(trackerArr);
 			setTimeout(() => {
 				for(let i = 0; i < trackerArr.length; i++) {
 					let currentTracker = trackerArr[i];
-					let dropdownTracker = new TrackerBlock(currentTracker.title, currentObject.id, 1);
+					let dropdownTracker = new TrackerBlock(currentTracker.title, currentObject.id, currentTracker, monthlyLogTrackerMenu);
 					trackerBlockWrapper.appendChild(dropdownTracker);
 				}
-				createEditor(trackerBlockWrapper, null, null, (success) => {
-					console.log(success);
-				});
+				trackerBlockWrapper.appendChild(new CreatorBlock());
+				
 			}, 10);
 		}
 	});

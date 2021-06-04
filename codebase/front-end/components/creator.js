@@ -1,3 +1,5 @@
+import {currentObject} from "../index.js";
+import * as localStorage from "../localStorage/userOperations.js";
 let template = document.createElement("template");
 template.innerHTML = `
 	<style>
@@ -23,7 +25,7 @@ template.innerHTML = `
 			margin: 7px 0 12px;
 			font-size: 18px;
 			line-height: 28px;
-			width: calc(100% - 74px);
+			width: calc(100% - 44px);
 		}
 
 		#editorIcons{
@@ -37,14 +39,6 @@ template.innerHTML = `
 			height: 15px;
 			cursor: pointer;
 			filter: var(--icon-filter);
-		}
-
-		#editorIcons div{
-			display: inline;
-			margin-right: 0;
-			opacity: 1;
-			width: 20px;
-			cursor: pointer;
 		}
 
 		.unfocusedIcons{
@@ -67,5 +61,43 @@ template.innerHTML = `
 		}
 	</style>
 	<div id="editorIcons" class="paragraphIcons"><img src="../public/resources/plusIcon.png" class="unfocusedIcons"/><img src="../public/resources/sixDotIcon.png" class="unfocusedIcons"/></div>
-	<div id="textBlock" contenteditable="true" ondrop="return false;" placeholder='Type "/" to create a block'></div>
+	<div id="textBlock" contenteditable="true" ondrop="return false;" class="unstylized" placeholder='Type "/" to create an item: future log, collection, etc'></div>
 `;
+
+export class CreatorBlock extends HTMLElement{
+	constructor(){
+		super();
+		this.attachShadow({ mode: 'open' });
+		this.shadowRoot.appendChild(template.content.cloneNode(true));
+	}
+
+	connectedCallback() {
+		let textBlock = this.shadowRoot.getElementById("textBlock");
+		textBlock.onkeydown = (e) => {
+			let key = e.key;
+			if (key == "Enter") {
+				e.preventDefault();
+				let content = textBlock.innerHTML;
+				if (content == "/futurelog") {
+					alert("New Future Log will be created");
+				} else if (content == "/monthlylog") {
+					alert("New Monthly Log will be created");
+				} else if (content == "/dailylog") {
+					alert("New Daily Log will be created");
+				} else if (content == "/collection") {
+					alert("New Collection will be created");
+				} else if (content == "/tracker") {
+					localStorage.createTracker("Practice Tracker", [], currentObject.id, true, (err, tracker) => {
+						if (err) {
+							console.log(err);
+						} else {
+							console.log(tracker);
+						}
+					});
+				}
+			}
+		}
+	}
+}
+
+window.customElements.define('creator-block', CreatorBlock);

@@ -8,7 +8,7 @@ const paddingSize = 10;
 const protectedKeys = ["Control", "Alt", "CapsLock", "Escape", "PageUp", "PageDown", "End", "Home", "PrintScreen", "Insert", "Delete", "Backspace", "Tab", "Enter", "Meta", "ArrowTop", "ArrowBottom", "ArrowRight", "ArrowLeft", "Shift", " "]
 
 export class TextBlock extends HTMLElement {
-	constructor(controller, itemObject, callback) {
+	constructor(controller, itemObject, signifier, callback) {
 		super();
 		fetch("./components/block.html").then((response) => {
 			return response.text();
@@ -46,8 +46,9 @@ export class TextBlock extends HTMLElement {
 			this.timeSetter = false;
 			this.dateSetter = false;
 			this.eventDelete = true;
-			this.signifier = this.shadowRoot.getElementById("signifier");
-			this.signifier.innerHTML = "&#x1F7E0;";
+			this.signifier = signifier
+			this.signifierIcon = this.shadowRoot.getElementById("signifier");
+			this.signifierIcon.innerHTML = this.signifier.symbol;
 			this.setupTabLevel();
 			callback(true);
 		})
@@ -290,6 +291,11 @@ export class TextBlock extends HTMLElement {
 		this.setCurrentSpot();
 	}
 
+	setupSignifier(signifier) {
+		this.signifier = signifier;
+		this.signifierIcon.innerHTML = signifier.symbol;
+	}
+
 	connectedCallback() {
 
 		let textBlock = this.shadowRoot.getElementById("textBlock");
@@ -308,7 +314,7 @@ export class TextBlock extends HTMLElement {
 						if (err == null) {
 							let task = user.tasks.filter(task => task.id == this.item.objectReference)[0];
 							task.complete = 0;
-							localStorage.updateTask(task, (err, task) => {
+							localStorage.updateTask(task, true, (err, task) => {
 								console.log(err);
 								console.log(task);
 							})
@@ -324,7 +330,7 @@ export class TextBlock extends HTMLElement {
 							let task = user.tasks.filter(task => task.id == this.item.objectReference)[0];
 							console.log(task)
 							task.complete = 1;
-							localStorage.updateTask(task, (err, task) => {
+							localStorage.updateTask(task, true, (err, task) => {
 								console.log(err);
 								console.log(task);
 							})
@@ -375,20 +381,20 @@ export class TextBlock extends HTMLElement {
 					this.item.kind = this.kind;
 					this.item.text = textBlock.textContent;
 					setTimeout( () => {
-						localStorage.updateTextBlock(this.item, date, (res) => {
+						localStorage.updateTextBlock(this.item, date, true, (res) => {
 							console.log(res);
 						})
 					}, 150);
 				} else {
 					console.log("goodbye my very old friend " + textBlock.textContent);
 
-					localStorage.deleteTextBlock(this.item, (res) => {
+					localStorage.deleteTextBlock(this.item, true, (res) => {
 						console.log(res);
 					})
 				}
 			} else if (textBlock.textContent != "") {
 
-				localStorage.createTextBlock(this.controller.parent.id, this.controller.subParent, this.controller.currentBlockIndex, textBlock.textContent, this.tabLevel, this.kind, null, null, date, (err, block) => {
+				localStorage.createTextBlock(this.controller.parent.id, this.controller.subParent, this.controller.currentBlockIndex, textBlock.textContent, this.tabLevel, this.kind, null, this.signifier.id, date, true, (err, block) => {
 					if (err) {
 						console.log(err);
 					} else {

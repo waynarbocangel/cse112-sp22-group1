@@ -364,9 +364,7 @@ export class PageHeader extends HTMLElement {
 	}
 
 	set title(title) {
-		console.log("this");
 		this.shadowRoot.getElementById("title_page").innerHTML = title;
-		console.log(this.h1);
 	}
 
 	get title() {
@@ -374,8 +372,7 @@ export class PageHeader extends HTMLElement {
 	}
 
 	createFutureLog() {
-		localStorage.createFutureLog(new Date(2021, 5, 22), new Date(2021, 8, 23), [], [], [], (err, futureLog) => {
-			console.log(futureLog);
+		localStorage.createFutureLog(new Date(2021, 5, 22), new Date(2021, 8, 23), [], [], [], true, (err, futureLog) => {
 			localStorage.readUser((err, res) => {
 				if (err) {
 					console.log(err);

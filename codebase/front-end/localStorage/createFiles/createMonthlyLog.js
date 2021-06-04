@@ -124,7 +124,7 @@ function addDay(currentDay, startDate, endDay, month, callback){
 	if (currentDay > endDay){
 		callback([]);
 	} else {
-		localStorage.createDailyLog(month.id, [], [], dayDate, (error, day) => {
+		localStorage.createDailyLog(month.id, [], [], dayDate, false, (error, day) => {
 			if (error == null){
 				addDay(currentDay + 1, startDate, endDay, month, (daysArray) =>  {
 					daysArray.splice(0, 0, {id: day.id, content: [], dailyLog: day.id});
