@@ -366,7 +366,6 @@ export class TextBlock extends HTMLElement {
 				this.editorIcons.childNodes[i].classList.remove("focusedIcons");
 				this.editorIcons.childNodes[i].classList.add("unfocusedIcons");
 			}
-			console.log("item is ",this.item);
 			let date = null;
 			if(this.kind == "event"){
 				date = getDate(this, this.eventDelete);
