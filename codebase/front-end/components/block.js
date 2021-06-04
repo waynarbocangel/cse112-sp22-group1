@@ -700,11 +700,11 @@ function includesClock(block, text, first) {
 }
 
 /**
- * gets the datge from the textblock text
+ * gets the date from the textblock text
  * 
  * @param {Object} textBlock block to set the time for
  * @param {Boolean} deleteString check to see if the date string shuld be removed from the text(?)
- * @returns 
+ * @returns date parsed from textBlock text
  */
 function getDate(textBlock, deleteString){
 	let date = null;
@@ -877,12 +877,12 @@ function days(month, year){
 }
 
 /**
- * handles when user user day of week as date for event creation
+ * returns the next day of the week depending onthe day passed in
  * 
- * @param {String} dayName the weekday provided in event creation
+ * @param {String} dayName a weekday
  * @param {Boolean} excludeToday boolean to check if current day should be included or not
  * @param {Date} refDate current date
- * @returns 
+ * @returns the next day of the week
  */
 function getNextDayOfTheWeek(dayName, excludeToday = true, refDate = new Date()) {
     const dayOfWeek = ["sunday","monday","tuesday","wednesday","thursday","friday","saturday"]

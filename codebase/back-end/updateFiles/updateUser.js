@@ -69,7 +69,6 @@ function updateUser(userObject, callback){
 				newTrackers.push(tracker);
 			}
 			user.index = userObject.index;
-			user.pwd = user.pwd;
 			user.email = userObject.email;
 			user.theme = userObject.theme;
 			user.dailyLogs =  userObject.dailyLogs;
