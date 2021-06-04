@@ -8,8 +8,8 @@ const readUser = require(__dirname + "/readFiles/readUser.js");
 const security = require(__dirname + "/security/securityFunctions.js");
 
 const app = express();
-app.use(express.json({limit: '50mb'}));
-app.use(express.urlencoded({limit: '50mb'}));
+app.use(express.json({limit: '50mb', extended: true}));
+app.use(express.urlencoded({limit: '50mb', extended: true}));
 app.use((req, res, next) => {
 	res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
