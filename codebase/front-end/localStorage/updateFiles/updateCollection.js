@@ -20,25 +20,6 @@ export function updateCollectionPouch (db, collection, callback) {
 					doc.index.contents[i] = collection.id;
 				}
 			}
-<<<<<<< HEAD
-			*/
-			return db.put(
-				{
-					_id: "0000",
-					_rev: doc._rev,
-					email: doc.email,
-					pwd: doc.pwd,
-					index: doc.index,
-					dailyLogs: doc.dailyLogs,
-					monthlyLogs: doc.monthlyLogs,
-					futureLogs: doc.futureLogs,
-					collections: doc.collections,
-					trackers: doc.trackers,
-					textBlocks: doc.textBlocks,
-					taskBlocks: doc.taskBlocks,
-					eventBlocks: doc.eventBlocks,
-					signifiers: doc.signifiers
-=======
 
 			return db.put({_id: "0000",
 			_rev: doc._rev,
@@ -61,7 +42,6 @@ export function updateCollectionPouch (db, collection, callback) {
 					callback(err);
 				} else {
 					callback(null);
->>>>>>> dev-waynar
 				}
 			});
 		}

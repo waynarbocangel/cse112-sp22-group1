@@ -64,22 +64,10 @@ function authenticate (userData, callback) {
     })
 }
 
-<<<<<<< HEAD
-
-
-
-//for exporting
-=======
 // For exporting
->>>>>>> dev-waynar
 module.exports = {
     passHash: passHash,
     encrypt: encrypt,
     decrypt: decrypt,
-<<<<<<< HEAD
-    authenticate: authenticate,
-}
-=======
     authenticate: authenticate
 }
->>>>>>> dev-waynar
