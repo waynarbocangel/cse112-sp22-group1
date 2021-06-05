@@ -1,6 +1,7 @@
 import { router } from "../router.js";
 import { currentObject, header } from "../index.js";
-import * as localStorage from "../localStorage/userOperations.js";
+import {SettingsMenu} from "./settings/settings.js";
+
 const template = document.createElement("template");
 
 template.innerHTML = `
@@ -246,7 +247,6 @@ export class NavBar extends HTMLElement {
 		});
 		this.user.addEventListener("click", () => {
 			let settingsMenu = document.querySelector("settings-menu");
-
 			settingsMenu.toggle();
 		});
 
@@ -264,7 +264,9 @@ export class NavBar extends HTMLElement {
 		});
 		this.userMenu.addEventListener("click", () => {
 			let settingsMenu = document.querySelector("settings-menu");
-			settingsMenu.toggle();
+			if (typeof settingsMenu === SettingsMenu) {
+				settingsMenu.toggle();
+			}
 		});
 	}
 

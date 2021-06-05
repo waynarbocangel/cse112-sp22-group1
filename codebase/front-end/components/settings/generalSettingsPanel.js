@@ -1,8 +1,8 @@
 import * as localStorage from "../../localStorage/userOperations.js";
 export class GeneralSettingsPanel extends HTMLElement {
-    constructor() {
+    constructor () {
         super();
-        this.attachShadow({mode: 'open'});
+        this.attachShadow({mode: "open"});
         this.shadowRoot.innerHTML = `
         <style>
             :host {
@@ -43,34 +43,24 @@ export class GeneralSettingsPanel extends HTMLElement {
 
         let themeRadios = this.shadowRoot.querySelectorAll("input[type=radio]");
         for (let themeRadio of themeRadios) {
-            themeRadio.addEventListener('change', () => this.updateTheme(themeRadio.id));
+            themeRadio.addEventListener("change", () => this.updateTheme(themeRadio.id));
         }
 
 		this.logoutButton = this.shadowRoot.getElementById("logout");
 
     }
 
-	connectedCallback(){
+	connectedCallback () {
 		this.logoutButton.onclick = () => {
-			if(!navigator.onLine){
-				if(confirm("You're logging out while offline, all your local changes will be deleted if you continue!")){
-					localStorage.deleteDB();
-					window.location.href = "http://localhost:8080/login";
-				}
-			} else {
+			if (navigator.onLine) {
+				localStorage.deleteDB();
+				window.location.href = "http://localhost:8080/login";
+			} else if (confirm("You're logging out while offline, all your local changes will be deleted if you continue!")) {
 				localStorage.deleteDB();
 				window.location.href = "http://localhost:8080/login";
 			}
 		}
 	}
-
-    updateTheme(theme) {
-        let root = document.documentElement;
-
-        for (let key in themeColors[theme]) {
-            root.style.setProperty(key, themeColors[theme][key]);
-        }
-    }
 }
 
-customElements.define('general-settings-panel', GeneralSettingsPanel);
+customElements.define("general-settings-panel", GeneralSettingsPanel);

@@ -32,7 +32,6 @@ app.post("/createUser", express.json({type: "*/*"}), (req, res) =>{
 });
 
 app.post("/updateUser", express.json({type: "*/*"}), (req, res) =>{
-	console.log(req.body.length);
 	security.authenticate(req.body, (success) => {
 		if (success) {
 			updateUser.updateUser(req.body, (user) => {

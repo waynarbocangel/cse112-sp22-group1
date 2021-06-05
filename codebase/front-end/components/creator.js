@@ -1,5 +1,5 @@
-import {currentObject} from "../index.js";
 import * as localStorage from "../localStorage/userOperations.js";
+import {currentObject} from "../index.js";
 let template = document.createElement("template");
 template.innerHTML = `
 	<style>
@@ -75,18 +75,18 @@ export class CreatorBlock extends HTMLElement {
 		let textBlock = this.shadowRoot.getElementById("textBlock");
 		textBlock.onkeydown = (e) => {
 			let key = e.key;
-			if (key == "Enter") {
+			if (key === "Enter") {
 				e.preventDefault();
 				let content = textBlock.innerHTML;
-				if (content == "/futurelog") {
+				if (content === "/futurelog") {
 					alert("New Future Log will be created");
-				} else if (content == "/monthlylog") {
+				} else if (content === "/monthlylog") {
 					alert("New Monthly Log will be created");
-				} else if (content == "/dailylog") {
+				} else if (content === "/dailylog") {
 					alert("New Daily Log will be created");
-				} else if (content == "/collection") {
+				} else if (content === "/collection") {
 					alert("New Collection will be created");
-				} else if (content == "/tracker") {
+				} else if (content === "/tracker") {
 					localStorage.createTracker("Practice Tracker", [], currentObject.id, true, (err, tracker) => {
 						if (err) {
 							console.log(err);

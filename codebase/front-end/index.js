@@ -41,13 +41,14 @@ export function getCurrentObject (urlFromRouter) {
 	if (urlFromRouter !== null) {
 		urlparse = urlFromRouter.split("~");
 	}
+	console.log(urlparse !== undefined);
 	if (urlparse !== undefined) {
 		id = urlparse[1];
 	}
 	localStorage.readUser((err, user) => {
 		if (err) {
 			window.location.href = "http://localhost:8080/login";
-		} else if (id === null) {
+		} else if (id === undefined || id === null) {
 			currentObject = user.index;
 		} else {
 			let userArr = [];

@@ -1,28 +1,29 @@
-import {ThemePanel} from './themePanel.js';
-import {GeneralSettingsPanel} from './generalSettingsPanel.js';
-import {fade, unfade} from '../../transitions.js';
+import {ThemePanel} from "./themePanel.js";
+import {GeneralSettingsPanel} from "./generalSettingsPanel.js";
+import {fade, unfade} from "../../transitions.js";
 
 
-/* Settings Menu
-
-    To add a tab to the menu:
-    
-    Add a <settings-tab> with the 'slot' and 'title' attributes set:
-
-        <settings-tab slot="settings-tab" title="YOUR TITLE">
-
-            Add an <img> with slot="icon"
-                <img slot="icon" src="public/resources/YOUR_IMG.png">
-        </settings-tab>
-
-    Add a <settings-panel> tag right after the <settings-tab>:
-
-        <settings-panel slot="settings-panel">
-            
-            Inside this tag, add your web component. See themePanel.js for an example.
-            <your-panel></your-panel>
-        </settings-panel>
-*/
+/*
+ * Settings Menu
+ *
+ *  To add a tab to the menu:
+ *
+ *  Add a <settings-tab> with the 'slot' and 'title' attributes set:
+ *
+ *      <settings-tab slot="settings-tab" title="YOUR TITLE">
+ *
+ *          Add an <img> with slot="icon"
+ *              <img slot="icon" src="public/resources/YOUR_IMG.png">
+ *      </settings-tab>
+ *
+ *  Add a <settings-panel> tag right after the <settings-tab>:
+ *
+ *      <settings-panel slot="settings-panel">
+ *
+ *          Inside this tag, add your web component. See themePanel.js for an example.
+ *          <your-panel></your-panel>
+ *      </settings-panel>
+ */
 const settingsTemplate = `
 	<style>
 		settings-tab {
@@ -45,13 +46,13 @@ const settingsTemplate = `
 `;
 
 export class SettingsMenu extends HTMLElement {
-    static get observedAttributes() {
-        return ['open'];
+    static get observedAttributes () {
+        return ["open"];
     }
 
-    constructor() {
+    constructor () {
         super();
-        this.attachShadow({ mode: 'open' });
+        this.attachShadow({ mode: "open" });
 
         this.outerHTML
         this.shadowRoot.innerHTML = `
@@ -186,34 +187,36 @@ export class SettingsMenu extends HTMLElement {
             </div>
         `;
 
-        this.shadowRoot.getElementById("close").addEventListener('click', () => { this.hide(); });
+        this.shadowRoot.getElementById("close").addEventListener("click", () => {
+ this.hide();
+});
 
-        this.tabSlot = this.shadowRoot.querySelector('slot[name=settings-tab]');
-        this.panelSlot = this.shadowRoot.querySelector('slot[name=settings-panel]');
+        this.tabSlot = this.shadowRoot.querySelector("slot[name=settings-tab]");
+        this.panelSlot = this.shadowRoot.querySelector("slot[name=settings-panel]");
 
         this.changeTab = this.changeTab.bind(this);
         this.linkPanels = this.linkPanels.bind(this);
 
-        this.tabSlot.addEventListener('slotchange', () => this.linkPanels);
-        this.panelSlot.addEventListener('slotchange', () => this.linkPanels);
+        this.tabSlot.addEventListener("slotchange", () => this.linkPanels);
+        this.panelSlot.addEventListener("slotchange", () => this.linkPanels);
 
-        this.headerTitle = this.shadowRoot.querySelector('.header h1');
+        this.headerTitle = this.shadowRoot.querySelector(".header h1");
     }
 
-    connectedCallback() {
+    connectedCallback () {
         this.innerHTML = settingsTemplate;
 
-        this.classList.toggle('open', false);
-        this.setAttribute('aria-hidden', true);
-		
+        this.classList.toggle("open", false);
+        this.setAttribute("aria-hidden", true);
+
 		this.style.display = "none";
-		this.removeAttribute('open');
+		this.removeAttribute("open");
 
-        Promise.all([customElements.whenDefined('settings-tab'), customElements.whenDefined('settings-panel')])
-            .then(() => this.linkPanels());
+        Promise.all([customElements.whenDefined("settings-tab"), customElements.whenDefined("settings-panel")]).
+            then(() => this.linkPanels());
 
-        this.addEventListener('click', event => {
-            if (event.target.getAttribute('role') !== 'tab') {
+        this.addEventListener("click", (event) => {
+            if (event.target.getAttribute("role") !== "tab") {
                 return;
             }
 
@@ -221,24 +224,26 @@ export class SettingsMenu extends HTMLElement {
         })
     }
 
-    tabs() {
-        return this.querySelectorAll('settings-tab');
+    tabs () {
+        return this.querySelectorAll("settings-tab");
     }
 
-    panels() {
-        return this.querySelectorAll('settings-panel');
+    panels () {
+        return this.querySelectorAll("settings-panel");
     }
 
-    linkPanels() {
+    linkPanels () {
         let tabs = this.tabs();
 
-        if (tabs.length === 0) return;
+        if (tabs.length === 0) {
+ return;
+}
 
-        let selectedTab = undefined;
+        let selectedTab;
         for (let tab of tabs) {
             let panel = tab.nextElementSibling;
-            tab.setAttribute('aria-controls', panel.id);
-            panel.setAttribute('aria-labelledby', tab.id);
+            tab.setAttribute("aria-controls", panel.id);
+            panel.setAttribute("aria-labelledby", tab.id);
 
             if (selectedTab === undefined && tab.selected) {
                 selectedTab = tab;
@@ -252,73 +257,73 @@ export class SettingsMenu extends HTMLElement {
         this.changeTab(selectedTab);
     }
 
-    changeTab(selectedTab) {
+    changeTab (selectedTab) {
         let tabs = Array.from(this.tabs());
         let panels = Array.from(this.panels());
 
-        // deselect all the tabs and hide all the panels
-        tabs.forEach(tab => tab.selected = false);
-        panels.forEach(panel => panel.hidden = true);
+        // Deselect all the tabs and hide all the panels
+        tabs.forEach((tab) => tab.selected = false);
+        panels.forEach((panel) => panel.hidden = true);
 
-        let panelId = selectedTab.getAttribute('aria-controls');
+        let panelId = selectedTab.getAttribute("aria-controls");
         let selectedPanel = this.querySelector(`#${panelId}`);
 
         if (!selectedPanel) {
-            // oh no
-            console.log('panel not found');
+            // Oh no
+            console.log("panel not found");
         }
 
-        this.headerTitle.innerText = selectedTab.getAttribute('title');
+        this.headerTitle.innerText = selectedTab.getAttribute("title");
 
         selectedTab.selected = true;
         selectedPanel.hidden = false;
         selectedTab.focus();
     }
 
-    attributeChangedCallback(attr, oldVal, newVal) {
+    attributeChangedCallback (attr, oldVal, newVal) {
         if (oldVal !== newVal) {
             this[attr] = this.hasAttribute(attr);
         }
     }
 
-    get open() {
-        return this.hasAttribute('open');
+    get open () {
+        return this.hasAttribute("open");
     }
 
-    set open(isOpen) {
-        this.classList.toggle('open', isOpen);
-        this.setAttribute('aria-hidden', !isOpen);
+    set open (isOpen) {
+        this.classList.toggle("open", isOpen);
+        this.setAttribute("aria-hidden", !isOpen);
         if (isOpen) {
-			this.setAttribute('open', 'true');
+			this.setAttribute("open", "true");
 			unfade(this, () => {
 				this.focus();
 			});
         } else {
 			fade(this, () => {
-				this.removeAttribute('open');
+				this.removeAttribute("open");
 			});
         }
     }
 
-    toggle() {
+    toggle () {
         this.open = !this.open;
     }
 
-    show() {
+    show () {
         this.open = true;
     }
 
-    hide() {
+    hide () {
         this.open = false;
     }
 }
 
-customElements.define('settings-menu', SettingsMenu);
+customElements.define("settings-menu", SettingsMenu);
 
-// used to generate an id
+// Used to generate an id
 let tabId = 0;
 
-let settingsTabTemplate = document.createElement('template');
+let settingsTabTemplate = document.createElement("template");
 settingsTabTemplate.innerHTML = `
 <style>
     :host {
@@ -343,57 +348,57 @@ settingsTabTemplate.innerHTML = `
 `;
 
 export class SettingsTab extends HTMLElement {
-    static get observedAttributes() {
-        return ['selected'];
+    static get observedAttributes () {
+        return ["selected"];
     }
 
-    constructor() {
+    constructor () {
         super();
-        this.attachShadow({mode:'open'});
+        this.attachShadow({mode: "open"});
         this.shadowRoot.appendChild(settingsTabTemplate.content.cloneNode(true));
     }
 
-    connectedCallback() {
-        this.setAttribute('role', 'tab');
+    connectedCallback () {
+        this.setAttribute("role", "tab");
         if (!this.id) {
             this.id = `settings-tab-generated-${tabId++}`;
         }
 
-        this.setAttribute('aria-selected', 'false');
+        this.setAttribute("aria-selected", "false");
     }
 
-    attributeChangedCallback() {
-        const value = this.hasAttribute('selected');
-        this.setAttribute('aria-selected', value);
+    attributeChangedCallback () {
+        const value = this.hasAttribute("selected");
+        this.setAttribute("aria-selected", value);
     }
 
-    set selected(value) {
+    set selected (value) {
         value = Boolean(value);
         if (value) {
-            this.setAttribute('selected', '');
+            this.setAttribute("selected", "");
         } else {
-            this.removeAttribute('selected');
+            this.removeAttribute("selected");
         }
     }
 
-    get selected() {
-        return this.hasAttribute('selected');
+    get selected () {
+        return this.hasAttribute("selected");
     }
 }
-customElements.define('settings-tab', SettingsTab);
+customElements.define("settings-tab", SettingsTab);
 
 let panelId = 0;
 
 export class SettingsPanel extends HTMLElement {
-    constructor() {
+    constructor () {
         super();
     }
 
-    connectedCallback() {
-        this.setAttribute('role', 'tabpanel');
+    connectedCallback () {
+        this.setAttribute("role", "tabpanel");
         if (!this.id) {
             this.id = `settings-panel-generated-${panelId++}`;
         }
     }
 }
-customElements.define('settings-panel', SettingsPanel);
+customElements.define("settings-panel", SettingsPanel);

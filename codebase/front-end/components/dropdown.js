@@ -1,5 +1,5 @@
-import {router} from "../router.js";
 import {navbar} from "../index.js";
+import {router} from "../router.js";
 const tabspace = 3;
 
 export class DropdownBlock extends HTMLElement {

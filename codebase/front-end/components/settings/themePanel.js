@@ -9,7 +9,7 @@ const themeColors = {
         "--tracker-border-color": "#404040",
         "--navbar-foreground-color": "#FFFFFF",
         "--navbar-background-color": "#1e2020",
-        "--icon-filter": "invert()",
+        "--icon-filter": "invert()"
     },
 
     lightmode: {
@@ -21,7 +21,7 @@ const themeColors = {
         "--tracker-background-color": "#2B2D42",
         "--navbar-foreground-color": "#FFFFFF",
         "--navbar-background-color": "#F7F2EC",
-        "--icon-filter": "",
+        "--icon-filter": ""
     },
 
     highcontrast: {
@@ -33,19 +33,19 @@ const themeColors = {
         "--tracker-border-color": "#FFFFFF",
         "--navbar-foreground-color": "#FFFFFF",
         "--navbar-background-color": "#008F00",
-        "--icon-filter": "invert()",
+        "--icon-filter": "invert()"
     },
 
     theme4: {
         "--border-color": "#F2F2F2",
         "--content-foreground-color": "#000000",
         "--content-background-color": "#FFFFFF",
-        "--tracker-foreground-color": "#FFFFFF", //"#9FEDD7",
+        "--tracker-foreground-color": "#FFFFFF",
         "--tracker-background-color": "#026670",
         "--tracker-border-color": "#7671B6",
         "--navbar-foreground-color": "#FEF9C7",
         "--navbar-background-color": "#FCE181",
-        "--icon-filter": "",
+        "--icon-filter": ""
     },
 
     theme5: {
@@ -53,13 +53,13 @@ const themeColors = {
         "--content-foreground-color": "#000000",
         "--content-background-color": "#EAE7DC",
 
-        "--tracker-foreground-color": "#FFFFFF", //"#9FEDD7",
+        "--tracker-foreground-color": "#FFFFFF",
         "--tracker-background-color": "#48131A",
         "--tracker-border-color": "#6F474E",
 
         "--navbar-foreground-color": "#000000",
         "--navbar-background-color": "#D8C3A5",
-        "--icon-filter": "",
+        "--icon-filter": ""
     },
 
     theme6: {
@@ -72,17 +72,17 @@ const themeColors = {
         "--navbar-foreground-color": "#000000",
         "--navbar-background-color": "#25274D",
 
-        /* TODO: change placeholder text colors in other themes */
+
         "--content-placeholder-color": "#505b84",
 
-        "--icon-filter": "invert()",
-    },
+        "--icon-filter": "invert()"
+    }
 }
 
 export class ThemePanel extends HTMLElement {
-    constructor() {
+    constructor () {
         super();
-        this.attachShadow({mode: 'open'});
+        this.attachShadow({mode: "open"});
         this.shadowRoot.innerHTML = `
         <style>
             @font-face {
@@ -145,23 +145,23 @@ export class ThemePanel extends HTMLElement {
         this.themeRadios = this.shadowRoot.querySelectorAll("input[type=radio]");
     }
 
-	connectedCallback() {
+	connectedCallback () {
 		for (let themeRadio of this.themeRadios) {
-            themeRadio.addEventListener('change', () => {
+            themeRadio.addEventListener("change", () => {
 				localStorage.updateTheme(themeRadio.id, true, (err) => {
 					console.log("here");
-					if (!err){
+					if (err) {
+						console.log(err);
+					} else {
 						console.log("here");
 						this.updateTheme(themeRadio.id);
-					} else {
-						console.log(err);
 					}
 				});
-				
+
 			});
         }
 		localStorage.readUser((err, user) => {
-			if (!err){
+			if (err) {
 				let pickedTheme = this.shadowRoot.getElementById(user.theme);
 				pickedTheme.toggleAttribute("checked", true);
 				this.updateTheme(user.theme);
@@ -171,12 +171,14 @@ export class ThemePanel extends HTMLElement {
 		});
 	}
 
-    updateTheme(theme) {
+    updateTheme (theme) {
         let root = document.documentElement;
 		for (let key in themeColors[theme]) {
-			root.style.setProperty(key, themeColors[theme][key]);
+			if (key !== null) {
+				root.style.setProperty(key, themeColors[theme][key]);
+			}
 		}
     }
 }
 
-customElements.define('theme-panel', ThemePanel);
+customElements.define("theme-panel", ThemePanel);

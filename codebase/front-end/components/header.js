@@ -31,7 +31,7 @@ export class PageHeader extends HTMLElement {
 				.header {
 					font-family: "SF-Pro";
 					position: relative;
-					flex: 2;	/* Use half of the space for the title */
+					flex: 2;/* Use half of the space for the title */
 				}
 		
 				button {
@@ -393,28 +393,18 @@ export class PageHeader extends HTMLElement {
 	 */
 	createFutureLog () {
 		localStorage.createFutureLog(new Date(2021, 5, 22), new Date(2021, 8, 23), [], [], [], true, (err, futureLog) => {
-			localStorage.readUser((err, res) => {
-				if (err) {
-					console.log(err);
-				} else {
-					console.log(res);
-
-					/*
-					 * LocalStorage.createCollection("testing createCollection", "1", [], (err, collection) => {
-					 * 	console.log(collection);
-					 * 	localStorage.readUser((err, res) => {
-					 * 		if(err) {
-					 * 			console.log(err);
-					 * 		} else {
-					 * 			console.log(res);
-					 * 		}
-					 * 	});
-					 * });
-					 */
-				}
-			})
+			if (err) {
+				console.log(err);
+			} else {
+				localStorage.readUser((error, res) => {
+					if (error) {
+						console.log(error);
+					} else if (res.ok) {
+						console.log(futureLog);
+					}
+				})
+			}
 		});
-
 	}
 }
 
