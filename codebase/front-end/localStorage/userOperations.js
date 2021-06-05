@@ -53,7 +53,7 @@ export let db = new PouchDB("Users");
  */
 export function deleteDB () {
 	updateUserFromMongo();
-    db.destroy( (err, res) => {
+    db.destroy((err, res) => {
 		if (err) {
 			console.log(err);
 		} else {
@@ -61,7 +61,7 @@ export function deleteDB () {
 		}
 	});
 
-    db.info( (err, res) => {
+    db.info((err, res) => {
 		if (err) {
 			console.log(err);
 		} else {
@@ -79,18 +79,16 @@ export function deleteDB () {
  * @callback (res) Sends user json data to the callback.
  */
 export function loginUser (email, pwd, callback) {
-	fetch(
-		`http://localhost:3000/readUser`, {
+	fetch("http://localhost:3000/readUser", {
 		headers: {
 			"content-type": "application/json; charset=UTF-8"
 		},
-		body:JSON.stringify({
+		body: JSON.stringify({
 			email: email,
 			pwd: pwd
 		}),
 		method: "POST"
-	}).then((data) => {
-		return data.json()}).then((res) => {
+	}).then((data) => data.json()).then((res) => {
 		callback(res);
 	});
 }
@@ -103,7 +101,7 @@ export function loginUser (email, pwd, callback) {
  * @callback (res) Sends the new user object to the callback.
  */
 export function createUser (email, pwd, callback) {
-    fetch(`http://localhost:3000/createUser`, {
+    fetch("http://localhost:3000/createUser", {
 		headers: {
 			"content-type": "application/json; charset=UTF-8"
 		},
@@ -112,10 +110,8 @@ export function createUser (email, pwd, callback) {
 			pwd: pwd
 		}),
 		method: "POST"
-	}).then((data) => {
-        return data.json();
-    }).then((userData) => {
-		if (userData.error === undefined){
+	}).then((data) => data.json()).then((userData) => {
+		if (!userData.error) {
 			userData.pwd = pwd;
 			createUserPouch(db, userData, (user) => {
 				callback(user);
@@ -650,7 +646,7 @@ export function deleteTrackerFromContainer (container, index, shouldUpdate, call
 	});
 }
 
-//-------------------------------Update Functions----------------------------------
+// -------------------------------Update Functions----------------------------------
 
 /**
  * Updates the theme of the app.
@@ -668,7 +664,7 @@ export function updateTheme (theme, shouldUpdate, callback) {
 }
 
 /**
- * updates the imageBlock.
+ * Updates the imageBlock.
  *
  * @param {Object} imageBlock The new version of the imageBlock.
  * @callback (error) Sends an error, if there is one, to the callback.
@@ -693,7 +689,7 @@ export function updateImageBlockByID (id, shouldUpdate, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			let imageBlock = doc.userObject.imageBlocks.filter(element => element.id === id);
+			let imageBlock = doc.userObject.imageBlocks.filter((element) => element.id === id);
 			updateImageBlockPouch(db, imageBlock[0], (error) => {
 				if (shouldUpdate) {
 					updateUserFromMongo();
@@ -730,7 +726,7 @@ export function updateAudioBlockByID (id, shouldUpdate, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			let audioBlock = doc.userObject.audioBlocks.filter(element => element.id === id);
+			let audioBlock = doc.userObject.audioBlocks.filter((element) => element.id === id);
 			updateAudioBlockPouch(db, audioBlock[0], (error) => {
 				if (shouldUpdate) {
 					updateUserFromMongo();
@@ -767,7 +763,7 @@ export function updateDailyLogByID (id, shouldUpdate, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			const dailyLog = doc.userObject.dailyLogs.filter(element => element.id === id);
+			const dailyLog = doc.userObject.dailyLogs.filter((element) => element.id === id);
 			updateDailyLogPouch(db, dailyLog[0], (error) => {
 				if (shouldUpdate) {
 					updateUserFromMongo();
@@ -804,7 +800,7 @@ export function updateMonthlyLogByID (id, shouldUpdate, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			const monthlyLog = doc.userObject.monthlyLogs.filter(element => element.id === id);
+			const monthlyLog = doc.userObject.monthlyLogs.filter((element) => element.id === id);
 			updateMonthlyLogPouch(db, monthlyLog[0], (error) => {
 				if (shouldUpdate) {
 					updateUserFromMongo();
@@ -841,7 +837,7 @@ export function updateFutureLogByID (id, shouldUpdate, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			const futureLog = doc.userObject.futureLogs.filter(element => element.id === id);
+			const futureLog = doc.userObject.futureLogs.filter((element) => element.id === id);
 			updateFutureLogPouch(db, futureLog[0], (error) => {
 				if (shouldUpdate) {
 					updateUserFromMongo();
@@ -878,7 +874,7 @@ export function updateCollectionByID (id, shouldUpdate, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			const collection = doc.userObject.collections.filter(element => element.id === id);
+			const collection = doc.userObject.collections.filter((element) => element.id === id);
 			updateCollectionPouch(db, collection[0], (error) => {
 				if (shouldUpdate) {
 					updateUserFromMongo();
@@ -915,7 +911,7 @@ export function updateEventByID (id, shouldUpdate, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			const event = doc.events.filter(element => element.id == id);
+			const event = doc.events.filter((element) => element.id === id);
 			updateEventPouch(db, event[0], (error) => {
 				if (shouldUpdate) {
 					updateUserFromMongo();
@@ -938,7 +934,7 @@ export function updateEventAtIndex (container, index, shouldUpdate, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			const event = doc.events.filter(element => element.id === container.content[index]);
+			const event = doc.events.filter((element) => element.id === container.content[index]);
 			updateEventPouch(db, event[0], (error) => {
 				if (shouldUpdate) {
 					updateUserFromMongo();
@@ -975,7 +971,7 @@ export function updateSignifierByID (id, shouldUpdate, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			const signifier = doc.userObject.signifiers.filter(element => element.id === id);
+			const signifier = doc.userObject.signifiers.filter((element) => element.id === id);
 			updateSignifierPouch(db, signifier[0], (error) => {
 				if (shouldUpdate) {
 					updateUserFromMongo();
@@ -997,7 +993,7 @@ export function updateSignifierAtBlock (block, shouldUpdate, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			const signifier = doc.userObject.signifiers.filter(element => element.id === block.signifier);
+			const signifier = doc.userObject.signifiers.filter((element) => element.id === block.signifier);
 			updateSignifierPouch(db, signifier[0], (error) => {
 				if (shouldUpdate) {
 					updateUserFromMongo();
@@ -1034,7 +1030,7 @@ export function updateTaskByID (id, shouldUpdate, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			const task = doc.tasks.filter(element => element.id === id);
+			const task = doc.tasks.filter((element) => element.id === id);
 			updateTaskPouch(db, task[0], (error) => {
 				if (shouldUpdate) {
 					updateUserFromMongo();
@@ -1073,7 +1069,7 @@ export function updateTextBlockByID (id, date, shouldUpdate, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			const text = doc.userObject.textBlocks.filter(element => element.id === id);
+			const text = doc.userObject.textBlocks.filter((element) => element.id === id);
 			updateTextBlockPouch(db, text[0], date, (error) => {
 				if (shouldUpdate) {
 					updateUserFromMongo();
@@ -1096,7 +1092,7 @@ export function updateTextBlockFromContainer (container, index, date, shouldUpda
 		if (err) {
 			callback(err);
 		} else {
-			const text = doc.userObject.textBlocks.filter(element => element.id === container.content[index]);
+			const text = doc.userObject.textBlocks.filter((element) => element.id === container.content[index]);
 			updateTextBlockPouch(db, text[0], date, (error) => {
 				if (shouldUpdate) {
 					updateUserFromMongo();
@@ -1133,8 +1129,8 @@ export function updateTrackerByID (id, shouldUpdate, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			const tracker = doc.userObject.trackers.filter(element => element.id === id);
-			updateTrackePouch(db, tracker[0], (error) => {
+			const tracker = doc.userObject.trackers.filter((element) => element.id === id);
+			updateTrackerPouch(db, tracker[0], (error) => {
 				if (shouldUpdate) {
 					updateUserFromMongo();
 				}
@@ -1156,7 +1152,7 @@ export function updateTrackerFromContainer (container, index, shouldUpdate, call
 		if (err) {
 			callback(err);
 		} else {
-			const tracker = doc.userObject.trackers.filter(element => element.id === container.content[index]);
+			const tracker = doc.userObject.trackers.filter((element) => element.id === container.content[index]);
 			updateTrackerPouch(db, tracker[0], (error) => {
 				if (shouldUpdate) {
 					updateUserFromMongo();

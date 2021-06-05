@@ -16,7 +16,8 @@ export function updateMonthlyLogPouch (db, log, callback) {
 			monthlyLogArr.push(log);
 
 			// Added return here so if updateMonthlyLog breaks maybe its because of this
-			return db.put({
+			return db.put(
+			{
 				_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
@@ -33,7 +34,7 @@ export function updateMonthlyLogPouch (db, log, callback) {
 				textBlocks: doc.textBlocks,
 				events: doc.eventBlocks,
 				tasks: doc.taskBlocks,
-				signifiers: doc.signifiers}, (err, res) => {
+				signifiers: doc.signifiers}, (error, res) => {
 				if (error) {
 					callback(error, null);
 				} else {

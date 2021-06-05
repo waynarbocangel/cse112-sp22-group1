@@ -44,6 +44,7 @@ function readUser (userData, callback) {
 			let newSignifiers = [];
 			for (let i = 0; i < user.signifiers.length; i++) {
 				let signifier = user.signifiers[i];
+				console.log(security.decrypt(signifier.meaning, userData.pwd));
 				signifier.meaning = security.decrypt(signifier.meaning, userData.pwd);
 				newSignifiers.push(signifier);
 			}

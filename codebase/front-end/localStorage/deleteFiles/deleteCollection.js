@@ -6,13 +6,13 @@
  * @param {String} id The id of the object to be deleted.
  * @callback (res) Sends an error if there is one to the callback.
  */
-export function deleteCollectionPouch(db, id, callback) {
+export function deleteCollectionPouch (db, id, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
-			const collectionArr = doc.collections.filter(collection => collection.id == id);
-			const block = null;
+			let collectionArr = doc.collections.filter((collection) => collection.id === id);
+			let block = null;
 			if (collectionArr.length > 0) {
 				block = taskBlockArr[0];
 			}
@@ -23,14 +23,14 @@ export function deleteCollectionPouch(db, id, callback) {
 					Array.prototype.push.apply(userArr, doc.trackers);
 					Array.prototype.push.apply(userArr, doc.collections);
 
-			let parentArr = userArr.filter(object => object.id == parent);
+			let parentArr = userArr.filter((object) => object.id === parent);
 			
-			const parent = parentArr[0];
-			const newContents = parent.contents.filter(obj => obj != id);
+			let parent = parentArr[0];
+			let newContents = parent.contents.filter((obj) => obj !== id);
 
-			const newCollections = doc.collections.filter(collection => collection.id != id);
-			const newIndexContents = doc.index.contents.filter(tracker => tracker.id != id);
-			const indexObj = {
+			let newCollections = doc.collections.filter((collection) => collection.id !== id);
+			let newIndexContents = doc.index.contents.filter((tracker) => tracker.id !== id);
+			let indexObj = {
 				objectType: "index",
 				contents: newIndexContents
 			}
@@ -38,27 +38,31 @@ export function deleteCollectionPouch(db, id, callback) {
 			doc.collections = newCollections;
 			doc.index = indexObj;
 			
-			return db.put(
-				{
-					_id: "0000",
-					_rev: doc._rev,
-					email: doc.email,
-					pwd: doc.pwd,
-					theme: doc.theme,
-					index: doc.index,
-					dailyLogs: doc.dailyLogs,
-					monthlyLogs: doc.monthlyLogs,
-					futureLogs: doc.futureLogs,
-					collections: doc.collections,
-					trackers: doc.trackers,
-					imageBlocks: doc.imageBlocks,
-					audioBlocks: doc.audioBlocks,
-					textBlocks: doc.textBlocks,
-					tasks: doc.tasks,
-					events: doc.events,
-					signifiers: doc.signifiers
+			return db.put({_id: "0000",
+				_rev: doc._rev,
+				email: doc.email,
+				pwd: doc.pwd,
+				theme: doc.theme,
+				index: doc.index,
+				dailyLogs: doc.dailyLogs,
+				monthlyLogs: doc.monthlyLogs,
+				futureLogs: doc.futureLogs,
+				collections: doc.collections,
+				trackers: doc.trackers,
+				imageBlocks: doc.imageBlocks,
+				audioBlocks: doc.audioBlocks,
+				textBlocks: doc.textBlocks,
+				tasks: doc.tasks,
+				events: doc.events,
+				signifiers: doc.signifiers
+			}, (error, res) => {
+				if (error) {
+					callback(error);
+				} else {
+					console.log(res);
+					callback(null);
 				}
-			);
+			});
 		}
 	})
 }

@@ -1,5 +1,5 @@
 import {makeid} from "./makeId.js";
-let taskObject;
+let taskObject = {};
 
 /**
  * Creates and stores a new task created from the given parameters.
@@ -31,7 +31,7 @@ export function createTaskPouch (db, parent, text, complete, signifier, callback
 			Array.prototype.push.apply(arrays, doc.imageBlocks);
 			Array.prototype.push.apply(arrays, doc.audioBlocks);
 
-			while(arrays.filter((element) => element.id == id).length > 0){
+			while(arrays.filter((element) => element.id === id).length > 0){
 				id = makeid();
 			}
 			taskObject = {
@@ -43,44 +43,30 @@ export function createTaskPouch (db, parent, text, complete, signifier, callback
 				signifier: signifier
 			};
 
-
-			/*let userArr = [];
-			Array.prototype.push.apply(userArr, doc.textBlocks);
-
-			let parentArr = userArr.filter(object => object.id == parent);
-			let parentObj = null;
-			for(let i = 0; i < userArr.length; i++){
-				if (userArr[i].id == parent) {
-					parentObj = userArr[i];
-				}
-			}*/
-			
 			doc.tasks.push(taskObject);
 				
-			return db.put(
-				{
-					_id: "0000",
-					_rev: doc._rev,
-					email: doc.email,
-					pwd: doc.pwd,
-					theme: doc.theme,
-					index: doc.index,
-					dailyLogs: doc.dailyLogs,
-					monthlyLogs: doc.monthlyLogs,
-					futureLogs: doc.futureLogs,
-					collections: doc.collections,
-					trackers: doc.trackers,
-					imageBlocks: doc.imageBlocks,
-					audioBlocks: doc.audioBlocks,
-					textBlocks: doc.textBlocks,
-					tasks: doc.tasks,
-					events: doc.events,
-					signifiers: doc.signifiers
-				}
-			).then((res) => {
-			}).catch((err) => {
-				console.log(err);
-				callback(err, null);
+			return db.put({_id: "0000",
+				_rev: doc._rev,
+				email: doc.email,
+				pwd: doc.pwd,
+				theme: doc.theme,
+				index: doc.index,
+				dailyLogs: doc.dailyLogs,
+				monthlyLogs: doc.monthlyLogs,
+				futureLogs: doc.futureLogs,
+				collections: doc.collections,
+				trackers: doc.trackers,
+				imageBlocks: doc.imageBlocks,
+				audioBlocks: doc.audioBlocks,
+				textBlocks: doc.textBlocks,
+				tasks: doc.tasks,
+				events: doc.events,
+				signifiers: doc.signifiers
+			}).then((res) => {
+				console.log(res);
+			}).catch((error) => {
+				console.log(error);
+				callback(error, null);
 			});
 		}
 	}).then((res) => {

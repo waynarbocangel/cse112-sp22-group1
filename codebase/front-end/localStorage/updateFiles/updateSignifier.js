@@ -14,7 +14,7 @@ export function updateSignifierPouch (db, signifier, callback) {
 			let signifierArr = doc.signifiers.filter((element) => element.id !== signifier.id);
 			signifierArr.push(signifier);
 
-			return db.put({_id: "0000", 
+			return db.put({_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
 				pwd: doc.pwd,

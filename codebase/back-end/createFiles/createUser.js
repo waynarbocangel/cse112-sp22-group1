@@ -58,7 +58,7 @@ function createUser (email, pwd, callback) {
 					{
 						id: makeid(),
 						objectType: "signifier",
-						meaning: "general",
+						meaning: security.encrypt("general", pwd),
 						symbol: "&#x1F7E0;"
 					}
 				]
@@ -68,6 +68,7 @@ function createUser (email, pwd, callback) {
 				if (err) {
 					callback(err);
 				} else {
+					createdUser.signifiers[0].meaning = "general";
 					callback(createdUser);
 				}
 			});

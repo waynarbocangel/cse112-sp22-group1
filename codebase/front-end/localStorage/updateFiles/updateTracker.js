@@ -31,7 +31,7 @@ export function updateTrackerPouch (db, tracker, callback) {
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: doc.events,
-				signifiers: doc.signifers}, (err, res) => {
+				signifiers: doc.signifers}, (error, res) => {
 				if (error) {
 					callback(error);
 				} else {

@@ -1,5 +1,5 @@
 import {makeid} from "./makeId.js";
-let dailyObject;
+let dailyObject = {};
 
 /**
  * Creates and stores a new dailyLog created from the given parameters.
@@ -30,7 +30,7 @@ export function createDailyLogPouch (db, parent, content, trackers, date, callba
 			Array.prototype.push.apply(arrays, doc.imageBlocks);
 			Array.prototype.push.apply(arrays, doc.audioBlocks);
 			
-			while(arrays.filter(element => element.id == id).length > 0){
+			while(arrays.filter((element) => element.id === id).length > 0){
 				id = makeid();
 			}
 			dailyObject = {
@@ -43,32 +43,31 @@ export function createDailyLogPouch (db, parent, content, trackers, date, callba
 			};
 
 			doc.dailyLogs.push(dailyObject);
-			return db.put(
-				{
-					_id: "0000",
-					_rev: doc._rev,
-					email: doc.email,
-					pwd: doc.pwd,
-					theme: doc.theme,
-					index: doc.index,
-					dailyLogs: doc.dailyLogs,
-					monthlyLogs: doc.monthlyLogs,
-					futureLogs: doc.futureLogs,
-					collections: doc.collections,
-					trackers: doc.trackers,
-					imageBlocks: doc.imageBlocks,
-					audioBlocks: doc.audioBlocks,
-					textBlocks: doc.textBlocks,
-					tasks: doc.tasks,
-					events: doc.events,
-					signifiers: doc.signifiers
-				}
-			).then((res) => {
+			return db.put({_id: "0000",
+				_rev: doc._rev,
+				email: doc.email,
+				pwd: doc.pwd,
+				theme: doc.theme,
+				index: doc.index,
+				dailyLogs: doc.dailyLogs,
+				monthlyLogs: doc.monthlyLogs,
+				futureLogs: doc.futureLogs,
+				collections: doc.collections,
+				trackers: doc.trackers,
+				imageBlocks: doc.imageBlocks,
+				audioBlocks: doc.audioBlocks,
+				textBlocks: doc.textBlocks,
+				tasks: doc.tasks,
+				events: doc.events,
+				signifiers: doc.signifiers
+			}).then((res) => {
+				console.log(res);
 			}).catch((err) => {
 				callback(err, null);
 			});
 		}
 	}).then((res) => {
+		console.log(res);
 		callback(null, dailyObject);
 	});
 }

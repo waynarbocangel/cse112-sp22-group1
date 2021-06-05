@@ -28,7 +28,7 @@ export function createImageBlockPouch (db, parent, arrangement, data, callback) 
 			Array.prototype.push.apply(arrays, doc.imageBlocks);
 			Array.prototype.push.apply(arrays, doc.audioBlocks);
 			
-			while(arrays.filter(element => element.id == id).length > 0){
+			while(arrays.filter((element) => element.id === id).length > 0){
 				id = makeid();
 			}
 			imageBlockObject = {
@@ -44,30 +44,28 @@ export function createImageBlockPouch (db, parent, arrangement, data, callback) 
 
 			newImageBlocks.push(imageBlockObject);
 
-			return db.put(
-				{
-					_id: "0000",
-					_rev: doc._rev,
-					email: doc.email,
-					pwd: doc.pwd,
-					theme: doc.theme,
-					index: doc.index,
-					dailyLogs: doc.dailyLogs,
-					monthlyLogs: doc.monthlyLogs,
-					futureLogs: doc.futureLogs,
-					collections: doc.collections,
-					trackers: doc.trackers,
-					imageBlocks: newImageBlocks,
-					audioBlocks: doc.audioBlocks,
-					textBlocks: doc.textBlocks,
-					tasks: doc.tasks,
-					events: doc.events,
-					signifiers: doc.signifiers
-				}
-			).then((res) => {
-			}).catch((err) => {
-				console.log(err);
-				callback(err, null);
+			return db.put({_id: "0000",
+				_rev: doc._rev,
+				email: doc.email,
+				pwd: doc.pwd,
+				theme: doc.theme,
+				index: doc.index,
+				dailyLogs: doc.dailyLogs,
+				monthlyLogs: doc.monthlyLogs,
+				futureLogs: doc.futureLogs,
+				collections: doc.collections,
+				trackers: doc.trackers,
+				imageBlocks: newImageBlocks,
+				audioBlocks: doc.audioBlocks,
+				textBlocks: doc.textBlocks,
+				tasks: doc.tasks,
+				events: doc.events,
+				signifiers: doc.signifiers
+			}).then((res) => {
+				console.log(res);
+			}).catch((error) => {
+				console.log(error);
+				callback(error, null);
 			});
 		}
 	}).then((res) => {

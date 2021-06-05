@@ -8,8 +8,7 @@
  */
 export function createUserPouch (db, userObject, callback) {
 	db.put(
-		{
-			_id: "0000",
+		{_id: "0000",
 			email: userObject.email,
 			pwd: userObject.pwd,
 			theme: userObject.theme,

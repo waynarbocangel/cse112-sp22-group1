@@ -5,7 +5,7 @@
  * @param {String} id The id of the object to be deleted.
  * @callback (res) Sends an error if there is one to the callback.
  */
-export function deleteSignifierPouch(db, id, callback) {
+export function deleteSignifierPouch (db, id, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
@@ -14,30 +14,29 @@ export function deleteSignifierPouch(db, id, callback) {
 			
 			doc.signifiers = newSignifiers;
 			
-			return db.put(
-				{
-					_id: "0000",
-					_rev: doc._rev,
-					email: doc.email,
-					pwd: doc.pwd,
-					theme: doc.theme,
-					index: doc.index,
-					dailyLogs: doc.dailyLogs,
-					monthlyLogs: doc.monthlyLogs,
-					futureLogs: doc.futureLogs,
-					collections: doc.collections,
-					trackers: doc.trackers,
-					imageBlocks: doc.imageBlocks,
-					audioBlocks: doc.audioBlocks,
-					textBlocks: doc.textBlocks,
-					tasks: doc.tasks,
-					events: doc.events,
-					signifiers: doc.signifiers}, (error, res) => {
-					if (error) {
-						callback(error);
-					} else {
-						callback(res);
-					}
+			return db.put({_id: "0000",
+				_rev: doc._rev,
+				email: doc.email,
+				pwd: doc.pwd,
+				theme: doc.theme,
+				index: doc.index,
+				dailyLogs: doc.dailyLogs,
+				monthlyLogs: doc.monthlyLogs,
+				futureLogs: doc.futureLogs,
+				collections: doc.collections,
+				trackers: doc.trackers,
+				imageBlocks: doc.imageBlocks,
+				audioBlocks: doc.audioBlocks,
+				textBlocks: doc.textBlocks,
+				tasks: doc.tasks,
+				events: doc.events,
+				signifiers: doc.signifiers}, (error, res) => {
+				if (error) {
+					callback(error);
+				} else {
+					console.log(res);
+					callback(null);
+				}
 			});
 		}
 	})

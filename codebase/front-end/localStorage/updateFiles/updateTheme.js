@@ -29,11 +29,12 @@ export function updateThemePouch (db, theme, callback) {
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: doc.events,
-				signifiers: doc.signifiers}, (err, res) => {
+				signifiers: doc.signifiers}, (error, res) => {
 				if (error) {
 					callback(error);
 				} else {
-					callback(res);
+					console.log(res);
+					callback(null);
 				}
 			});
 		}

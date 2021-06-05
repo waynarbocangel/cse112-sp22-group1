@@ -1,5 +1,5 @@
 import {makeid} from "./makeId.js";
-let eventObject;
+let eventObject = {};
 
 /**
  * Creates and stores a new event created from the given parameters.
@@ -31,7 +31,7 @@ export function createEventPouch (db, title, parent, date, signifier, callback) 
 			Array.prototype.push.apply(arrays, doc.imageBlocks);
 			Array.prototype.push.apply(arrays, doc.audioBlocks);
 			
-			while(arrays.filter(element => element.id == id).length > 0){
+			while(arrays.filter((element) => element.id === id).length > 0){
 				id = makeid();
 			}
 			eventObject = {
@@ -46,29 +46,27 @@ export function createEventPouch (db, title, parent, date, signifier, callback) 
 			
 			doc.events.push(eventObject);
 
-			return db.put(
-				{
-					_id: "0000",
-					_rev: doc._rev,
-					email: doc.email,
-					pwd: doc.pwd,
-					theme: doc.theme,
-					index: doc.index,
-					dailyLogs: doc.dailyLogs,
-					monthlyLogs: doc.monthlyLogs,
-					futureLogs: doc.futureLogs,
-					collections: doc.collections,
-					trackers: doc.trackers,
-					imageBlocks: doc.imageBlocks,
-					audioBlocks: doc.audioBlocks,
-					textBlocks: doc.textBlocks,
-					tasks: doc.tasks,
-					events: doc.events,
-					signifiers: doc.signifiers
-				}
-			).then((res) => {
-			}).catch((err) => {
-				callback(err, null);
+			return db.put({_id: "0000",
+				_rev: doc._rev,
+				email: doc.email,
+				pwd: doc.pwd,
+				theme: doc.theme,
+				index: doc.index,
+				dailyLogs: doc.dailyLogs,
+				monthlyLogs: doc.monthlyLogs,
+				futureLogs: doc.futureLogs,
+				collections: doc.collections,
+				trackers: doc.trackers,
+				imageBlocks: doc.imageBlocks,
+				audioBlocks: doc.audioBlocks,
+				textBlocks: doc.textBlocks,
+				tasks: doc.tasks,
+				events: doc.events,
+				signifiers: doc.signifiers
+			}).then((res) => {
+				console.log(res);
+			}).catch((error) => {
+				callback(error, null);
 			});
 		}
 	}).then((res) => {

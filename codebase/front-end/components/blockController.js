@@ -14,8 +14,8 @@ export class Controller extends Object {
 		this.subParent = subParent;
 	}
 
-	createNewBlock(block, callback){
-		let newBlock = new TextBlock(this, block, (success) => {
+	createNewBlock(block, signifier, callback){
+		let newBlock = new TextBlock(this, block, signifier, (success) => {
 			if (this.currentBlockIndex < this.blockArray.length - 1){
 				this.container.insertBefore(newBlock, this.blockArray[this.currentBlockIndex + 1]);
 				this.blockArray.splice(this.currentBlockIndex + 1, 0, newBlock);
@@ -31,7 +31,7 @@ export class Controller extends Object {
 	}
 	
 	addNewBlock (block) {
-		let newBlock = new TextBlock(this, block, (success) => {
+		let newBlock = new TextBlock(this, block, this.generalSignifier, (success) => {
 			if (this.currentBlockIndex < this.blockArray.length - 1){
 				this.container.insertBefore(newBlock, this.blockArray[this.currentBlockIndex + 1]);
 				this.blockArray.splice(this.currentBlockIndex + 1, 0, newBlock);
@@ -97,10 +97,11 @@ export function createEditor (container, parent, subParent, callback) {
 				Array.prototype.push.apply(arrays, doc.futureLogs);
 				Array.prototype.push.apply(arrays, doc.collections);
 				Array.prototype.push.apply(arrays, doc.trackers);
+				let generalSignifier = doc.signifiers.filter(signifer => signifer.meaning == "general")[0];
+				controller.generalSignifier = generalSignifier;
 
 				if(parent != null && (parent.objectType == "dailyLog" || parent.objectType == "collection")) {
 					let itemArrs = arrays.filter(element => element.id == parent.id);
-						
 					if(itemArrs.length > 0){
 						itemObject = itemArrs[0];
 						
@@ -124,8 +125,8 @@ export function createEditor (container, parent, subParent, callback) {
 						
 
 						populateEditor(controller, objectArr, doc.signifiers, (res) => {
-							console.log(res);
-							let newBlock = new TextBlock(controller, null, (success) => {
+							console.log(doc);
+							let newBlock = new TextBlock(controller, null, generalSignifier, (success) => {
 								if (success){
 									container.appendChild(newBlock);
 									controller.blockArray.push(newBlock);
@@ -138,7 +139,6 @@ export function createEditor (container, parent, subParent, callback) {
 						})
 					}
 				} else {
-					let generalSignifier = doc.signifiers.filter(signifer => signifer.meaning == "general")[0];
 					let newBlock = new TextBlock(controller, null, generalSignifier, (success) => {
 						if (success){
 							container.appendChild(newBlock);
@@ -182,7 +182,7 @@ export function populateEditor (controller, items, signifers, callback) {
  */
 function populateEditorRecursive(controller, items, index, signifers, callback) {
 	if(index < items.length) {
-		let signifier = signifers.filter(signifier => signifier.id == item[index].signifier)[0];
+		let signifier = signifers.filter(signifier => signifier.id == items[index].signifier)[0];
 		controller.createNewBlock(items[index], signifier, (block) => {
 	 		block.tabLevel = items[index].tabLevel
 	 		block.setupTabLevel();

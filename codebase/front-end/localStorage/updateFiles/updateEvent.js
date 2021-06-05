@@ -14,7 +14,8 @@ export function updateEventPouch (db, event, callback) {
 			let eventArr = doc.events.filter((element) => element.id !== event.id);
 			eventArr.push(event);
 
-			return db.put({
+			return db.put(
+			{
 				_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,

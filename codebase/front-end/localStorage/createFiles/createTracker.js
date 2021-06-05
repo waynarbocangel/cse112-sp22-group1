@@ -1,5 +1,5 @@
 import {makeid} from "./makeId.js";
-let trackerObject;
+let trackerObject = {};
 
 /**
  * Creates and stores a new tracker created from the given parameters.
@@ -11,7 +11,7 @@ let trackerObject;
  * @callback (err,tracker) Eihter sends the newly created tracker or an error if there is one to the callback.
  */
 export function createTrackerPouch (db, title, content, parent, callback) {
-	console.log('making tracjer');
+	console.log("making tracjer");
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err, null);
@@ -29,8 +29,8 @@ export function createTrackerPouch (db, title, content, parent, callback) {
 			Array.prototype.push.apply(arrays, doc.signifiers);
 			Array.prototype.push.apply(arrays, doc.imageBlocks);
 			Array.prototype.push.apply(arrays, doc.audioBlocks);
-			
-			while(arrays.filter(element => element.id == id).length > 0){
+
+			while(arrays.filter((element) => element.id === id).length > 0){
 				id = makeid();
 			}
 			trackerObject = {
@@ -42,36 +42,33 @@ export function createTrackerPouch (db, title, content, parent, callback) {
 			};
 			console.log(arrays);
 			console.log(parent);
-			let parentObject = arrays.filter(element => element.id == parent);
+			let parentObject = arrays.filter((element) => element.id === parent);
 			console.log(parentObject);
 			parentObject[0].trackers.push(trackerObject.id);
-			
+
 			doc.trackers.push(trackerObject);
-			//tracker array of parent should be updated in callback of this funciton
-			return db.put(
-				{
-					_id: "0000",
-					_rev: doc._rev,
-					email: doc.email,
-					pwd: doc.pwd,
-					theme: doc.theme,
-					index: doc.index,
-					dailyLogs: doc.dailyLogs,
-					monthlyLogs: doc.monthlyLogs,
-					futureLogs: doc.futureLogs,
-					collections: doc.collections,
-					trackers: doc.trackers,
-					imageBlocks: doc.imageBlocks,
-					audioBlocks: doc.audioBlocks,
-					textBlocks: doc.textBlocks,
-					tasks: doc.tasks,
-					events: doc.events,
-					signifiers: doc.signifiers
-				}
-			).then((res) => {
-			}).catch((err) => {
-				console.log(err);
-				callback(err, null);
+			// Tracker array of parent should be updated in callback of this funciton
+			return db.put({_id: "0000",
+				_rev: doc._rev,
+				email: doc.email,
+				pwd: doc.pwd,
+				theme: doc.theme,
+				index: doc.index,
+				dailyLogs: doc.dailyLogs,
+				monthlyLogs: doc.monthlyLogs,
+				futureLogs: doc.futureLogs,
+				collections: doc.collections,
+				trackers: doc.trackers,
+				imageBlocks: doc.imageBlocks,
+				audioBlocks: doc.audioBlocks,
+				textBlocks: doc.textBlocks,
+				tasks: doc.tasks,
+				events: doc.events,
+				signifiers: doc.signifiers
+			}).then((res) => {
+			}).catch((error) => {
+				console.log(error);
+				callback(error, null);
 			});
 		}
 	}).then((res) => {

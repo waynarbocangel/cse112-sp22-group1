@@ -10,10 +10,10 @@ export function deleteTrackerPouch (db, id, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			const trackerArr = doc.trackers.filter((tracker) => tracker.id === id);
-			const block = null;
+			let trackerArr = doc.trackers.filter((tracker) => tracker.id === id);
+			let block = null;
 			if (trackerArr.length > 0) {
-				block = taskBlockArr[0];
+				block = trackerArr[0];
 			}
 
 			let userArr = [];
@@ -24,38 +24,36 @@ export function deleteTrackerPouch (db, id, callback) {
 			let parentArr = userArr.filter((object) => object.id === block.parent);
 
 			let parent = parentArr[0];
-			const newTrackers = parent.trackers.filter((obj) => obj !== block.id);
+			let newTrackers = parent.trackers.filter((obj) => obj !== block.id);
 			parent.trackers = newTrackers;
 
-			const newTrackerList = doc.trackers.filter((tracker) => tracker.id !== id);
+			let newTrackerList = doc.trackers.filter((tracker) => tracker.id !== id);
 
 			doc.trackers = newTrackerList;
 
-			return db.put(
-				{
-					_id: "0000",
-					_rev: doc._rev,
-					email: doc.email,
-					pwd: doc.pwd,
-					theme: doc.theme,
-					index: doc.index,
-					dailyLogs: doc.dailyLogs,
-					monthlyLogs: doc.monthlyLogs,
-					futureLogs: doc.futureLogs,
-					collections: doc.collections,
-					trackers: doc.trackers,
-					imageBlocks: doc.imageBlocks,
-					audioBlocks: doc.audioBlocks,
-					textBlocks: doc.textBlocks,
-					tasks: doc.tasks,
-					events: doc.events,
-					signifiers: doc.signifiers
-				}, (err, res) => {
-					if (err) {
-						callback(err);
-					} else {
-						callback(res);
-					}
+			return db.put({_id: "0000",
+				_rev: doc._rev,
+				email: doc.email,
+				pwd: doc.pwd,
+				theme: doc.theme,
+				index: doc.index,
+				dailyLogs: doc.dailyLogs,
+				monthlyLogs: doc.monthlyLogs,
+				futureLogs: doc.futureLogs,
+				collections: doc.collections,
+				trackers: doc.trackers,
+				imageBlocks: doc.imageBlocks,
+				audioBlocks: doc.audioBlocks,
+				textBlocks: doc.textBlocks,
+				tasks: doc.tasks,
+				events: doc.events,
+				signifiers: doc.signifiers}, (err, res) => {
+				if (err) {
+					callback(err);
+				} else {
+					consol.log(res);
+					callback(null);
+				}
 			});
 		}
 	})

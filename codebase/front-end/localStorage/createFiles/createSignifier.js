@@ -28,7 +28,7 @@ export function createSignifierPouch (db, meaning, symbol, callback) {
 			Array.prototype.push.apply(arrays, doc.imageBlocks);
 			Array.prototype.push.apply(arrays, doc.audioBlocks);
 			
-			while(arrays.filter(element => element.id == id).length > 0){
+			while(arrays.filter((element) => element.id === id).length > 0){
 				id = makeid();
 			}
 			const signifierObject = {
@@ -38,29 +38,34 @@ export function createSignifierPouch (db, meaning, symbol, callback) {
 				symbol: symbol
 			}
 			
-			doc.taskBlocks.push(TaskBlockObject);
+			doc.signifiers.push(signifierObject);
 
-			return db.put(
-				{
-					_id: "0000",
-					_rev: doc._rev,
-					email: doc.email,
-					pwd: doc.pwd,
-					theme: doc.theme,
-					index: doc.index,
-					dailyLogs: doc.dailyLogs,
-					monthlyLogs: doc.monthlyLogs,
-					futureLogs: doc.futureLogs,
-					collections: doc.collections,
-					trackers: doc.trackers,
-					imageBlocks: doc.imageBlocks,
-					audioBlocks: doc.audioBlocks,
-					textBlocks: doc.textBlocks,
-					tasks: doc.tasks,
-					events: doc.events,
-					signifiers: doc.signifiers
-				}
-			);
+			return db.put({_id: "0000",
+				_rev: doc._rev,
+				email: doc.email,
+				pwd: doc.pwd,
+				theme: doc.theme,
+				index: doc.index,
+				dailyLogs: doc.dailyLogs,
+				monthlyLogs: doc.monthlyLogs,
+				futureLogs: doc.futureLogs,
+				collections: doc.collections,
+				trackers: doc.trackers,
+				imageBlocks: doc.imageBlocks,
+				audioBlocks: doc.audioBlocks,
+				textBlocks: doc.textBlocks,
+				tasks: doc.tasks,
+				events: doc.events,
+				signifiers: doc.signifiers
+			}).then((res) => {
+				console.log(res);
+			}).catch((error) => {
+				console.log(error);
+				callback(error, null);
+			});
 		}
+	}).then((res) => {
+		console.log(res);
+		callback(null, taskObject);
 	});
 }

@@ -7,6 +7,53 @@ const paddingSize = 10;
 const protectedKeys = ["Control", "Alt", "CapsLock", "Escape", "PageUp", "PageDown", "End", "Home", "PrintScreen", "Insert", "Delete", "Backspace", "Tab", "Enter", "Meta", "ArrowTop", "ArrowBottom", "ArrowRight", "ArrowLeft", "Shift", " "]
 
 /**
+ * Handles instances when event year is a leap year
+ *
+ * @param {Number} year year in event creation text
+ * @returns true if year is leapyear false otherwise
+ */
+ function isLeapyear (year) {
+	return year % 100 === 0 ? year % 400 === 0 : year % 4 === 0;
+}
+
+/**
+ * Calculates the number of days depending on month and year
+ *
+ * @param {Number} month
+ * @param {Number} year
+ * @returns the number of days for month and year
+ */
+function days (month, year) {
+	if (month === "3" || month === "5" || month === "8" || month === "10") {
+		return 30;
+	} else if (month === "1" && isLeapyear(year)) {
+		return 29;
+	} else if (month === "1") {
+		return 28;
+	}
+	return 31;
+}
+
+/**
+ * Returns the next day of the week depending onthe day passed in
+ *
+ * @param {String} dayName a weekday
+ * @param {Boolean} excludeToday boolean to check if current day should be included or not
+ * @param {Date} refDate current date
+ * @returns the next day of the week
+ */
+function getNextDayOfTheWeek (dayName, excludeToday = true, refDate = new Date()) {
+    const dayOfWeek = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"].
+                      indexOf(dayName.toLowerCase());
+    if (dayOfWeek < 0) {
+ return;
+}
+    refDate.setHours(0, 0, 0, 0);
+    refDate.setDate((refDate.getDate() + Number(Boolean(excludeToday)) + (dayOfWeek + 7 - refDate.getDay() - Number(Boolean(excludeToday)))) % 7);
+    return refDate;
+}
+
+/**
  * Handles time and parsing from event text for event creation
  *
  * @param {Object} block the textblock instanse to set the time and date for
@@ -74,47 +121,44 @@ function getDate (textBlock, deleteString) {
 			valid = true;
 		} else {
 			valid = true;
-			if (newString.length != 10){
+			if (newString.length > 10 || newString.length < 10) {
 				valid = false;
-			} else {
-				if (newString.charAt(0).match(/[^01]/g)){
-					valid = false;
-				} else if (newString.charAt(0) == 1 && newString.charAt(1).match(/[^01]/g)) {
-					valid = false;
-				} else if (newString.charAt(1).match(/[^0123456789]/g)) {
-					valid = false;
-				} else if (newString.charAt(2) != "/" || newString.charAt(5) != "/") {
-					valid = false;
-				} else if (newString.charAt(6).match(/[^0123456789]/g) || newString.charAt(7).match(/[^0123456789]/g) || newString.charAt(8).match(/[^0123456789]/g) || newString.charAt(9).match(/[^0123456789]/g)){
-					valid = false;
-				} else if (newString.charAt(0) == 0 && newString.charAt(1) == 2 && newString.charAt(3).match(/[^012]/g)){
-					valid = false;
-				} else if (newString.charAt(3).match(/[^0123]/g)) {
-					valid = false;
-				} else if (newString.charAt(4).match(/[^0123456789]/g)) {
-					valid = false;
-				} else if (days((newString.substring(0, 2), newString.substring(6)) == 28 || days(newString.substring(0, 2), newString.substring(6)) == 29) && newString.charAt(3).match(/[^012]/g)){
-					valid = false;
-				} else if (days(newString.substring(0, 2), newString.substring(6)) == 31 && newString.charAt(3) == 3 && newString.charAt(4).match(/[^01]/g)){
-					valid = false;
-				} else if (days(newString.substring(0, 2), newString.substring(6)) == 30 && newString.charAt(3) == 3 && newString.charAt(4).match(/[^0]/g)){
-					valid = false;
-				} else if (days(newString.substring(0, 2), newString.substring(6)) == 28 && newString.charAt(3) == 2 && newString.charAt(4).match(/[^012345678]/g)){
-					valid = false;
-				}
+			} else if (newString.charAt(0).match(/[^01]/g)) {
+				valid = false;
+			} else if (newString.charAt(0) === "1" && newString.charAt(1).match(/[^01]/g)) {
+				valid = false;
+			} else if (newString.charAt(1).match(/[^0123456789]/g)) {
+				valid = false;
+			} else if (newString.charAt(2) !== "/" || newString.charAt(5) !== "/") {
+				valid = false;
+			} else if (newString.charAt(6).match(/[^0123456789]/g) || newString.charAt(7).match(/[^0123456789]/g) || newString.charAt(8).match(/[^0123456789]/g) || newString.charAt(9).match(/[^0123456789]/g)) {
+				valid = false;
+			} else if (newString.charAt(0) === "0" && newString.charAt(1) === "2" && newString.charAt(3).match(/[^012]/g)) {
+				valid = false;
+			} else if (newString.charAt(3).match(/[^0123]/g)) {
+				valid = false;
+			} else if (newString.charAt(4).match(/[^0123456789]/g)) {
+				valid = false;
+			} else if (days((newString.substring(0, 2), newString.substring(6)) === "28" || days(newString.substring(0, 2), newString.substring(6)) === "29") && newString.charAt(3).match(/[^012]/g)) {
+				valid = false;
+			} else if (days(newString.substring(0, 2), newString.substring(6)) === "31" && newString.charAt(3) === "3" && newString.charAt(4).match(/[^01]/g)) {
+				valid = false;
+			} else if (days(newString.substring(0, 2), newString.substring(6)) === "30" && newString.charAt(3) === "3" && newString.charAt(4).match(/[^0]/g)) {
+				valid = false;
+			} else if (days(newString.substring(0, 2), newString.substring(6)) === "28" && newString.charAt(3) === "2" && newString.charAt(4).match(/[^012345678]/g)) {
+				valid = false;
 			}
 		}
 		if (!valid && deleteString) {
-			let newString = `${text.textContent.substring(0, start - 1)}${text.textContent.substring(end + 1)}`;
+			newString = `${text.textContent.substring(0, start - 2)}${text.textContent.substring(end + 1)}`;
 			console.log("\n\n\n\n\n\n\n\n\n");
 			text.innerHTML = newString;
 			textBlock.timeSetter = false;
 			textBlock.atPressed = false;
-		} else {
-			if (dayArray.includes(newString.toLowerCase())) {
-				if (newString.toLowerCase() == "today"){
+		} else if (dayArray.includes(newString.toLowerCase())) {
+				if (newString.toLowerCase() === "today") {
 					date = new Date();
-				} else if (newString.toLowerCase() == "tomorrow") {
+				} else if (newString.toLowerCase() === "tomorrow") {
 					date = new Date();
 					date.setDate(date.getDate() + 1);
 				} else {
@@ -123,13 +167,12 @@ function getDate (textBlock, deleteString) {
 			} else {
 				date = new Date(newString);
 			}
-		}
 	}
 
 	if (textBlock.timeSetter && deleteString) {
 		let start = 1;
 		for (let i = 0; i < text.textContent.length; i++) {
-			if (text.textContent.charCodeAt(i) == 56688) {
+			if (text.textContent.charCodeAt(i) === 56688) {
 				start = i + 1;
 				break;
 			}
@@ -138,7 +181,7 @@ function getDate (textBlock, deleteString) {
 		if (textBlock.dateSetter) {
 			let dateIndex = 0;
 			for (let i = 0; i < text.textContent.length; i++) {
-				if (text.textContent.charCodeAt(i) == 56517) {
+				if (text.textContent.charCodeAt(i) === 56517) {
 					dateIndex = i;
 					break;
 				}
@@ -151,30 +194,28 @@ function getDate (textBlock, deleteString) {
 		newString = newString.replaceAll(" ", "");
 		console.log(newString);
 		let valid = true;
-		if (newString.length != 5){
+		if (newString.length !== 5) {
 			valid = false;
-		} else {
-			if (newString.charAt(0).match(/[^012]/g)) {
+		} else if (newString.charAt(0).match(/[^012]/g)) {
 				valid = false;
-			} else if (newString.charAt(0) == 2 && newString.charAt(1).match(/[^0123]/g)) {
+			} else if (newString.charAt(0) === "2" && newString.charAt(1).match(/[^0123]/g)) {
 				valid = false;
 			} else if (newString.charAt(1).match(/[^0123456789]/g)) {
 				valid = false;
-			} else if (newString.charAt(2) != ":") {
+			} else if (newString.charAt(2) !== ":") {
 				valid = false;
 			} else if (newString.charAt(3).match(/[^012345]/g)) {
 				valid = false;
-			} else if (newString.charAt(4).match(/[^0123456789]/g)){
+			} else if (newString.charAt(4).match(/[^0123456789]/g)) {
 				valid = false;
 			}
-		}
 		if (!valid && deleteString) {
-			let newString = `${text.textContent.substring(0, start - 1)}${text.textContent.substring(end + 1)}`;
+			newString = `${text.textContent.substring(0, start - 2)}${text.textContent.substring(end + 1)}`;
 			text.innerHTML = newString;
 			textBlock.timeSetter = false;
 			textBlock.atPressed = false;
 		} else {
-			if (date == null) {
+			if (date === null) {
 				date = new Date();
 			}
 			date.setHours(newString.substring(0, 2), newString.substring(3));
@@ -183,57 +224,12 @@ function getDate (textBlock, deleteString) {
 	return date;
 }
 
-/**
- * handles instances when event year is a leap year
- * 
- * @param {Number} year year in event creation text
- * @returns true if year is leapyear false otherwise
- */
-function isLeapyear(year){
-	return (year % 100 === 0) ? (year % 400 === 0) : (year % 4 === 0);
-}
-
-/**
- * calculates the number of days depending on month and year
- * 
- * @param {Number} month 
- * @param {Number} year 
- * @returns the number of days for month and year
- */
-function days(month, year){
-	if (month == "3" || month == "5" || month == "8" || month == "10" ){
-		return 30;
-	} else if (month == "1" && isLeapyear(year)) {
-		return 29;
-	}  else if (month == "1") {
-		return 28;
-	} else {
-		return 31;
-	}
-}
-
-/**
- * returns the next day of the week depending onthe day passed in
- * 
- * @param {String} dayName a weekday
- * @param {Boolean} excludeToday boolean to check if current day should be included or not
- * @param {Date} refDate current date
- * @returns the next day of the week
- */
-function getNextDayOfTheWeek(dayName, excludeToday = true, refDate = new Date()) {
-    const dayOfWeek = ["sunday","monday","tuesday","wednesday","thursday","friday","saturday"]
-                      .indexOf(dayName.toLowerCase());
-    if (dayOfWeek < 0) return;
-    refDate.setHours(0,0,0,0);
-    refDate.setDate(refDate.getDate() + +!!excludeToday + 
-                    (dayOfWeek + 7 - refDate.getDay() - +!!excludeToday) % 7);
-    return refDate;
-}
-
 export class TextBlock extends HTMLElement {
 	constructor (controller, itemObject, signifier, callback) {
+		console.trace();
 		super();
-		fetch("./components/block.html").then(response => response.text()).then((html) => {
+		fetch("./components/block.html").then((response) => response.text()).
+then((html) => {
 			let parser = new DOMParser();
 			let blockTemplateFile = parser.parseFromString(html, "text/html");
 			let blockTemplate = blockTemplateFile.getElementById("block");
@@ -282,7 +278,12 @@ export class TextBlock extends HTMLElement {
 	setCurrentSpot () {
 		let container = this.shadowRoot.getElementById("textBlock");
 		let range = shadow.getRange(this.shadowRoot);
-		if (typeof range !== undefined) {
+		if (range === null) {
+			let computedTab = this.tabLevel * tabSize;
+			this.currentPointerSpot = computedTab + paddingSize;
+			this.currentPointerHeight = this.initialHeight;
+		} else {
+			let computedTab = this.tabLevel * tabSize;
 			let preCaretRange = range.cloneRange();
 			preCaretRange.selectNodeContents(container);
 			preCaretRange.setEnd(range.endContainer, range.endOffset);
@@ -290,22 +291,19 @@ export class TextBlock extends HTMLElement {
 			this.hashPressed = false;
 			includesClock(this, container.innerText.slice(0, range.endOffset), false);
 			this.characterIndex = range.endOffset;
-			this.currentPointerSpot = (range.getClientRects()[0] != undefined) ? range.getClientRects()[0].x : (this.tabLevel * tabSize) + paddingSize;
-			this.currentPointerHeight = (range.getClientRects()[0] != undefined) ? range.getClientRects()[0].y - container.getBoundingClientRect().top : this.initialHeight;
-		} else {
-			this.currentPointerSpot = (this.tabLevel * tabSize) + paddingSize;
-			this.currentPointerHeight = this.initialHeight;
+			this.currentPointerSpot = range.getClientRects()[0] === undefined ? computedTab + paddingSize : range.getClientRects()[0].x;
+			this.currentPointerHeight = range.getClientRects()[0] === undefined ? this.initialHeight : range.getClientRects()[0].y - container.getBoundingClientRect().top;
 		}
 
 	}
 
 	/**
-	 * moves the textBlock to the location it was last dragged to(?)
-	 * 
-	 * @param {*} newSpot 
-	 * @param {*} up 
+	 * Moves the textBlock to the location it was last dragged to(?)
+	 *
+	 * @param {*} newSpot
+	 * @param {*} up
 	 */
-	moveToSpot(newSpot, up) {
+	moveToSpot (newSpot, up) {
 		let container = this.shadowRoot.getElementById("textBlock");
 		if (container.childNodes.length > 0) {
 			if (!this.controller.resetPosition) {
@@ -328,9 +326,9 @@ export class TextBlock extends HTMLElement {
 				newSpot = Math.floor(newSpot);
 				while (counter < 1000) {
 					if (up) {
-						offset = (offset > 0) ? offset - 1 : offset;
+						offset = offset > 0 ? offset - 1 : offset;
 					} else {
-						offset = (offset < container.textContent.length) ? offset + 1 : offset;
+						offset = offset < container.textContent.length ? offset + 1 : offset;
 					}
 					range.setStart(container.childNodes[0], offset);
 					range.collapse(true);
@@ -355,9 +353,9 @@ export class TextBlock extends HTMLElement {
 	}
 
 	/**
-	 * sets up textBlock styling for header 1 text 
+	 * Sets up textBlock styling for header 1 text
 	 */
-	setupHeader1() {
+	setupHeader1 () {
 		let textBlock = this.shadowRoot.getElementById("textBlock");
 		while (this.editorIcons.classList.length > 0) {
 			this.editorIcons.classList.remove(this.editorIcons.classList[0]);
@@ -379,9 +377,9 @@ export class TextBlock extends HTMLElement {
 	}
 
 	/**
-	 * sets up textBlock styling for header 2 text
+	 * Sets up textBlock styling for header 2 text
 	 */
-	setupHeader2() {
+	setupHeader2 () {
 		let textBlock = this.shadowRoot.getElementById("textBlock");
 		while (this.editorIcons.classList.length > 0) {
 			this.editorIcons.classList.remove(this.editorIcons.classList[0]);
@@ -403,9 +401,9 @@ export class TextBlock extends HTMLElement {
 	}
 
 	/**
-	 * sets up textBlock syling for header 3 text
+	 * Sets up textBlock syling for header 3 text
 	 */
-	setupHeader3() {
+	setupHeader3 () {
 		let textBlock = this.shadowRoot.getElementById("textBlock");
 		while (this.editorIcons.classList.length > 0) {
 			this.editorIcons.classList.remove(this.editorIcons.classList[0]);
@@ -427,9 +425,9 @@ export class TextBlock extends HTMLElement {
 	}
 
 	/**
-	 * sets up textBlock styling for note text and adds bullet
+	 * Sets up textBlock styling for note text and adds bullet
 	 */
-	setupNote() {
+	setupNote () {
 		let textBlock = this.shadowRoot.getElementById("textBlock");
 		while (this.editorIcons.classList.length > 0) {
 			this.editorIcons.classList.remove(this.editorIcons.classList[0]);
@@ -452,9 +450,9 @@ export class TextBlock extends HTMLElement {
 	}
 
 	/**
-	 * sets up textBlock styling for event text and handles event date and time parsing
+	 * Sets up textBlock styling for event text and handles event date and time parsing
 	 */
-	setupEvent() {
+	setupEvent () {
 		let textBlock = this.shadowRoot.getElementById("textBlock");
 		while (this.editorIcons.classList.length > 0) {
 			this.editorIcons.classList.remove(this.editorIcons.classList[0]);
@@ -488,9 +486,9 @@ export class TextBlock extends HTMLElement {
 	}
 
 	/**
-	 * sets up textBlock styling for task text and adds task check off block
+	 * Sets up textBlock styling for task text and adds task check off block
 	 */
-	setupTask() {
+	setupTask () {
 		let textBlock = this.shadowRoot.getElementById("textBlock");
 		while (this.editorIcons.classList.length > 0) {
 			this.editorIcons.classList.remove(this.editorIcons.classList[0]);
@@ -512,10 +510,10 @@ export class TextBlock extends HTMLElement {
 	}
 
 	/**
-	 * removes any styling from a textBlock in case one type of textblock
+	 * Removes any styling from a textBlock in case one type of textblock
 	 * is converted to a different one
 	 */
-	removeStyles() {
+	removeStyles () {
 		let textBlock = this.shadowRoot.getElementById("textBlock");
 		while (this.editorIcons.classList.length > 0) {
 			this.editorIcons.classList.remove(this.editorIcons.classList[0]);
@@ -529,7 +527,7 @@ export class TextBlock extends HTMLElement {
 		this.kind = "paragraph";
 		this.initialHeight = 3;
 		textBlock.classList.add("unstylized");
-		textBlock.setAttribute("placeholder", 'Type "/" to create a block');
+		textBlock.setAttribute("placeholder", "Type \"/\" to create a block");
 		textBlock.innerHTML = "";
 		this.editorIcons.classList.add("paragraphIcons");
 		this.controller.creatingFromBullet = { isTrue: false, kind: "" };
@@ -537,25 +535,25 @@ export class TextBlock extends HTMLElement {
 	}
 
 	/**
-	 * sets the textBlocks indenting using the tab level as a multiple
+	 * Sets the textBlocks indenting using the tab level as a multiple
 	 */
-	setupTabLevel() {
+	setupTabLevel () {
 		this.style.position = "relative";
-		this.style.left = (this.tabLevel * tabSize) + "px";
+		this.style.left = this.tabLevel * tabSize + "px";
 		this.controller.currentTabLevel = this.tabLevel;
 		this.setCurrentSpot();
 	}
 
-	setupSignifier(signifier) {
+	setupSignifier (signifier) {
 		this.signifier = signifier;
 		this.signifierIcon.innerHTML = signifier.symbol;
 	}
 
 	/**
-	 * when a textBlock is created, the editor is added to the page and if the block is a task
+	 * When a textBlock is created, the editor is added to the page and if the block is a task
 	 * then the text is crossed off
 	 */
-	connectedCallback() {
+	connectedCallback () {
 
 		let textBlock = this.shadowRoot.getElementById("textBlock");
 		textBlock.focus();
@@ -571,7 +569,7 @@ export class TextBlock extends HTMLElement {
 				setTimeout(() => {
 					localStorage.readUser((err, user) => {
 						if (err == null) {
-							let task = user.tasks.filter(task => task.id == this.item.objectReference)[0];
+							let task = user.tasks.filter((task) => task.id == this.item.objectReference)[0];
 							task.complete = 0;
 							localStorage.updateTask(task, true, (err, task) => {
 								console.log(err);
@@ -586,7 +584,7 @@ export class TextBlock extends HTMLElement {
 				setTimeout(() => {
 					localStorage.readUser((err, user) => {
 						if (err == null) {
-							let task = user.tasks.filter(task => task.id == this.item.objectReference)[0];
+							let task = user.tasks.filter((task) => task.id == this.item.objectReference)[0];
 							console.log(task)
 							task.complete = 1;
 							localStorage.updateTask(task, true, (err, task) => {
@@ -604,20 +602,20 @@ export class TextBlock extends HTMLElement {
 
 		/**
 		 * Gets the user's clipboard data, filters for valid editor text, and pastes it to the textBlock.
-		 * 
-		 * @param {User} e 
+		 *
+		 * @param {User} e
 		 */
 		textBlock.onpaste = (e) => {
 			// Get user's pasted data
-			let data = e.clipboardData.getData('text/html') ||
-				e.clipboardData.getData('text/plain');
+			let data = e.clipboardData.getData("text/html") ||
+				e.clipboardData.getData("text/plain");
 
 			// Filter out everything except simple text and allowable HTML elements
 			let regex = /<(?!(\/\s*)?(a|b|i|em|s|strong|u)[>,\s])([^>])*>/g;
-			data = data.replace(regex, '');
+			data = data.replace(regex, "");
 
 			// Insert the filtered content
-			document.execCommand('insertText', false, data);
+			document.execCommand("insertText", false, data);
 
 			// Prevent the standard paste behavior
 			e.preventDefault();
@@ -629,24 +627,24 @@ export class TextBlock extends HTMLElement {
 		 */
 		textBlock.onblur = () => {
 			textBlock.classList.remove("eventNodateFocused");
-			for (let i = 0; i < this.editorIcons.childNodes.length - 1; i++){
+			for (let i = 0; i < this.editorIcons.childNodes.length - 1; i++) {
 				this.editorIcons.childNodes[i].classList.remove("focusedIcons");
 				this.editorIcons.childNodes[i].classList.add("unfocusedIcons");
 			}
 			let date = null;
-			if(this.kind == "event"){
+			if (this.kind == "event") {
 				date = getDate(this, this.eventDelete);
 				console.log(date);
 			}
-			if (!this.eventDelete){
+			if (!this.eventDelete) {
 				this.eventDelete = true;
 			}
-			if(this.item != null){
-				if (textBlock.textContent != "" ) {
+			if (this.item != null) {
+				if (textBlock.textContent != "") {
 					console.log("hello my very old friend " + textBlock.textContent);
 					this.item.kind = this.kind;
 					this.item.text = textBlock.textContent;
-					setTimeout( () => {
+					setTimeout(() => {
 						localStorage.updateTextBlock(this.item, date, true, (res) => {
 							console.log(res);
 						})
@@ -677,13 +675,13 @@ export class TextBlock extends HTMLElement {
 		textBlock.addEventListener("input", () => {
 			let content = textBlock.innerHTML;
 			if (this.kind == "event") {
-				if (content.includes('@')) {
+				if (content.includes("@")) {
 					textBlock.innerHTML = content.replace(/(@)/g, "&#128368;  ");
 					content = textBlock.innerHTML;
 					this.moveToSpot(1000000, true);
 				}
 
-				if (content.includes('#')) {
+				if (content.includes("#")) {
 					textBlock.innerHTML = content.replace(/(#)/g, "&#128197;  ");
 					content = textBlock.innerHTML;
 					this.moveToSpot(1000000, true);
@@ -728,13 +726,13 @@ export class TextBlock extends HTMLElement {
 
 		/**
 		 * Handles providing the framework for editor populaing.
-		 * 
-		 * @param {*} e 
+		 *
+		 * @param {*} e
 		 */
 		textBlock.onfocus = (e) => {
 			this.controller.resetPosition = false;
 			this.setCurrentSpot();
-			for (let i = 0; i < this.editorIcons.childNodes.length - 1; i++){
+			for (let i = 0; i < this.editorIcons.childNodes.length - 1; i++) {
 				this.editorIcons.childNodes[i].classList.remove("unfocusedIcons");
 				this.editorIcons.childNodes[i].classList.add("focusedIcons");
 			}
@@ -752,19 +750,19 @@ export class TextBlock extends HTMLElement {
 
 
 		/**
-		 * if "tab" is hit, then the tab level is increased and the textBlock styling is
+		 * If "tab" is hit, then the tab level is increased and the textBlock styling is
 		 * set up for each type of block type(?)
-		 * 
-		 * @param {*} e 
+		 *
+		 * @param {*} e
 		 */
 		textBlock.onkeydown = (e) => {
 			let key = e.key || e.keyCode;
 			if (key == "Backspace" || key == "Delete") {
 				let tabLevelNotZero = this.tabLevel > 0;
-				let currentSpot18 = this.currentPointerSpot - (this.tabLevel * tabSize) == paddingSize;
-				let currentSpotNote = this.currentPointerSpot - (this.tabLevel * tabSize) == paddingSize + 20 && this.classList.contains("noteContainer");
+				let currentSpot18 = this.currentPointerSpot - this.tabLevel * tabSize == paddingSize;
+				let currentSpotNote = this.currentPointerSpot - this.tabLevel * tabSize == paddingSize + 20 && this.classList.contains("noteContainer");
 				let isAtBegining = currentSpot18 || currentSpotNote;
-				if (textBlock.innerHTML == "" && textBlock.getAttribute('placeholder') == 'Type "/" to create a block' && this.controller.blockArray.length > 1) {
+				if (textBlock.innerHTML == "" && textBlock.getAttribute("placeholder") == "Type \"/\" to create a block" && this.controller.blockArray.length > 1) {
 					this.controller.removeBlock();
 				} else if ((textBlock.innerHTML == "" || textBlock.innerHTML == "<br>") && this.tabLevel == 0) {
 					this.removeStyles();
@@ -819,12 +817,12 @@ export class TextBlock extends HTMLElement {
 					e.preventDefault();
 				}
 			} else if (key == "ArrowDown") {
-				let lineheight = (textBlock.classList.contains("header1")) ? 80 : ((textBlock.classList.contains("header2")) ? 57 : ((this.kind == "note" || this.kind == "event" || this.kind == "task") ? 47 : 42));
+				let lineheight = textBlock.classList.contains("header1") ? 80 : textBlock.classList.contains("header2") ? 57 : this.kind == "note" || this.kind == "event" || this.kind == "task" ? 47 : 42;
 				if (this.currentPointerHeight > textBlock.offsetHeight - lineheight) {
 					this.controller.moveToNextBlock();
 				}
 			} else if (key == "ArrowUp") {
-				let lineheight = (textBlock.classList.contains("header1")) ? 50 : ((textBlock.classList.contains("header2")) ? 36 : 28);
+				let lineheight = textBlock.classList.contains("header1") ? 50 : textBlock.classList.contains("header2") ? 36 : 28;
 				if (this.currentPointerHeight < lineheight + this.initialHeight) {
 					this.controller.moveToPreviousBlock();
 				}
@@ -892,5 +890,4 @@ export class TextBlock extends HTMLElement {
 }
 
 
-
-window.customElements.define('text-block', TextBlock);
+window.customElements.define("text-block", TextBlock);

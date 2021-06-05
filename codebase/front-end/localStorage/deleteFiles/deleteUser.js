@@ -5,7 +5,7 @@
  * @param {String} id The id of the object to be deleted.
  * @callback (res) Sends an error if there is one to the callback.
  */
-export function deleteUserPouch(db, callback) {
+export function deleteUserPouch (db, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
