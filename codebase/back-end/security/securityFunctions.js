@@ -6,59 +6,65 @@ const schema = require(__dirname + "/../schema.js");
 mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
 mongoose.set("useCreateIndex", true);
 
-//matching key for hashing and encrypting
+// Matching key for hashing and encrypting
 let key = process.env.HASHKEY;
 
-/*
- * purpose: hash a string (password): 1 way hashing
- * input: a string as password 
- * output:  a hashed value for password
+/**
+ * Hashes the password passed in and then returns it.
+ *
+ * @param {String} password The password to hash.
+ * @return Returns the hashed password.
  */
-function passHash(password){
+function passHash (password) {
     let hashed = CryptoJS.HmacSHA256(password, key);
     hashed = hashed.toString();
     return hashed;
 }
 
 
-/*
- * encrypt a string : data
- * input: message to encrypt and use password of user to encrypt with
- * output: encrypted string data
+/**
+ * Encrypts the message using the password as key and then returns the encrypted message.
+ *
+ * @param {String} message The text to encrypt.
+ * @param {String} password The password to user as a key.
+ * @return The encrypted message.
  */
-function encrypt(message, password){
-    var encrypted = CryptoJS.AES.encrypt(message, password).toString();
+function encrypt (message, password) {
+    let encrypted = CryptoJS.AES.encrypt(message, password).toString();
     return encrypted;
 }
 
-/*
- * decrypt a string data
- * input: encryped data and user password to decrypt
- * output: string value of data
+/**
+ * Decrypts the data using the password as key and then returns it.
+ *
+ * @param {String} data The text to decrypt.
+ * @param {String} password The password to user as key.
+ * @return Returns the decrypted data.
  */
- function decrypt(data, password){
-    var decrypted  = CryptoJS.AES.decrypt(data, password);
-    var originalText = decrypted.toString(CryptoJS.enc.Utf8);
+ function decrypt (data, password) {
+    let decrypted = CryptoJS.AES.decrypt(data, password);
+    let originalText = decrypted.toString(CryptoJS.enc.Utf8);
     return originalText;
 }
 
-/*
- * purpose: check if user and password match
- * input: userObject
- * output: true/false of user info
+/**
+ * Authenticates the user based on email and password in userDate
+ *
+ * @param {Object} userData The object that contains the email and password to authenticate.
+ * @callback (response) Sends either true or false based on whether the email and password were authenticated or not.
  */
-function authenticate(userData, callback){
+function authenticate (userData, callback) {
     schema.User.findOne({email: userData.email}, (error, user) => {
-        if (error || user == null){
+        if (error || user === null) {
             callback(false);
         } else {
             let hashedPwd = passHash(userData.pwd);
-            callback(user.pwd == hashedPwd);
+            callback(user.pwd === hashedPwd);
         }
     })
 }
 
-//for exporting
+// For exporting
 module.exports = {
     passHash: passHash,
     encrypt: encrypt,

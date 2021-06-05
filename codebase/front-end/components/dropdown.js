@@ -1,12 +1,13 @@
+import {navbar} from "../index.js";
 import {router} from "../router.js";
 const tabspace = 3;
 
 export class DropdownBlock extends HTMLElement {
-    constructor(title, item, level=1) {
+    constructor (title, item, level = 1) {
         super();
         this.currentHeight = 5;
         this.item = item;
-        this.attachShadow({ mode: 'open' });
+        this.attachShadow({ mode: "open" });
         this.shadowRoot.innerHTML = `
 		<style>
 			@font-face {
@@ -16,6 +17,7 @@ export class DropdownBlock extends HTMLElement {
 
 			#wrapper{
 				padding-bottom: 0;
+				width: calc(100% - 70px);
 				user-select: none; 
 				-webkit-user-select: none;
 				-moz-user-select: none; 
@@ -26,6 +28,7 @@ export class DropdownBlock extends HTMLElement {
 			#title{
 				display: inline-block;
 				font-family: "SF-Pro";
+				margin-left: 7.5px;
 				font-size: calc(20pt - ${level * 2}pt);
 				font-weight: calc(900 - ${level * 200});
 				letter-spacing: calc(1.2px - ${level * 0.35}px);
@@ -48,8 +51,8 @@ export class DropdownBlock extends HTMLElement {
             }
 
             #arrow img {
-                max-width: calc(24px - ${level * 3}px);
-                max-height: calc(24px - ${level * 3}px);
+                max-width: calc(22px - ${level * 3}px);
+                max-height: calc(22px - ${level * 3}px);
 
                 filter: var(--icon-filter);
             }
@@ -85,14 +88,38 @@ export class DropdownBlock extends HTMLElement {
 				border-top: 1px solid rgba(0,0,0,0.08);
 			}
 
+			#editorIcons{
+				position: relative;
+				display: inline;
+				float: left;
+				top: calc(17.5px - ${Number(level)}px);
+				vertical-align: top;
+			}
+			
+			#editorIcons img{
+				margin-right: 7px;
+				height: 15px;
+				cursor: pointer;
+				filter: var(--icon-filter);
+			}
+			.unfocusedIcons{
+				opacity: 0.5;
+				transition: 0.2s;
+			}
+	
+			#editorIcons img:hover{
+				opacity: 0.8;
+				transition: opacity 0.2s;
+			}
 		</style>
+		<div id="editorIcons" class="paragraphIcons"><img src="../public/resources/plusIcon.png" class="unfocusedIcons"/><img src="../public/resources/sixDotIcon.png" class="unfocusedIcons"/></div>
         <div id="wrapper">
-			<div id="titleWrapper" class="${(level > 1) ? "singleItemWrapper" : ""}">
+			<div id="titleWrapper" class="${level > 1 ? "singleItemWrapper" : ""}">
 				<h1 id="title"></h1>
 				<button id="arrow"><img src="../public/resources/right-chevron.png" /></button>
 			</div>
             <div id="contentWrapper"></div>
-        </div>
+
         `;
         this.button = this.shadowRoot.getElementById("arrow");
         this.wrapper = this.shadowRoot.getElementById("wrapper");
@@ -102,22 +129,44 @@ export class DropdownBlock extends HTMLElement {
 		this.titleWrapper = this.shadowRoot.querySelector("#titleWrapper");
     }
 
-    connectedCallback() {
-		this.removeAttribute('closed');
-        this.button.addEventListener("click", () => { this.toggleItems(); });
-		this.header.addEventListener("click", () => { this.navigateToObject(); })
-		// this.contentWrapper.style.display = 'none';
+	/**
+	 * When creating a new dropdown instance, it displays the dropdown,
+	 * listens to when the dropdown button is clicked to display items inside dropdown,
+	 * and listens to when a dropdown header is clicked to navigate to the page for the dropdown object
+	 */
+    connectedCallback () {
+		this.removeAttribute("closed");
+        this.button.addEventListener("click", () => {
+			this.toggleItems();
+		});
+		this.header.addEventListener("click", () => {
+			this.navigateToObject();
+		})
+		// This.contentWrapper.style.display = 'none';
     }
 
-    set title(title) {
+	get title () {
+		return this.header.innerText;
+	}
+
+	/**
+	 * Sets the title for the dropdown
+	 */
+    set title (title) {
         this.header.innerText = title;
     }
 
-    get closed() {
-        return this.wrapper.hasAttribute('closed');
+	/**
+	 * Hides the items inside the dropdown
+	 */
+    get closed () {
+        return this.wrapper.hasAttribute("closed");
     }
 
-    set closed(isClosed) {
+	/**
+	 * Opens the dropdown if it is open or opens it, if it is closed.
+	 */
+    set closed (isClosed) {
         if (isClosed) {
             this.hide();
         } else {
@@ -125,22 +174,35 @@ export class DropdownBlock extends HTMLElement {
         }
     }
 
-	navigateToObject() {
+	/**
+	 * When an object is clicked, it will toggle the page for that object
+	 */
+	navigateToObject () {
 		router.setState(`#${this.item.objectType}~${this.item.id}`, false);
+		navbar.open = false;
 	}
 
-    display() {
-        this.wrapper.classList.toggle('closed', true);
+	/**
+	 * Displays the dropdown when called
+	 */
+    display () {
+        this.wrapper.classList.toggle("closed", true);
     }
 
-    hide() {
-        this.wrapper.classList.toggle('closed', false);
+	/**
+	 * Closes the dropdown when called
+	 */
+    hide () {
+        this.wrapper.classList.toggle("closed", false);
     }
 
-    toggleItems() {
-        this.wrapper.classList.toggle('closed');
+	/**
+	 * Displays the items inside the dropdown when called or hides them if already shown
+	 */
+    toggleItems () {
+        this.wrapper.classList.toggle("closed");
 
-        if (this.wrapper.classList.contains('closed')) {
+        if (this.wrapper.classList.contains("closed")) {
             this.display();
         } else {
             this.hide();
@@ -148,4 +210,4 @@ export class DropdownBlock extends HTMLElement {
     }
 }
 
-customElements.define('drop-down', DropdownBlock);
+window.customElements.define("drop-down", DropdownBlock);

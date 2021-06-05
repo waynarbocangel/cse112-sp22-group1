@@ -1,23 +1,45 @@
 require("dotenv").config();
-var mongoose = require("mongoose");
-var security = require(__dirname + "/../security/securityFunctions.js");
-var schema = require(__dirname + "/../schema.js");
-var newUser;
+const mongoose = require("mongoose");
+const security = require(__dirname + "/../security/securityFunctions.js");
+const schema = require(__dirname + "/../schema.js");
 
 
 mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
 mongoose.set("useCreateIndex", true);
 
+/**
+ * Makes and returns a randomly generated id of length 30.
+ * @return Returns the randome generated id of length 30.
+ */
+ function makeid () {
+	let length = 30;
+    let result = [];
+    let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result.push(characters.charAt(Math.floor(Math.random() * charactersLength)));
+   }
+   return result.join("");
+}
+
+/**
+ * Creates a user in the remote db.
+ *
+ * @param {String} email The email of the new user.
+ * @param {String} pwd The pwd of the new user.
+ * @callback (error) Sends an error if there is one.
+ */
 function createUser (email, pwd, callback) {
-	schema.User.findOne({email: email}, (error, user) => {
-		if (error){
+	schema.User.findOne({
+		email: email
+	}, (error, user) => {
+		if (error) {
 			callback(error);
-		} 
-		// Create a new user
-		else if (user == null) {
-			newUser = new schema.User({
+		} else if (user === null) {
+			const newUser = new schema.User({
 				email: email,
 				pwd: security.passHash(pwd),
+				theme: "lightmode",
 				index: {
 					objectType: "index",
 					contents: []
@@ -27,22 +49,30 @@ function createUser (email, pwd, callback) {
 				futureLogs: [],
 				trackers: [],
 				collections: [],
+				imageBlocks: [],
+				audioBlocks: [],
 				textBlocks: [],
 				events: [],
 				tasks: [],
-				signifiers: []
+				signifiers: [
+					{
+						id: makeid(),
+						objectType: "signifier",
+						meaning: security.encrypt("general", pwd),
+						symbol: "&#x1F7E0;"
+					}
+				]
 			});
-			
-			newUser.save((err, user) => {
+
+			newUser.save((err, createdUser) => {
 				if (err) {
 					callback(err);
 				} else {
-					callback(user);
+					createdUser.signifiers[0].meaning = "general";
+					callback(createdUser);
 				}
 			});
-		} 
-		// Email already has account
-		else {
+		} else {
 			callback({error: "This email already has an account!"});
 		}
 	});

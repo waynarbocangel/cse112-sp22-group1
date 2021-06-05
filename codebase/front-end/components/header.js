@@ -2,32 +2,9 @@ import * as localStorage from "../localStorage/userOperations.js";
 import { navbar } from "../index.js";
 
 export class PageHeader extends HTMLElement {
-	constructor() {
+	constructor () {
 		super();
-		this.attachShadow({ mode: 'open' });
-	}
-
-	connectedCallback() {
-		this.innerHTML = `
-			<style>
-				page-header {
-					display: block;
-					margin-left: 80px;
-					margin-right: 20px;
-					border-bottom: solid 2px var(--border-color);
-					text-align: left;
-				}
-
-				@media screen and (max-width: 900px) {
-					page-header {
-						margin-left: 20px;
-						padding-top: 30px;
-						padding-bottom: 10px;
-					}
-					
-				}
-			</style>
-			`;
+		this.attachShadow({ mode: "open" });
 
 		this.shadowRoot.innerHTML = `
 			<style>
@@ -35,18 +12,26 @@ export class PageHeader extends HTMLElement {
 					font-family:"SF-Pro";
 					src: url("./public/fonts/SF-Pro.ttf");
 				}
+
+				:host {
+					display: block;
+					margin-left: 80px;
+					margin-right: 20px;
+					text-align: left;
+				}
 		
 				/* Top navigation */
 				#container {
 					display: flex;
 					align-items: center;
 					height: 75px;
+					border-bottom: solid 2px var(--border-color);
 				}
 
 				.header {
 					font-family: "SF-Pro";
 					position: relative;
-					flex: 2;	/* Use half of the space for the title */
+					flex: 2;/* Use half of the space for the title */
 				}
 		
 				button {
@@ -55,14 +40,13 @@ export class PageHeader extends HTMLElement {
 					border: none;
 					background-color: rgba(0,0,0,0);
 					display: inline;
-					margin-left: 5px;
 				}
 
 				button.plus {
 					display: inline-block;
 					width: 23px;
 					height: 23px;
-					margin-right: 10px;
+					margin-right: 0;
 				}
 				
 				.imgbutton {
@@ -73,6 +57,7 @@ export class PageHeader extends HTMLElement {
 					opacity: 20%;
 					filter: var(--icon-filter);
 					height: 100%;
+					cursor: pointer;
 				}
 		
 				.imgbutton:hover img {
@@ -84,7 +69,7 @@ export class PageHeader extends HTMLElement {
 					display: inline;
 					font-size: 40px;
 					font-weight: bold;
-					letter-spacing: 1.7px;
+					letter-spacing: 1.8px;
 					vertical-align: middle;
 					z-index: 0;
 					outline: none;
@@ -93,11 +78,10 @@ export class PageHeader extends HTMLElement {
 				.search_bar {
 					display: flex;
 					align-items: center;
-
-					margin: 15px auto;
+					margin: 15px auto 15px 10px;
 					padding: 0 5px;
 					border-radius: 5px;
-					border-color: var(--content-foreground-color); /*rgba(0, 0, 0, 0.1);*/
+					border-color: var(--border-color); /*rgba(0, 0, 0, 0.1);*/
 					border-width: 2px;
 					border-style: solid;
 					opacity: 60%;
@@ -113,7 +97,7 @@ export class PageHeader extends HTMLElement {
 
 					filter: var(--icon-filter);
 				}
-		
+
 				.search_bar input{
 
 					background-color: rgba(0, 0, 0, 0);
@@ -161,6 +145,10 @@ export class PageHeader extends HTMLElement {
 					opacity: 0;
 				}
 
+				#menuToggle {
+					display: none;
+				}
+
 				@media screen and (max-width: 1250px) {
 					.search_bar input {
 						width: 220px;
@@ -180,6 +168,12 @@ export class PageHeader extends HTMLElement {
 				}
 
 				@media screen and (max-width: 900px) {
+					
+					:host {
+						margin-left: 20px;
+						padding-top: 10px;
+					}
+
 					.search_bar {
 						display: none;
 					}
@@ -188,13 +182,13 @@ export class PageHeader extends HTMLElement {
 						margin-left: 35px;
 						margin-right: 35px;
 						text-align: center;
-						flex: 1;
+						flex: 2;
 					}
 
 					.plus {
-						position: absolute;
 						width: 23px;
 						height: 23px;
+						padding-top: 5px;
 						right: 20px;
 					}
 
@@ -216,17 +210,88 @@ export class PageHeader extends HTMLElement {
 						margin-right: 0;
 						margin-left: 1px;
 					}
+					
+					#container{
+						height: 70px;
+						align-items: center;
+					}
+
+					#menuToggle {
+						display: inline-block;
+						flex-direction: column;
+						left: 20px;
+						padding-top: 5px;
+						z-index: 1;
+					}
+		
+					#menuToggle input {
+						display: flex;
+						width: 40px;
+						height: 32px;
+						left: 10px;
+						top: 15px;
+						position: absolute;
+						cursor: pointer;
+						opacity: 0;
+						z-index: 2;
+					}
+		
+					#menuToggle span {
+						display: flex;
+						width: 29px;
+						height: 2px;
+						margin-top: 5px;
+						margin-bottom: 5px;
+						position: relative;
+						border-radius: 3px;
+						background: var(--content-foreground-color);
+						z-index: 1;
+						transform-origin: 5px 0px;
+						transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+									background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+									opacity 0.55s ease;
+					}
+		
+					#menuToggle span:first-child {
+						transform-origin: 0% 0%;
+					}
+		
+					#menuToggle span:nth-last-child(2) {
+						transform-origin: 0% 100%;
+					}
+		
+					#menuToggle input:checked ~ span {
+						opacity: 1;
+						transform: rotate(45deg) translate(-7px, -10px);
+					}
+		
+					#menuToggle input:checked ~ span:nth-last-child(3) {
+						opacity: 0;
+						transform: rotate(0deg) scale(0.2, 0.2);
+					}
+		
+					#menuToggle input:checked ~ span:nth-last-child(2) {
+						transform: rotate(-45deg) translate(-5px, 10px);
+					}
 				}
 
 				@media screen and (max-width: 700px) {
 					.plus{
-						position: absolute;
+
+					}
+
+					#container{
+						height: 50px;
 					}
 
 					#title_page{
 						top: 5px;
 						font-size: 22px;
 						letter-spacing: 1px;
+					}
+
+					#menuToggle input {
+						top: 8px;
 					}
 
 					button.imgbutton img {
@@ -249,6 +314,12 @@ export class PageHeader extends HTMLElement {
 			</style>
 
 			<div id="container">
+				<div id="menuToggle">
+					<input type="checkbox" />
+					<span></span>
+					<span></span>
+					<span></span>
+				</div>
 				<span class="header">
 					<button class="imgbutton" id="header_back"><img src="../public/resources/left-chevron.png"></button>
 			
@@ -266,7 +337,7 @@ export class PageHeader extends HTMLElement {
 			</div>
 		`;
 
-		this.h1 = this.shadowRoot.querySelector("h1");
+		this.h1 = this.shadowRoot.getElementById("title_page");
 
 		this.createFutureLog = this.createFutureLog.bind(this);
 		this.futureLogButton = this.shadowRoot.querySelector(".plus");
@@ -275,47 +346,66 @@ export class PageHeader extends HTMLElement {
 		});
 
 		this.imgbuttons = this.shadowRoot.querySelectorAll(".imgbutton");
+		this.menuToggle = this.shadowRoot.querySelector("#menuToggle input");
 	}
 
-	makeEditabe() {
+	/**
+	 * When header is created, the callback will listen to when the menu is toggled
+	 */
+	connectedCallback () {
+		this.menuToggle.addEventListener("change", () => {
+			navbar.toggle();
+		});
+	}
+
+	/**
+	 * Makes header content editable
+	 */
+	makeEditabe () {
 		this.h1.contentEditable = true;
 	}
 
-	makeUneditable() {
+	/**
+	 * Makes header content uneditable
+	 */
+	makeUneditable () {
 		this.h1.contentEditable = false;
 	}
 
-	set title(title) {
-		this.h1.innerText = title;
+	/**
+	 * Sets header title based on current page
+	 *
+	 * @param {String} title the title to set
+	 */
+	set title (title) {
+		this.shadowRoot.getElementById("title_page").innerHTML = title;
 	}
 
-	get title() {
+	/**
+	 * Gets the header's current title
+	 */
+	get title () {
 		return this.h1.innerText;
 	}
 
-	createFutureLog() {
-		localStorage.createFutureLog(new Date(2021, 5, 22), new Date(2021, 8, 23), [], [], [], (err, futureLog) => {
-			console.log(futureLog);
-			localStorage.readUser((err, res) => {
-				if (err) {
-					console.log(err);
-				} else {
-					console.log(res);
-					// localStorage.createCollection("testing createCollection", "1", [], (err, collection) => {
-					// 	console.log(collection);
-					// 	localStorage.readUser((err, res) => {
-					// 		if(err) {
-					// 			console.log(err);
-					// 		} else {
-					// 			console.log(res);
-					// 		}
-					// 	});
-					// });
-				}
-			})
+	/**
+	 * Creates a futureLog
+	 */
+	createFutureLog () {
+		localStorage.createFutureLog(new Date(2021, 5, 22), new Date(2021, 8, 23), [], [], [], true, (err, futureLog) => {
+			if (err) {
+				console.log(err);
+			} else {
+				localStorage.readUser((error, res) => {
+					if (error) {
+						console.log(error);
+					} else if (res.ok) {
+						console.log(futureLog);
+					}
+				})
+			}
 		});
-
 	}
 }
 
-customElements.define('page-header', PageHeader);
+window.customElements.define("page-header", PageHeader);

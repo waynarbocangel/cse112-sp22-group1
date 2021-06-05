@@ -1,6 +1,16 @@
 import {makeid} from "./makeId.js";
-let taskObject;
+let taskObject = {};
 
+/**
+ * Creates and stores a new task created from the given parameters.
+ *
+ * @param {database} db The local pouch database.
+ * @param {String} parent The id of the parent of the new task.
+ * @param {String} text Description of the task.
+ * @param {Number} complete Number to keep track if task is complete or not. (zero for non-complete and non-zero for complete)
+ * @param {String} signifier The id of the signifier the task is supposed to use.
+ * @callback (err,task) Eihter sends the newly created task or an error if there is one to the callback.
+ */
 export function createTaskPouch (db, parent, text, complete, signifier, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
@@ -18,8 +28,10 @@ export function createTaskPouch (db, parent, text, complete, signifier, callback
 			Array.prototype.push.apply(arrays, doc.tasks);
 			Array.prototype.push.apply(arrays, doc.events);
 			Array.prototype.push.apply(arrays, doc.signifiers);
+			Array.prototype.push.apply(arrays, doc.imageBlocks);
+			Array.prototype.push.apply(arrays, doc.audioBlocks);
 
-			while(arrays.filter((element) => element.id == id).length > 0){
+			while (arrays.filter((element) => element.id === id).length > 0) {
 				id = makeid();
 			}
 			taskObject = {
@@ -31,45 +43,30 @@ export function createTaskPouch (db, parent, text, complete, signifier, callback
 				signifier: signifier
 			};
 
-
-			/*let userArr = [];
-			Array.prototype.push.apply(userArr, doc.dailyLogs);
-			Array.prototype.push.apply(userArr, doc.monthlyLogs);
-			Array.prototype.push.apply(userArr, doc.futureLogs);
-			Array.prototype.push.apply(userArr, doc.trackers);
-			Array.prototype.push.apply(userArr, doc.collections);
-
-			let parentArr = userArr.filter(object => object.id == parent);
-
-			if(index == null) {
-				parentArr[0].contents.push(id);
-			} else {
-				parentArr[0].contents.splice(index, 0, id);
-			}*/
-			
 			doc.tasks.push(taskObject);
-				
-			return db.put(
-				{
-					_id: "0000",
-					_rev: doc._rev,
-					email: doc.email,
-					pwd: doc.pwd,
-					index: doc.index,
-					dailyLogs: doc.dailyLogs,
-					monthlyLogs: doc.monthlyLogs,
-					futureLogs: doc.futureLogs,
-					collections: doc.collections,
-					trackers: doc.trackers,
-					textBlocks: doc.textBlocks,
-					tasks: doc.tasks,
-					events: doc.events,
-					signifiers: doc.signifiers
-				}
-			).then((res) => {
-			}).catch((err) => {
-				console.log(err);
-				callback(err, null);
+
+			return db.put({_id: "0000",
+				_rev: doc._rev,
+				email: doc.email,
+				pwd: doc.pwd,
+				theme: doc.theme,
+				index: doc.index,
+				dailyLogs: doc.dailyLogs,
+				monthlyLogs: doc.monthlyLogs,
+				futureLogs: doc.futureLogs,
+				collections: doc.collections,
+				trackers: doc.trackers,
+				imageBlocks: doc.imageBlocks,
+				audioBlocks: doc.audioBlocks,
+				textBlocks: doc.textBlocks,
+				tasks: doc.tasks,
+				events: doc.events,
+				signifiers: doc.signifiers}).then((res) => {
+				console.log(res);
+			}).
+catch((error) => {
+				console.log(error);
+				callback(error, null);
 			});
 		}
 	}).then((res) => {

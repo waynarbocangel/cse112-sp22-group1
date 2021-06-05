@@ -1,10 +1,9 @@
 import {readUser} from "../localStorage/userOperations.js";
 
-readUser((user) => {
-	console.log(user);
-	if (user.email != undefined){
-		window.location.href = "http://localhost:8080/success";
-	} else {
+readUser((err, user) => {
+	if (err) {
 		console.log(user);
+	} else {
+		window.location.href = "http://localhost:8080/success";
 	}
 });

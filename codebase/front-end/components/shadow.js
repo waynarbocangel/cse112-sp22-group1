@@ -16,20 +16,20 @@
 
 const debug = false;
 
-const hasShadow = 'attachShadow' in Element.prototype && 'getRootNode' in Element.prototype;
-const hasSelection = !!(hasShadow && document.createElement('div').attachShadow({ mode: 'open' }).getSelection);
+const hasShadow = "attachShadow" in Element.prototype && "getRootNode" in Element.prototype;
+const hasSelection = Boolean(hasShadow && document.createElement("div").attachShadow({ mode: "open" }).getSelection);
 const hasShady = window.ShadyDOM && window.ShadyDOM.inUse;
-const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent) ||
-  /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-const useDocument = !hasShadow || hasShady || (!hasSelection && !isSafari);
+const isSafari = (/^((?!chrome|android).)*safari/i).test(navigator.userAgent) ||
+  (/iPad|iPhone|iPod/).test(navigator.userAgent) && !window.MSStream;
+const useDocument = !hasShadow || hasShady || !hasSelection && !isSafari;
 
 const invalidPartialElements = /^(area|base|br|col|command|embed|hr|img|input|keygen|link|meta|param|script|source|style|template|track|wbr)$/;
 
-export const eventName = '-shadow-selectionchange';
+export const eventName = "-shadow-selectionchange";
 
 
 const validNodeTypes = [Node.ELEMENT_NODE, Node.TEXT_NODE, Node.DOCUMENT_FRAGMENT_NODE];
-function isValidNode(node) {
+function isValidNode (node) {
   return validNodeTypes.includes(node.nodeType);
 }
 
@@ -39,7 +39,7 @@ function isValidNode(node) {
  * @param {!Node} node to find caret position within a shadow root
  * @return {!Node|!ShadowRoot}
  */
-export function findCaretFocus(s, node) {
+export function findCaretFocus (s, node) {
   const pending = [];
   const pushAll = (nodeList) => {
     for (let i = 0; i < nodeList.length; ++i) {
@@ -49,8 +49,10 @@ export function findCaretFocus(s, node) {
     }
   };
 
-  // We're told by Safari that a node containing a child with a Shadow Root is selected, but check
-  // the node directly too (just in case they change their mind later).
+  /*
+   * We're told by Safari that a node containing a child with a Shadow Root is selected, but check
+   * the node directly too (just in case they change their mind later).
+   */
   if (node.shadowRoot) {
     pending.push(node.shadowRoot);
   }
@@ -65,42 +67,44 @@ export function findCaretFocus(s, node) {
       }
     }
 
-    // The selection must be inside a further Shadow Root, but there's no good way to get a list of
-    // them. Safari won't tell you what regular node contains the root which has a selection. So,
-    // unfortunately if you stack them this will be slow(-ish).
-    pushAll(root.querySelectorAll('*'));
+    /*
+     * The selection must be inside a further Shadow Root, but there's no good way to get a list of
+     * them. Safari won't tell you what regular node contains the root which has a selection. So,
+     * unfortunately if you stack them this will be slow(-ish).
+     */
+    pushAll(root.querySelectorAll("*"));
   }
 
   return null;
 }
 
 
-function findNode(s, parentNode, isLeft) {
+function findNode (s, parentNode, isLeft) {
   const nodes = parentNode.childNodes || parentNode.children;
   if (!nodes) {
-    return parentNode;  // found it, probably text
+    return parentNode; // Found it, probably text
   }
 
   for (let i = 0; i < nodes.length; ++i) {
-    const j = isLeft ? i : (nodes.length - 1 - i);
+    const j = isLeft ? i : nodes.length - 1 - i;
     const childNode = nodes[j];
     if (!isValidNode(childNode)) {
       continue;
     }
 
-    debug && console.debug('checking child', childNode, 'IsLeft', isLeft);
+    debug && console.debug("checking child", childNode, "IsLeft", isLeft);
     if (s.containsNode(childNode, true)) {
       if (s.containsNode(childNode, false)) {
-        debug && console.info('found child', childNode);
+        debug && console.info("found child", childNode);
         return childNode;
       }
       // Special-case elements that cannot have feasible children.
-      if (!invalidPartialElements.exec(childNode.localName || '')) {
-        debug && console.info('descending child', childNode);
+      if (!invalidPartialElements.exec(childNode.localName || "")) {
+        debug && console.info("descending child", childNode);
         return findNode(s, childNode, isLeft);
       }
     }
-    debug && console.info(parentNode, 'does NOT contain', childNode);
+    debug && console.info(parentNode, "does NOT contain", childNode);
   }
   return parentNode;
 }
@@ -109,10 +113,10 @@ function findNode(s, parentNode, isLeft) {
 let recentCaretRange = {node: null, offset: -1};
 
 
-(function() {
+(function () {
   if (hasSelection || useDocument) {
-    // getSelection exists or document API can be used
-    document.addEventListener('selectionchange', (ev) => {
+    // GetSelection exists or document API can be used
+    document.addEventListener("selectionchange", (ev) => {
       document.dispatchEvent(new CustomEvent(eventName));
     });
     return () => {};
@@ -120,7 +124,7 @@ let recentCaretRange = {node: null, offset: -1};
 
   let withinInternals = false;
 
-  document.addEventListener('selectionchange', (ev) => {
+  document.addEventListener("selectionchange", (ev) => {
     if (withinInternals) {
       return;
     }
@@ -128,7 +132,7 @@ let recentCaretRange = {node: null, offset: -1};
     withinInternals = true;
 
     const s = window.getSelection();
-    if (s.type === 'Caret') {
+    if (s.type === "Caret") {
       const root = findCaretFocus(s, s.anchorNode);
       if (root instanceof window.ShadowRoot) {
         const range = getRange(root);
@@ -140,12 +144,12 @@ let recentCaretRange = {node: null, offset: -1};
       }
     }
 
-    document.dispatchEvent(new CustomEvent('-shadow-selectionchange'));
+    document.dispatchEvent(new CustomEvent("-shadow-selectionchange"));
     window.requestAnimationFrame(() => {
       withinInternals = false;
     });
   });
-})();
+}());
 
 
 /**
@@ -154,10 +158,10 @@ let recentCaretRange = {node: null, offset: -1};
  * @param {boolean} walkForward should this walk in natural direction
  * @return {boolean} whether the selection contains the following node (even partially)
  */
-function containsNextElement(s, node, walkForward) {
+function containsNextElement (s, node, walkForward) {
   const start = node;
   while (node = walkFromNode(node, walkForward)) {
-    // walking (left) can contain our own parent, which we don't want
+    // Walking (left) can contain our own parent, which we don't want
     if (!node.contains(start)) {
       break;
     }
@@ -165,8 +169,11 @@ function containsNextElement(s, node, walkForward) {
   if (!node) {
     return false;
   }
-  // we look for Element as .containsNode says true for _every_ text node, and we only care about
-  // elements themselves
+
+  /*
+   * We look for Element as .containsNode says true for _every_ text node, and we only care about
+   * elements themselves
+   */
   return node instanceof Element && s.containsNode(node, true);
 }
 
@@ -177,9 +184,9 @@ function containsNextElement(s, node, walkForward) {
  * @param {!Node} rightNode the right node
  * @return {boolean|undefined} whether this has natural direction
  */
-function getSelectionDirection(s, leftNode, rightNode) {
-  if (s.type !== 'Range') {
-    return undefined;  // no direction
+function getSelectionDirection (s, leftNode, rightNode) {
+  if (s.type !== "Range") {
+    return undefined; // No direction
   }
   const measure = () => s.toString().length;
 
@@ -189,32 +196,32 @@ function getSelectionDirection(s, leftNode, rightNode) {
   let updatedSize;
 
   // Try extending forward and seeing what happens.
-  s.modify('extend', 'forward', 'character');
+  s.modify("extend", "forward", "character");
   updatedSize = measure();
   debug && console.info(`forward selection: "${s.toString()}"`)
 
   if (updatedSize > initialSize || containsNextElement(s, rightNode, true)) {
-    debug && console.info('got forward >, moving right')
-    s.modify('extend', 'backward', 'character');
+    debug && console.info("got forward >, moving right")
+    s.modify("extend", "backward", "character");
     return true;
   } else if (updatedSize < initialSize || !s.containsNode(leftNode)) {
-    debug && console.info('got forward <, moving left')
-    s.modify('extend', 'backward', 'character');
+    debug && console.info("got forward <, moving left")
+    s.modify("extend", "backward", "character");
     return false;
   }
 
   // Maybe we were at the end of something. Extend backwards instead.
-  s.modify('extend', 'backward', 'character');
+  s.modify("extend", "backward", "character");
   updatedSize = measure();
   debug && console.info(`backward selection: "${s.toString()}"`)
 
   if (updatedSize > initialSize || containsNextElement(s, leftNode, false)) {
-    debug && console.info('got backwards >, moving left')
-    s.modify('extend', 'forward', 'character');
+    debug && console.info("got backwards >, moving left")
+    s.modify("extend", "forward", "character");
     return false;
   } else if (updatedSize < initialSize || !s.containsNode(rightNode)) {
-    debug && console.info('got backwards <, moving right')
-    s.modify('extend', 'forward', 'character');
+    debug && console.info("got backwards <, moving right")
+    s.modify("extend", "forward", "character");
     return true;
   }
 
@@ -230,7 +237,7 @@ function getSelectionDirection(s, leftNode, rightNode) {
  * @param {boolean} walkForward should this walk in natural direction
  * @return {Node} node found, if any
  */
-function walkFromNode(node, walkForward) {
+function walkFromNode (node, walkForward) {
   if (!walkForward) {
     return node.previousSibling || node.parentNode || null;
   }
@@ -245,10 +252,13 @@ function walkFromNode(node, walkForward) {
 
 
 const cachedRange = new Map();
-export function getRange(root) {
+export function getRange (root) {
   if (useDocument) {
-    // Document pierces Shadow Root for selection, so actively filter it down to the right node.
-    // This is only for Firefox, which does not allow selection across Shadow Root boundaries.
+
+    /*
+     * Document pierces Shadow Root for selection, so actively filter it down to the right node.
+     * This is only for Firefox, which does not allow selection across Shadow Root boundaries.
+     */
     const s = document.getSelection();
     if (s.containsNode(root, true)) {
       return s.getRangeAt(0);
@@ -270,51 +280,59 @@ export function getRange(root) {
   window.setTimeout(() => {
     cachedRange.delete(root);
   }, 0);
-  debug && console.debug('getRange got', result);
+  debug && console.debug("getRange got", result);
   return result.range;
 }
 
 
-function internalGetShadowSelection(root) {
-  // nb. We used to check whether the selection contained the host, but this broke in Safari 13.
-  // This is "nicely formatted" whitespace as per the browser's renderer. This is fine, and we only
-  // provide selection information at this granularity.
+function internalGetShadowSelection (root) {
+
+  /*
+   * Nb. We used to check whether the selection contained the host, but this broke in Safari 13.
+   * This is "nicely formatted" whitespace as per the browser's renderer. This is fine, and we only
+   * provide selection information at this granularity.
+   */
   const s = window.getSelection();
 
-  if (s.type === 'None') {
-    return {range: null, type: 'none'};
-  } else if (!(s.type === 'Caret' || s.type === 'Range')) {
-    throw new TypeError('unexpected type: ' + s.type);
+  if (s.type === "None") {
+    return {range: null, type: "none"};
+  } else if (!(s.type === "Caret" || s.type === "Range")) {
+    throw new TypeError("unexpected type: " + s.type);
   }
 
   const leftNode = findNode(s, root, true);
   if (leftNode === root) {
-    return {range: null, mode: 'none'};
+    return {range: null, mode: "none"};
   }
 
   const range = document.createRange();
 
   let rightNode = null;
-  let isNaturalDirection = undefined;
-  if (s.type === 'Range') {
-    rightNode = findNode(s, root, false);  // get right node here _before_ getSelectionDirection
+  let isNaturalDirection;
+  if (s.type === "Range") {
+    rightNode = findNode(s, root, false); // Get right node here _before_ getSelectionDirection
     isNaturalDirection = getSelectionDirection(s, leftNode, rightNode);
 
-    // isNaturalDirection means "going right"
+    // IsNaturalDirection means "going right"
 
     if (isNaturalDirection === undefined) {
-      // This occurs when we can't move because we can't extend left or right to measure the
-      // direction we're moving in... because it's the entire range. Hooray!
+
+      /*
+       * This occurs when we can't move because we can't extend left or right to measure the
+       * direction we're moving in... because it's the entire range. Hooray!
+       */
       range.setStart(leftNode, 0);
       range.setEnd(rightNode, rightNode.length);
-      return {range, mode: 'all'};
+      return {range, mode: "all"};
     }
   }
 
   const initialSize = s.toString().length;
 
-  // Dumbest possible approach: remove characters from left side until no more selection,
-  // re-add.
+  /*
+   * Dumbest possible approach: remove characters from left side until no more selection,
+   * re-add.
+   */
 
   // Try right side first, as we can trim characters until selection gets shorter.
 
@@ -336,8 +354,10 @@ function internalGetShadowSelection(root) {
       }
     }
 
-    // We don't use .normalize() here, as the user might already have a weird node arrangement
-    // they need to maintain.
+    /*
+     * We don't use .normalize() here, as the user might already have a weird node arrangement
+     * they need to maintain.
+     */
     rightNode.insertData(rightNode.length, rightText.substr(rightNode.length));
     while (rightNode.nextSibling !== existingNextSibling) {
       rightNode.nextSibling.remove();
@@ -346,21 +366,24 @@ function internalGetShadowSelection(root) {
 
   if (leftNode.nodeType === Node.TEXT_NODE) {
     if (leftNode !== rightNode) {
-      // If we're at the end of a text node, it's impossible to extend the selection, so add an
-      // extra character to select (that we delete later).
-      leftNode.appendData('?');
+
+      /*
+       * If we're at the end of a text node, it's impossible to extend the selection, so add an
+       * extra character to select (that we delete later).
+       */
+      leftNode.appendData("?");
       s.collapseToStart();
-      s.modify('extend', 'right', 'character');
+      s.modify("extend", "right", "character");
     }
 
     const leftText = leftNode.textContent;
     const existingNextSibling = leftNode.nextSibling;
 
-    const start = (leftNode === rightNode ? rightOffset : leftText.length - 1);
+    const start = leftNode === rightNode ? rightOffset : leftText.length - 1;
 
     for (let i = start; i >= 0; --i) {
       leftNode.splitText(i);
-      if (s.toString() === '') {
+      if (s.toString() === "") {
         leftOffset = i;
         break;
       }
@@ -385,8 +408,10 @@ function internalGetShadowSelection(root) {
     rightNode = leftNode;
   }
 
-  // Work around common browser bug. Single character selction is always seen as 'forward'. Check
-  // if it's actually supposed to be backward.
+  /*
+   * Work around common browser bug. Single character selction is always seen as 'forward'. Check
+   * if it's actually supposed to be backward.
+   */
   if (initialSize === 1 && recentCaretRange && recentCaretRange.node === leftNode) {
     if (recentCaretRange.offset > leftOffset && isNaturalDirection) {
       isNaturalDirection = false;
@@ -405,5 +430,5 @@ function internalGetShadowSelection(root) {
 
   range.setStart(leftNode, leftOffset);
   range.setEnd(rightNode, rightOffset);
-  return {range, mode: 'normal'};
+  return {range, mode: "normal"};
 }
