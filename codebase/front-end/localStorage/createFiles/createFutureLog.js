@@ -30,8 +30,8 @@ export function createFutureLogPouch (db, startDate, endDate, months, content, t
 		Array.prototype.push.apply(arrays, doc.signifiers);
 		Array.prototype.push.apply(arrays, doc.imageBlocks);
 		Array.prototype.push.apply(arrays, doc.audioBlocks);
-		
-		while(arrays.filter((element) => element.id === id).length > 0){
+
+		while (arrays.filter((element) => element.id === id).length > 0) {
 			id = makeid();
 		}
 		futureObject = {
@@ -63,10 +63,10 @@ export function createFutureLogPouch (db, startDate, endDate, months, content, t
 			textBlocks: doc.textBlocks,
 			tasks: doc.tasks,
 			events: doc.events,
-			signifiers: doc.signifiers
-		});
-	}).then((res) => {
-		
+			signifiers: doc.signifiers});
+	}).
+then((res) => {
+
 		addMonth(new Date(futureObject.startDate.getTime()), new Date(futureObject.endDate.getTime()), futureObject, (monthsIDArray) => {
 			db.get("0000").then((doc) => {
 				futureObject.months = monthsIDArray;
@@ -87,10 +87,9 @@ export function createFutureLogPouch (db, startDate, endDate, months, content, t
 					textBlocks: doc.textBlocks,
 					tasks: doc.tasks,
 					events: doc.events,
-					signifiers: doc.signifiers
-				}, (err, res) => {
+					signifiers: doc.signifiers}, (err, res) => {
 					restart();
-					if (!err){
+					if (!err) {
 						console.log(res);
 						callback(null, futureObject);
 					} else {
@@ -103,9 +102,9 @@ export function createFutureLogPouch (db, startDate, endDate, months, content, t
 }
 
 function addMonth (startDate, endDate, futureLog, callback) {
-	let date = (startDate.getTime() === futureObject.startDate.getTime()) ? new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getUTCDate()) : new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
+	let date = startDate.getTime() === futureObject.startDate.getTime() ? new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getUTCDate()) : new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
 	if (startDate.getMonth() === endDate.getMonth()) {
-		date = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getUTCDate());;
+		date = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getUTCDate());
 	}
 	localStorage.createMonthlyLog(futureLog.id, [], [], [], date, false, (err, month) => {
 		if (err === null) {
@@ -130,5 +129,5 @@ function addMonth (startDate, endDate, futureLog, callback) {
 		} else {
 			console.log(err);
 		}
-	});	 
+	});
 }

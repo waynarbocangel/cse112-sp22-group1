@@ -29,8 +29,8 @@ export function createCollectionPouch (db, title, parent, content, callback) {
 			Array.prototype.push.apply(arrays, doc.signifiers);
 			Array.prototype.push.apply(arrays, doc.imageBlocks);
 			Array.prototype.push.apply(arrays, doc.audioBlocks);
-			
-			while(arrays.filter((element) => element.id === id).length > 0){
+
+			while (arrays.filter((element) => element.id === id).length > 0) {
 				id = makeid();
 			}
 			collectionObject = {
@@ -38,7 +38,7 @@ export function createCollectionPouch (db, title, parent, content, callback) {
 				objectType: "collection",
 				title: title,
 				parent: parent,
-				content: content,
+				content: content
 			};
 
 			doc.collections.push(collectionObject);
@@ -60,10 +60,10 @@ export function createCollectionPouch (db, title, parent, content, callback) {
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: doc.events,
-				signifiers: doc.signifiers
-			}).then((res) => {
+				signifiers: doc.signifiers}).then((res) => {
 				console.log(res);
-			}).catch((error) => {
+			}).
+catch((error) => {
 				console.log(error);
 				callback(error, null);
 			});

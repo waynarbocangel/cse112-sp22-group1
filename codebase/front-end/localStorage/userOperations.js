@@ -88,7 +88,8 @@ export function loginUser (email, pwd, callback) {
 			pwd: pwd
 		}),
 		method: "POST"
-	}).then((data) => data.json()).then((res) => {
+	}).then((data) => data.json()).
+then((res) => {
 		callback(res);
 	});
 }
@@ -110,7 +111,8 @@ export function createUser (email, pwd, callback) {
 			pwd: pwd
 		}),
 		method: "POST"
-	}).then((data) => data.json()).then((userData) => {
+	}).then((data) => data.json()).
+then((userData) => {
 		if (!userData.error) {
 			userData.pwd = pwd;
 			createUserPouch(db, userData, (user) => {

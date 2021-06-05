@@ -61,7 +61,7 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 						} else {
 							textBlockObject.objectReference = task.id;
 							localStorage.readUser((error2, user) => {
-								if (error2){
+								if (error2) {
 									callback(error2, null);
 								} else {
 									let userArr = [];
@@ -88,18 +88,16 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 											let newContents = parentArr[0].months.filter((month) => month.id === subParent);
 											newContents.content.push(id);
 										}
-									} else {
-										if (subParent === null) {
+									} else if (subParent === null) {
 											parentArr[0].content.splice(index, 0, id);
 										} else if (parentArr[0].objectType === "monthlyLog") {
 											let newContents = parentArr[0].days.filter((day) => day.id === subParent);
 											newContents.content.splice(index, 0, id);
-										} else if (parentArr[0].objectType === "futureLog"){
+										} else if (parentArr[0].objectType === "futureLog") {
 											let newContents = parentArr[0].months.filter((month) => month.id === subParent);
 											newContents.content.splice(index, 0, id);
 										}
-									}
-									
+
 									user.textBlocks.push(textBlockObject);
 
 									return db.put({_id: "0000",
@@ -118,10 +116,10 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 										textBlocks: user.textBlocks,
 										tasks: user.tasks,
 										events: user.events,
-										signifiers: user.signifiers
-									}).then((res) => {
+										signifiers: user.signifiers}).then((res) => {
 										console.log(res);
-									}).catch((err) => {
+									}).
+catch((err) => {
 										console.log(err);
 										callback(err, null);
 									});
@@ -130,7 +128,7 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 						}
 					})
 				} else if (kind === "event") {
-					//index == null for now just for testing
+					// Index == null for now just for testing
 					localStorage.createEvent(content, id, date, null, true, (err, event) => {
 						if (err) {
 							callback(err, null);
@@ -164,8 +162,7 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 											let newContents = parentArr[0].months.filter((month) => month.id === subParent);
 											newContents.content.push(id);
 										}
-									} else {
-										if (subParent === null) {
+									} else if (subParent === null) {
 											parentArr[0].content.splice(index, 0, id);
 										} else if (parentArr[0].objectType === "monthlyLog") {
 											let newContents = parentArr[0].days.filter((day) => day.id === subParent);
@@ -174,7 +171,6 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 											let newContents = parentArr[0].months.filter((month) => month.id === subParent);
 											newContents.content.splice(index, 0, id);
 										}
-									}
 
 									user.textBlocks.push(textBlockObject);
 
@@ -194,10 +190,10 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 										textBlocks: user.textBlocks,
 										tasks: user.tasks,
 										events: user.events,
-										signifiers: user.signifiers
-									}).then((res) => {
+										signifiers: user.signifiers}).then((res) => {
 										console.log(res);
-									}).catch((err) => {
+									}).
+catch((err) => {
 										console.log(err);
 										callback(err, null);
 									});
@@ -212,11 +208,11 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 				Array.prototype.push.apply(userArr, doc.monthlyLogs);
 				Array.prototype.push.apply(userArr, doc.trackers);
 				Array.prototype.push.apply(userArr, doc.collections);
-	
+
 				let parentArr = userArr.filter((object) => object.id === parent);
-	
+
 				if (parent === null) {
-					if(index === null) {
+					if (index === null) {
 						doc.index.contents.push(id);
 					} else {
 						doc.index.contents.splice(index, 0, id);
@@ -231,8 +227,7 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 						let newContents = parentArr[0].months.filter((month) => month.id === subParent);
 						newContents.content.push(id);
 					}
-				} else {
-					if (subParent == null) {
+				} else if (subParent == null) {
 						parentArr[0].content.splice(index, 0, id);
 					} else if (parentArr[0].objectType === "monthlyLog") {
 						let newContents = parentArr[0].days.filter((day) => day.id === subParent);
@@ -241,10 +236,9 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 						let newContents = parentArr[0].months.filter((month) => month.id === subParent);
 						newContents.content.splice(index, 0, id);
 					}
-				}
-	
+
 				doc.textBlocks.push(textBlockObject);
-	
+
 				return db.put({_id: "0000",
 					_rev: doc._rev,
 					email: doc.email,
@@ -261,10 +255,10 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 					textBlocks: doc.textBlocks,
 					tasks: doc.tasks,
 					events: doc.events,
-					signifiers: doc.signifiers
-				}).then((res) => {
+					signifiers: doc.signifiers}).then((res) => {
 					console.log(res);
-				}).catch((err) => {
+				}).
+catch((err) => {
 					callback(err, null);
 				});
 			}

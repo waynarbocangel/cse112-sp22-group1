@@ -8,7 +8,7 @@
  */
 export function deleteAudioBlockPouch (db, id, callback) {
 	localStorage.readUser((err, user) => {
-		if (err == null){
+		if (err == null) {
 			const audioBlockArr = doc.audioBlocks.filter((audioBlock) => audioBlock.id === id);
 			let block = null;
 			if (audioBlockArr.length > 0) {
@@ -43,11 +43,11 @@ export function deleteAudioBlockPouch (db, id, callback) {
 					}
 				}
 			}
-			
+
 
 			let newAudioBlocks = user.audioBlocks.filter((audioBlock) => audioBlock.id !== id);
 			user.audioBlocks = newAudioBlocks;
-			
+
 			return db.put({_id: "0000",
 				_rev: user._rev,
 				email: user.email,
@@ -64,16 +64,17 @@ export function deleteAudioBlockPouch (db, id, callback) {
 				textBlocks: user.textBlocks,
 				tasks: user.tasks,
 				events: user.events,
-				signifiers: user.signifiers
-			}).then((res) => {
+				signifiers: user.signifiers}).then((res) => {
 				console.log(res);
 				callback(null);
-			}).catch((error) => {
+			}).
+catch((error) => {
 				console.log(error);
-				callback(error)});
-		} else {
+				callback(error)
+});
+		}
 			console.log(err);
 			callback(err);
-		}
+
 	});
 }

@@ -31,7 +31,7 @@ export function createTaskPouch (db, parent, text, complete, signifier, callback
 			Array.prototype.push.apply(arrays, doc.imageBlocks);
 			Array.prototype.push.apply(arrays, doc.audioBlocks);
 
-			while(arrays.filter((element) => element.id === id).length > 0){
+			while (arrays.filter((element) => element.id === id).length > 0) {
 				id = makeid();
 			}
 			taskObject = {
@@ -44,7 +44,7 @@ export function createTaskPouch (db, parent, text, complete, signifier, callback
 			};
 
 			doc.tasks.push(taskObject);
-				
+
 			return db.put({_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
@@ -61,10 +61,10 @@ export function createTaskPouch (db, parent, text, complete, signifier, callback
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: doc.events,
-				signifiers: doc.signifiers
-			}).then((res) => {
+				signifiers: doc.signifiers}).then((res) => {
 				console.log(res);
-			}).catch((error) => {
+			}).
+catch((error) => {
 				console.log(error);
 				callback(error, null);
 			});

@@ -53,18 +53,18 @@ function deleteBlock (db, block, id, callback) {
 				textBlocks: user.textBlocks,
 				tasks: user.tasks,
 				events: user.events,
-				signifiers: user.signifiers
-			}).then((res) => {
+				signifiers: user.signifiers}).then((res) => {
 				console.log(res);
 				callback(null);
-			}).catch((error) => {
+			}).
+catch((error) => {
 				console.log(error);
 				callback(error);
 			});
-		} else {
+		}
 			console.log(err);
 			callback(err);
-		}
+
 	});
 }
 
@@ -89,7 +89,7 @@ export function deleteTextBlockPouch (db, id, callback) {
 
 				if (block.kind === "task") {
 					localStorage.deleteTaskByID(block.objectReference, false, (error) => {
-						if (error){
+						if (error) {
 							callback(error);
 						} else {
 							deleteBlock(db, block, id, callback);
@@ -111,6 +111,7 @@ export function deleteTextBlockPouch (db, id, callback) {
 			}
 		}
 	}).then((res) => {
+		console.log(res);
 		callback(null);
 	});
 }

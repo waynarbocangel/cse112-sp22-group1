@@ -3,11 +3,11 @@ import {navbar} from "../index.js";
 const tabspace = 3;
 
 export class DropdownBlock extends HTMLElement {
-    constructor(title, item, level=1) {
+    constructor (title, item, level = 1) {
         super();
         this.currentHeight = 5;
         this.item = item;
-        this.attachShadow({ mode: 'open' });
+        this.attachShadow({ mode: "open" });
         this.shadowRoot.innerHTML = `
 		<style>
 			@font-face {
@@ -92,7 +92,7 @@ export class DropdownBlock extends HTMLElement {
 				position: relative;
 				display: inline;
 				float: left;
-				top: calc(17.5px - ${level * 1}px);
+				top: calc(17.5px - ${Number(level)}px);
 				vertical-align: top;
 			}
 			
@@ -114,7 +114,7 @@ export class DropdownBlock extends HTMLElement {
 		</style>
 		<div id="editorIcons" class="paragraphIcons"><img src="../public/resources/plusIcon.png" class="unfocusedIcons"/><img src="../public/resources/sixDotIcon.png" class="unfocusedIcons"/></div>
         <div id="wrapper">
-			<div id="titleWrapper" class="${(level > 1) ? "singleItemWrapper" : ""}">
+			<div id="titleWrapper" class="${level > 1 ? "singleItemWrapper" : ""}">
 				<h1 id="title"></h1>
 				<button id="arrow"><img src="../public/resources/right-chevron.png" /></button>
 			</div>
@@ -130,35 +130,39 @@ export class DropdownBlock extends HTMLElement {
     }
 
 	/**
-	 * when creating a new dropdown instance, it displays the dropdown,
+	 * When creating a new dropdown instance, it displays the dropdown,
 	 * listens to when the dropdown button is clicked to display items inside dropdown,
 	 * and listens to when a dropdown header is clicked to navigate to the page for the dropdown object
 	 */
-    connectedCallback() {
-		this.removeAttribute('closed');
-        this.button.addEventListener("click", () => { this.toggleItems(); });
-		this.header.addEventListener("click", () => { this.navigateToObject(); })
-		// this.contentWrapper.style.display = 'none';
+    connectedCallback () {
+		this.removeAttribute("closed");
+        this.button.addEventListener("click", () => {
+ this.toggleItems();
+});
+		this.header.addEventListener("click", () => {
+ this.navigateToObject();
+})
+		// This.contentWrapper.style.display = 'none';
     }
 
 	/**
-	 * sets the title for the dropdown
+	 * Sets the title for the dropdown
 	 */
-    set title(title) {
+    set title (title) {
         this.header.innerText = title;
     }
 
 	/**
-	 * hides the items inside the dropdown
+	 * Hides the items inside the dropdown
 	 */
-    get closed() {
-        return this.wrapper.hasAttribute('closed');
+    get closed () {
+        return this.wrapper.hasAttribute("closed");
     }
 
 	/**
 	 * Opens the dropdown if it is open or opens it, if it is closed.
 	 */
-    set closed(isClosed) {
+    set closed (isClosed) {
         if (isClosed) {
             this.hide();
         } else {
@@ -167,34 +171,34 @@ export class DropdownBlock extends HTMLElement {
     }
 
 	/**
-	 * when an object is clicked, it will toggle the page for that object
+	 * When an object is clicked, it will toggle the page for that object
 	 */
-	navigateToObject() {
+	navigateToObject () {
 		router.setState(`#${this.item.objectType}~${this.item.id}`, false);
 		navbar.open = false;
 	}
 
 	/**
-	 * displays the dropdown when called
+	 * Displays the dropdown when called
 	 */
-    display() {
-        this.wrapper.classList.toggle('closed', true);
+    display () {
+        this.wrapper.classList.toggle("closed", true);
     }
 
 	/**
-	 * closes the dropdown when called
+	 * Closes the dropdown when called
 	 */
-    hide() {
-        this.wrapper.classList.toggle('closed', false);
+    hide () {
+        this.wrapper.classList.toggle("closed", false);
     }
 
 	/**
-	 * displays the items inside the dropdown when called or hides them if already shown
+	 * Displays the items inside the dropdown when called or hides them if already shown
 	 */
-    toggleItems() {
-        this.wrapper.classList.toggle('closed');
+    toggleItems () {
+        this.wrapper.classList.toggle("closed");
 
-        if (this.wrapper.classList.contains('closed')) {
+        if (this.wrapper.classList.contains("closed")) {
             this.display();
         } else {
             this.hide();
@@ -202,4 +206,4 @@ export class DropdownBlock extends HTMLElement {
     }
 }
 
-window.customElements.define('drop-down', DropdownBlock);
+window.customElements.define("drop-down", DropdownBlock);

@@ -64,14 +64,14 @@ template.innerHTML = `
 	<div id="textBlock" contenteditable="true" ondrop="return false;" class="unstylized" placeholder='Type "/" to create an item: future log, collection, etc'></div>
 `;
 
-export class CreatorBlock extends HTMLElement{
-	constructor(){
+export class CreatorBlock extends HTMLElement {
+	constructor () {
 		super();
-		this.attachShadow({ mode: 'open' });
+		this.attachShadow({ mode: "open" });
 		this.shadowRoot.appendChild(template.content.cloneNode(true));
 	}
 
-	connectedCallback() {
+	connectedCallback () {
 		let textBlock = this.shadowRoot.getElementById("textBlock");
 		textBlock.onkeydown = (e) => {
 			let key = e.key;
@@ -100,4 +100,4 @@ export class CreatorBlock extends HTMLElement{
 	}
 }
 
-window.customElements.define('creator-block', CreatorBlock);
+window.customElements.define("creator-block", CreatorBlock);

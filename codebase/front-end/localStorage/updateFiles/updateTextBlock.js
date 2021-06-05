@@ -22,17 +22,17 @@ function updateBlock (db, textBlockArr, callback) {
 				events: user.events,
 				signifiers: user.signifiers
 			}, (error, res) => {
-				if (error ) {
+				if (error) {
 					console.log(error);
 					callback(error);
 				} else {
 					callback(res);
 				}
 			});
-		} else {
+		}
 			console.log(err);
 			callback(err);
-		}
+
 	});
 }
 

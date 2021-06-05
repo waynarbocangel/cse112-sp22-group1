@@ -27,8 +27,8 @@ export function createSignifierPouch (db, meaning, symbol, callback) {
 			Array.prototype.push.apply(arrays, doc.signifiers);
 			Array.prototype.push.apply(arrays, doc.imageBlocks);
 			Array.prototype.push.apply(arrays, doc.audioBlocks);
-			
-			while(arrays.filter((element) => element.id === id).length > 0){
+
+			while (arrays.filter((element) => element.id === id).length > 0) {
 				id = makeid();
 			}
 			const signifierObject = {
@@ -37,7 +37,7 @@ export function createSignifierPouch (db, meaning, symbol, callback) {
 				meaning: meaning,
 				symbol: symbol
 			}
-			
+
 			doc.signifiers.push(signifierObject);
 
 			return db.put({_id: "0000",
@@ -56,10 +56,10 @@ export function createSignifierPouch (db, meaning, symbol, callback) {
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: doc.events,
-				signifiers: doc.signifiers
-			}).then((res) => {
+				signifiers: doc.signifiers}).then((res) => {
 				console.log(res);
-			}).catch((error) => {
+			}).
+catch((error) => {
 				console.log(error);
 				callback(error, null);
 			});

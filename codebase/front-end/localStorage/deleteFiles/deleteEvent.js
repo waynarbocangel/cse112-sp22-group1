@@ -20,9 +20,8 @@ export function deleteEventPouch (db, id, callback) {
 			Array.prototype.push.apply(userArr, doc.textBlocks);
 
 			let newEvents = doc.events.filter((event) => event.id !== id);
-			
-			return db.put({
-				_id: "0000",
+
+			return db.put({_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
 				pwd: doc.pwd,

@@ -5,13 +5,13 @@ import { CreatorBlock } from "./creator.js";
 
 // Tracker side menu web component
 export class TrackerMenu extends HTMLElement {
-    static get observedAttributes() {
-        return ['open'];
+    static get observedAttributes () {
+        return ["open"];
     }
 
-    constructor(title) {
+    constructor (title) {
         super();
-		this.attachShadow({ mode: 'open' });
+		this.attachShadow({ mode: "open" });
         this.close = this.close.bind(this);
         this.clear = this.clear.bind(this);
 		this.shadowRoot.innerHTML = `
@@ -155,24 +155,24 @@ export class TrackerMenu extends HTMLElement {
     }
 
 	/**
-	 * changes attribute if the value parameters differ
-	 * 
-	 * @param {String} attr attribute to change 
+	 * Changes attribute if the value parameters differ
+	 *
+	 * @param {String} attr attribute to change
 	 * @param {String} oldVal old value passed in
 	 * @param {String} newVal new value passed in
 	 */
-    attributeChangedCallback(attr, oldVal, newVal) {
+    attributeChangedCallback (attr, oldVal, newVal) {
         if (oldVal !== newVal) {
             this[attr] = this.hasAttribute(attr);
         }
     }
 
 	/**
-	 * when a tracker instance is created it listens to when tracker is clicked
+	 * When a tracker instance is created it listens to when tracker is clicked
 	 * and if it is toggled when clicked it will close, otherwise it will toggle
 	 */
-    connectedCallback() {
-        //console.log('can this event print');
+    connectedCallback () {
+        // Console.log('can this event print');
         this.closeButton.addEventListener("click", () => {
 			if (!this.isInsideTracker) {
 				this.close();
@@ -188,11 +188,11 @@ export class TrackerMenu extends HTMLElement {
 						let trackerArr = [];
 						for (let i = 0; i < currentObject.trackers.length; i++) {
 							console.log("hello");
-							trackerArr.push(userArr.filter(object => object.id == currentObject.trackers[i])[0]);
+							trackerArr.push(userArr.filter((object) => object.id == currentObject.trackers[i])[0]);
 						}
 						console.log(trackerArr);
 						setTimeout(() => {
-							for(let i = 0; i < trackerArr.length; i++) {
+							for (let i = 0; i < trackerArr.length; i++) {
 								let currentTracker = trackerArr[i];
 								let dropdownTracker = new TrackerBlock(currentTracker.title, currentObject.id, currentTracker, this);
 								trackerBlockWrapper.appendChild(dropdownTracker);
@@ -213,58 +213,58 @@ export class TrackerMenu extends HTMLElement {
     }
 
 	/**
-	 * toggles the tracker menu to the opposite state that it is in
+	 * Toggles the tracker menu to the opposite state that it is in
 	 */
-    toggle() {
+    toggle () {
         this.open = !this.open;
     }
 
 	/**
-	 * returns the attributes that are open(?)
+	 * Returns the attributes that are open(?)
 	 */
-    get open() {
-        return this.hasAttribute('open');
+    get open () {
+        return this.hasAttribute("open");
     }
 
 	/**
-	 * sets or removes attributes based on whether parameter is true or false
-	 * 
+	 * Sets or removes attributes based on whether parameter is true or false
+	 *
 	 * @param {Boolean} isOpen parameter to decide setting or removing attributes
 	 */
-    set open(isOpen) {
-        this.shadowRoot.querySelector('.wrapper').classList.toggle('open', isOpen);
-        this.shadowRoot.querySelector('.wrapper').classList.toggle('closed', !isOpen);
-        this.shadowRoot.querySelector('.wrapper').setAttribute('aria-hidden', !isOpen);
+    set open (isOpen) {
+        this.shadowRoot.querySelector(".wrapper").classList.toggle("open", isOpen);
+        this.shadowRoot.querySelector(".wrapper").classList.toggle("closed", !isOpen);
+        this.shadowRoot.querySelector(".wrapper").setAttribute("aria-hidden", !isOpen);
         if (isOpen) {
-            this.setAttribute('open', 'true');
+            this.setAttribute("open", "true");
             this.focus();
         } else {
-            this.removeAttribute('open');
+            this.removeAttribute("open");
         }
     }
 
 	/**
-	 * sets tracker title
+	 * Sets tracker title
 	 */
-    set title(text) {
+    set title (text) {
         this.shadowRoot.querySelector(".tracker_header h1").innerText = text;
     }
 
 	/**
-	 * closes tracker
+	 * Closes tracker
 	 */
-    close() {
+    close () {
         this.open = false;
     }
 
 	/**
-	 * clears tracker items
+	 * Clears tracker items
 	 */
-    clear() {
+    clear () {
         while (this.editor.childNodes.length > 0) {
             this.editor.childNodes[0].remove();
         }
     }
 }
 
-window.customElements.define('tracker-menu', TrackerMenu);
+window.customElements.define("tracker-menu", TrackerMenu);

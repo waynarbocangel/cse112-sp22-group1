@@ -30,7 +30,7 @@ export function createTrackerPouch (db, title, content, parent, callback) {
 			Array.prototype.push.apply(arrays, doc.imageBlocks);
 			Array.prototype.push.apply(arrays, doc.audioBlocks);
 
-			while(arrays.filter((element) => element.id === id).length > 0){
+			while (arrays.filter((element) => element.id === id).length > 0) {
 				id = makeid();
 			}
 			trackerObject = {
@@ -64,9 +64,9 @@ export function createTrackerPouch (db, title, content, parent, callback) {
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: doc.events,
-				signifiers: doc.signifiers
-			}).then((res) => {
-			}).catch((error) => {
+				signifiers: doc.signifiers}).then((res) => {
+			}).
+catch((error) => {
 				console.log(error);
 				callback(error, null);
 			});

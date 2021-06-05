@@ -2,7 +2,7 @@ import * as localStorage from "../localStorage/userOperations.js";
 import {createEditor} from "./blockController.js";
 
 export class TrackerBlock extends HTMLElement {
-	constructor(title, parent, tracker, trackerMenu) {
+	constructor (title, parent, tracker, trackerMenu) {
 		super();
 		let template = document.createElement("template");
 		template.innerHTML = `
@@ -56,7 +56,7 @@ export class TrackerBlock extends HTMLElement {
 		this.parent = parent;
 		this.item = tracker;
 		this.trackerMenu = trackerMenu;
-		this.attachShadow({mode: 'open'});
+		this.attachShadow({mode: "open"});
 		this.shadowRoot.appendChild(template.content.cloneNode(true));
 		this.trackerButton = this.shadowRoot.querySelector(".plus");
 		this.plusButton = this.shadowRoot.querySelector("#editorIcons img");
@@ -66,9 +66,9 @@ export class TrackerBlock extends HTMLElement {
 	}
 
 	/**
-	 * when a tracker block is created the callback will check when a tracker add button is clicked
+	 * When a tracker block is created the callback will check when a tracker add button is clicked
 	 */
-	connectedCallback() {
+	connectedCallback () {
 		this.plusButton.onclick = () => {
 			this.createTracker();
 		};
@@ -84,9 +84,9 @@ export class TrackerBlock extends HTMLElement {
 	}
 
 	/**
-	 * creates a tracker for when the add button is clicked
+	 * Creates a tracker for when the add button is clicked
 	 */
-	createTracker() {
+	createTracker () {
 		localStorage.createTracker(this.title.innerHTML, [], this.parent, true, (err, tracker) => {
 			if (err) {
 				console.log(err);
@@ -97,4 +97,4 @@ export class TrackerBlock extends HTMLElement {
 	}
 }
 
-window.customElements.define('tracker-block', TrackerBlock);
+window.customElements.define("tracker-block", TrackerBlock);

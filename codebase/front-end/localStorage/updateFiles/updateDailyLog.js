@@ -14,9 +14,7 @@ export function updateDailyLogPouch (db, log, callback) {
 			let dailyLogArr = doc.dailyLogs.filter((element) => element.id !== log.id);
 			dailyLogArr.push(log);
 
-			return db.put(
-			{
-				_id: "0000",
+			return db.put({_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
 				pwd: doc.pwd,

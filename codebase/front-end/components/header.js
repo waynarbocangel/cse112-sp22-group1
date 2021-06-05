@@ -2,9 +2,9 @@ import * as localStorage from "../localStorage/userOperations.js";
 import { navbar } from "../index.js";
 
 export class PageHeader extends HTMLElement {
-	constructor() {
+	constructor () {
 		super();
-		this.attachShadow({ mode: 'open' });
+		this.attachShadow({ mode: "open" });
 
 		this.shadowRoot.innerHTML = `
 			<style>
@@ -350,64 +350,67 @@ export class PageHeader extends HTMLElement {
 	}
 
 	/**
-	 * when header is created, the callback will listen to when the menu is toggled
+	 * When header is created, the callback will listen to when the menu is toggled
 	 */
-	connectedCallback() {
+	connectedCallback () {
 		this.menuToggle.addEventListener("change", () => {
 			navbar.toggle();
 		});
 	}
 
 	/**
-	 * makes header content editable
+	 * Makes header content editable
 	 */
-	makeEditabe() {
+	makeEditabe () {
 		this.h1.contentEditable = true;
 	}
 
 	/**
-	 * makes header content uneditable
+	 * Makes header content uneditable
 	 */
-	makeUneditable() {
+	makeUneditable () {
 		this.h1.contentEditable = false;
 	}
 
 	/**
-	 * sets header title based on current page
-	 * 
+	 * Sets header title based on current page
+	 *
 	 * @param {String} title the title to set
 	 */
-	set title(title) {
+	set title (title) {
 		this.shadowRoot.getElementById("title_page").innerHTML = title;
 	}
 
 	/**
-	 * gets the header's current title
+	 * Gets the header's current title
 	 */
-	get title() {
+	get title () {
 		return this.h1.innerText;
 	}
 
 	/**
-	 * creates a futureLog
+	 * Creates a futureLog
 	 */
-	createFutureLog() {
+	createFutureLog () {
 		localStorage.createFutureLog(new Date(2021, 5, 22), new Date(2021, 8, 23), [], [], [], true, (err, futureLog) => {
 			localStorage.readUser((err, res) => {
 				if (err) {
 					console.log(err);
 				} else {
 					console.log(res);
-					// localStorage.createCollection("testing createCollection", "1", [], (err, collection) => {
-					// 	console.log(collection);
-					// 	localStorage.readUser((err, res) => {
-					// 		if(err) {
-					// 			console.log(err);
-					// 		} else {
-					// 			console.log(res);
-					// 		}
-					// 	});
-					// });
+
+					/*
+					 * LocalStorage.createCollection("testing createCollection", "1", [], (err, collection) => {
+					 * 	console.log(collection);
+					 * 	localStorage.readUser((err, res) => {
+					 * 		if(err) {
+					 * 			console.log(err);
+					 * 		} else {
+					 * 			console.log(res);
+					 * 		}
+					 * 	});
+					 * });
+					 */
 				}
 			})
 		});
@@ -415,4 +418,4 @@ export class PageHeader extends HTMLElement {
 	}
 }
 
-window.customElements.define('page-header', PageHeader);
+window.customElements.define("page-header", PageHeader);

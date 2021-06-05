@@ -18,7 +18,8 @@ export function updateUserOnline (db, callback) {
 					},
 					body: JSON.stringify(doc),
 					method: "POST"
-				}).then((data) => data.json()).then((userData) => {
+				}).then((data) => data.json()).
+then((userData) => {
 					console.log(userData);
 				});
 			} catch (error) {

@@ -30,8 +30,8 @@ export function createEventPouch (db, title, parent, date, signifier, callback) 
 			Array.prototype.push.apply(arrays, doc.signifiers);
 			Array.prototype.push.apply(arrays, doc.imageBlocks);
 			Array.prototype.push.apply(arrays, doc.audioBlocks);
-			
-			while(arrays.filter((element) => element.id === id).length > 0){
+
+			while (arrays.filter((element) => element.id === id).length > 0) {
 				id = makeid();
 			}
 			eventObject = {
@@ -43,7 +43,7 @@ export function createEventPouch (db, title, parent, date, signifier, callback) 
 				signifier: signifier
 			};
 
-			
+
 			doc.events.push(eventObject);
 
 			return db.put({_id: "0000",
@@ -62,10 +62,10 @@ export function createEventPouch (db, title, parent, date, signifier, callback) 
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: doc.events,
-				signifiers: doc.signifiers
-			}).then((res) => {
+				signifiers: doc.signifiers}).then((res) => {
 				console.log(res);
-			}).catch((error) => {
+			}).
+catch((error) => {
 				callback(error, null);
 			});
 		}

@@ -11,9 +11,9 @@ export function deleteSignifierPouch (db, id, callback) {
 			callback(err);
 		} else {
 			const newSignifiers = doc.signifiers.filter((signifier) => signifier.id !== id);
-			
+
 			doc.signifiers = newSignifiers;
-			
+
 			return db.put({_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,

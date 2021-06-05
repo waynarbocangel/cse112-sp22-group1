@@ -27,8 +27,8 @@ export function createImageBlockPouch (db, parent, arrangement, data, callback) 
 			Array.prototype.push.apply(arrays, doc.signifiers);
 			Array.prototype.push.apply(arrays, doc.imageBlocks);
 			Array.prototype.push.apply(arrays, doc.audioBlocks);
-			
-			while(arrays.filter((element) => element.id === id).length > 0){
+
+			while (arrays.filter((element) => element.id === id).length > 0) {
 				id = makeid();
 			}
 			imageBlockObject = {
@@ -60,10 +60,10 @@ export function createImageBlockPouch (db, parent, arrangement, data, callback) 
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: doc.events,
-				signifiers: doc.signifiers
-			}).then((res) => {
+				signifiers: doc.signifiers}).then((res) => {
 				console.log(res);
-			}).catch((error) => {
+			}).
+catch((error) => {
 				console.log(error);
 				callback(error, null);
 			});

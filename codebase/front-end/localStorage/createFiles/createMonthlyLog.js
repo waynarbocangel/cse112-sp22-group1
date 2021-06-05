@@ -10,8 +10,8 @@ function addDay (currentDay, startDate, endDay, month, callback) {
 		callback([]);
 	} else {
 		localStorage.createDailyLog(month.id, [], [], dayDate, false, (error, day) => {
-			if (error == null){
-				addDay(currentDay + 1, startDate, endDay, month, (daysArray) =>  {
+			if (error == null) {
+				addDay(currentDay + 1, startDate, endDay, month, (daysArray) => {
 					daysArray.splice(0, 0, {id: day.id, content: [], dailyLog: day.id});
 					callback(daysArray);
 				});
@@ -50,8 +50,8 @@ export function createMonthlyLogPouch (db, parent, content, days, trackers, date
 			Array.prototype.push.apply(arrays, doc.signifiers);
 			Array.prototype.push.apply(arrays, doc.imageBlocks);
 			Array.prototype.push.apply(arrays, doc.audioBlocks);
-			
-			while(arrays.filter((element) => element.id === id).length > 0){
+
+			while (arrays.filter((element) => element.id === id).length > 0) {
 				id = makeid();
 			}
 
@@ -82,16 +82,16 @@ export function createMonthlyLogPouch (db, parent, content, days, trackers, date
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: doc.events,
-				signifiers: doc.signifiers
-			}).then((res) => {
+				signifiers: doc.signifiers}).then((res) => {
 				console.log(res);
-			}).catch((error) => {
+			}).
+catch((error) => {
 				callback(error, null);
 			});
 		}
 	}).then((res) => {
-		let ending = (monthlyObject.date.getDate() !== new Date(monthlyObject.date.getFullYear() ,monthlyObject.date.getMonth() + 1, 0).getDate() && startProcessed);
-		let date = new Date(monthlyObject.date.getFullYear(), (ending) ? monthlyObject.date.getMonth() : monthlyObject.date.getMonth() + 1, (ending) ? monthlyObject.date.getDate() : 0);
+		let ending = monthlyObject.date.getDate() !== new Date(monthlyObject.date.getFullYear(), monthlyObject.date.getMonth() + 1, 0).getDate() && startProcessed;
+		let date = new Date(monthlyObject.date.getFullYear(), ending ? monthlyObject.date.getMonth() : monthlyObject.date.getMonth() + 1, ending ? monthlyObject.date.getDate() : 0);
 		console.log(date);
 		let d = date.getDate();
 		let startDate = 1;
@@ -119,11 +119,11 @@ export function createMonthlyLogPouch (db, parent, content, days, trackers, date
 					textBlocks: doc.textBlocks,
 					tasks: doc.tasks,
 					events: doc.events,
-					signifiers: doc.signifiers
-				}).then((res) => {
+					signifiers: doc.signifiers}).then((res) => {
 					console.log(res);
 					callback(null, monthlyObject);
-				}).catch((error2) => {
+				}).
+catch((error2) => {
 					console.log(error2);
 					callback(error2, null);
 				});
@@ -132,6 +132,6 @@ export function createMonthlyLogPouch (db, parent, content, days, trackers, date
 	});
 }
 
-export function restart(){
+export function restart () {
 	startProcessed = false;
 }

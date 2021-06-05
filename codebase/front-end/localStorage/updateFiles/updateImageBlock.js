@@ -14,9 +14,7 @@ export function updateImageBlockPouch (db, imageBlock, callback) {
 			let imageBlockArr = doc.imageBlocks.filter((element) => element.id !== imageBlock.id);
 			imageBlockArr.push(imageBlock);
 
-			return db.put(
-			{
-				_id: "0000",
+			return db.put({_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
 				pwd: doc.pwd,

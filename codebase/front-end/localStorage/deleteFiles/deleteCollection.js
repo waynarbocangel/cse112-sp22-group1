@@ -24,7 +24,7 @@ export function deleteCollectionPouch (db, id, callback) {
 					Array.prototype.push.apply(userArr, doc.collections);
 
 			let parentArr = userArr.filter((object) => object.id === parent);
-			
+
 			let parent = parentArr[0];
 			let newContents = parent.contents.filter((obj) => obj !== id);
 
@@ -37,7 +37,7 @@ export function deleteCollectionPouch (db, id, callback) {
 
 			doc.collections = newCollections;
 			doc.index = indexObj;
-			
+
 			return db.put({_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
@@ -54,8 +54,7 @@ export function deleteCollectionPouch (db, id, callback) {
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: doc.events,
-				signifiers: doc.signifiers
-			}, (error, res) => {
+				signifiers: doc.signifiers}, (error, res) => {
 				if (error) {
 					callback(error);
 				} else {
