@@ -8,6 +8,21 @@ mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: tru
 mongoose.set("useCreateIndex", true);
 
 /**
+ * Makes and returns a randomly generated id of length 30.
+ * @return Returns the randome generated id of length 30.
+ */
+ function makeid () {
+	let length = 30;
+    let result = [];
+    let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result.push(characters.charAt(Math.floor(Math.random() * charactersLength)));
+   }
+   return result.join("");
+}
+
+/**
  * Creates a user in the remote db.
  *
  * @param {String} email The email of the new user.
@@ -21,62 +36,45 @@ function createUser (email, pwd, callback) {
 		if (error) {
 			callback(error);
 		} else if (user === null) {
-			const newUser = new schema.User(
-				{
-					email: email,
-					pwd: security.passHash(pwd),
-					theme: "lightmode",
-					index: {
-						objectType: "index",
-						contents: []
-					},
-					dailyLogs: [],
-					monthlyLogs: [],
-					futureLogs: [],
-					trackers: [],
-					collections: [],
-					imageBlocks: [],
-					audioBlocks: [],
-					textBlocks: [],
-					events: [],
-					tasks: [],
-					signifiers: [
-						{
-							id: makeid(),
-							objectType: "signifier",
-							meaning: "general",
-							symbol: "&#x1F7E0;"
-						}
-					]
-				}
-			);
+			const newUser = new schema.User({
+				email: email,
+				pwd: security.passHash(pwd),
+				theme: "lightmode",
+				index: {
+					objectType: "index",
+					contents: []
+				},
+				dailyLogs: [],
+				monthlyLogs: [],
+				futureLogs: [],
+				trackers: [],
+				collections: [],
+				imageBlocks: [],
+				audioBlocks: [],
+				textBlocks: [],
+				events: [],
+				tasks: [],
+				signifiers: [
+					{
+						id: makeid(),
+						objectType: "signifier",
+						meaning: "general",
+						symbol: "&#x1F7E0;"
+					}
+				]
+			});
 
-			newUser.save((err, user) => {
+			newUser.save((err, createdUser) => {
 				if (err) {
 					callback(err);
 				} else {
-					callback(user);
+					callback(createdUser);
 				}
 			});
 		} else {
 			callback({error: "This email already has an account!"});
 		}
 	});
-}
-
-/**
- * Makes and returns a randomly generated id of length 30.
- * @return Returns the randome generated id of length 30.
- */
-function makeid() {
-	let length = 30;
-    let result = [];
-    let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let charactersLength = characters.length;
-    for ( var i = 0; i < length; i++ ) {
-      result.push(characters.charAt(Math.floor(Math.random() * charactersLength)));
-   }
-   return result.join('');
 }
 
 module.exports = {
