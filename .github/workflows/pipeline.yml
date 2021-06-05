@@ -38,7 +38,7 @@ jobs:
         # Recurse into subdirectories when scanning for source files
         # recurse: true
         # The path to a Markdown file to be used as a the front page
-        front_page: ./codebase/CI-CD-pipeline.md
+        # front_page: ./codebase/CI-CD-pipeline.md
 
   back-end-build:
     runs-on: ubuntu-latest
