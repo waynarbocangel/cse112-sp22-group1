@@ -1,4 +1,4 @@
-// This isjest-puppeteer.config.js
+// This is jest-puppeteer.config.js
 
 module.exports = {
   launch: {
