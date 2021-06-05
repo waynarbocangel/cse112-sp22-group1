@@ -52,10 +52,8 @@ export function deleteTrackerPouch (db, id, callback) {
 			}, (error, res) => {
 				if (error) {
 					callback(error);
-				} else {
-					if (res.ok) {
-						callback(null);
-					}
+				} else if (res.ok) {
+					callback(null);
 				}
 			});
 		}

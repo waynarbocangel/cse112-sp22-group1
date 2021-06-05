@@ -120,7 +120,7 @@ export function createMonthlyLogPouch (db, parent, content, days, trackers, date
 						events: doc.events,
 						signifiers: doc.signifiers
 					}).then((response) => {
-						if (response.ok){
+						if (response.ok) {
 							callback(null, monthlyObject);
 						}
 					}).catch((error2) => {

@@ -1,12 +1,12 @@
 import * as localStorage from "./localStorage/userOperations.js";
-import { CreatorBlock } from './components/creator.js';
-import { createEditor } from './components/blockController.js';
-import { DropdownBlock } from './components/dropdown.js';
+import { CreatorBlock } from "./components/creator.js";
+import { createEditor } from "./components/blockController.js";
+import { DropdownBlock } from "./components/dropdown.js";
 import { NavBar } from "./components/navbar.js";
 import { PageHeader } from "./components/header.js";
-import { router } from './router.js';
-import { SettingsMenu, SettingsPanel, SettingsTab } from './components/settings/settings.js';
-import { TrackerBlock } from './components/trackerBlock.js';
+import { router } from "./router.js";
+import { SettingsMenu, SettingsPanel, SettingsTab } from "./components/settings/settings.js";
+import { TrackerBlock } from "./components/trackerBlock.js";
 import { TrackerMenu } from "./components/tracker.js";
 
 document.querySelector("body").style.display = "none";
@@ -24,7 +24,7 @@ document.getElementById("sidebar").appendChild(navbar);
 document.getElementById("targetMenu").onclick = () => {
 	navbar.toggleTracker();
 };
-//document.getElementById("")
+// Document.getElementById("")
 router.setState(document.location.hash, false);
 
 window.onpopstate = () => {
@@ -33,44 +33,42 @@ window.onpopstate = () => {
 
 /**
  * Gets the current object at the current url.
- * 
+ *
  * @param {String} urlFromRouter The current url.
  */
-export function getCurrentObject(urlFromRouter) {
-	let urlparse = undefined;
+export function getCurrentObject (urlFromRouter) {
+	let urlparse;
 	let id = null;
-	if (urlFromRouter != null){
+	if (urlFromRouter != null) {
 		urlparse = urlFromRouter.split("~");
 	}
-	if (urlparse != undefined){
+	if (urlparse != undefined) {
 		id = urlparse[1];
 	}
 	localStorage.readUser((err, user) => {
 		if (err) {
 			window.location.href = "http://localhost:8080/login";
-		} else {
-			if (id != null){
+		} else if (id != null) {
 				let userArr = [];
 				Array.prototype.push.apply(userArr, user.dailyLogs);
 				Array.prototype.push.apply(userArr, user.monthlyLogs);
 				Array.prototype.push.apply(userArr, user.futureLogs);
 				Array.prototype.push.apply(userArr, user.collections);
-				let parsed = userArr.filter(object => object.id == id);
+				let parsed = userArr.filter((object) => object.id == id);
 				currentObject = parsed[0];
 			} else {
 				currentObject = user.index;
 			}
-		}
 	});
 
 }
 
 /**
  * Sets up the index page with the futureLogs and collections of the user.
- * 
+ *
  * @param {Array} btn An array of the buttons in the index page's navbar.
  */
-export function setupIndex(btn) {
+export function setupIndex (btn) {
 	localStorage.readUser((err, user) => {
 		if (err) {
 			console.log(err);
@@ -83,12 +81,12 @@ export function setupIndex(btn) {
 			let parentArr = [];
 			console.log(currentObject);
 			for (let i = 0; i < currentObject.contents.length; i++) {
-				Array.prototype.push.apply(parentArr, userArr.filter(object => object.id == currentObject.contents[i]));
+				Array.prototype.push.apply(parentArr, userArr.filter((object) => object.id == currentObject.contents[i]));
 			}
 
 			let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-			for(let i = 0; i < parentArr.length; i++) {
+			for (let i = 0; i < parentArr.length; i++) {
 				console.log("inside for loop");
 				if (parentArr[i].objectType == "futureLog") {
 					console.log("inside if stmt");
@@ -97,16 +95,16 @@ export function setupIndex(btn) {
 					let dropdown = new DropdownBlock(`Future Log ${monthNames[futureLogStart.getMonth()]} ${futureLogStart.getFullYear()} - ${monthNames[futureLogEnd.getMonth()]} ${futureLogEnd.getFullYear()}`, parentArr[i], 1);
 					contentWrapper.appendChild(dropdown);
 
-					if (i > 0){
+					if (i > 0) {
 						dropdown.titleWrapper.classList.add("singleItemWrapper");
 					}
 
 					for (let j = 0; j < parentArr[i].months.length; j++) {
-						let currentMonth = user.monthlyLogs.filter(month => month.id == parentArr[i].months[j].monthlyLog)[0];
+						let currentMonth = user.monthlyLogs.filter((month) => month.id == parentArr[i].months[j].monthlyLog)[0];
 						let dropdownMonth = new DropdownBlock(`${monthNames[new Date(currentMonth.date).getMonth()]} ${new Date(currentMonth.date).getFullYear()}`, currentMonth, 2);
 						dropdown.contentWrapper.appendChild(dropdownMonth);
-						for(let k = 0; k < currentMonth.days.length; k++) {
-							let currentDay = user.dailyLogs.filter(day => day.id == currentMonth.days[k].dailyLog)[0];;
+						for (let k = 0; k < currentMonth.days.length; k++) {
+							let currentDay = user.dailyLogs.filter((day) => day.id == currentMonth.days[k].dailyLog)[0];
 							let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 							let dropdownDay = new DropdownBlock(`${weekDays[new Date(currentDay.date).getDay()]}, ${monthNames[new Date(currentDay.date).getMonth()]} ${new Date(currentDay.date).getUTCDate()}`, currentDay, 3);
 							dropdownMonth.contentWrapper.appendChild(dropdownDay);
@@ -121,27 +119,26 @@ export function setupIndex(btn) {
 	header.title = "Index";
 	url = "/";
 	pageNumber = 1;
-		
-	//setting navbar buttons      
-	for(let i = 0; i<btn.length;i++)
-	{
+
+	// Setting navbar buttons
+	for (let i = 0; i < btn.length; i++) {
 		btn[i].removeAttribute("disabled");
 		btn[i].style.visibility = "visible";
 	}
 	document.getElementById("targetMenu").style.display = "none";
-	navbar.target.setAttribute ("disabled", "disabled");
+	navbar.target.setAttribute("disabled", "disabled");
 	navbar.target.style.visibility = "hidden";
-	navbar.single.setAttribute ("disabled", "disabled");
+	navbar.single.setAttribute("disabled", "disabled");
 	navbar.single.style.visibility = "hidden";
-	navbar.double.setAttribute ("disabled", "disabled");
+	navbar.double.setAttribute("disabled", "disabled");
 	navbar.double.style.visibility = "hidden";
-	navbar.singleMenu.setAttribute ("disabled", "disabled");
+	navbar.singleMenu.setAttribute("disabled", "disabled");
 	navbar.singleMenu.style.visibility = "hidden";
-	navbar.doubleMenu.setAttribute ("disabled", "disabled");
+	navbar.doubleMenu.setAttribute("disabled", "disabled");
 	navbar.doubleMenu.style.visibility = "hidden";
 	let headerButtons = header.imgbuttons;
-	for (let i = 0; i < headerButtons.length; i++){
-		if (!headerButtons[i].classList.contains("plus")){
+	for (let i = 0; i < headerButtons.length; i++) {
+		if (!headerButtons[i].classList.contains("plus")) {
 			headerButtons[i].classList.add("hide");
 		}
 	}
@@ -149,11 +146,11 @@ export function setupIndex(btn) {
 
 /**
  * Sets up the futureLog page with the mothlyLogs, textBlocks, and trackers of the user.
- * 
+ *
  * @param {Array} btn An array of the buttons in the futureLog page's navbar.
  * @param {String} newState The new url to go to.
  */
-export function setupFutureLog(btn, newState){
+export function setupFutureLog (btn, newState) {
 	localStorage.readUser((err, user) => {
 		if (err) {
 			console.log(err);
@@ -162,23 +159,26 @@ export function setupFutureLog(btn, newState){
 			console.log(currentObject);
 			let parentArr = [];
 			for (let i = 0; i < currentObject.months.length; i++) {
-				Array.prototype.push.apply(parentArr, userArr.filter(object => object.id == currentObject.months[i].monthlyLog));
+				Array.prototype.push.apply(parentArr, userArr.filter((object) => object.id == currentObject.months[i].monthlyLog));
 			}
 
 			let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-			for(let i = 0; i < parentArr.length; i++) {
+			for (let i = 0; i < parentArr.length; i++) {
 				let currentMonth = parentArr[i];
 				let dropdownMonth = new DropdownBlock(`${monthNames[new Date(currentMonth.date).getMonth()]} ${new Date(currentMonth.date).getFullYear()}`, currentMonth, 1);
 				contentWrapper.appendChild(dropdownMonth);
 
-				if (i > 0){
+				if (i > 0) {
 					dropdownMonth.titleWrapper.classList.add("singleItemWrapper");
 				}
 
-				for(let k = 0; k < currentMonth.days.length; k++) {
-					let currentDay = user.dailyLogs.filter(day => day.id == currentMonth.days[k].dailyLog)[0];
-					//console.log(currentDay);
-					//console.log(new Date(currentDay.date));
+				for (let k = 0; k < currentMonth.days.length; k++) {
+					let currentDay = user.dailyLogs.filter((day) => day.id == currentMonth.days[k].dailyLog)[0];
+
+					/*
+					 * Console.log(currentDay);
+					 * console.log(new Date(currentDay.date));
+					 */
 					let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 					let dropdownDay = new DropdownBlock(`${weekDays[new Date(currentDay.date).getDay()]}, ${monthNames[new Date(currentDay.date).getMonth()]} ${new Date(currentDay.date).getUTCDate()}`, currentDay, 2);
 					dropdownMonth.contentWrapper.appendChild(dropdownDay);
@@ -190,28 +190,27 @@ export function setupFutureLog(btn, newState){
 	document.getElementById("targetMenu").style.display = "block";
 	let futureLogStart = new Date(currentObject.startDate);
 	let futureLogEnd = new Date(currentObject.endDate);
-	header.title = (futureLogEnd.getFullYear() == futureLogStart.getFullYear()) ? `Future Log ${futureLogStart.getFullYear()}` : `Future Log ${futureLogStart.getFullYear()} - ${futureLogEnd.getFullYear()}`;
+	header.title = futureLogEnd.getFullYear() == futureLogStart.getFullYear() ? `Future Log ${futureLogStart.getFullYear()}` : `Future Log ${futureLogStart.getFullYear()} - ${futureLogEnd.getFullYear()}`;
 	pageNumber = 4;
 	url = newState;
-	//setting navbar buttons   
-	for(let i = 0; i<btn.length;i++)
-	{
+	// Setting navbar buttons
+	for (let i = 0; i < btn.length; i++) {
 		btn[i].removeAttribute("disabled");
 		btn[i].style.visibility = "visible";
 	}
-	navbar.single.setAttribute ("disabled", "disabled");
+	navbar.single.setAttribute("disabled", "disabled");
 	navbar.single.style.visibility = "hidden";
-	navbar.double.setAttribute ("disabled", "disabled");
+	navbar.double.setAttribute("disabled", "disabled");
 	navbar.double.style.visibility = "hidden";
-	navbar.singleMenu.setAttribute ("disabled", "disabled");
+	navbar.singleMenu.setAttribute("disabled", "disabled");
 	navbar.singleMenu.style.visibility = "hidden";
-	navbar.doubleMenu.setAttribute ("disabled", "disabled");
+	navbar.doubleMenu.setAttribute("disabled", "disabled");
 	navbar.doubleMenu.style.visibility = "hidden";
 	let headerButtons = header.imgbuttons;
-	for (let i = 0; i < headerButtons.length; i++){
+	for (let i = 0; i < headerButtons.length; i++) {
 		headerButtons[i].classList.remove("hide");
 	}
-	
+
 	let futureLogTrackerMenu = new TrackerMenu("Future Log Trackers");
 	document.getElementById("trackerWrapper").appendChild(futureLogTrackerMenu);
 	let trackerBlockWrapper = futureLogTrackerMenu.shadowRoot.getElementById("editor");
@@ -223,11 +222,11 @@ export function setupFutureLog(btn, newState){
 			let userArr = user.trackers;
 			let trackerArr = [];
 			for (let i = 0; i < currentObject.trackers.length; i++) {
-				trackerArr.push(userArr.filter(object => object.id == currentObject.trackers[i])[0]);
+				trackerArr.push(userArr.filter((object) => object.id == currentObject.trackers[i])[0]);
 			}
 			console.log(trackerArr);
 			setTimeout(() => {
-				for(let i = 0; i < trackerArr.length; i++) {
+				for (let i = 0; i < trackerArr.length; i++) {
 					let currentTracker = trackerArr[i];
 					let dropdownTracker = new TrackerBlock(currentTracker.title, currentObject.id, currentTracker, futureLogTrackerMenu);
 					trackerBlockWrapper.appendChild(dropdownTracker);
@@ -240,11 +239,11 @@ export function setupFutureLog(btn, newState){
 
 /**
  * Sets up the monthlyLog page with the dailyLogs, textBlocks, and trackers of the user.
- * 
+ *
  * @param {Array} btn An array of the buttons in the monthlyLog page's navbar.
  * @param {String} newState The new url to go to.
  */
-export function setupMonthlyLog(btn, newState){
+export function setupMonthlyLog (btn, newState) {
 	localStorage.readUser((err, user) => {
 		if (err) {
 			console.log(err);
@@ -253,16 +252,16 @@ export function setupMonthlyLog(btn, newState){
 
 			let parentArr = [];
 			for (let i = 0; i < currentObject.days.length; i++) {
-				Array.prototype.push.apply(parentArr, userArr.filter(object => object.id == currentObject.days[i].dailyLog));
+				Array.prototype.push.apply(parentArr, userArr.filter((object) => object.id == currentObject.days[i].dailyLog));
 			}
 
 			let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 			let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-			for(let i = 0; i < currentObject.days.length; i++) {
+			for (let i = 0; i < currentObject.days.length; i++) {
 				let currentDay = parentArr[i];
 				let dropdownDay = new DropdownBlock(`${weekDays[new Date(currentDay.date).getDay()]}, ${monthNames[new Date(currentDay.date).getMonth()]} ${new Date(currentDay.date).getUTCDate()}`, currentDay, 1);
 				contentWrapper.appendChild(dropdownDay);
-				if (i > 0){
+				if (i > 0) {
 					dropdownDay.titleWrapper.classList.add("singleItemWrapper");
 				}
 			}
@@ -273,19 +272,18 @@ export function setupMonthlyLog(btn, newState){
 	header.title = `${monthNames[new Date(currentObject.date).getMonth()]} ${new Date(currentObject.date).getFullYear()}`;
 	pageNumber = 3;
 	url = newState;
-	//setting navbar buttons   
-	for(let i = 0; i<btn.length;i++)
-	{
+	// Setting navbar buttons
+	for (let i = 0; i < btn.length; i++) {
 		btn[i].removeAttribute("disabled");
 		btn[i].style.visibility = "visible";
 	}
 	document.getElementById("targetMenu").style.display = "block";
-	navbar.double.setAttribute ("disabled", "disabled");
+	navbar.double.setAttribute("disabled", "disabled");
 	navbar.double.style.visibility = "hidden";
-	navbar.doubleMenu.setAttribute ("disabled", "disabled");
+	navbar.doubleMenu.setAttribute("disabled", "disabled");
 	navbar.doubleMenu.style.visibility = "hidden";
 	let headerButtons = header.imgbuttons;
-	for (let i = 0; i < headerButtons.length; i++){
+	for (let i = 0; i < headerButtons.length; i++) {
 		headerButtons[i].classList.remove("hide");
 	}
 
@@ -299,16 +297,16 @@ export function setupMonthlyLog(btn, newState){
 			let userArr = user.trackers;
 			let trackerArr = [];
 			for (let i = 0; i < currentObject.trackers.length; i++) {
-				trackerArr.push(userArr.filter(object => object.id == currentObject.trackers[i])[0]);
+				trackerArr.push(userArr.filter((object) => object.id == currentObject.trackers[i])[0]);
 			}
 			setTimeout(() => {
-				for(let i = 0; i < trackerArr.length; i++) {
+				for (let i = 0; i < trackerArr.length; i++) {
 					let currentTracker = trackerArr[i];
 					let dropdownTracker = new TrackerBlock(currentTracker.title, currentObject.id, currentTracker, monthlyLogTrackerMenu);
 					trackerBlockWrapper.appendChild(dropdownTracker);
 				}
 				trackerBlockWrapper.appendChild(new CreatorBlock());
-				
+
 			}, 10);
 		}
 	});
@@ -316,19 +314,18 @@ export function setupMonthlyLog(btn, newState){
 
 /**
  * Sets up the daillyLog page with the textBlocks, and trackers of the user.
- * 
+ *
  * @param {Array} btn An array of the buttons in the dailyLog page's navbar.
  * @param {String} newState The new url to go to.
  */
-export function setupDailyLog(btn, newState){
+export function setupDailyLog (btn, newState) {
 	let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 	let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 	header.title = `${weekDays[new Date(currentObject.date).getDay()]} ${monthNames[new Date(currentObject.date).getMonth()]} ${new Date(currentObject.date).getUTCDate()}, ${new Date(currentObject.date).getFullYear()}`;
 	pageNumber = 2;
 	url = newState;
-	//setting navbar buttons                  
-	for(let i = 0; i<btn.length;i++)
-	{
+	// Setting navbar buttons
+	for (let i = 0; i < btn.length; i++) {
 		btn[i].removeAttribute("disabled");
 		btn[i].style.visibility = "visible";
 	}
@@ -338,7 +335,7 @@ export function setupDailyLog(btn, newState){
 	});
 	document.getElementById("targetMenu").style.display = "block";
 	let headerButtons = header.imgbuttons;
-	for (let i = 0; i < headerButtons.length; i++){
+	for (let i = 0; i < headerButtons.length; i++) {
 		headerButtons[i].classList.remove("hide");
 	}
 
@@ -353,11 +350,11 @@ export function setupDailyLog(btn, newState){
 			let trackerArr = [];
 			for (let i = 0; i < currentObject.trackers.length; i++) {
 				console.log("hello");
-				trackerArr.push(userArr.filter(object => object.id == currentObject.trackers[i])[0]);
+				trackerArr.push(userArr.filter((object) => object.id == currentObject.trackers[i])[0]);
 			}
 			console.log(trackerArr);
 			setTimeout(() => {
-				for(let i = 0; i < trackerArr.length; i++) {
+				for (let i = 0; i < trackerArr.length; i++) {
 					let currentTracker = trackerArr[i];
 					let dropdownTracker = new TrackerBlock(currentTracker.title, currentObject.id, 1);
 					trackerBlockWrapper.appendChild(dropdownTracker);
@@ -368,37 +365,39 @@ export function setupDailyLog(btn, newState){
 			}, 10);
 		}
 	});
-	
+
 }
 
 
 /**
  * Sets up the collection page with the textBlocks and trackers of the user.
- * 
+ *
  * @param {Array} btn An array of the buttons in the collection page's navbar.
  * @param {String} newState The new url to go to.
  */
-export function setupCollection(btn, newState){
-	/*localStorage.readUser((err, user) => {
-		if (err) {
-			console.log(err);
-		} else {
-			let userArr = [];
-			Array.prototype.push.apply(userArr, user.textBlocks);
-			
-			let parentArr = [];
-			for (let i = 0; i < currentObject.contents.length; i++) {
-				Array.prototype.push.apply(parentArr, userArr.filter(object => object.id == currentObject.contents[i]));
-			}
-		}
-	});*/
+export function setupCollection (btn, newState) {
+
+	/*
+	 *LocalStorage.readUser((err, user) => {
+	 *if (err) {
+	 *console.log(err);
+	 *} else {
+	 *let userArr = [];
+	 *Array.prototype.push.apply(userArr, user.textBlocks);
+	 *
+	 *let parentArr = [];
+	 *for (let i = 0; i < currentObject.contents.length; i++) {
+	 *	Array.prototype.push.apply(parentArr, userArr.filter(object => object.id == currentObject.contents[i]));
+	 *}
+	 *}
+	 *});
+	 */
 
 	header.title = currentObject.title;
 	pageNumber = 5;
 	url = newState;
-	//setting navbar buttons
-	for(let i = 0; i<btn.length;i++)
-	{
+	// Setting navbar buttons
+	for (let i = 0; i < btn.length; i++) {
 		btn[i].removeAttribute("disabled");
 		btn[i].style.visibility = "visible";
 	}
@@ -406,18 +405,18 @@ export function setupCollection(btn, newState){
 	createEditor(contentWrapper, currentObject, null, (success) => {
 		console.log(success);
 	});
-	
-	navbar.single.setAttribute ("disabled", "disabled");
+
+	navbar.single.setAttribute("disabled", "disabled");
 	navbar.single.style.visibility = "hidden";
-	navbar.double.setAttribute ("disabled", "disabled");
+	navbar.double.setAttribute("disabled", "disabled");
 	navbar.double.style.visibility = "hidden";
-	navbar.singleMenu.setAttribute ("disabled", "disabled");
+	navbar.singleMenu.setAttribute("disabled", "disabled");
 	navbar.singleMenu.style.visibility = "hidden";
-	navbar.doubleMenu.setAttribute ("disabled", "disabled");
+	navbar.doubleMenu.setAttribute("disabled", "disabled");
 	navbar.doubleMenu.style.visibility = "hidden";
 	let headerButtons = header.imgbuttons;
-	for (let i = 0; i < headerButtons.length; i++){
+	for (let i = 0; i < headerButtons.length; i++) {
 		headerButtons[i].classList.remove("hide");
 	}
-	//document.getElementById("trackerWrapper").appendChild(new TrackerMenu("Future Log Trackers"));
+	// Document.getElementById("trackerWrapper").appendChild(new TrackerMenu("Future Log Trackers"));
 }
