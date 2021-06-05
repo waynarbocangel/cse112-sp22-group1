@@ -27,11 +27,13 @@ const userSchema = {
 			objectType: String,
 			parent: String,
 			date: Date,
-			days: [{
-				id: String,
-				content: [String],
-				dailyLog: [String]
-			}],
+			days: [
+				{
+					id: String,
+					content: [String],
+					dailyLog: [String]
+				}
+			],
 			trackers: [String]
 		}
 	],
@@ -41,11 +43,13 @@ const userSchema = {
 			objectType: String,
 			startDate: Date,
 			endDate: Date,
-			months: [{
-				id: String,
-				content: [String],
-				monthlyLog: [String]
-			}],
+			months: [
+				{
+					id: String,
+					content: [String],
+					monthlyLog: [String]
+				}
+			],
 			trackers: [String]
 		}
 	],
@@ -67,7 +71,7 @@ const userSchema = {
 			content: [String]
 		}
 	],
-	imageBlocks:[
+	imageBlocks: [
 		{
 			id: String,
 			objectType: String,
@@ -76,7 +80,7 @@ const userSchema = {
 			data: Buffer
 		}
 	],
-	audioBlocks:[
+	audioBlocks: [
 		{
 			id: String,
 			objectType: String,

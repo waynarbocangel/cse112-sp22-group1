@@ -7,7 +7,7 @@ mongoose.set("useCreateIndex", true);
 
 /**
  * Deletes the user from the online db.
- * 
+ *
  * @param {Object} userObject The object of the user to be deleted.
  * @callback (res) Sends either the user deleted or and error if there was one.
  */
@@ -19,13 +19,7 @@ function deleteUser (userObject, callback) {
 			callback(user);
 		}
 	});
-	
-	/*deleteUserPouch(db, userObject, (res) => {
-		console.log(res);
-	});*/
 }
-
-
 
 module.exports = {
 	deleteUser: deleteUser
