@@ -43,8 +43,17 @@ createAccount.onclick = (e) => {
 		alert("You need to fill in the password field");
 	} else {
 		createUser(email.value, password.value, (user) => {
-			console.log(user);
-			window.location.href = "http://localhost:8080/success";
+			if (user.error !== undefined) {
+				alert(user.error);
+			} else if (user.email !== undefined) {
+				user.pwd = password.value;
+				createUserPouch(db, user, (userData) => {
+					console.log(userData);
+					window.location.href = "http://localhost:8080/success";
+				});
+			} else {
+				alert("Wrong username or password");
+			}
 		});
 	}
 };

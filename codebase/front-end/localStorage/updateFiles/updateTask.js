@@ -1,5 +1,3 @@
-import * as localStorage from "../userOperations.js";
-
 /**
  * Finds and update the task passed in.
  *
@@ -13,10 +11,10 @@ export function updateTaskPouch (db, task, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			let taskArr = doc.tasks.filter(element => element.id != task.id);
+			let taskArr = doc.tasks.filter((element) => element.id !== task.id);
 			taskArr.push(task);
 			console.log("taskArr is, ", taskArr);
-			
+
 			return db.put({
 						_id: "0000",
 						_rev: doc._rev,
@@ -35,11 +33,11 @@ export function updateTaskPouch (db, task, callback) {
 						tasks: taskArr,
 						events: doc.events,
 						signifiers: doc.signifiers
-					}, (err, res) => {
-						if (err) {
-							callback(err);
+					}, (error, res) => {
+						if (error) {
+							callback(error);
 						} else {
-							callback(null);
+							callback(res);
 						}
 			});
 		}

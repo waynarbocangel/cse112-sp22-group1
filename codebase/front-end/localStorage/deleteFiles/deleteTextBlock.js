@@ -13,13 +13,13 @@ export function deleteTextBlockPouch(db, id, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			const textBlockArr = doc.textBlocks.filter(textBlock => textBlock.id == id);
+			const textBlockArr = doc.textBlocks.filter((textBlock) => textBlock.id === id);
 			let block = null;
 			console.log("textblockArr is ", textBlockArr);
 			if (textBlockArr.length > 0) {
 				block = textBlockArr[0];
 
-				if(block.kind == "task"){
+				if (block.kind === "task") {
 					localStorage.deleteTaskByID(block.objectReference, false, (error) => {
 						if (!error){
 							deleteBlock(db, block, id, callback);
@@ -27,10 +27,10 @@ export function deleteTextBlockPouch(db, id, callback) {
 							callback(error);
 						}
 					});
-				} else if (block.kind == "event"){
+				} else if (block.kind == "event") {
 					console.log("delteeevntbyID");
 					localStorage.deleteEventByID(block.objectReference, false, (error) => {
-						if (!error){
+						if (!error) {
 							deleteBlock(db, block, id, callback);
 						} else {
 							console.log(error);
@@ -49,7 +49,7 @@ export function deleteTextBlockPouch(db, id, callback) {
 
 function deleteBlock(db, block, id, callback){
 	localStorage.readUser((err, user) => {
-		if (err == null){
+		if (err === null) {
 			let userArr = [];
 			Array.prototype.push.apply(userArr, user.dailyLogs);
 			Array.prototype.push.apply(userArr, user.monthlyLogs);
@@ -57,33 +57,33 @@ function deleteBlock(db, block, id, callback){
 			Array.prototype.push.apply(userArr, user.trackers);
 			Array.prototype.push.apply(userArr, user.collections);
 
-			let parentArr = userArr.filter(object => object.id == block.parent);
+			let parentArr = userArr.filter((object) => object.id === block.parent);
 
 			let parent = parentArr[0];
-			if (parent.objectType == "dailyLog"){
-				let newContents = parent.content.filter(obj => obj != id);
+			if (parent.objectType === "dailyLog") {
+				let newContents = parent.content.filter((obj) => obj !== id);
 				parent.content = newContents;
-			} else if (parent.objectType == "monthlyLog") {
-				for (let i = 0; i < parent.days.length; i++){
-					if(parent.days[i].content.includes(id)){
-						let newContents = parent.days[i].content.filter(block => block != id);
+			} else if (parent.objectType === "monthlyLog") {
+				for (let i = 0; i < parent.days.length; i++) {
+					if (parent.days[i].content.includes(id)) {
+						let newContents = parent.days[i].content.filter((block) => block !== id);
 						parent.days[i].content = newContents;
 					}
 				}
 			} else if (parent.objectType == "futureLog") {
-				for (let i = 0; i < parent.months.length; i++){
-					if(parent.months[i].content.includes(id)){
-						let newContents = parent.months[i].content.filter(block => block != id);
+				for (let i = 0; i < parent.months.length; i++) {
+					if (parent.months[i].content.includes(id)) {
+						let newContents = parent.months[i].content.filter((block) => block !== id);
 						parent.months[i].content = newContents;
 					}
 				}
 			}
-			
 
-			let newTextBlocks = user.textBlocks.filter(textBlock => textBlock.id != id);
-			
+
+			let newTextBlocks = user.textBlocks.filter((textBlock) => textBlock.id !== id);
+
 			user.textBlocks = newTextBlocks;
-			
+
 			return db.put(
 				{
 					_id: "0000",
@@ -104,12 +104,13 @@ function deleteBlock(db, block, id, callback){
 					events: user.events,
 					signifiers: user.signifiers
 				}
-			).then(res => {
+			).then((res) => {
 				console.log(res);
 				callback(null);
-			}).catch(err => {
-				console.log(err);
-				callback(err)});
+			}).catch((error) => {
+				console.log(error);
+				callback(error);
+			});
 		} else {
 			console.log(err);
 			callback(err);

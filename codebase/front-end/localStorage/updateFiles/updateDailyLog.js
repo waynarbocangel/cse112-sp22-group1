@@ -1,4 +1,3 @@
-
 /**
  * Finds and update the dailyLog passed in.
  *
@@ -12,10 +11,10 @@ export function updateDailyLogPouch (db, log, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			let dailyLogArr = doc.dailyLogs.filter(element => element.id != log.id);
+			let dailyLogArr = doc.dailyLogs.filter((element) => element.id !== log.id);
 			dailyLogArr.push(log);
-			
-			db.put({_id: "0000", 
+
+			db.put({_id: "0000",
 			_rev: doc._rev,
 			email: doc.email,
 			pwd: doc.pwd,
@@ -31,9 +30,9 @@ export function updateDailyLogPouch (db, log, callback) {
 			textBlocks: doc.textBlocks,
 			events: doc.events,
 			tasks: doc.tasks,
-			signifiers: doc.signifiers}, (err, res) => {
-				if (err) {
-					callback(err);
+			signifiers: doc.signifiers}, (error, res) => {
+				if (error) {
+					callback(error);
 				} else {
 					callback(res);
 				}

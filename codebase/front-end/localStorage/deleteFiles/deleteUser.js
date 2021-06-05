@@ -1,4 +1,3 @@
-
 /**
  * Finds and deletes the user.
  *
@@ -11,9 +10,9 @@ export function deleteUserPouch(db, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			db.remove(doc, function(err, response) {
-				if (err) {
-					callback(err);
+			db.remove(doc, (error, response) => {
+				if (error) {
+					callback(error);
 				} else {
 					callback(response);
 				}

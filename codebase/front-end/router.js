@@ -36,7 +36,7 @@ function stateSwitch (newState, prev) {
 					setupDailyLog(btn, newState);
 				} else if (state.includes("#monthlyLog")) {
 					setupMonthlyLog(btn, newState);
-				}else if (state.includes("#futureLog")) {
+				} else if (state.includes("#futureLog")) {
 					setupFutureLog(btn, newState);
 				}
 				if (!prev) {

@@ -12,11 +12,12 @@ export function updateMonthlyLogPouch (db, log, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			let monthlyLogArr = doc.monthlyLogs.filter(element => element.id != log.id);
+			let monthlyLogArr = doc.monthlyLogs.filter((element) => element.id !== log.id);
 			monthlyLogArr.push(log);
 
-			db.put({
-				_id: "0000", 
+			// Added return here so if updateMonthlyLog breaks maybe its because of this
+			return db.put({
+				_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
 				pwd: doc.pwd,
@@ -32,11 +33,11 @@ export function updateMonthlyLogPouch (db, log, callback) {
 				textBlocks: doc.textBlocks,
 				events: doc.eventBlocks,
 				tasks: doc.taskBlocks,
-				signifiers: doc.signifiers
-			}, (err, res) => {
-				if (err) {
-					callback(err, null);
+				signifiers: doc.signifiers}, (err, res) => {
+				if (error) {
+					callback(error, null);
 				} else {
+					console.log(res);
 					callback(null, log);
 				}
 			});

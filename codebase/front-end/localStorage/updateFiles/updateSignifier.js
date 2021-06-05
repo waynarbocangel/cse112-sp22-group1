@@ -1,4 +1,3 @@
-
 /**
  * Finds and update the signifier passed in.
  *
@@ -12,11 +11,11 @@ export function updateSignifierPouch (db, signifier, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			let signifierArr = doc.signifiers.filter(element => element.id != signifier.id);
+			let signifierArr = doc.signifiers.filter((element) => element.id !== signifier.id);
 			signifierArr.push(signifier);
 
 			return db.put({_id: "0000", 
-				_rev: doc._rev, 
+				_rev: doc._rev,
 				email: doc.email,
 				pwd: doc.pwd,
 				theme: doc.theme,
@@ -31,10 +30,9 @@ export function updateSignifierPouch (db, signifier, callback) {
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: doc.events,
-				signifiers: signifierArr
-			}, (err, res) => {
-				if (err) {
-					callback(err);
+				signifiers: signifierArr}, (error, res) => {
+				if (error) {
+					callback(error);
 				} else {
 					callback(res);
 				}

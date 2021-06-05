@@ -1,4 +1,3 @@
-
 /**
  * Finds and sends the user back in the callback.
  *

@@ -1,4 +1,3 @@
-
 /**
  * Finds and update the futureLog passed in.
  *
@@ -12,11 +11,11 @@ export function updateFutureLogPouch (db, log, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			let futureLogArr = doc.futureLogs.filter(element => element.id != log.id);
+			let futureLogArr = doc.futureLogs.filter((element) => element.id !== log.id);
 			futureLogArr.push(log);
 
-			db.put({_id: "0000", 
-				_rev: doc._rev, 
+			db.put({_id: "0000",
+				_rev: doc._rev,
 				email: doc.email,
 				pwd: doc.pwd,
 				theme: doc.theme,
@@ -31,9 +30,9 @@ export function updateFutureLogPouch (db, log, callback) {
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: doc.events,
-				signifiers: doc.signifiers}, (err, res) => {
-				if (err) {
-					callback(err);
+				signifiers: doc.signifiers}, (error, res) => {
+				if (error) {
+					callback(error);
 				} else {
 					callback(res);
 				}

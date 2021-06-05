@@ -12,11 +12,11 @@ export function updateTrackerPouch (db, tracker, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			let trackerArr = doc.trackers.filter(element => element.id != tracker.id);
+			let trackerArr = doc.trackers.filter((element) => element.id !== tracker.id);
 			trackerArr.push(tracker);
 
-			return db.put({_id: "0000", 
-				_rev: doc._rev, 
+			return db.put({_id: "0000",
+				_rev: doc._rev,
 				email: doc.email,
 				pwd: doc.pwd,
 				theme: doc.email,
@@ -32,8 +32,8 @@ export function updateTrackerPouch (db, tracker, callback) {
 				tasks: doc.tasks,
 				events: doc.events,
 				signifiers: doc.signifers}, (err, res) => {
-				if (err) {
-					callback(err);
+				if (error) {
+					callback(error);
 				} else {
 					callback(res);
 				}

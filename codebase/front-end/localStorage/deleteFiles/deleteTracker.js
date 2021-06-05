@@ -1,4 +1,3 @@
-
 /**
  * Finds and deletes the tracker.
  *
@@ -6,12 +5,12 @@
  * @param {String} id The id of the object to be deleted.
  * @callback (res) Sends an error if there is one to the callback.
  */
-export function deleteTrackerPouch(db, id, callback) {
+export function deleteTrackerPouch (db, id, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
-			const trackerArr = doc.trackers.filter(tracker => tracker.id == id);
+			const trackerArr = doc.trackers.filter((tracker) => tracker.id === id);
 			const block = null;
 			if (trackerArr.length > 0) {
 				block = taskBlockArr[0];
@@ -21,15 +20,15 @@ export function deleteTrackerPouch(db, id, callback) {
 			Array.prototype.push.apply(userArr, doc.dailyLogs);
 			Array.prototype.push.apply(userArr, doc.monthlyLogs);
 			Array.prototype.push.apply(userArr, doc.futureLogs);
-		
-			let parentArr = userArr.filter(object => object.id == block.parent);
-			
+
+			let parentArr = userArr.filter((object) => object.id === block.parent);
+
 			let parent = parentArr[0];
-			const newTrackers = parent.trackers.filter(obj => obj != block.id);
+			const newTrackers = parent.trackers.filter((obj) => obj !== block.id);
 			parent.trackers = newTrackers;
 
-			const newTrackerList = doc.trackers.filter(tracker => tracker.id != id);
-			
+			const newTrackerList = doc.trackers.filter((tracker) => tracker.id !== id);
+
 			doc.trackers = newTrackerList;
 
 			return db.put(
@@ -55,7 +54,7 @@ export function deleteTrackerPouch(db, id, callback) {
 					if (err) {
 						callback(err);
 					} else {
-						callback(null);
+						callback(res);
 					}
 			});
 		}

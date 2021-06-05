@@ -13,8 +13,8 @@ export function updateThemePouch (db, theme, callback) {
 			callback(err);
 		} else {
 
-			return db.put({_id: "0000", 
-				_rev: doc._rev, 
+			return db.put({_id: "0000",
+				_rev: doc._rev,
 				email: doc.email,
 				pwd: doc.pwd,
 				theme: theme,
@@ -29,12 +29,11 @@ export function updateThemePouch (db, theme, callback) {
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: doc.events,
-				signifiers: doc.signifiers
-			}, (err, res) => {
-				if (err) {
-					callback(err);
+				signifiers: doc.signifiers}, (err, res) => {
+				if (error) {
+					callback(error);
 				} else {
-					callback(null);
+					callback(res);
 				}
 			});
 		}

@@ -103,4 +103,4 @@ export class plusbar extends HTMLElement {
 	}
 }
 
-customElements.define('plus-bar', plusbar);
+customElements.define("plus-bar", plusbar);

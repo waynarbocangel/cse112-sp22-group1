@@ -1,4 +1,3 @@
-
 /**
  * Finds and deletes the signifier.
  *
@@ -11,7 +10,7 @@ export function deleteSignifierPouch(db, id, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			const newSignifiers = doc.signifiers.filter(signifier => signifier.id != id);
+			const newSignifiers = doc.signifiers.filter((signifier) => signifier.id !== id);
 			
 			doc.signifiers = newSignifiers;
 			
@@ -33,9 +32,13 @@ export function deleteSignifierPouch(db, id, callback) {
 					textBlocks: doc.textBlocks,
 					tasks: doc.tasks,
 					events: doc.events,
-					signifiers: doc.signifiers
-				}
-			);
+					signifiers: doc.signifiers}, (error, res) => {
+					if (error) {
+						callback(error);
+					} else {
+						callback(res);
+					}
+			});
 		}
 	})
 }

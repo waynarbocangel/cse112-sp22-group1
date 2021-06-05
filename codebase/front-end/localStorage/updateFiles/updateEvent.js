@@ -1,5 +1,3 @@
-import * as localStorage from "../userOperations.js";
-
 /**
  * Finds and update the event passed in.
  *
@@ -13,7 +11,7 @@ export function updateEventPouch (db, event, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			let eventArr = doc.events.filter(element => element.id != event.id);
+			let eventArr = doc.events.filter((element) => element.id !== event.id);
 			eventArr.push(event);
 
 			return db.put({
@@ -33,13 +31,12 @@ export function updateEventPouch (db, event, callback) {
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: eventArr,
-				signifiers: doc.signifiers
-			}, (err, res) => {
-				if (err) {
-					console.log(err);
-					callback(err);
+				signifiers: doc.signifiers}, (error, res) => {
+				if (error) {
+					console.log(error);
+					callback(error);
 				} else {
-					callback(null);
+					callback(res);
 				}
 			});
 		}
