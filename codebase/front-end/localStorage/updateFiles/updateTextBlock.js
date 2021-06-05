@@ -2,7 +2,7 @@ import * as localStorage from "../userOperations.js";
 
 function updateBlock (db, textBlockArr, callback) {
 	localStorage.readUser((err, user) => {
-		if (err == null) {
+		if (err === null) {
 			return db.put({
 				_id: "0000",
 				_rev: user._rev,

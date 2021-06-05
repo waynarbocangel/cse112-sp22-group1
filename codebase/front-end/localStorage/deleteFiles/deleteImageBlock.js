@@ -8,8 +8,8 @@
  */
 export function deleteImageBlockPouch (db, id, callback) {
 	localStorage.readUser((err, user) => {
-		if (err == null) {
-			let imageBlockArr = doc.imageBlocks.filter((imageBlock) => imageBlock.id === id);
+		if (err === null) {
+			let imageBlockArr = user.imageBlocks.filter((imageBlock) => imageBlock.id === id);
 			let block = null;
 			console.log("textblockArr is ", imageBlockArr);
 			if (imageBlockArr.length > 0) {
@@ -32,14 +32,14 @@ export function deleteImageBlockPouch (db, id, callback) {
 			} else if (parent.objectType === "monthlyLog") {
 				for (let i = 0; i < parent.days.length; i++) {
 					if (parent.days[i].content.includes(id)) {
-						let newContents = parent.days[i].content.filter((block) => block != id);
+						let newContents = parent.days[i].content.filter((block2) => block2 !== id);
 						parent.days[i].content = newContents;
 					}
 				}
 			} else if (parent.objectType === "futureLog") {
 				for (let i = 0; i < parent.months.length; i++) {
 					if (parent.months[i].content.includes(id)) {
-						let newContents = parent.months[i].content.filter((block) => block !== id);
+						let newContents = parent.months[i].content.filter((block2) => block2 !== id);
 						parent.months[i].content = newContents;
 					}
 				}

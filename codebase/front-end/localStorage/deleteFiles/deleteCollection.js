@@ -14,19 +14,19 @@ export function deleteCollectionPouch (db, id, callback) {
 			let collectionArr = doc.collections.filter((collection) => collection.id === id);
 			let block = null;
 			if (collectionArr.length > 0) {
-				block = taskBlockArr[0];
+				block = collectionArr[0];
 			}
+			console.log(block);
 			let userArr = [];
-					Array.prototype.push.apply(userArr, doc.dailyLogs);
-					Array.prototype.push.apply(userArr, doc.monthlyLogs);
-					Array.prototype.push.apply(userArr, doc.futureLogs);
-					Array.prototype.push.apply(userArr, doc.trackers);
-					Array.prototype.push.apply(userArr, doc.collections);
+			Array.prototype.push.apply(userArr, doc.dailyLogs);
+			Array.prototype.push.apply(userArr, doc.monthlyLogs);
+			Array.prototype.push.apply(userArr, doc.futureLogs);
 
-			let parentArr = userArr.filter((object) => object.id === parent);
+			let parentArr = userArr.filter((object) => object.id === block.parent);
 
 			let parent = parentArr[0];
 			let newContents = parent.contents.filter((obj) => obj !== id);
+			parent.contents = newContents;
 
 			let newCollections = doc.collections.filter((collection) => collection.id !== id);
 			let newIndexContents = doc.index.contents.filter((tracker) => tracker.id !== id);
@@ -37,13 +37,14 @@ export function deleteCollectionPouch (db, id, callback) {
 
 			doc.collections = newCollections;
 			doc.index = indexObj;
+			doc[parent.objectType].push(parent);
 
 			return db.put({_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
 				pwd: doc.pwd,
 				theme: doc.theme,
-				index: doc.index,
+				index: indexObj,
 				dailyLogs: doc.dailyLogs,
 				monthlyLogs: doc.monthlyLogs,
 				futureLogs: doc.futureLogs,

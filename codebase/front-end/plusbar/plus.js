@@ -56,7 +56,6 @@ template.innerHTML = `
 	</head>
 
 	<body>
-
         <div class="dropdown">
             <button id="dropbtn"> </button>
             <div id="myDropdown" class="dropdown-content">

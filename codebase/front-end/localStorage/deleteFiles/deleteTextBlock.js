@@ -19,14 +19,14 @@ function deleteBlock (db, block, id, callback) {
 			} else if (parent.objectType === "monthlyLog") {
 				for (let i = 0; i < parent.days.length; i++) {
 					if (parent.days[i].content.includes(id)) {
-						let newContents = parent.days[i].content.filter((block) => block !== id);
+						let newContents = parent.days[i].content.filter((block2) => block2 !== id);
 						parent.days[i].content = newContents;
 					}
 				}
 			} else if (parent.objectType === "futureLog") {
 				for (let i = 0; i < parent.months.length; i++) {
 					if (parent.months[i].content.includes(id)) {
-						let newContents = parent.months[i].content.filter((block) => block !== id);
+						let newContents = parent.months[i].content.filter((block2) => block2 !== id);
 						parent.months[i].content = newContents;
 					}
 				}
@@ -95,14 +95,14 @@ export function deleteTextBlockPouch (db, id, callback) {
 							deleteBlock(db, block, id, callback);
 						}
 					});
-				} else if (block.kind == "event") {
+				} else if (block.kind === "event") {
 					console.log("delteeevntbyID");
 					localStorage.deleteEventByID(block.objectReference, false, (error) => {
-						if (!error) {
-							deleteBlock(db, block, id, callback);
-						} else {
+						if (error) {
 							console.log(error);
-							callback(error);
+							callback(errer);
+						} else {
+							deleteBlock(db, block, id, callback);
 						}
 					})
 				} else {

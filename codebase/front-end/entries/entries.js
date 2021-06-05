@@ -1,8 +1,6 @@
 const template = document.createElement('template');
 
 template.innerHTML = `
-<html>
-<head>
     <style>
         @font-face {
             font-family:"SF-Pro";
@@ -179,15 +177,8 @@ template.innerHTML = `
             height: 5vh;
             padding-left: 20px;
         }
-        
-
-
     </style>
 
-</head>
-
-<body>	
-    
     <button id="myBtn">Open</button>
 
     <!-- The Modal -->
@@ -230,8 +221,6 @@ template.innerHTML = `
         </div>
 
     </div>
-    </body>
-</html>
 `;
 
 

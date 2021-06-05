@@ -642,7 +642,7 @@ export function deleteTrackerByID (id, shouldUpdate, callback) {
 export function deleteTrackerFromContainer (container, index, shouldUpdate, callback) {
 	deleteTrackerPouch(db, container.trackers[index], (err) => {
 		if (shouldUpdate) {
-			updateUserFromMogo();
+			updateUserFromMongo();
 		}
 		callback(err);
 	});

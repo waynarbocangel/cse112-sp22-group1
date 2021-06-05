@@ -62,12 +62,13 @@ export function createDailyLogPouch (db, parent, content, trackers, date, callba
 				signifiers: doc.signifiers}).then((res) => {
 				console.log(res);
 			}).
-catch((err) => {
-				callback(err, null);
+catch((error) => {
+				callback(error, null);
 			});
 		}
 	}).then((res) => {
-		console.log(res);
-		callback(null, dailyObject);
+		if (res.ok) {
+			callback(null, dailyObject);
+		}
 	});
 }

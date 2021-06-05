@@ -16,6 +16,7 @@ export function deleteEventPouch (db, id, callback) {
 			if (eventArr.length > 0) {
 				block = eventArr[0];
 			}
+			console.log(block);
 			let userArr = [];
 			Array.prototype.push.apply(userArr, doc.textBlocks);
 

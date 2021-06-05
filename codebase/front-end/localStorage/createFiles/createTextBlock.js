@@ -52,7 +52,7 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 			};
 
 			if (kind === "task" || kind === "event") {
-				if (kind == "task") {
+				if (kind === "task") {
 					// Index == null for now just for testing
 					localStorage.createTask(id, content, 0, null, false, (error, task) => {
 						if (error) {
@@ -119,9 +119,9 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 										signifiers: user.signifiers}).then((res) => {
 										console.log(res);
 									}).
-catch((err) => {
-										console.log(err);
-										callback(err, null);
+catch((error3) => {
+										console.log(error3);
+										callback(error3, null);
 									});
 								}
 							});
@@ -129,9 +129,9 @@ catch((err) => {
 					})
 				} else if (kind === "event") {
 					// Index == null for now just for testing
-					localStorage.createEvent(content, id, date, null, true, (err, event) => {
-						if (err) {
-							callback(err, null);
+					localStorage.createEvent(content, id, date, null, true, (error, event) => {
+						if (error) {
+							callback(error, null);
 						} else {
 							textBlockObject.objectReference = event.id;
 							localStorage.readUser((err2, user) => {
@@ -193,9 +193,9 @@ catch((err) => {
 										signifiers: user.signifiers}).then((res) => {
 										console.log(res);
 									}).
-catch((err) => {
-										console.log(err);
-										callback(err, null);
+catch((error2) => {
+										console.log(error2);
+										callback(error2, null);
 									});
 								}
 							});
@@ -227,7 +227,7 @@ catch((err) => {
 						let newContents = parentArr[0].months.filter((month) => month.id === subParent);
 						newContents.content.push(id);
 					}
-				} else if (subParent == null) {
+				} else if (subParent === null) {
 						parentArr[0].content.splice(index, 0, id);
 					} else if (parentArr[0].objectType === "monthlyLog") {
 						let newContents = parentArr[0].days.filter((day) => day.id === subParent);
@@ -258,8 +258,8 @@ catch((err) => {
 					signifiers: doc.signifiers}).then((res) => {
 					console.log(res);
 				}).
-catch((err) => {
-					callback(err, null);
+catch((error) => {
+					callback(eror, null);
 				});
 			}
 		}

@@ -1,4 +1,5 @@
 import {makeid} from "./makeId.js";
+let signifierObject = {};
 
 /**
  * Creates and stores a new signifier created from the given parameters.
@@ -31,7 +32,7 @@ export function createSignifierPouch (db, meaning, symbol, callback) {
 			while (arrays.filter((element) => element.id === id).length > 0) {
 				id = makeid();
 			}
-			const signifierObject = {
+			signifierObject = {
 				id: id,
 				objectType: "signifier",
 				meaning: meaning,
@@ -66,6 +67,6 @@ catch((error) => {
 		}
 	}).then((res) => {
 		console.log(res);
-		callback(null, taskObject);
+		callback(null, signifierObject);
 	});
 }

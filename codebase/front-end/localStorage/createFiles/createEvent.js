@@ -64,12 +64,13 @@ export function createEventPouch (db, title, parent, date, signifier, callback) 
 				events: doc.events,
 				signifiers: doc.signifiers}).then((res) => {
 				console.log(res);
-			}).
-catch((error) => {
+			}).catch((error) => {
 				callback(error, null);
 			});
 		}
 	}).then((res) => {
-		callback(null, eventObject);
+		if (res.ok) {
+			callback(null, eventObject);
+		}
 	});
 }

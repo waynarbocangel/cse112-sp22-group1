@@ -1,13 +1,13 @@
 import * as localStorage from "./localStorage/userOperations.js";
-import { TrackerMenu } from "./components/tracker.js";
+import { CreatorBlock } from './components/creator.js';
+import { createEditor } from './components/blockController.js';
+import { DropdownBlock } from './components/dropdown.js';
 import { NavBar } from "./components/navbar.js";
 import { PageHeader } from "./components/header.js";
-import { SettingsMenu, SettingsPanel, SettingsTab } from './components/settings/settings.js';
-import { DropdownBlock } from './components/dropdown.js';
 import { router } from './router.js';
-import { createEditor } from './components/blockController.js';
+import { SettingsMenu, SettingsPanel, SettingsTab } from './components/settings/settings.js';
 import { TrackerBlock } from './components/trackerBlock.js';
-import { CreatorBlock } from './components/creator.js';
+import { TrackerMenu } from "./components/tracker.js";
 
 document.querySelector("body").style.display = "none";
 

@@ -300,10 +300,11 @@ then((html) => {
 	/**
 	 * Moves the textBlock to the location it was last dragged to(?)
 	 *
-	 * @param {*} newSpot
+	 * @param {*} newSpotToMove
 	 * @param {*} up
 	 */
-	moveToSpot (newSpot, up) {
+	moveToSpot (newSpotToMove, up) {
+		let newSpot = newSpotToMove
 		let container = this.shadowRoot.getElementById("textBlock");
 		if (container.childNodes.length > 0) {
 			if (!this.controller.resetPosition) {
@@ -539,7 +540,8 @@ then((html) => {
 	 */
 	setupTabLevel () {
 		this.style.position = "relative";
-		this.style.left = this.tabLevel * tabSize + "px";
+		let computedTab = this.tabLevel * tabSize;
+		this.style.left = computedTab + "px";
 		this.controller.currentTabLevel = this.tabLevel;
 		this.setCurrentSpot();
 	}
@@ -563,17 +565,17 @@ then((html) => {
 		});
 
 		this.checkBox.onclick = (e) => {
-			if (this.checkBox.getAttribute("checked") == "checked") {
+			if (this.checkBox.getAttribute("checked") === "checked") {
 				this.checkBox.setAttribute("checked", "");
 				textBlock.classList.remove("crossed");
 				setTimeout(() => {
 					localStorage.readUser((err, user) => {
-						if (err == null) {
-							let task = user.tasks.filter((task) => task.id == this.item.objectReference)[0];
+						if (err === null) {
+							let task = user.tasks.filter((currentTask) => currentTask.id === this.item.objectReference)[0];
 							task.complete = 0;
-							localStorage.updateTask(task, true, (err, task) => {
-								console.log(err);
-								console.log(task);
+							localStorage.updateTask(task, true, (error, taskBlock) => {
+								console.log(error);
+								console.log(taskBlock);
 							})
 						}
 					});
@@ -583,13 +585,13 @@ then((html) => {
 				textBlock.classList.add("crossed");
 				setTimeout(() => {
 					localStorage.readUser((err, user) => {
-						if (err == null) {
-							let task = user.tasks.filter((task) => task.id == this.item.objectReference)[0];
+						if (err === null) {
+							let task = user.tasks.filter((currentTask) => currentTask.id === this.item.objectReference)[0];
 							console.log(task)
 							task.complete = 1;
-							localStorage.updateTask(task, true, (err, task) => {
-								console.log(err);
-								console.log(task);
+							localStorage.updateTask(task, true, (error, taskBlock) => {
+								console.log(error);
+								console.log(taskBlock);
 							})
 						} else {
 							console.log(err);
@@ -632,15 +634,21 @@ then((html) => {
 				this.editorIcons.childNodes[i].classList.add("unfocusedIcons");
 			}
 			let date = null;
-			if (this.kind == "event") {
+			if (this.kind === "event") {
 				date = getDate(this, this.eventDelete);
 				console.log(date);
 			}
 			if (!this.eventDelete) {
 				this.eventDelete = true;
 			}
-			if (this.item != null) {
-				if (textBlock.textContent != "") {
+			if (this.item !== null) {
+				if (textBlock.textContent === "") {
+					console.log("goodbye my very old friend " + textBlock.textContent);
+
+					localStorage.deleteTextBlock(this.item, true, (res) => {
+						console.log(res);
+					});
+				} else {
 					console.log("hello my very old friend " + textBlock.textContent);
 					this.item.kind = this.kind;
 					this.item.text = textBlock.textContent;
@@ -649,15 +657,8 @@ then((html) => {
 							console.log(res);
 						})
 					}, 150);
-				} else {
-					console.log("goodbye my very old friend " + textBlock.textContent);
-
-					localStorage.deleteTextBlock(this.item, true, (res) => {
-						console.log(res);
-					})
 				}
-			} else if (textBlock.textContent != "") {
-
+			} else if (textBlock.textContent !== "") {
 				localStorage.createTextBlock(this.controller.parent.id, this.controller.subParent, this.controller.currentBlockIndex, textBlock.textContent, this.tabLevel, this.kind, null, this.signifier.id, date, true, (err, block) => {
 					if (err) {
 						console.log(err);
@@ -674,7 +675,7 @@ then((html) => {
 		 */
 		textBlock.addEventListener("input", () => {
 			let content = textBlock.innerHTML;
-			if (this.kind == "event") {
+			if (this.kind === "event") {
 				if (content.includes("@")) {
 					textBlock.innerHTML = content.replace(/(@)/g, "&#128368;  ");
 					content = textBlock.innerHTML;
@@ -691,7 +692,7 @@ then((html) => {
 			this.timeSetter = false;
 			this.dateSetter = false;
 			includesClock(this, textBlock.textContent, true);
-			if (this.kind == "event") {
+			if (this.kind === "event") {
 				let dateFiller = "";
 				if (!this.timeSetter) {
 					dateFiller = `${dateFiller} use @ for time HH:MM`;
@@ -703,33 +704,31 @@ then((html) => {
 				}
 				textBlock.setAttribute("dateFiller", dateFiller);
 			}
-			if (content == "#&nbsp;") {
+			if (content === "#&nbsp;") {
 				this.setupHeader1();
-			} else if (content == "##&nbsp;") {
+			} else if (content === "##&nbsp;") {
 				this.setupHeader2();
-			} else if (content == "###&nbsp;") {
+			} else if (content === "###&nbsp;") {
 				this.setupHeader3();
-			} else if (content == "-&nbsp;") {
+			} else if (content === "-&nbsp;") {
 				this.setupNote();
-			} else if (content == "--&nbsp;") {
+			} else if (content === "--&nbsp;") {
 				this.setupEvent();
-			} else if (content == "=-&nbsp;") {
+			} else if (content === "=-&nbsp;") {
 				this.setupTask();
-			} else if (content == "<div><br></div>") {
+			} else if (content === "<div><br></div>") {
 				this.removeStyles();
-			} else if (content == "<br>") {
+			} else if (content === "<br>") {
 				textBlock.innerHTML = "";
-			} else if (textBlock.textContent != "") {
+			} else if (textBlock.textContent !== "") {
 				this.controller.resetPosition = true;
 			}
 		});
 
 		/**
 		 * Handles providing the framework for editor populaing.
-		 *
-		 * @param {*} e
 		 */
-		textBlock.onfocus = (e) => {
+		textBlock.onfocus = () => {
 			this.controller.resetPosition = false;
 			this.setCurrentSpot();
 			for (let i = 0; i < this.editorIcons.childNodes.length - 1; i++) {
@@ -738,9 +737,9 @@ then((html) => {
 			}
 			this.controller.currentBlockIndex = this.controller.blockArray.indexOf(this);
 			this.controller.currentTabLevel = this.tabLevel;
-			if (this.classList.contains("noteContainer") || this.classList.contains("eventContainer") || this.checkBox.style.display != "none") {
+			if (this.classList.contains("noteContainer") || this.classList.contains("eventContainer") || this.checkBox.style.display !== "none") {
 				this.controller.creatingFromBullet = { isTrue: true, kind: this.kind };
-				if (this.kind == "event") {
+				if (this.kind === "event") {
 					textBlock.classList.add("eventNodateFocused");
 				}
 			} else {
@@ -757,52 +756,53 @@ then((html) => {
 		 */
 		textBlock.onkeydown = (e) => {
 			let key = e.key || e.keyCode;
-			if (key == "Backspace" || key == "Delete") {
+			if (key === "Backspace" || key === "Delete") {
 				let tabLevelNotZero = this.tabLevel > 0;
-				let currentSpot18 = this.currentPointerSpot - this.tabLevel * tabSize == paddingSize;
-				let currentSpotNote = this.currentPointerSpot - this.tabLevel * tabSize == paddingSize + 20 && this.classList.contains("noteContainer");
+				let calculatedTab = this.tabLevel * tabSize;
+				let currentSpot18 = this.currentPointerSpot - calculatedTab === paddingSize;
+				let currentSpotNote = this.currentPointerSpot - calculatedTab === paddingSize + 20 && this.classList.contains("noteContainer");
 				let isAtBegining = currentSpot18 || currentSpotNote;
-				if (textBlock.innerHTML == "" && textBlock.getAttribute("placeholder") == "Type \"/\" to create a block" && this.controller.blockArray.length > 1) {
+				if (textBlock.innerHTML === "" && textBlock.getAttribute("placeholder") === "Type \"/\" to create a block" && this.controller.blockArray.length > 1) {
 					this.controller.removeBlock();
-				} else if ((textBlock.innerHTML == "" || textBlock.innerHTML == "<br>") && this.tabLevel == 0) {
+				} else if ((textBlock.innerHTML === "" || textBlock.innerHTML === "<br>") && this.tabLevel === 0) {
 					this.removeStyles();
 				} else if (tabLevelNotZero && isAtBegining) {
 					this.tabLevel -= 1;
 					this.setupTabLevel();
 				}
-			} else if (key == "Enter") {
+			} else if (key === "Enter") {
 				let content = textBlock.innerHTML;
-				if (content == "/h1") {
+				if (content === "/h1") {
 					this.setupHeader1();
 					e.preventDefault();
-				} else if (content == "/h2") {
+				} else if (content === "/h2") {
 					this.setupHeader2()
 					e.preventDefault();
-				} else if (content == "/h3") {
+				} else if (content === "/h3") {
 					this.setupHeader3()
 					e.preventDefault();
-				} else if (content == "/note") {
+				} else if (content === "/note") {
 					this.setupNote();
 					e.preventDefault();
-				} else if (content == "/event") {
+				} else if (content === "/event") {
 					this.setupEvent();
 					e.preventDefault();
-				} else if (content == "/task") {
+				} else if (content === "/task") {
 					this.setupTask();
 					e.preventDefault();
-				} else if (content == "/futurelog") {
+				} else if (content === "/futurelog") {
 					alert("New Future Log will be created");
 					e.preventDefault();
-				} else if (content == "/monthlylog") {
+				} else if (content === "/monthlylog") {
 					alert("New Monthly Log will be created");
 					e.preventDefault();
-				} else if (content == "/dailylog") {
+				} else if (content === "/dailylog") {
 					alert("New Daily Log will be created");
 					e.preventDefault();
-				} else if (content == "/collection") {
+				} else if (content === "/collection") {
 					alert("New Collection will be created");
 					e.preventDefault();
-				} else if (content == "/tracker") {
+				} else if (content === "/tracker") {
 					localStorage.createTracker("Practice Tracker", [], currentObject.id, (err, tracker) => {
 						if (err) {
 							console.log(err);
@@ -816,22 +816,25 @@ then((html) => {
 					this.controller.addNewBlock();
 					e.preventDefault();
 				}
-			} else if (key == "ArrowDown") {
-				let lineheight = textBlock.classList.contains("header1") ? 80 : textBlock.classList.contains("header2") ? 57 : this.kind == "note" || this.kind == "event" || this.kind == "task" ? 47 : 42;
+			} else if (key === "ArrowDown") {
+				let lineheight = textBlock.classList.contains("header1") ? 80 : textBlock.classList.contains("header2") ? 57 : this.kind === "note" || this.kind === "event" || this.kind === "task" ? 47 : 42;
 				if (this.currentPointerHeight > textBlock.offsetHeight - lineheight) {
 					this.controller.moveToNextBlock();
 				}
-			} else if (key == "ArrowUp") {
+			} else if (key === "ArrowUp") {
 				let lineheight = textBlock.classList.contains("header1") ? 50 : textBlock.classList.contains("header2") ? 36 : 28;
 				if (this.currentPointerHeight < lineheight + this.initialHeight) {
 					this.controller.moveToPreviousBlock();
 				}
-			} else if (key == "Tab") {
+			} else if (key === "Tab") {
 				this.tabLevel += 1;
 				this.setupTabLevel();
 				e.preventDefault();
-			} else if (key == "@" && this.kind == "event") {
-				if (!this.atPressed) {
+			} else if (key === "@" && this.kind === "event") {
+				if (this.atPressed) {
+					e.stopPropagation();
+					e.preventDefault();
+				} else {
 					this.eventDelete = false;
 					this.atPressed = true;
 					this.timeSetter = true;
@@ -845,12 +848,12 @@ then((html) => {
 						dateFiller = `${dateFiller} use # for weekdays or dates MM/DD/YY`;
 					}
 					textBlock.setAttribute("dateFiller", dateFiller);
-				} else {
+				}
+			} else if (key === "#" && this.kind === "event") {
+				if (this.hashPressed) {
 					e.stopPropagation();
 					e.preventDefault();
-				}
-			} else if (key == "#" && this.kind == "event") {
-				if (!this.hashPressed) {
+				} else {
 					this.eventDelete = false;
 					this.hashPressed = true;
 					this.dateSetter = true;
@@ -864,14 +867,11 @@ then((html) => {
 						dateFiller = `${dateFiller} use # for weekdays or dates MM/DD/YY`;
 					}
 					textBlock.setAttribute("dateFiller", dateFiller);
-				} else {
-					e.stopPropagation();
-					e.preventDefault();
 				}
-			} else if (this.atPressed && this.kind == "event" && key.match(/[^0123456789:]/g) && !protectedKeys.includes(key)) {
+			} else if (this.atPressed && this.kind === "event" && key.match(/[^0123456789:]/g) && !protectedKeys.includes(key)) {
 				e.stopPropagation();
 				e.preventDefault()
-			} else if (this.hashPressed && this.kind == "event" && key.match(/[.:"'=,`~|[{}]/g) && !protectedKeys.includes(key)) {
+			} else if (this.hashPressed && this.kind === "event" && key.match(/[.:"'=,`~|[{}]/g) && !protectedKeys.includes(key)) {
 				e.stopPropagation();
 				e.preventDefault();
 			}
@@ -879,9 +879,9 @@ then((html) => {
 
 		textBlock.onkeyup = (e) => {
 			let key = e.key || e.keyCode;
-			if (key == "ArrowRight" || key == "ArrowLeft" || key == "ArrowDown" || key == "ArrowUp") {
+			if (key === "ArrowRight" || key === "ArrowLeft" || key === "ArrowDown" || key === "ArrowUp") {
 				this.setCurrentSpot();
-				if (key == "ArrowRight" || key == "ArrowLeft") {
+				if (key === "ArrowRight" || key === "ArrowLeft") {
 					this.controller.resetPosition = true;
 				}
 			}

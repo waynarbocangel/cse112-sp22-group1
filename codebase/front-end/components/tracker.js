@@ -158,8 +158,8 @@ export class TrackerMenu extends HTMLElement {
 	 * Changes attribute if the value parameters differ
 	 *
 	 * @param {String} attr attribute to change
-	 * @param {String} oldVal old value passed in
-	 * @param {String} newVal new value passed in
+	 * @param {Boolean} oldVal old value passed in
+	 * @param {Boolean} newVal new value passed in
 	 */
     attributeChangedCallback (attr, oldVal, newVal) {
         if (oldVal !== newVal) {
