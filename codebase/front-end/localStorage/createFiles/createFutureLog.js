@@ -3,7 +3,8 @@ import {makeid} from "./makeId.js";
 import {restart} from "./createMonthlyLog.js";
 let futureObject = {};
 
-function addMonth (startDate, endDate, futureLog, callback) {
+function addMonth (start, endDate, futureLog, callback) {
+	let startDate = start;
 	let date = startDate.getTime() === futureObject.startDate.getTime() ? new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getUTCDate()) : new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
 	if (startDate.getMonth() === endDate.getMonth()) {
 		date = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getUTCDate());

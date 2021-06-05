@@ -176,7 +176,7 @@ module.exports = {
         "no-warning-comments": "error",
         "no-whitespace-before-property": "error",
         "nonblock-statement-body-position": "error",
-        "object-curly-newline": "error",
+        "object-curly-newline": "off",
         "object-curly-spacing": "off",
         "object-shorthand": ["error", "consistent"],
         "one-var": "off",

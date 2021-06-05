@@ -1,7 +1,7 @@
-import { TrackerBlock } from "./trackerBlock.js";
-import { currentObject } from "../index.js";
 import * as localStorage from "../localStorage/userOperations.js";
 import { CreatorBlock } from "./creator.js";
+import { TrackerBlock } from "./trackerBlock.js";
+import { currentObject } from "../index.js";
 
 // Tracker side menu web component
 export class TrackerMenu extends HTMLElement {
@@ -174,9 +174,7 @@ export class TrackerMenu extends HTMLElement {
     connectedCallback () {
         // Console.log('can this event print');
         this.closeButton.addEventListener("click", () => {
-			if (!this.isInsideTracker) {
-				this.close();
-			} else {
+			if (this.isInsideTracker) {
 				this.isInsideTracker = false;
 				this.clear();
 				let trackerBlockWrapper = this.shadowRoot.getElementById("editor");
@@ -188,7 +186,7 @@ export class TrackerMenu extends HTMLElement {
 						let trackerArr = [];
 						for (let i = 0; i < currentObject.trackers.length; i++) {
 							console.log("hello");
-							trackerArr.push(userArr.filter((object) => object.id == currentObject.trackers[i])[0]);
+							trackerArr.push(userArr.filter((object) => object.id === currentObject.trackers[i])[0]);
 						}
 						console.log(trackerArr);
 						setTimeout(() => {
@@ -201,13 +199,15 @@ export class TrackerMenu extends HTMLElement {
 						}, 10);
 					}
 				});
-				if (currentObject.objectType == "futureLog") {
+				if (currentObject.objectType === "futureLog") {
 					this.title = "Future Log Trackers";
-				} else if (currentObject.objectType == "monthlyLog") {
+				} else if (currentObject.objectType === "monthlyLog") {
 					this.title = "Monthly Log Trackers";
 				} else {
 					this.title = "Daily Log Trackers";
 				}
+			} else {
+				this.close();
 			}
 		});
     }
@@ -242,6 +242,13 @@ export class TrackerMenu extends HTMLElement {
             this.removeAttribute("open");
         }
     }
+
+	/**
+	 * Returns the tracker view title
+	 */
+	get title () {
+		return this.shadowRoot.querySelector(".tracker_header h1").innerText;
+	}
 
 	/**
 	 * Sets tracker title

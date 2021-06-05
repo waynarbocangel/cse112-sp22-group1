@@ -78,7 +78,9 @@ export class TrackerBlock extends HTMLElement {
 			this.trackerMenu.title = this.titleSpan.innerHTML;
 			this.trackerMenu.isInsideTracker = true;
 			createEditor(this.trackerMenu.shadowRoot.getElementById("editor"), this.item, null, (success) => {
-
+				if (!success) {
+					console.log("Error loading tracker");
+				}
 			});
 		};
 	}

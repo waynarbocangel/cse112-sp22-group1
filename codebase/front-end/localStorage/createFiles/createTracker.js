@@ -65,9 +65,9 @@ export function createTrackerPouch (db, title, content, parent, callback) {
 				tasks: doc.tasks,
 				events: doc.events,
 				signifiers: doc.signifiers
-				}).then((res) => {
-					console.log(res);
-				}).catch((error) => {
+			}).then((res) => {
+				console.log(res);
+			}).catch((error) => {
 				console.log(error);
 				callback(error, null);
 			});
