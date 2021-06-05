@@ -1,7 +1,7 @@
 export function fade (element, callback) {
     // Initial opacity
     let op = 1;
-        let timer = setInterval(export function setTimer () {
+        let timer = setInterval(() => {
 		    let end = false;
             if (op <= 0.1) {
                 clearInterval(timer);
@@ -22,7 +22,7 @@ export function unfade (element, callback) {
     // Initial opacity
     let op = 0.1;
     element.style.display = "block";
-    let timer = setInterval(export function setTimer () {
+    let timer = setInterval(() =>{
         if (op >= 1) {
             clearInterval(timer);
 			end = true;

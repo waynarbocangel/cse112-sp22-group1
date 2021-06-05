@@ -5,13 +5,15 @@ import {getCurrentObject, navbar, pageNumber, setupDailyLog, setupIndex, setupMo
 export const router = {};
 export let state = "";
 
+router.setState = state;
+
 /**
  * Sets the new state based on the new url to render and the previous url.
  *
  * @param {String} newState The url to render.
  * @param {String} prev The url that was last rendered.
  */
-router.setState = function state (newState, prev) {
+function state (newState, prev) {
 	getCurrentObject(newState);
 	state = newState;
 	setTimeout(() => {
