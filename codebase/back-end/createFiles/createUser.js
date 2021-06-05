@@ -15,36 +15,44 @@ mongoose.set("useCreateIndex", true);
  * @callback (error) Sends an error if there is one.
  */
 function createUser (email, pwd, callback) {
-	schema.User.findOne({email: email}, (error, user) => {
-		if (error){
+	schema.User.findOne(
+		{
+			email: email
+		}
+	, (error, user) => {
+		if (error) {
 			callback(error);
-		} else if (user == null) {
-			const newUser = new schema.User({
-				email: email,
-				pwd: security.passHash(pwd),
-				theme: "lightmode",
-				index: {
-					objectType: "index",
-					contents: []
-				},
-				dailyLogs: [],
-				monthlyLogs: [],
-				futureLogs: [],
-				trackers: [],
-				collections: [],
-				imageBlocks: [],
-				audioBlocks: [],
-				textBlocks: [],
-				events: [],
-				tasks: [],
-				signifiers: [{
-					id: makeid(),
-					objectType: "signifier",
-					meaning: "general",
-					symbol: "&#x1F7E0;"
-				}]
-			});
-	
+		} else if (user === null) {
+			const newUser = new schema.User(
+				{
+					email: email,
+					pwd: security.passHash(pwd),
+					theme: "lightmode",
+					index: {
+						objectType: "index",
+						contents: []
+					},
+					dailyLogs: [],
+					monthlyLogs: [],
+					futureLogs: [],
+					trackers: [],
+					collections: [],
+					imageBlocks: [],
+					audioBlocks: [],
+					textBlocks: [],
+					events: [],
+					tasks: [],
+					signifiers: [
+						{
+							id: makeid(),
+							objectType: "signifier",
+							meaning: "general",
+							symbol: "&#x1F7E0;"
+						}
+					]
+				}
+			);
+
 			newUser.save((err, user) => {
 				if (err) {
 					callback(err);
