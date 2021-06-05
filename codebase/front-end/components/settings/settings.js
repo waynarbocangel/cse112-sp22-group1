@@ -1,7 +1,8 @@
 import {fade, unfade} from "../../transitions.js";
+/* eslint-disable */
 import {GeneralSettingsPanel} from "./generalSettingsPanel.js";
 import {ThemePanel} from "./themePanel.js";
-
+/* eslint-enable */
 
 /*
  * Settings Menu

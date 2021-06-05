@@ -37,7 +37,9 @@ import {updateThemePouch} from "./updateFiles/updateTheme.js";
 import {updateTrackerPouch} from "./updateFiles/updateTracker.js";
 import {updateUserOnline} from "./updateFiles/updateUser.js";
 
+/* eslint-disable */
 export let db = new PouchDB("Users");
+/* eslint-enable */
 
 /**
  * Updates the user from the onling db.
