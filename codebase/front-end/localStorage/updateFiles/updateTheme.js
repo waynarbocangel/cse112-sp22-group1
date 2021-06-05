@@ -34,7 +34,7 @@ export function updateThemePouch (db, theme, callback) {
 				if (err) {
 					callback(err);
 				} else {
-					callback(res);
+					callback(null);
 				}
 			});
 		}

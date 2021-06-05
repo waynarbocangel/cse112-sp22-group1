@@ -149,7 +149,9 @@ export class ThemePanel extends HTMLElement {
 		for (let themeRadio of this.themeRadios) {
             themeRadio.addEventListener('change', () => {
 				localStorage.updateTheme(themeRadio.id, true, (err) => {
+					console.log("here");
 					if (!err){
+						console.log("here");
 						this.updateTheme(themeRadio.id);
 					} else {
 						console.log(err);

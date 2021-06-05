@@ -1,11 +1,9 @@
 import * as localStorage from "./localStorage/userOperations.js";
 import {fade, unfade} from "./transitions.js";
-import {getCurrentObject, navbar, pageNumber, setupDailyLog, setupIndex, setupMonthlyLog, setupFutureLog, url} from "./index.js";
+import {getCurrentObject, navbar, pageNumber, setupDailyLog, setupFutureLog, setupIndex, setupMonthlyLog, url} from "./index.js";
 
 export const router = {};
 export let state = "";
-
-router.setState = stateSwitch;
 
 /**
  * Sets the new state based on the new url to render and the previous url.
@@ -32,23 +30,24 @@ function stateSwitch (newState, prev) {
 			localStorage.readUser((user) => {
 				console.log(user);
 				// Index page
-				if(state == null || state == "#index" || state =='') {
+				if (state === null || state === "#index" || state === "") {
 					setupIndex(btn);
-				}
-				else if(state.includes("#dailyLog")) {
+				} else if (state.includes("#dailyLog")) {
 					setupDailyLog(btn, newState);
-				}
-				else if(state.includes("#monthlyLog")) {
+				} else if (state.includes("#monthlyLog")) {
 					setupMonthlyLog(btn, newState);
-				}
-				else if(state.includes("#futureLog")) {
+				}else if (state.includes("#futureLog")) {
 					setupFutureLog(btn, newState);
 				}
-				if (!prev){
+				if (!prev) {
 					history.pushState({page: pageNumber}, "", url);
 				}
-				unfade(content, () => {});
+				unfade(content, () => {
+					console.log("unfading the content");
+				});
 			});
 		});
 	}, 150);
 }
+
+router.setState = stateSwitch;

@@ -4,15 +4,15 @@ export function fade (element, callback) {
         let timer = setInterval(() => {
 		    let end = false;
             if (op <= 0.1) {
-                clearInterval(timer);
-                element.style.display = "none";
-			    end = true;
+				clearInterval(timer);
+				element.style.display = "none";
+				end = true;
             }
             element.style.opacity = op;
             op -= op * 0.1;
 		    if (end) {
-			    callback();
-		    }
+				callback();
+			}
         }, 10);
 }
 

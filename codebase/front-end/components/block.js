@@ -7,48 +7,48 @@ const paddingSize = 10;
 const protectedKeys = ["Control", "Alt", "CapsLock", "Escape", "PageUp", "PageDown", "End", "Home", "PrintScreen", "Insert", "Delete", "Backspace", "Tab", "Enter", "Meta", "ArrowTop", "ArrowBottom", "ArrowRight", "ArrowLeft", "Shift", " "]
 
 /**
- * handles time and parsing from event text for event creation 
- * 
- * @param {Object} block the textblock instanse to set the time and date for 
+ * Handles time and parsing from event text for event creation
+ *
+ * @param {Object} block the textblock instanse to set the time and date for
  * @param {String} text the text to parse the time and date from
- * @param {Boolean} first boolean to check if the text had a time or not (?)
+ * @param {Boolean} first boolean to check if the text had a time or not
  */
- function includesClock(block, text, first) {
+ function includesClock (block, text, first) {
 	for (let i = 0; i < text.length; i++) {
-		if (text.charCodeAt(i) == 56517) {
-			if (!first) {
+		if (text.charCodeAt(i) === 56517) {
+			if (first) {
+				block.dateSetter = true;
+			} else {
 				block.hashPressed = true;
 				block.atPressed = false;
-			} else {
-				block.dateSetter = true;
 			}
 		}
 
-		if (text.charCodeAt(i) == 56688) {
-			if (!first) {
+		if (text.charCodeAt(i) === 56688) {
+			if (first) {
+				block.timeSetter = true;
+			} else {
 				block.atPressed = true;
 				block.hashPressed = false;
-			} else {
-				block.timeSetter = true;
 			}
 		}
 	}
 }
 
 /**
- * gets the date from the textblock text
- * 
+ * Gets the date from the textblock text
+ *
  * @param {Object} textBlock block to set the time for
- * @param {Boolean} deleteString check to see if the date string shuld be removed from the text(?)
+ * @param {Boolean} deleteString check to see if the date string shuld be removed from the text
  * @returns date parsed from textBlock text
  */
-function getDate(textBlock, deleteString){
+function getDate (textBlock, deleteString) {
 	let date = null;
 	let text = textBlock.shadowRoot.querySelector("#textBlock");
-	if (textBlock.dateSetter && deleteString){
+	if (textBlock.dateSetter && deleteString) {
 		let start = 1;
 		for (let i = 0; i < text.textContent.length; i++) {
-			if (text.textContent.charCodeAt(i) == 56517) {
+			if (text.textContent.charCodeAt(i) === 56517) {
 				start = i + 1;
 				break;
 			}
@@ -57,7 +57,7 @@ function getDate(textBlock, deleteString){
 		if (textBlock.dateSetter) {
 			let timeIndex = 0;
 			for (let i = 0; i < text.textContent.length; i++) {
-				if (text.textContent.charCodeAt(i) == 56688) {
+				if (text.textContent.charCodeAt(i) === 56688) {
 					timeIndex = i;
 					break;
 				}
@@ -70,7 +70,7 @@ function getDate(textBlock, deleteString){
 		newString = newString.replaceAll(" ", "");
 		let valid = false;
 		let dayArray = ["today", "tomorrow", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
-		if (dayArray.includes(newString.toLowerCase())){
+		if (dayArray.includes(newString.toLowerCase())) {
 			valid = true;
 		} else {
 			valid = true;

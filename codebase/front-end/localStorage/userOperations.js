@@ -1,40 +1,41 @@
-import {createUserPouch} from "./createFiles/createUser.js";
-import {readUserPouch} from "./readFiles/readUser.js";
+import {createAudioBlockPouch} from "./createFiles/createAudioBlock.js";
 import {createCollectionPouch} from "./createFiles/createCollection.js";
 import {createDailyLogPouch} from "./createFiles/createDailyLog.js";
 import {createEventPouch} from "./createFiles/createEvent.js";
 import {createFutureLogPouch} from "./createFiles/createFutureLog.js";
-import {createMonthlyLogPouch} from "./createFiles/createMonthlyLog.js"
+import {createImageBlockPouch} from "./createFiles/createImageBlock.js";
+import {createMonthlyLogPouch} from "./createFiles/createMonthlyLog.js";
 import {createSignifierPouch} from "./createFiles/createSignifier.js";
+import {createTaskPouch} from "./createFiles/createTask.js";
 import {createTextBlockPouch} from "./createFiles/createTextBlock.js";
 import {createTrackerPouch} from "./createFiles/createTracker.js";
-import {createTaskPouch} from "./createFiles/createTask.js";
-import {createImageBlockPouch} from "./createFiles/createImageBlock.js";
-import {createAudioBlockPouch} from "./createFiles/createAudioBlock.js";
+import {createUserPouch} from "./createFiles/createUser.js";
 //---------------importing from delete-------------------------------------------
+import {deleteAudioBlockPouch} from "./deleteFiles/deleteAudioBlock.js";
 import {deleteCollectionPouch} from "./deleteFiles/deleteCollection.js";
 import {deleteEventPouch} from "./deleteFiles/deleteEvent.js";
+import {deleteImageBlockPouch} from "./deleteFiles/deleteImageBlock.js";
 import {deleteSignifierPouch} from "./deleteFiles/deleteSignifier.js";
 import {deleteTaskPouch} from "./deleteFiles/deleteTask.js";
 import {deleteTextBlockPouch} from "./deleteFiles/deleteTextBlock.js";
 import {deleteTrackerPouch} from "./deleteFiles/deleteTracker.js";
 import {deleteUserPouch} from "./deleteFiles/deleteUser.js";
-import {deleteImageBlockPouch} from "./deleteFiles/deleteImageBlock.js";
-import {deleteAudioBlockPouch} from "./deleteFiles/deleteAudioBlock.js";
+//---------------importing from read---------------------------------------------
+import {readUserPouch} from "./readFiles/readUser.js";
 //---------------importing from update-------------------------------------------
-import {updateUserOnline} from "./updateFiles/updateUser.js";
-import {updateDailyLogPouch} from "./updateFiles/updateDailyLog.js";
-import {updateMonthlyLogPouch} from "./updateFiles/updateMonthlyLog.js";
-import {updateFutureLogPouch} from "./updateFiles/updateFutureLog.js";
-import {updateCollectionPouch} from "./updateFiles/updateCollection.js";
-import {updateTrackerPouch} from "./updateFiles/updateTracker.js";
-import {updateTextBlockPouch} from "./updateFiles/updateTextBlock.js";
-import {updateTaskPouch} from "./updateFiles/updateTask.js";
-import {updateEventPouch} from "./updateFiles/updateEvent.js";
-import {updateSignifierPouch} from "./updateFiles/updateSignifier.js";
-import {updateImageBlockPouch} from "./updateFiles/updateImageBlock.js";
 import {updateAudioBlockPouch} from "./updateFiles/updateAudioBlock.js";
+import {updateCollectionPouch} from "./updateFiles/updateCollection.js";
+import {updateDailyLogPouch} from "./updateFiles/updateDailyLog.js";
+import {updateEventPouch} from "./updateFiles/updateEvent.js";
+import {updateFutureLogPouch} from "./updateFiles/updateFutureLog.js";
+import {updateImageBlockPouch} from "./updateFiles/updateImageBlock.js";
+import {updateMonthlyLogPouch} from "./updateFiles/updateMonthlyLog.js";
+import {updateSignifierPouch} from "./updateFiles/updateSignifier.js";
+import {updateTaskPouch} from "./updateFiles/updateTask.js";
+import {updateTextBlockPouch} from "./updateFiles/updateTextBlock.js";
 import {updateThemePouch} from "./updateFiles/updateTheme.js";
+import {updateTrackerPouch} from "./updateFiles/updateTracker.js";
+import {updateUserOnline} from "./updateFiles/updateUser.js";
 
 export let db = new PouchDB("Users");
 

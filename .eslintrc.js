@@ -36,7 +36,7 @@ module.exports = {
             "error",
             "last"
         ],
-        "complexity": "error",
+        "complexity": ["error", 100],
         "computed-property-spacing": "error",
         "consistent-return": "error",
         "consistent-this": "error",

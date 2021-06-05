@@ -1,4 +1,4 @@
-const template = document.createElement('template');
+const template = document.createElement("template");
 
 template.innerHTML = `
 	<html> 
@@ -73,33 +73,31 @@ template.innerHTML = `
 `;
 
 
-
 export class plusbar extends HTMLElement {
 	constructor () {
-		super ();
-		this.attachShadow({mode: 'open'});
+		super();
+		this.attachShadow({mode: "open"});
 		this.shadowRoot.appendChild(template.content.cloneNode(true));
 
 
-		this.home = this.shadowRoot.querySelectorAll('button')[0];
-		this.target = this.shadowRoot.querySelectorAll('button')[1];
-		this.single = this.shadowRoot.querySelectorAll('button')[2];
-		this.double = this.shadowRoot.querySelectorAll('button')[3];
+		this.home = this.shadowRoot.querySelectorAll("button")[0];
+		this.target = this.shadowRoot.querySelectorAll("button")[1];
+		this.single = this.shadowRoot.querySelectorAll("button")[2];
+		this.double = this.shadowRoot.querySelectorAll("button")[3];
 
 
-
-		this.home.addEventListener('click', () => {
+		this.home.addEventListener("click", () => {
 			this.shadowRoot.getElementById("myDropdown").classList.toggle("show");
 		});
 
-		this.target.addEventListener('click', () => {
-			alert("hello"); 
+		this.target.addEventListener("click", () => {
+			alert("hello");
 		});
-		this.single.addEventListener('click', () => {
-			alert("hello"); 
+		this.single.addEventListener("click", () => {
+			alert("hello");
 		});
-		this.double.addEventListener('click', () => {
-			alert("hello"); 
+		this.double.addEventListener("click", () => {
+			alert("hello");
 		});
 
 	}
