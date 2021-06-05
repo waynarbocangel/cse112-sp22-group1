@@ -24,8 +24,9 @@ export function createUserPouch (db, userObject, callback) {
 			events: userObject.events,
 			signifiers: userObject.signifiers
 		}).then((res) => {
-			console.log(res);
-			callback(userObject);
+			if (res.ok) {
+				callback(userObject);
+			}
 		}).catch((err) => {
 			callback(err);
 	});

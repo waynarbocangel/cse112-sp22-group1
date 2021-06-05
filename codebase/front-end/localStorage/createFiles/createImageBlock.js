@@ -1,5 +1,5 @@
 import {makeid} from "./makeId.js";
-let imageBlock = {};
+let imageBlockObject = {};
 
 /**
  * Creates and stores a new imageBlock created from the given parameters.

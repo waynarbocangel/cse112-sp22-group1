@@ -100,7 +100,7 @@ export function deleteTextBlockPouch (db, id, callback) {
 					localStorage.deleteEventByID(block.objectReference, false, (error) => {
 						if (error) {
 							console.log(error);
-							callback(errer);
+							callback(error);
 						} else {
 							deleteBlock(db, block, id, callback);
 						}

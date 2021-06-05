@@ -259,13 +259,14 @@ catch((error2) => {
 					console.log(res);
 				}).
 catch((error) => {
-					callback(eror, null);
+					callback(error, null);
 				});
 			}
 		}
 	}).then((res) => {
-		console.log(res);
-		console.log(textBlockObject);
-		callback(null, textBlockObject);
+		if (res.ok) {
+			console.log(textBlockObject);
+			callback(null, textBlockObject);
+		}
 	});
 }

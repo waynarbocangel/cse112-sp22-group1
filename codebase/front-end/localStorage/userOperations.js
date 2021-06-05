@@ -113,13 +113,13 @@ export function createUser (email, pwd, callback) {
 		method: "POST"
 	}).then((data) => data.json()).
 then((userData) => {
-		if (!userData.error) {
+		if (userData.error) {
+			callback(userData);
+		} else {
 			userData.pwd = pwd;
 			createUserPouch(db, userData, (user) => {
 				callback(user);
 			});
-		} else {
-			callback(userData);
 		}
     });
 }

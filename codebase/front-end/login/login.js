@@ -21,15 +21,15 @@ logIn.onclick = (e) => {
 		loginUser(email.value, password.value, (user) => {
 			if (user.error !== undefined) {
 				alert(user.error);
-			} else if (user.email !== undefined) {
+			} else if (user.email === undefined) {
+				alert("Wrong username or password");
+			} else {
 				user.pwd = password.value;
 				console.log(user.index);
 				createUserPouch(db, user, (userData) => {
 					console.log(userData);
 					window.location.href = "http://localhost:8080/success";
 				});
-			} else {
-				alert("Wrong username or password");
 			}
 		});
 	}
@@ -45,14 +45,14 @@ createAccount.onclick = (e) => {
 		createUser(email.value, password.value, (user) => {
 			if (user.error !== undefined) {
 				alert(user.error);
-			} else if (user.email !== undefined) {
+			} else if (user.email === undefined) {
+				alert("Wrong username or password");
+			} else {
 				user.pwd = password.value;
 				createUserPouch(db, user, (userData) => {
 					console.log(userData);
 					window.location.href = "http://localhost:8080/success";
 				});
-			} else {
-				alert("Wrong username or password");
 			}
 		});
 	}
