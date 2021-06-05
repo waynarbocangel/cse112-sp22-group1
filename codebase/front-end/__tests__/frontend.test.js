@@ -4,7 +4,7 @@ describe('Basic user flow for SPA ', () => {
     
     beforeAll(async () => {
       await page.goto('http://localhost:8080');
-      await page.waitForTimeout(5000);
+      await page.waitForTimeout(50000);
     });
 
     // Testing test
@@ -22,27 +22,20 @@ describe('Basic user flow for SPA ', () => {
 
     // Test 2
     it('Create New User Fails', async () => {
-      //const title = await page.$eval("h1", (header) => { return header.innerHTML; });
-      //expect(title).toBe("My Journal");
       
-      //expect(page.url()).toBe("http://localhost:8080/login/");
-
+      // check that alert shows & url
+    
       
     });
 
     // Test 3
     it('Log in', async () => {
-      //const title = await page.$eval("h1", (header) => { return header.innerHTML; });
-      //expect(title).toBe("My Journal");
-
-      //expect(page.url()).toBe("http://localhost:8080/login/");
-      
       // fill in fields, login, check link
 
     });
 
 
-    // Test Navigation
+ 
     test('Create Future Log', () => {
       // TODO
     });
@@ -55,11 +48,7 @@ describe('Basic user flow for SPA ', () => {
 
     });
 
-    
-
-    
-    
-
+  
 
 
 });
