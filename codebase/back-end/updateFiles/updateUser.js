@@ -21,7 +21,7 @@ function updateUser (userObject, callback) {
 			for (let i = 0; i < userObject.collections.length; i++) {
 				let collection = userObject.collection[i];
 				let oldCollection = user.collection[i];
-				if (collection.id == oldCollection.id){
+				if (collection.id === oldCollection.id) {
 					collection.title = security.encrypt(collection.title, userObject.pwd);
 					newCollections.push(collection);
 				}
@@ -94,7 +94,6 @@ function updateUser (userObject, callback) {
 	});
 }
 
-module.exports = 
-{
+module.exports = {
 	updateUser: updateUser
 };

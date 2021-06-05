@@ -15,11 +15,9 @@ mongoose.set("useCreateIndex", true);
  * @callback (error) Sends an error if there is one.
  */
 function createUser (email, pwd, callback) {
-	schema.User.findOne(
-		{
-			email: email
-		}
-	, (error, user) => {
+	schema.User.findOne({
+		email: email
+	}, (error, user) => {
 		if (error) {
 			callback(error);
 		} else if (user === null) {
