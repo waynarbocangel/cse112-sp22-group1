@@ -1,6 +1,6 @@
-import { router } from "../router.js";
 import { currentObject, header } from "../index.js";
 import {SettingsMenu} from "./settings/settings.js";
+import { router } from "../router.js";
 
 const template = document.createElement("template");
 
@@ -278,7 +278,7 @@ export class NavBar extends HTMLElement {
 	 * @param {Obejct} newVal new value passed in
 	 */
 	attributeChangedCallback (attr, oldVal, newVal) {
-		if (oldVal != newVal) {
+		if (oldVal !== newVal) {
 			this[attr] = newVal;
 		}
 	}
@@ -287,7 +287,7 @@ export class NavBar extends HTMLElement {
 	 * Goes to home page when the home button is pressed
 	 */
 	goHome () {
-		if (document.location.hash != null && document.location.hash != "#index" && document.location.hash != "") {
+		if (document.location.hash !== null && document.location.hash !== "#index" && document.location.hash !== "") {
 			router.setState("", false);
 		}
 	}
@@ -306,13 +306,13 @@ export class NavBar extends HTMLElement {
 	goFarBack () {
 		let parent = document.location.hash.includes("#dailyLog") ? "futureLog" : "index";
 		localStorage.readUser((err, user) => {
-			if (err == null) {
+			if (err === null) {
 				let userArr = [];
 				Array.prototype.push.apply(userArr, user.dailyLogs);
 				Array.prototype.push.apply(userArr, user.monthlyLogs);
 				Array.prototype.push.apply(userArr, user.futureLogs);
 				Array.prototype.push.apply(userArr, user.collections);
-				let parsed = userArr.filter((object) => object.id == currentObject.parent);
+				let parsed = userArr.filter((object) => object.id === currentObject.parent);
 				let firstParent = parsed[0];
 				router.setState(`#${parent}~${firstParent.parent}`, false);
 			} else {

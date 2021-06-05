@@ -1,6 +1,6 @@
-import {ThemePanel} from "./themePanel.js";
-import {GeneralSettingsPanel} from "./generalSettingsPanel.js";
 import {fade, unfade} from "../../transitions.js";
+import {GeneralSettingsPanel} from "./generalSettingsPanel.js";
+import {ThemePanel} from "./themePanel.js";
 
 
 /*
@@ -54,7 +54,6 @@ export class SettingsMenu extends HTMLElement {
         super();
         this.attachShadow({ mode: "open" });
 
-        this.outerHTML
         this.shadowRoot.innerHTML = `
             <style>
                 @font-face {
@@ -239,18 +238,18 @@ export class SettingsMenu extends HTMLElement {
  return;
 }
 
-        let selectedTab;
+        let selectedTab = null;
         for (let tab of tabs) {
             let panel = tab.nextElementSibling;
             tab.setAttribute("aria-controls", panel.id);
             panel.setAttribute("aria-labelledby", tab.id);
 
-            if (selectedTab === undefined && tab.selected) {
+            if (selectedTab === null && tab.selected) {
                 selectedTab = tab;
             }
         }
 
-        if (selectedTab === undefined) {
+        if (selectedTab === null) {
             selectedTab = tabs.item(0);
         }
 
@@ -262,8 +261,12 @@ export class SettingsMenu extends HTMLElement {
         let panels = Array.from(this.panels());
 
         // Deselect all the tabs and hide all the panels
-        tabs.forEach((tab) => tab.selected = false);
-        panels.forEach((panel) => panel.hidden = true);
+        tabs.forEach((tab) => {
+ tab.selected = false
+});
+        panels.forEach((panel) => {
+ panel.hidden = true
+});
 
         let panelId = selectedTab.getAttribute("aria-controls");
         let selectedPanel = this.querySelector(`#${panelId}`);
@@ -361,7 +364,8 @@ export class SettingsTab extends HTMLElement {
     connectedCallback () {
         this.setAttribute("role", "tab");
         if (!this.id) {
-            this.id = `settings-tab-generated-${tabId++}`;
+            this.id = `settings-tab-generated-${tabId}`;
+			tabId += 1;
         }
 
         this.setAttribute("aria-selected", "false");
@@ -372,8 +376,8 @@ export class SettingsTab extends HTMLElement {
         this.setAttribute("aria-selected", value);
     }
 
-    set selected (value) {
-        value = Boolean(value);
+    set selected (val) {
+        let value = Boolean(val);
         if (value) {
             this.setAttribute("selected", "");
         } else {
@@ -390,14 +394,12 @@ customElements.define("settings-tab", SettingsTab);
 let panelId = 0;
 
 export class SettingsPanel extends HTMLElement {
-    constructor () {
-        super();
-    }
 
     connectedCallback () {
         this.setAttribute("role", "tabpanel");
         if (!this.id) {
-            this.id = `settings-panel-generated-${panelId++}`;
+            this.id = `settings-panel-generated-${panelId}`;
+			panelId += 1;
         }
     }
 }

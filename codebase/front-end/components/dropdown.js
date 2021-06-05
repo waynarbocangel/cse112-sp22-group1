@@ -137,13 +137,17 @@ export class DropdownBlock extends HTMLElement {
     connectedCallback () {
 		this.removeAttribute("closed");
         this.button.addEventListener("click", () => {
- this.toggleItems();
-});
+			this.toggleItems();
+		});
 		this.header.addEventListener("click", () => {
- this.navigateToObject();
-})
+			this.navigateToObject();
+		})
 		// This.contentWrapper.style.display = 'none';
     }
+
+	get title () {
+		return this.header.innerText;
+	}
 
 	/**
 	 * Sets the title for the dropdown
