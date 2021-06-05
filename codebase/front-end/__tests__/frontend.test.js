@@ -4,7 +4,7 @@ describe('Basic user flow for SPA ', () => {
     
     beforeAll(async () => {
       await page.goto('http://localhost:8080');
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(5000);
     });
 
     // Testing test
@@ -14,15 +14,31 @@ describe('Basic user flow for SPA ', () => {
 
     // Test 1
     it('Test1: Initial Home Page - Check Home Page', async () => {
-      /*const numEntries = await page.$$eval('journal-entry', (entries) => {
-        return entries.length;
-      });
-      */
       //const title = await page.$eval("h1", (header) => { return header.innerHTML; });
       //expect(title).toBe("My Journal");
+
+      // Remember to change this after 
+      expect(page.url()).toBe("http://localhost:8080/login/");
       
     });
 
+    // Test 2
+    it('Log in', async () => {
+      //const title = await page.$eval("h1", (header) => { return header.innerHTML; });
+      //expect(title).toBe("My Journal");
+      
+      //expect(page.url()).toBe("http://localhost:8080/login/");
+      
+    });
+
+    // Test 3
+    it('Log in', async () => {
+      //const title = await page.$eval("h1", (header) => { return header.innerHTML; });
+      //expect(title).toBe("My Journal");
+
+      //expect(page.url()).toBe("http://localhost:8080/login/");
+      
+    });
 
 
     // Test Navigation
