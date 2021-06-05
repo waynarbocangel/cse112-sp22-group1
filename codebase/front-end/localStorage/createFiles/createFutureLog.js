@@ -96,7 +96,7 @@ export function createFutureLogPouch (db, startDate, endDate, months, content, t
 			events: doc.events,
 			signifiers: doc.signifiers});
 	}).then((res) => {
-		if (res.ok){
+		if (res.ok) {
 			addMonth(new Date(futureObject.startDate.getTime()), new Date(futureObject.endDate.getTime()), futureObject, (monthsIDArray) => {
 				db.get("0000").then((doc) => {
 					futureObject.months = monthsIDArray;
@@ -126,7 +126,7 @@ export function createFutureLogPouch (db, startDate, endDate, months, content, t
 						}
 					});
 				});
-			});	
+			});
 		}
 	}).catch((err) => {
 		callback(err, null);
