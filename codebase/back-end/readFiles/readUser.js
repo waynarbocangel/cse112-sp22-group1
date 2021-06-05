@@ -18,13 +18,13 @@ function readUser (userData, callback) {
 			callback(error);
 		} else {
 			let newCollections = [];
-			for(let i = 0; i < user.collections.length; i++){
+			for (let i = 0; i < user.collections.length; i++) {
 				let collection = user.collection[i];
 				collection.title = security.decrypt(collection.title, userData.pwd);
 				newCollections.push(collection);
 			}
 			let newTextBlocks = [];
-			for(let i = 0; i < user.textBlocks.length; i++){
+			for (let i = 0; i < user.textBlocks.length; i++) {
 				let block = user.textBlocks[i];
 				block.text = security.decrypt(block.text, userData.pwd);
 				newTextBlocks.push(block);
