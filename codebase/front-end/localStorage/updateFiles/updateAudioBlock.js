@@ -16,22 +16,22 @@ export function updateAudioBlockPouch (db, audioBlock, callback) {
 
 			return db.put({
 				_id: "0000",
-				_rev: user._rev,
-				email: user.email,
-				pwd: user.pwd,
-				theme: user.theme,
-				index: user.index,
-				dailyLogs: user.dailyLogs,
-				monthlyLogs: user.monthlyLogs,
-				futureLogs: user.futureLogs,
-				trackers: user.trackers,
-				collections: user.collections,
-				imageBlocks: user.imageBlocks,
+				_rev: doc._rev,
+				email: doc.email,
+				pwd: doc.pwd,
+				theme: doc.theme,
+				index: doc.index,
+				dailyLogs: doc.dailyLogs,
+				monthlyLogs: doc.monthlyLogs,
+				futureLogs: doc.futureLogs,
+				trackers: doc.trackers,
+				collections: doc.collections,
+				imageBlocks: doc.imageBlocks,
 				audioBlocks: audioBlockArr,
-				textBlocks: user.textBlocks,
-				tasks: user.tasks,
-				events: user.events,
-				signifiers: user.signifiers}, (error, res) => {
+				textBlocks: doc.textBlocks,
+				tasks: doc.tasks,
+				events: doc.events,
+				signifiers: doc.signifiers}, (error, res) => {
 				if (error) {
 					console.log(error);
 					callback(error);

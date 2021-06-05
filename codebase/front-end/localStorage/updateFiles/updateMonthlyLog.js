@@ -16,9 +16,7 @@ export function updateMonthlyLogPouch (db, log, callback) {
 			monthlyLogArr.push(log);
 
 			// Added return here so if updateMonthlyLog breaks maybe its because of this
-			return db.put(
-			{
-				_id: "0000",
+			return db.put({_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
 				pwd: doc.pwd,
