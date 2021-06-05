@@ -1,13 +1,12 @@
 import * as localStorage from "./localStorage/userOperations.js";
 import { CreatorBlock } from "./components/creator.js";
-import { createEditor } from "./components/blockController.js";
 import { DropdownBlock } from "./components/dropdown.js";
 import { NavBar } from "./components/navbar.js";
 import { PageHeader } from "./components/header.js";
-import { router } from "./router.js";
-import { SettingsMenu, SettingsPanel, SettingsTab } from "./components/settings/settings.js";
 import { TrackerBlock } from "./components/trackerBlock.js";
 import { TrackerMenu } from "./components/tracker.js";
+import { createEditor } from "./components/blockController.js";
+import { router } from "./router.js";
 
 document.querySelector("body").style.display = "none";
 
@@ -16,7 +15,7 @@ export let header = new PageHeader();
 export let url = "";
 export let pageNumber = 1;
 
-export let currentObject;
+export let currentObject = {};
 
 let contentWrapper = document.getElementById("contentWrapper");
 document.getElementById("topbar").appendChild(header);
@@ -37,28 +36,28 @@ window.onpopstate = () => {
  * @param {String} urlFromRouter The current url.
  */
 export function getCurrentObject (urlFromRouter) {
-	let urlparse;
+	let urlparse = "";
 	let id = null;
-	if (urlFromRouter != null) {
+	if (urlFromRouter !== null) {
 		urlparse = urlFromRouter.split("~");
 	}
-	if (urlparse != undefined) {
+	if (urlparse !== undefined) {
 		id = urlparse[1];
 	}
 	localStorage.readUser((err, user) => {
 		if (err) {
 			window.location.href = "http://localhost:8080/login";
-		} else if (id != null) {
-				let userArr = [];
-				Array.prototype.push.apply(userArr, user.dailyLogs);
-				Array.prototype.push.apply(userArr, user.monthlyLogs);
-				Array.prototype.push.apply(userArr, user.futureLogs);
-				Array.prototype.push.apply(userArr, user.collections);
-				let parsed = userArr.filter((object) => object.id == id);
-				currentObject = parsed[0];
-			} else {
-				currentObject = user.index;
-			}
+		} else if (id === null) {
+			currentObject = user.index;
+		} else {
+			let userArr = [];
+			Array.prototype.push.apply(userArr, user.dailyLogs);
+			Array.prototype.push.apply(userArr, user.monthlyLogs);
+			Array.prototype.push.apply(userArr, user.futureLogs);
+			Array.prototype.push.apply(userArr, user.collections);
+			let parsed = userArr.filter((object) => object.id === id);
+			currentObject = parsed[0];
+		}
 	});
 
 }
@@ -81,14 +80,14 @@ export function setupIndex (btn) {
 			let parentArr = [];
 			console.log(currentObject);
 			for (let i = 0; i < currentObject.contents.length; i++) {
-				Array.prototype.push.apply(parentArr, userArr.filter((object) => object.id == currentObject.contents[i]));
+				Array.prototype.push.apply(parentArr, userArr.filter((object) => object.id === currentObject.contents[i]));
 			}
 
 			let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 			for (let i = 0; i < parentArr.length; i++) {
 				console.log("inside for loop");
-				if (parentArr[i].objectType == "futureLog") {
+				if (parentArr[i].objectType === "futureLog") {
 					console.log("inside if stmt");
 					let futureLogStart = new Date(parentArr[i].startDate);
 					let futureLogEnd = new Date(parentArr[i].endDate);
@@ -100,11 +99,11 @@ export function setupIndex (btn) {
 					}
 
 					for (let j = 0; j < parentArr[i].months.length; j++) {
-						let currentMonth = user.monthlyLogs.filter((month) => month.id == parentArr[i].months[j].monthlyLog)[0];
+						let currentMonth = user.monthlyLogs.filter((month) => month.id === parentArr[i].months[j].monthlyLog)[0];
 						let dropdownMonth = new DropdownBlock(`${monthNames[new Date(currentMonth.date).getMonth()]} ${new Date(currentMonth.date).getFullYear()}`, currentMonth, 2);
 						dropdown.contentWrapper.appendChild(dropdownMonth);
 						for (let k = 0; k < currentMonth.days.length; k++) {
-							let currentDay = user.dailyLogs.filter((day) => day.id == currentMonth.days[k].dailyLog)[0];
+							let currentDay = user.dailyLogs.filter((day) => day.id === currentMonth.days[k].dailyLog)[0];
 							let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 							let dropdownDay = new DropdownBlock(`${weekDays[new Date(currentDay.date).getDay()]}, ${monthNames[new Date(currentDay.date).getMonth()]} ${new Date(currentDay.date).getUTCDate()}`, currentDay, 3);
 							dropdownMonth.contentWrapper.appendChild(dropdownDay);
@@ -159,7 +158,7 @@ export function setupFutureLog (btn, newState) {
 			console.log(currentObject);
 			let parentArr = [];
 			for (let i = 0; i < currentObject.months.length; i++) {
-				Array.prototype.push.apply(parentArr, userArr.filter((object) => object.id == currentObject.months[i].monthlyLog));
+				Array.prototype.push.apply(parentArr, userArr.filter((object) => object.id === currentObject.months[i].monthlyLog));
 			}
 
 			let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -173,7 +172,7 @@ export function setupFutureLog (btn, newState) {
 				}
 
 				for (let k = 0; k < currentMonth.days.length; k++) {
-					let currentDay = user.dailyLogs.filter((day) => day.id == currentMonth.days[k].dailyLog)[0];
+					let currentDay = user.dailyLogs.filter((day) => day.id === currentMonth.days[k].dailyLog)[0];
 
 					/*
 					 * Console.log(currentDay);
@@ -190,7 +189,7 @@ export function setupFutureLog (btn, newState) {
 	document.getElementById("targetMenu").style.display = "block";
 	let futureLogStart = new Date(currentObject.startDate);
 	let futureLogEnd = new Date(currentObject.endDate);
-	header.title = futureLogEnd.getFullYear() == futureLogStart.getFullYear() ? `Future Log ${futureLogStart.getFullYear()}` : `Future Log ${futureLogStart.getFullYear()} - ${futureLogEnd.getFullYear()}`;
+	header.title = futureLogEnd.getFullYear() === futureLogStart.getFullYear() ? `Future Log ${futureLogStart.getFullYear()}` : `Future Log ${futureLogStart.getFullYear()} - ${futureLogEnd.getFullYear()}`;
 	pageNumber = 4;
 	url = newState;
 	// Setting navbar buttons
@@ -222,7 +221,7 @@ export function setupFutureLog (btn, newState) {
 			let userArr = user.trackers;
 			let trackerArr = [];
 			for (let i = 0; i < currentObject.trackers.length; i++) {
-				trackerArr.push(userArr.filter((object) => object.id == currentObject.trackers[i])[0]);
+				trackerArr.push(userArr.filter((object) => object.id === currentObject.trackers[i])[0]);
 			}
 			console.log(trackerArr);
 			setTimeout(() => {
@@ -252,7 +251,7 @@ export function setupMonthlyLog (btn, newState) {
 
 			let parentArr = [];
 			for (let i = 0; i < currentObject.days.length; i++) {
-				Array.prototype.push.apply(parentArr, userArr.filter((object) => object.id == currentObject.days[i].dailyLog));
+				Array.prototype.push.apply(parentArr, userArr.filter((object) => object.id === currentObject.days[i].dailyLog));
 			}
 
 			let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -297,7 +296,7 @@ export function setupMonthlyLog (btn, newState) {
 			let userArr = user.trackers;
 			let trackerArr = [];
 			for (let i = 0; i < currentObject.trackers.length; i++) {
-				trackerArr.push(userArr.filter((object) => object.id == currentObject.trackers[i])[0]);
+				trackerArr.push(userArr.filter((object) => object.id === currentObject.trackers[i])[0]);
 			}
 			setTimeout(() => {
 				for (let i = 0; i < trackerArr.length; i++) {
@@ -350,7 +349,7 @@ export function setupDailyLog (btn, newState) {
 			let trackerArr = [];
 			for (let i = 0; i < currentObject.trackers.length; i++) {
 				console.log("hello");
-				trackerArr.push(userArr.filter((object) => object.id == currentObject.trackers[i])[0]);
+				trackerArr.push(userArr.filter((object) => object.id === currentObject.trackers[i])[0]);
 			}
 			console.log(trackerArr);
 			setTimeout(() => {
@@ -376,22 +375,6 @@ export function setupDailyLog (btn, newState) {
  * @param {String} newState The new url to go to.
  */
 export function setupCollection (btn, newState) {
-
-	/*
-	 *LocalStorage.readUser((err, user) => {
-	 *if (err) {
-	 *console.log(err);
-	 *} else {
-	 *let userArr = [];
-	 *Array.prototype.push.apply(userArr, user.textBlocks);
-	 *
-	 *let parentArr = [];
-	 *for (let i = 0; i < currentObject.contents.length; i++) {
-	 *	Array.prototype.push.apply(parentArr, userArr.filter(object => object.id == currentObject.contents[i]));
-	 *}
-	 *}
-	 *});
-	 */
 
 	header.title = currentObject.title;
 	pageNumber = 5;
