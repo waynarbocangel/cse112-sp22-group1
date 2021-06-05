@@ -27,7 +27,8 @@ template.innerHTML = `
 			padding: 0;
 			width: 32px;
 			height: 32px;
-			margin: 32px auto;
+			margin: 20px auto 44px auto;
+			cursor: pointer;
 		}
 
 		button img {
@@ -38,7 +39,7 @@ template.innerHTML = `
 
 		button:hover img {
 			opacity: 100%;
-			transition: opacity 150ms;
+			transition: opacity 25ms;
 		}
 
 		#bottom {
@@ -53,20 +54,6 @@ template.innerHTML = `
 		}
 
 		@media only screen and (max-width:900px) {
-			.nav-bar {
-				display:none;
-			}
-
-			.navigation {
-				display: block;
-				padding: none;
-				margin: none;
-				width: 30vh;
-				top: 0;
-				left: 0;
-				position:fixed;
-			}
-
 			#menu {
 				position: fixed;
 				width: 30%;
@@ -88,6 +75,20 @@ template.innerHTML = `
 			#menu.open {
 				transform-origin: 0 0;
 				transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+			}
+
+			.nav-bar {
+				display:none;
+			}
+
+			.navigation {
+				display: block;
+				padding: none;
+				margin: none;
+				width: 30vh;
+				top: 0;
+				left: 0;
+				position:fixed;
 			}
 
 			#homeMenu {
@@ -129,61 +130,6 @@ template.innerHTML = `
 				right: 0;
 				padding: 0;
 				margin: 0 auto;
-			}
-
-			#menuToggle {
-				flex-direction: column;
-				position: absolute;
-				top: 60px;
-				left: 30px;
-				z-index: 1;
-			  }
-
-			#menuToggle input {
-				display: flex;
-				width: 40px;
-				height: 32px;
-				position: absolute;
-				cursor: pointer;
-				opacity: 0;
-				z-index: 2;
-			  }
-
-			#menuToggle span {
-				display: flex;
-				width: 29px;
-				height: 2px;
-				margin-bottom: 5px;
-				position: relative;
-				border-radius: 3px;
-				background: var(--content-foreground-color);
-				z-index: 1;
-				transform-origin: 5px 0px;
-				transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
-							background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
-							opacity 0.55s ease;
-			}
-
-			#menuToggle span:first-child {
-				transform-origin: 0% 0%;
-			}
-
-			#menuToggle span:nth-last-child(2) {
-				transform-origin: 0% 100%;
-			}
-
-			#menuToggle input:checked ~ span {
-				opacity: 1;
-				transform: rotate(45deg) translate(-7px, -10px);
-			}
-
-			#menuToggle input:checked ~ span:nth-last-child(3) {
-				opacity: 0;
-				transform: rotate(0deg) scale(0.2, 0.2);
-			}
-
-			#menuToggle input:checked ~ span:nth-last-child(2) {
-				transform: rotate(-45deg) translate(-5px, 10px);
 			}
 		}
 
@@ -250,13 +196,6 @@ template.innerHTML = `
 		</div>
 	</nav>
 	<nav class="navigation">
-		<div id="menuToggle">
-			<input type="checkbox" />
-			<span></span>
-			<span></span>
-			<span></span>
-		</div>
-
 		<div id="menu" class="closed">
 			<button id="homeMenu">  <img src="../public/resources/home_icon.png"></button>
 			<button id="singleMenu"><img src="../public/resources/left.png"></button>
@@ -287,12 +226,11 @@ export class NavBar extends HTMLElement {
 		this.singleMenu = this.shadowRoot.querySelector('#singleMenu');
 		this.doubleMenu = this.shadowRoot.querySelector('#doubleMenu');
 		this.userMenu = this.shadowRoot.querySelector('#userMenu');
-		this.menuToggle = this.shadowRoot.querySelector("#menuToggle input");
-		this.menuToggle.addEventListener("change", () => {
-			this.toggle();
-		});
 	}
 
+	/**
+	 * when a navbar instance is created sets event listeners for all header buttons in the callback
+	 */
 	connectedCallback() {
 		this.home.addEventListener('click', () => {
 			this.goHome();
@@ -330,23 +268,39 @@ export class NavBar extends HTMLElement {
 		});
 	}
 
+	/**
+	 * to switches header attribute value if the value parameters differ
+	 * 
+	 * @param {String} attr attribute to change
+	 * @param {Object} oldVal old value passed in
+	 * @param {Obejct} newVal new value passed in
+	 */
 	attributeChangedCallback(attr, oldVal, newVal) {
 		if (oldVal != newVal) {
 			this[attr] = newVal;
 		}
 	}
 
+	/**
+	 * goes to home page when the home button is pressed
+	 */
 	goHome() {
 		if (document.location.hash != null && document.location.hash != "#index" && document.location.hash != '') {
 			router.setState("", false);
 		}
 	}
 
+	/**
+	 * goes to the previous page when the back button is pressed
+	 */
 	goBack() {
 		let parent = (document.location.hash.includes("#dailyLog")) ? "monthlyLog" : "futureLog";
 		router.setState(`#${parent}~${currentObject.parent}`, false);
 	}
 
+	/**
+	 * goes to the futureLog if you are on a dailyLog when double arrow button is clicked
+	 */
 	goFarBack() {
 		let parent = (document.location.hash.includes("#dailyLog")) ? "futureLog" : "index";
 		localStorage.readUser((err, user) => {
@@ -365,19 +319,33 @@ export class NavBar extends HTMLElement {
 		});
 	}
 
+	/**
+	 * displays tracker menu when called
+	 */
 	toggleTracker() {
 		const trackerMenu = document.querySelector("tracker-menu");
 		trackerMenu.toggle();
 	}
 
+	/**
+	 * displays header when called
+	 */
 	toggle() {
 		this.open = !this.open;
 	}
 
+	/**
+	 * returns attributes that are open(?)
+	 */
 	get open() {
 		return this.hasAttribute('open');
 	}
 
+	/**
+	 * menu is toggeled if parameter is true
+	 * 
+	 * @param {Boolean} isOpen boolean to check if menu should be toggled or not
+	 */
 	set open(isOpen) {
 		this.menu.classList.toggle('open', isOpen);
 		this.menu.classList.toggle('closed', !isOpen);
@@ -385,10 +353,10 @@ export class NavBar extends HTMLElement {
 		if (isOpen) {
 			this.setAttribute('open', 'true');
 			this.focus();
-			this.menuToggle.checked = true;
+			header.menuToggle.checked = true;
 		} else {
 			this.removeAttribute('open');
-			this.menuToggle.checked = false;
+			header.menuToggle.checked = false;
 		}
 	}
 }

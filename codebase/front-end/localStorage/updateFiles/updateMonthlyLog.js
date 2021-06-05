@@ -1,3 +1,11 @@
+
+/**
+ * Finds and update the monthlyLog passed in.
+ *
+ * @param {database} db The local pouch database.
+ * @param {Object} log The monthlyLog to be deleted.
+ * @callback (res) Sends an error if there is one to the callback.
+ */
 export function updateMonthlyLogPouch (db, log, callback) {
 	console.log(log);
 	db.get("0000", (err, doc) => {
@@ -12,15 +20,18 @@ export function updateMonthlyLogPouch (db, log, callback) {
 				_rev: doc._rev,
 				email: doc.email,
 				pwd: doc.pwd,
+				theme: doc.theme,
 				index: doc.index,
 				dailyLogs: doc.dailyLogs,
 				monthlyLogs: monthlyLogArr,
 				futureLogs: doc.futureLogs,
 				trackers: doc.trackers,
 				collections: doc.collections,
+				imageBlocks: doc.imageBlocks,
+				audioBlocks: doc.audioBlocks,
 				textBlocks: doc.textBlocks,
-				eventBlocks: doc.eventBlocks,
-				taskBlocks: doc.taskBlocks,
+				events: doc.eventBlocks,
+				tasks: doc.taskBlocks,
 				signifiers: doc.signifiers
 			}, (err, res) => {
 				if (err) {

@@ -1,8 +1,22 @@
 import {makeid} from "./makeId.js";
 import * as localStorage from "./../userOperations.js";
-
 let textBlockObject;
 
+/**
+ * Creates and stores a new event created from the given parameters.
+ *
+ * @param {database} db The local pouch database.
+ * @param {String} parent The id of the parent of the new textBlock.
+ * @param {String} subParent The id of the child within the parent's content list.
+ * @param {Number} index The index of where the textBlock should be stored in its parent.
+ * @param {String} content The task description to be inserted if kind was a task (optional)
+ * @param {Number} tablevel The tablevel of the textBlock.
+ * @param {String} kind The kind of textBlock (task, event, or paragraph)
+ * @param {String} objectReference The id of the task or event linked to the textBlock.
+ * @param {String} signifier The signifier used by the textBlock.
+ * @param {Date} date The date of the event if the textBlock kind was an event (opional).
+ * @callback (err,textBlock) Eihter sends the newly created textBlock or an error if there is one to the callback.
+ */
 export function createTextBlockPouch (db, parent, subParent, index, content, tabLevel, kind, objectReference, signifier, date, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
@@ -19,6 +33,8 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 			Array.prototype.push.apply(arrays, doc.tasks);
 			Array.prototype.push.apply(arrays, doc.events);
 			Array.prototype.push.apply(arrays, doc.signifiers);
+			Array.prototype.push.apply(arrays, doc.imageBlocks);
+			Array.prototype.push.apply(arrays, doc.audioBlocks);
 			
 			while(arrays.filter(element => element.id == id).length > 0){
 				id = makeid();
@@ -37,7 +53,7 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 			if(kind == "task" || kind == "event"){
 				if (kind == "task") {
 					//index == null for now just for testing
-					localStorage.createTask(id, content, 0, null, (err, task) => {
+					localStorage.createTask(id, content, 0, null, false, (err, task) => {
 						if (err) {
 							console.log(err);
 							callback(err, null);
@@ -82,7 +98,7 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 											newContents.content.splice(index, 0, id);
 										}
 									}
-
+									
 									user.textBlocks.push(textBlockObject);
 
 									return db.put(
@@ -91,12 +107,15 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 											_rev: user._rev,
 											email: user.email,
 											pwd: user.pwd,
+											theme: user.theme,
 											index: user.index,
 											dailyLogs: user.dailyLogs,
 											monthlyLogs: user.monthlyLogs,
 											futureLogs: user.futureLogs,
 											collections: user.collections,
 											trackers: user.trackers,
+											imageBlocks: user.imageBlocks,
+											audioBlocks: user.audioBlocks,
 											textBlocks: user.textBlocks,
 											tasks: user.tasks,
 											events: user.events,
@@ -113,7 +132,7 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 					})
 				} else if (kind = "event") {
 					//index == null for now just for testing
-					localStorage.createEvent(null, id, date, null, (err, event) => {
+					localStorage.createEvent(content, id, date, null, (err, event) => {
 						if (err) {
 							callback(err, null);
 						} else {
@@ -166,12 +185,15 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 											_rev: user._rev,
 											email: user.email,
 											pwd: user.pwd,
+											theme: user.theme,
 											index: user.index,
 											dailyLogs: user.dailyLogs,
 											monthlyLogs: user.monthlyLogs,
 											futureLogs: user.futureLogs,
 											collections: user.collections,
 											trackers: user.trackers,
+											imageBlocks: user.imageBlocks,
+											audioBlocks: user.audioBlocks,
 											textBlocks: user.textBlocks,
 											tasks: user.tasks,
 											events: user.events,
@@ -232,12 +254,15 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 						_rev: doc._rev,
 						email: doc.email,
 						pwd: doc.pwd,
+						theme: doc.theme,
 						index: doc.index,
 						dailyLogs: doc.dailyLogs,
 						monthlyLogs: doc.monthlyLogs,
 						futureLogs: doc.futureLogs,
 						collections: doc.collections,
 						trackers: doc.trackers,
+						imageBlocks: doc.imageBlocks,
+						audioBlocks: doc.audioBlocks,
 						textBlocks: doc.textBlocks,
 						tasks: doc.tasks,
 						events: doc.events,

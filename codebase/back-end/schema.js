@@ -6,6 +6,7 @@ mongoose.set("useCreateIndex", true);
 const userSchema = {
 	email: String,
 	pwd: String,
+	theme: String,
 	index: {
 		objectType: String,
 		contents: [String]
@@ -26,11 +27,13 @@ const userSchema = {
 			objectType: String,
 			parent: String,
 			date: Date,
-			days: [{
-				id: String,
-				content: [String],
-				dailyLog: [String]
-			}],
+			days: [
+				{
+					id: String,
+					content: [String],
+					dailyLog: [String]
+				}
+			],
 			trackers: [String]
 		}
 	],
@@ -40,11 +43,13 @@ const userSchema = {
 			objectType: String,
 			startDate: Date,
 			endDate: Date,
-			months: [{
-				id: String,
-				content: [String],
-				monthlyLog: [String]
-			}],
+			months: [
+				{
+					id: String,
+					content: [String],
+					monthlyLog: [String]
+				}
+			],
 			trackers: [String]
 		}
 	],
@@ -52,6 +57,7 @@ const userSchema = {
 		{
 			id: String,
 			objectType: String,
+			title: String,
 			content: [String],
 			parent: String
 		}
@@ -63,6 +69,24 @@ const userSchema = {
 			title: String,
 			parent: String,
 			content: [String]
+		}
+	],
+	imageBlocks: [
+		{
+			id: String,
+			objectType: String,
+			parent: String,
+			arrangement: String,
+			data: Buffer
+		}
+	],
+	audioBlocks: [
+		{
+			id: String,
+			objectType: String,
+			parent: String,
+			arrangement: String,
+			data: Buffer
 		}
 	],
 	textBlocks: [

@@ -1,16 +1,26 @@
 import * as localStorage from "../userOperations.js";
 
+/**
+ * Finds and deletes the textBlock.
+ *
+ * @param {database} db The local pouch database.
+ * @param {String} id The id of the object to be deleted.
+ * @callback (res) Sends an error if there is one to the callback.
+ */
 export function deleteTextBlockPouch(db, id, callback) {
+	console.log("delete textblock is being deleted");
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
 			const textBlockArr = doc.textBlocks.filter(textBlock => textBlock.id == id);
 			let block = null;
+			console.log("textblockArr is ", textBlockArr);
 			if (textBlockArr.length > 0) {
 				block = textBlockArr[0];
+
 				if(block.kind == "task"){
-					localStorage.deleteTaskByID(block.objectReference, (error) => {
+					localStorage.deleteTaskByID(block.objectReference, false, (error) => {
 						if (!error){
 							deleteBlock(db, block, id, callback);
 						} else {
@@ -18,10 +28,12 @@ export function deleteTextBlockPouch(db, id, callback) {
 						}
 					});
 				} else if (block.kind == "event"){
-					localStorage.deleteEventByID(block.objectReference, (error) => {
+					console.log("delteeevntbyID");
+					localStorage.deleteEventByID(block.objectReference, false, (error) => {
 						if (!error){
 							deleteBlock(db, block, id, callback);
 						} else {
+							console.log(error);
 							callback(error);
 						}
 					})
@@ -72,25 +84,34 @@ function deleteBlock(db, block, id, callback){
 			
 			user.textBlocks = newTextBlocks;
 			
-			db.put(
+			return db.put(
 				{
 					_id: "0000",
 					_rev: user._rev,
 					email: user.email,
 					pwd: user.pwd,
+					theme: user.theme,
 					index: user.index,
 					dailyLogs: user.dailyLogs,
 					monthlyLogs: user.monthlyLogs,
 					futureLogs: user.futureLogs,
 					collections: user.collections,
 					trackers: user.trackers,
+					imageBlocks: user.imageBlocks,
+					audioBlocks: user.audioBlocks,
 					textBlocks: user.textBlocks,
 					tasks: user.tasks,
 					events: user.events,
 					signifiers: user.signifiers
 				}
-			).then(res => {callback(null)}).catch(err => {callback(err)});
+			).then(res => {
+				console.log(res);
+				callback(null);
+			}).catch(err => {
+				console.log(err);
+				callback(err)});
 		} else {
+			console.log(err);
 			callback(err);
 		}
 	});

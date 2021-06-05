@@ -73,6 +73,14 @@ export class Controller extends Object {
 	}
 }
 
+/**
+ * Create a text editor in either a futurLog, monthlyLog, dailyLog, collection, or tracker page.
+ * 
+ * @param {Array} container The html content wrapper to add the editor to.
+ * @param {String} parent The id of the parent of the textBlock being created.
+ * @param {String} subParent The id of the child within the parent's content list.
+ * @param {response} callback Either sends an error if there is one or sends back the block controller to the callback.
+ */
 export function createEditor (container, parent, subParent, callback) {
 
 	let controller = new Controller(container, parent, subParent);
@@ -90,7 +98,7 @@ export function createEditor (container, parent, subParent, callback) {
 				Array.prototype.push.apply(arrays, doc.collections);
 				Array.prototype.push.apply(arrays, doc.trackers);
 
-				if(parent.objectType != "index") {
+				if(parent != null && (parent.objectType == "dailyLog" || parent.objectType == "collection")) {
 					let itemArrs = arrays.filter(element => element.id == parent.id);
 						
 					if(itemArrs.length > 0){
@@ -115,7 +123,7 @@ export function createEditor (container, parent, subParent, callback) {
 						}
 						
 
-						populateEditor(controller, objectArr, (res) => {
+						populateEditor(controller, objectArr, doc.signifiers, (res) => {
 							console.log(res);
 							let newBlock = new TextBlock(controller, null, (success) => {
 								if (success){
@@ -130,7 +138,8 @@ export function createEditor (container, parent, subParent, callback) {
 						})
 					}
 				} else {
-					let newBlock = new TextBlock(controller, null, (success) => {
+					let generalSignifier = doc.signifiers.filter(signifer => signifer.meaning == "general")[0];
+					let newBlock = new TextBlock(controller, null, generalSignifier, (success) => {
 						if (success){
 							container.appendChild(newBlock);
 							controller.blockArray.push(newBlock);
@@ -149,15 +158,32 @@ export function createEditor (container, parent, subParent, callback) {
 	}, 20);
 }
 
-export function populateEditor (controller, items, callback) {
-	populateEditorRecursive(controller, items, 0, (res) => {
+/**
+ * Calls the recursive function to populate the editor with existing textBlocks.
+ * 
+ * @param {Object} controller The html content wrapper to populate.
+ * @param {Array} items An item of objects to populate the editor with.
+ * @param {response} callback Sends back an error if there is one or a message to the callback. 
+ */
+export function populateEditor (controller, items, signifers, callback) {
+	populateEditorRecursive(controller, items, 0, signifers, (res) => {
 		callback(res);
 	});
 }
 
-function populateEditorRecursive(controller, items, index, callback) {
+/**
+ * This is a recursive function that populates the current page with textBlocks and trackers,
+ * from where the block controller comes from.
+ * 
+ * @param {Object} controller The html content wrapper to populate.
+ * @param {Array} items An array of textBlocks or trackers to populate the page with.
+ * @param {Number} index The current index in the items array to populate the page with.
+ * @param {response} callback Either sends an error if there is one or sends a message when it is done populating.
+ */
+function populateEditorRecursive(controller, items, index, signifers, callback) {
 	if(index < items.length) {
-		controller.createNewBlock(items[index], (block) => {
+		let signifier = signifers.filter(signifier => signifier.id == item[index].signifier)[0];
+		controller.createNewBlock(items[index], signifier, (block) => {
 	 		block.tabLevel = items[index].tabLevel
 	 		block.setupTabLevel();
 			

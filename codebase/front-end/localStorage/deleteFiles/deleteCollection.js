@@ -1,3 +1,11 @@
+
+/**
+ * Finds and deletes the collection.
+ *
+ * @param {database} db The local pouch database.
+ * @param {String} id The id of the object to be deleted.
+ * @callback (res) Sends an error if there is one to the callback.
+ */
 export function deleteCollectionPouch(db, id, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
@@ -36,12 +44,15 @@ export function deleteCollectionPouch(db, id, callback) {
 					_rev: doc._rev,
 					email: doc.email,
 					pwd: doc.pwd,
+					theme: doc.theme,
 					index: doc.index,
 					dailyLogs: doc.dailyLogs,
 					monthlyLogs: doc.monthlyLogs,
 					futureLogs: doc.futureLogs,
 					collections: doc.collections,
 					trackers: doc.trackers,
+					imageBlocks: doc.imageBlocks,
+					audioBlocks: doc.audioBlocks,
 					textBlocks: doc.textBlocks,
 					tasks: doc.tasks,
 					events: doc.events,

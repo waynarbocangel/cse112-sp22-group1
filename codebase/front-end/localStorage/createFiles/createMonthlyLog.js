@@ -4,6 +4,16 @@ import * as localStorage from "../userOperations.js";
 let monthlyObject;
 let startProcessed = false;
 
+/**
+ * Creates and stores a new monthlyLog created from the given parameters.
+ *
+ * @param {database} db The local pouch database.
+ * @param {String} parent The id of the parent of the new monthlyLog.
+ * @param {Array} days The id's of the days included in the monthlyLog.
+ * @param {Array} trackers The id's of the trackers included in the monthlyLog.
+ * @param {Date} date The date of the monthlyLog.
+ * @callback (err,monthlyLog) Eihter sends the newly created monthlyLog or an error if there is one to the callback.
+ */
 export function createMonthlyLogPouch (db, parent, content, days, trackers, date, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
@@ -20,6 +30,8 @@ export function createMonthlyLogPouch (db, parent, content, days, trackers, date
 			Array.prototype.push.apply(arrays, doc.tasks);
 			Array.prototype.push.apply(arrays, doc.events);
 			Array.prototype.push.apply(arrays, doc.signifiers);
+			Array.prototype.push.apply(arrays, doc.imageBlocks);
+			Array.prototype.push.apply(arrays, doc.audioBlocks);
 			
 			while(arrays.filter(element => element.id == id).length > 0){
 				id = makeid();
@@ -42,12 +54,15 @@ export function createMonthlyLogPouch (db, parent, content, days, trackers, date
 					_rev: doc._rev,
 					email: doc.email,
 					pwd: doc.pwd,
+					theme: doc.theme,
 					index: doc.index,
 					dailyLogs: doc.dailyLogs,
 					monthlyLogs: doc.monthlyLogs,
 					futureLogs: doc.futureLogs,
 					collections: doc.collections,
 					trackers: doc.trackers,
+					imageBlocks: doc.imageBlocks,
+					audioBlocks: doc.audioBlocks,
 					textBlocks: doc.textBlocks,
 					tasks: doc.tasks,
 					events: doc.events,
@@ -78,12 +93,15 @@ export function createMonthlyLogPouch (db, parent, content, days, trackers, date
 						_rev: doc._rev,
 						email: doc.email,
 						pwd: doc.pwd,
+						theme: doc.theme,
 						index: doc.index,
 						dailyLogs: doc.dailyLogs,
 						monthlyLogs: doc.monthlyLogs,
 						futureLogs: doc.futureLogs,
 						collections: doc.collections,
 						trackers: doc.trackers,
+						imageBlocks: doc.imageBlocks,
+						audioBlocks: doc.audioBlocks,
 						textBlocks: doc.textBlocks,
 						tasks: doc.tasks,
 						events: doc.events,
@@ -106,7 +124,7 @@ function addDay(currentDay, startDate, endDay, month, callback){
 	if (currentDay > endDay){
 		callback([]);
 	} else {
-		localStorage.createDailyLog(month.id, [], [], dayDate, (error, day) => {
+		localStorage.createDailyLog(month.id, [], [], dayDate, false, (error, day) => {
 			if (error == null){
 				addDay(currentDay + 1, startDate, endDay, month, (daysArray) =>  {
 					daysArray.splice(0, 0, {id: day.id, content: [], dailyLog: day.id});
