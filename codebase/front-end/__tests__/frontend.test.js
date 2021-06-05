@@ -14,20 +14,19 @@ describe('Basic user flow for SPA ', () => {
 
     // Test 1
     it('Test1: Initial Home Page - Check Home Page', async () => {
-      //const title = await page.$eval("h1", (header) => { return header.innerHTML; });
-      //expect(title).toBe("My Journal");
 
-      // Remember to change this after 
+      // Remember to change this after deploy
       expect(page.url()).toBe("http://localhost:8080/login/");
       
     });
 
     // Test 2
-    it('Log in', async () => {
+    it('Create New User Fails', async () => {
       //const title = await page.$eval("h1", (header) => { return header.innerHTML; });
       //expect(title).toBe("My Journal");
       
       //expect(page.url()).toBe("http://localhost:8080/login/");
+
       
     });
 
@@ -38,6 +37,8 @@ describe('Basic user flow for SPA ', () => {
 
       //expect(page.url()).toBe("http://localhost:8080/login/");
       
+      // fill in fields, login, check link
+
     });
 
 
