@@ -3,7 +3,7 @@ import { currentObject } from "../index.js";
 import * as localStorage from "../localStorage/userOperations.js";
 import { CreatorBlock } from "./creator.js";
 
-// tracker side menu web component
+// Tracker side menu web component
 export class TrackerMenu extends HTMLElement {
     static get observedAttributes() {
         return ['open'];

@@ -30,37 +30,37 @@ function readUser (userData, callback) {
 				newTextBlocks.push(block);
 			}
 			let newTasks = [];
-			for(let i = 0; i < user.tasks.length; i++){
+			for (let i = 0; i < user.tasks.length; i++) {
 				let block = user.tasks[i];
 				block.text = security.decrypt(block.text, userData.pwd);
 				newTasks.push(block);
 			}
 			let newEvents = [];
-			for(let i = 0; i < user.events.length; i++){
+			for (let i = 0; i < user.events.length; i++) {
 				let block = user.events[i];
 				block.title = security.decrypt(block.title, userData.pwd);
 				newEvents.push(block);
 			}
 			let newSignifiers = [];
-			for(let i = 0; i < user.signifiers.length; i++){
+			for (let i = 0; i < user.signifiers.length; i++) {
 				let signifier = user.signifiers[i];
 				signifier.meaning = security.decrypt(signifier.meaning, userData.pwd);
 				newSignifiers.push(signifier);
 			}
 			let newImageBlocks = [];
-			for(let i = 0; i < user.imageBlocks.length; i++){
+			for (let i = 0; i < user.imageBlocks.length; i++) {
 				let imageBlock = user.imageBlocks[i];
 				imageBlock.data = security.decrypt(imageBlock.data, userData.pwd);
 				newImageBlocks.push(imageBlock);
 			}
 			let newAudioBlocks = [];
-			for(let i = 0; i < user.audioBlocks.length; i++){
+			for (let i = 0; i < user.audioBlocks.length; i++) {
 				let audioBlock = user.audioBlocks[i];
 				audioBlock.data = security.decrypt(audioBlock.data, userData.pwd);
 				newAudioBlocks.push(audioBlock);
 			}
 			let newTrackers = [];
-			for(let i = 0; i < user.trackers.length; i++){
+			for (let i = 0; i < user.trackers.length; i++) {
 				let tracker = user.trackers[i];
 				tracker.title = security.decrypt(tracker.title, userData.pwd);
 				newTrackers.push(tracker);

@@ -1,6 +1,6 @@
 import * as shadow from "./shadow.js";
-import * as localStorage from "../localStorage/userOperations.js";
 import {currentObject} from "../index.js";
+import * as localStorage from "../localStorage/userOperations.js";
 
 const tabSize = 20;
 const paddingSize = 10;
@@ -8,7 +8,7 @@ const paddingSize = 10;
 const protectedKeys = ["Control", "Alt", "CapsLock", "Escape", "PageUp", "PageDown", "End", "Home", "PrintScreen", "Insert", "Delete", "Backspace", "Tab", "Enter", "Meta", "ArrowTop", "ArrowBottom", "ArrowRight", "ArrowLeft", "Shift", " "]
 
 export class TextBlock extends HTMLElement {
-	constructor(controller, itemObject, signifier, callback) {
+	constructor (controller, itemObject, signifier, callback) {
 		super();
 		fetch("./components/block.html").then((response) => {
 			return response.text();
