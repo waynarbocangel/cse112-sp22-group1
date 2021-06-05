@@ -104,10 +104,15 @@ export function createUser(email, pwd, callback){
 	}).then((data) => {
         return data.json();
     }).then((userData) => {
-		userData.pwd = pwd;
-        createUserPouch(db, userData, (user) => {
-			callback(user);
-		});
+		if (userData.error === undefined) {
+			userData.pwd = pwd;
+        	createUserPouch(db, userData, (user) => {
+				callback(user);
+			});
+		}
+		else {
+			callback(userData);
+		}
     });
 }
 
