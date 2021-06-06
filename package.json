@@ -1,4 +1,22 @@
 {
+  "name": "root",
+  "description": "This is the repository for team 11's CSE 110 project.   Team Name: It's not a bug, It's a feature",
+  "version": "1.0.0",
+  "main": ".eslintrc.js",
+  "dependencies": {},
+  "scripts": {
+    "jsdoc": "jsdoc -c jsdoc.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cse110-sp21-group11/cse110-sp21-group11.git"
+  },
+  "author": "CSE 110 Team 11",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cse110-sp21-group11/cse110-sp21-group11/issues"
+  },
+  "homepage": "https://github.com/cse110-sp21-group11/cse110-sp21-group11#readme",
   "devDependencies": {
     "@babel/core": "^7.14.3",
     "@babel/preset-env": "^7.14.4",
@@ -6,6 +24,7 @@
     "eslint": "^7.26.0",
     "jest": "^27.0.4",
     "jest-puppeteer": "^5.0.3",
+    "jsdoc": "^3.6.7",
     "puppeteer": "^9.1.1"
   },
   "jest": {
