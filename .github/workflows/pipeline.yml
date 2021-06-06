@@ -48,13 +48,13 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install
-      working-directory: ./codebase/back-end
+      working-directory: ./src/back-end
     - name: JEST Report
       uses: RedaktionsNetzwerk-Deutschland/action-jest-reporter@v1.0.0
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        json-glob: ./codebase/back-end/testOutput.json
-        workdir: ./codebase/back-end
+        json-glob: ./src/back-end/testOutput.json
+        workdir: ./src/back-end
 
   front-end-build:
     runs-on: ubuntu-latest
@@ -68,15 +68,15 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install
-      working-directory: ./codebase/front-end
+      working-directory: ./src/front-end
     - run: npm test --if-present
-      working-directory: ./codebase/front-end
+      working-directory: ./src/front-end
     - name: JEST Report
       uses: RedaktionsNetzwerk-Deutschland/action-jest-reporter@v1.0.0
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        json-glob: ./codebase/front-end/testOutput.json
-        workdir: ./codebase/front-end
+        json-glob: ./src/front-end/testOutput.json
+        workdir: ./src/front-end
    
  
   ESLint-Check:
@@ -86,6 +86,6 @@ jobs:
          - run: yarn install
          - uses: stefanoeb/eslint-action@1.0.2
            with:
-             files: ./codebase/
+             files: ./src/
            env:
              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

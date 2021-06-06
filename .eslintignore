@@ -2,3 +2,4 @@ codebase/front-end/localStorage/pouchdb-7.2.1.min.js
 codebase/front-end/components/shadow.js
 **/__tests__/*
 **/unitTests/*
+**/documentation/*
