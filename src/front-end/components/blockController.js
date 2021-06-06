@@ -9,6 +9,7 @@ import { TextBlock } from "./block.js";
  * Controller for TextBlock object
  */
 export class BlockController extends Object {
+    
 	/**
 	 * @param {HTMLElement} container 
 	 * @param {Object} parent 

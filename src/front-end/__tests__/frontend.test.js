@@ -17,9 +17,7 @@ describe('Basic user flow for SPA ', () => {
 
     // Test 2
     it('Create New User Fails', async () => {
-      
-      // check that alert shows & url
-    
+      // Check that alert shows & url
       expect(page.url()).toBe("http://localhost:8080/login/");
     });
 
