@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: back-end/readFiles/readUser.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: back-end/readFiles/readUser.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>require("dotenv").config();
+const mongoose = require("mongoose");
+const schema = require(__dirname + "/../schema.js");
+const security = require(__dirname + "/../security/securityFunctions.js");
+
+mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
+mongoose.set("useCreateIndex", true);
+
+/**
+ * Reads the user from the online db and sends it to the callback.
+ *
+ * @param {Object} userData The user data object to read from the online db.
+ * @callback (response) Either sends the user as an object from the online db or and error, if there is one, to the callback.
+ */
+function readUser (userData, callback) {
+	schema.User.findOne({email: userData.email}, (error, user) => {
+		if (error) {
+			callback(error);
+		} else {
+			let newCollections = [];
+			for (let i = 0; i &lt; user.collections.length; i++) {
+				let collection = user.collection[i];
+				collection.title = security.decrypt(collection.title, userData.pwd);
+				newCollections.push(collection);
+			}
+			let newTextBlocks = [];
+			for (let i = 0; i &lt; user.textBlocks.length; i++) {
+				let block = user.textBlocks[i];
+				block.text = security.decrypt(block.text, userData.pwd);
+				newTextBlocks.push(block);
+			}
+			let newTasks = [];
+			for (let i = 0; i &lt; user.tasks.length; i++) {
+				let block = user.tasks[i];
+				block.text = security.decrypt(block.text, userData.pwd);
+				newTasks.push(block);
+			}
+			let newEvents = [];
+			for (let i = 0; i &lt; user.events.length; i++) {
+				let block = user.events[i];
+				block.title = security.decrypt(block.title, userData.pwd);
+				newEvents.push(block);
+			}
+			let newSignifiers = [];
+			for (let i = 0; i &lt; user.signifiers.length; i++) {
+				let signifier = user.signifiers[i];
+				console.log(security.decrypt(signifier.meaning, userData.pwd));
+				signifier.meaning = security.decrypt(signifier.meaning, userData.pwd);
+				newSignifiers.push(signifier);
+			}
+			let newImageBlocks = [];
+			for (let i = 0; i &lt; user.imageBlocks.length; i++) {
+				let imageBlock = user.imageBlocks[i];
+				imageBlock.data = security.decrypt(imageBlock.data, userData.pwd);
+				newImageBlocks.push(imageBlock);
+			}
+			let newAudioBlocks = [];
+			for (let i = 0; i &lt; user.audioBlocks.length; i++) {
+				let audioBlock = user.audioBlocks[i];
+				audioBlock.data = security.decrypt(audioBlock.data, userData.pwd);
+				newAudioBlocks.push(audioBlock);
+			}
+			let newTrackers = [];
+			for (let i = 0; i &lt; user.trackers.length; i++) {
+				let tracker = user.trackers[i];
+				tracker.title = security.decrypt(tracker.title, userData.pwd);
+				newTrackers.push(tracker);
+			}
+			let decodedUser = {
+				email: user.email,
+				pwd: userData.pwd,
+				index: user.index,
+				theme: user.theme,
+				dailyLogs: user.dailyLogs,
+				monthlyLogs: user.monthlyLogs,
+				futureLogs: user.futureLogs,
+				trackers: user.trackers,
+				collections: newCollections,
+				imageBlocks: newImageBlocks,
+				audioBlocks: newAudioBlocks,
+				textBlocks: newTextBlocks,
+				events: newEvents,
+				tasks: newTasks,
+				signifiers: newSignifiers
+			}
+			callback(decodedUser);
+		}
+	});
+}
+
+module.exports = {
+	readUser: readUser
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#containsNextElement">containsNextElement</a></li><li><a href="global.html#createEditor">createEditor</a></li><li><a href="global.html#days">days</a></li><li><a href="global.html#debug">debug</a></li><li><a href="global.html#decrypt">decrypt</a></li><li><a href="global.html#deleteDB">deleteDB</a></li><li><a href="global.html#encrypt">encrypt</a></li><li><a href="global.html#findCaretFocus">findCaretFocus</a></li><li><a href="global.html#getCurrentObject">getCurrentObject</a></li><li><a href="global.html#getDate">getDate</a></li><li><a href="global.html#getNextDayOfTheWeek">getNextDayOfTheWeek</a></li><li><a href="global.html#getSelectionDirection">getSelectionDirection</a></li><li><a href="global.html#includesClock">includesClock</a></li><li><a href="global.html#isLeapyear">isLeapyear</a></li><li><a href="global.html#makeid">makeid</a></li><li><a href="global.html#passHash">passHash</a></li><li><a href="global.html#populateEditor">populateEditor</a></li><li><a href="global.html#populateEditorRecursive">populateEditorRecursive</a></li><li><a href="global.html#setupCollection">setupCollection</a></li><li><a href="global.html#setupDailyLog">setupDailyLog</a></li><li><a href="global.html#setupFutureLog">setupFutureLog</a></li><li><a href="global.html#setupIndex">setupIndex</a></li><li><a href="global.html#setupMonthlyLog">setupMonthlyLog</a></li><li><a href="global.html#stateSwitch">stateSwitch</a></li><li><a href="global.html#updateUserFromMongo">updateUserFromMongo</a></li><li><a href="global.html#walkFromNode">walkFromNode</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sat Jun 05 2021 20:07:56 GMT-0400 (Bolivia Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

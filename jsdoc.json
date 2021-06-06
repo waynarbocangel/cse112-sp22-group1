@@ -1,0 +1,18 @@
+{
+	"plugins": ["plugins/markdown"],
+	"recourseDepth": 20,
+	"source": {
+		"include": ["src"],
+		"includePattern": ".js$",
+		"excludePattern": "(node_modules/)"
+	},
+	"sourceType": "module",
+	"templates": {
+		"cleverLinks": true,
+		"monospaceLinks": true
+	},
+	"opts": {
+		"destination": "./documentation",
+		"recurse": true
+	}
+}

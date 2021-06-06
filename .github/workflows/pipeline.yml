@@ -9,6 +9,7 @@ on:
       - back-end_drop
       - front-end_drop
       - ci/cd-pipeline-1
+      - pipeline-test
 
   pull_request:
     branches:
@@ -19,21 +20,19 @@ on:
 jobs:
   generate-docs:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x, 15.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
     steps:
     - uses: actions/checkout@v2
-    - name: JSDoc Action
-      # You may pin to the exact commit or the version.
-      # uses: andstor/jsdoc-action@2fb2b536605bdebace2b92abb0601155d5ddc688
-      uses: andstor/jsdoc-action@v1.2.0
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
       with:
-        # Source directory to build documentation from
-        source_dir: ./codebase
-        # Output folder for the generated documentation
-        output_dir: ./codebaseDocs
-        # Recurse into subdirectories when scanning for source files
-        recurse: true
-        # The path to a Markdown file to be used as a the front page
-        front_page: ./codebase/CI-CD-pipeline.md
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+    - run: npm run jsdoc
 
   back-end-build:
     runs-on: ubuntu-latest
@@ -49,24 +48,43 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install
-      working-directory: ./codebase/back-end
-    - run: npm test --if-present
-      working-directory: ./codebase/back-end
+      working-directory: ./src/back-end
     - name: JEST Report
       uses: RedaktionsNetzwerk-Deutschland/action-jest-reporter@v1.0.0
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        json-glob: ./codebase/back-end/testOutput.json
-        workdir: ./codebase/back-end
-
+        json-glob: ./src/back-end/testOutput.json
+        workdir: ./src/back-end
 
   front-end-build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x, 15.x]
     steps:
     - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+      working-directory: ./src/front-end
+    - run: npm test --if-present
+      working-directory: ./src/front-end
     - name: JEST Report
       uses: RedaktionsNetzwerk-Deutschland/action-jest-reporter@v1.0.0
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        json-glob: ./codebase/front-end/testOutput.json
-        workdir: ./codebase/front-end
+        json-glob: ./src/front-end/testOutput.json
+        workdir: ./src/front-end
+
+  ESLint-Check:
+       runs-on: ubuntu-latest
+       steps:
+         - uses: actions/checkout@v2
+         - run: yarn install
+         - uses: stefanoeb/eslint-action@1.0.2
+           with:
+             files: ./src/
+           env:
+             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
