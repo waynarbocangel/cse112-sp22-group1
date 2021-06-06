@@ -4,18 +4,16 @@ describe('Basic user flow for SPA ', () => {
     
     beforeAll(async () => {
       await page.goto('http://localhost:8080');
-      await page.waitForTimeout(70000);
+      await page.waitForTimeout(500);
     });
 
     
     // Test 1
     it('Test1: Initial Home Page - Check Home Page', async () => {
-
-      jest.setTimeout(50000);
       // Remember to change this after deploy
       expect(page.url()).toBe("http://localhost:8080/login/");
       
-    }, 500);
+    });
 
     // Test 2
     it('Create New User Fails', async () => {
