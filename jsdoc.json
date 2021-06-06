@@ -12,7 +12,7 @@
 		"monospaceLinks": true
 	},
 	"opts": {
-		"destination": "./documentation",
+		"destination": "./docs",
 		"recurse": true
 	}
 }
