@@ -162,11 +162,11 @@ export class ThemePanel extends HTMLElement {
         }
 		localStorage.readUser((err, user) => {
 			if (err) {
+				console.log(err);
+			} else {
 				let pickedTheme = this.shadowRoot.getElementById(user.theme);
 				pickedTheme.toggleAttribute("checked", true);
 				this.updateTheme(user.theme);
-			} else {
-				console.log(err);
 			}
 		});
 	}

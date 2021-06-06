@@ -1,3 +1,23 @@
+/**
+ * Create functions
+ * @namespace createFunctions
+ */
+/**
+ * Update functions
+ * @namespace updateFunctions
+ */
+/**
+ * Delete functions
+ * @namespace deleteFunctions
+ */
+/**
+ * Read functions
+ * @namespace readFunctions
+ */
+/**
+ * Local Storage
+ * @module localStorage
+ */
 import {createAudioBlockPouch} from "./createFiles/createAudioBlock.js";
 import {createCollectionPouch} from "./createFiles/createCollection.js";
 import {createDailyLogPouch} from "./createFiles/createDailyLog.js";
@@ -42,7 +62,72 @@ export let db = new PouchDB("Users");
 /* eslint-enable */
 
 /**
- * Updates the user from the onling db.
+ * Creates a new user in the remote and local db's
+ * (needs both front-end and back-end servers to be running)
+ * @param {String} email The new user's email.
+ * @param {String} pwd The new user's pwd.
+ * @param {Function} callback Sends user json data to the callback.
+ */
+ export function loginUser (email, pwd, callback) {
+	fetch("http://localhost:3000/readUser", {
+		headers: {
+			"content-type": "application/json; charset=UTF-8"
+		},
+		body: JSON.stringify({
+			email: email,
+			pwd: pwd
+		}),
+		method: "POST"
+	}).then((data) => data.json()).
+then((res) => {
+		callback(res);
+	});
+}
+
+/**
+ * Single parameter callback
+ * @callback singleParameterCallback
+ * @param {Object} res - object or null if successful, error otherwise
+ */
+
+/**
+ * Double parameter callback
+ * @callback doubleParamterCallback
+ * @param {Object} err - error if failed, null otherwise
+ * @param {Object} res - created / updated object if successful, null otherwise
+ */
+
+/**
+ * Creates a user in the local db.
+ * (needs both front-end and back-end servers to be running)
+ * @param {String} email The new user's email.
+ * @param {String} pwd The new user's password.
+ * @param {singleParameterCallback} callback Sends the new user object to the callback.
+ */
+export function createUser (email, pwd, callback) {
+    fetch("http://localhost:3000/createUser", {
+		headers: {
+			"content-type": "application/json; charset=UTF-8"
+		},
+		body: JSON.stringify({
+			email: email,
+			pwd: pwd
+		}),
+		method: "POST"
+	}).then((data) => data.json()).then((userData) => {
+		if (userData.error) {
+			callback(userData);
+		} else {
+			userData.pwd = pwd;
+			createUserPouch(db, userData, (user) => {
+				callback(user);
+			});
+		}
+    });
+}
+
+/**
+ * Updates the user from the online db.
  */
  export function updateUserFromMongo () {
 	updateUserOnline(db, (user) => {
@@ -73,66 +158,12 @@ export function deleteDB () {
 }
 
 /**
- * Creates a new user in the remote and local db's
- * (needs both front-end and back-end servers to be running)
- *
- * @param {String} email The new user's email.
- * @param {String} pwd The new user's pwd.
- * @callback (res) Sends user json data to the callback.
- */
-export function loginUser (email, pwd, callback) {
-	fetch("http://localhost:3000/readUser", {
-		headers: {
-			"content-type": "application/json; charset=UTF-8"
-		},
-		body: JSON.stringify({
-			email: email,
-			pwd: pwd
-		}),
-		method: "POST"
-	}).then((data) => data.json()).
-then((res) => {
-		callback(res);
-	});
-}
-
-/**
- * Creates a user in the local db.
- *
- * @param {String} email The new user's email.
- * @param {String} pwd The new user's password.
- * @callback (res) Sends the new user object to the callback.
- */
-export function createUser (email, pwd, callback) {
-    fetch("http://localhost:3000/createUser", {
-		headers: {
-			"content-type": "application/json; charset=UTF-8"
-		},
-		body: JSON.stringify({
-			email: email,
-			pwd: pwd
-		}),
-		method: "POST"
-	}).then((data) => data.json()).
-then((userData) => {
-		if (userData.error) {
-			callback(userData);
-		} else {
-			userData.pwd = pwd;
-			createUserPouch(db, userData, (user) => {
-				callback(user);
-			});
-		}
-    });
-}
-
-/**
  * Creates a new imageBlock from the parameters passed in and updates the online db.
- *
+ * @function createImageBlock
  * @param {String} parent The id of the parent of the new imageBlock.
  * @param {String} arrangement The arrangement of the image.
  * @param {Buffer} data The image data stored as a buffer.
- * @callback (error,imageBlock) Either sends the imageBlock or an error, if there is one, to the callback.
+ * @param {doubleParamterCallback} callback Either sends the imageBlock or an error, if there is one, to the callback.
  */
 export function createImageBlock (parent, arrangement, data, shouldUpdate, callback) {
 	createImageBlockPouch(db, parent, arrangement, data, (err, image) => {
@@ -149,7 +180,7 @@ export function createImageBlock (parent, arrangement, data, shouldUpdate, callb
  * @param {String} parent The id of the parent of the new audioBlock.
  * @param {String} arrangement The arrangement of the audio.
  * @param {Buffer} data The audio data stored as a buffer.
- * @callback (error,audioBlock) Either sends the audioBlock or an error, if there is one, to the callback.
+ * @param {doubleParameterCallback} callback Either sends the audioBlock or an error, if there is one, to the callback.
  */
 export function createAudioBlock (parent, arrangement, data, shouldUpdate, callback) {
 	createAudioBlockPouch(db, parent, arrangement, data, (err, audio) => {
@@ -166,7 +197,7 @@ export function createAudioBlock (parent, arrangement, data, shouldUpdate, callb
  * @param {String} title The title of the new collection.
  * @param {String} parent The id of the parent of the new collection.
  * @param {Array} content The array of textBlocks included in the collection.
- * @callback (error,collection) Either sends the collection or an error, if there is one, to the callback.
+ * @param {doubleParameterCallback} callback Either sends the collection or an error, if there is one, to the callback.
  */
 export function createCollection (title, parent, content, shouldUpdate, callback) {
 	createCollectionPouch(db, title, parent, content, (err, collection) => {
@@ -184,7 +215,7 @@ export function createCollection (title, parent, content, shouldUpdate, callback
  * @param {Array} content The array of textBlocks included in the dailyLog.
  * @param {Array} trackers The array of trackers included in the dailyLog.
  * @param {Date} date The date of the dailyLog
- * @callback (error,dailyLog) Either sends the dailyLog or an error, if there is one, to the callback.
+ * @param {doubleParameterCallback} callback Either sends the dailyLog or an error, if there is one, to the callback.
  */
 export function createDailyLog (parent, content, trackers, date, shouldUpdate, callback) {
     createDailyLogPouch(db, parent, content, trackers, date, (err, day) => {
@@ -202,7 +233,7 @@ export function createDailyLog (parent, content, trackers, date, shouldUpdate, c
  * @param {String} parent The id of the parent of the new event.
  * @param {Date} date The date of the event. (optional)
  * @param {String} signifier The id of the signifier for the new event.
- * @callback (error,event) Either sends the event or an error, if there is one, to the callback.
+ * @param {doubleParameterCallback} callback Either sends the event or an error, if there is one, to the callback.
  */
 export function createEvent (title, parent, date, signifier, shouldUpdate, callback) {
 	createEventPouch(db, title, parent, date, signifier, (error, event) => {
@@ -221,7 +252,7 @@ export function createEvent (title, parent, date, signifier, shouldUpdate, callb
  * @param {Array} months The id's of the monthlyLogs included in the new futureLog.
  * @param {Array} content The id's of the textBlocks included in the new futureLog.
  * @param {Array} trackers The id's of the trackers included in the new futureLog.
- * @callback (error,futureLog) Either sends the futureLog or an error, if there is one, to the callback.
+ * @param {doubleParameterCallback} callback Either sends the futureLog or an error, if there is one, to the callback.
  */
 export function createFutureLog (startDate, endDate, months, content, trackers, shouldUpdate, callback) {
 	createFutureLogPouch(db, startDate, endDate, months, content, trackers, (err, futureLog) => {
@@ -239,7 +270,7 @@ export function createFutureLog (startDate, endDate, months, content, trackers, 
  * @param {Array} content The array of textBlocks included in the monthlyLog.
  * @param {Array} trackers The array of trackers included in the monthlyLog.
  * @param {Date} date The date of the monthlyLog
- * @callback (error,monthlyLog) Either sends the monthlyLog or an error, if there is one, to the callback.
+ * @param {doubleParameterCallback} callback Either sends the monthlyLog or an error, if there is one, to the callback.
  */
 export function createMonthlyLog (parent, content, days, trackers, date, shouldUpdate, callback) {
 	createMonthlyLogPouch(db, parent, content, days, trackers, date, (error, month) => {
@@ -255,7 +286,7 @@ export function createMonthlyLog (parent, content, days, trackers, date, shouldU
  *
  * @param {String} meaning The meaning of the new signifier.
  * @param {String} symbol The string of the new signifier.
- * @callback (error,signifier) Either sends the signifier or an error, if there is one, to the callback.
+ * @param {doubleParameterCallback} callback Either sends the signifier or an error, if there is one, to the callback.
  */
 export function createSignifier (meaning, symbol, shouldUpdate, callback) {
 	createSignifierPouch(db, meaning, symbol, (err, signifier) => {
@@ -273,7 +304,7 @@ export function createSignifier (meaning, symbol, shouldUpdate, callback) {
  * @param {String} text The description of the new task.
  * @param {Number} complete The value to see if task is complete or not (zero if not complete and non-zero if complete).
  * @param {String} signifier The id of the signifier for the new task.
- * @callback (error,dailyLog) Either sends the dailyLog or an error, if there is one, to the callback.
+ * @param {doubleParameterCallback} callback Either sends the dailyLog or an error, if there is one, to the callback.
  */
 export function createTask (parent, text, complete, signifier, shouldUpdate, callback) {
 	createTaskPouch(db, parent, text, complete, signifier, (error, task) => {
@@ -296,7 +327,7 @@ export function createTask (parent, text, complete, signifier, shouldUpdate, cal
  * @param {String} objectReference The id of the task or event if kind was kind or event (optional).
  * @param {String} signifier The id of the signifier that should be used by this textBlock.
  * @param {Date} date The date to be inserted if kind was an event (optional).
- * @callback (error,textBlock) Either sends the textBlock or an error, if there is one, to the callback.
+ * @param {doubleParameterCallback} callback Either sends the textBlock or an error, if there is one, to the callback.
  */
 export function createTextBlock (parent, subParent, index, content, tabLevel, kind, objectReference, signifier, date, shouldUpdate, callback) {
 	createTextBlockPouch(db, parent, subParent, index, content, tabLevel, kind, objectReference, signifier, date, (error, textBlock) => {
@@ -313,7 +344,7 @@ export function createTextBlock (parent, subParent, index, content, tabLevel, ki
  * @param {String} title The title of the new tracker.
  * @param {Array} content The array of id's of textBlocks that are included in the new tracker.
  * @param {String} parent The id of the parent of the new tracker.
- * @callback (error,tracker) Either sends the tracker or an error, if there is one, to the callback.
+ * @param {doubleParameterCallback} callback Either sends the tracker or an error, if there is one, to the callback.
  */
 export function createTracker (title, content, parent, shouldUpdate, callback) {
 	createTrackerPouch(db, title, content, parent, (err, tracker) => {
@@ -327,10 +358,12 @@ export function createTracker (title, content, parent, shouldUpdate, callback) {
 /**
  * Reads the user in the local db and updates the online db.
  *
- * @callback (error,user) Either sends the user or an error, if there is one, to the callback.
+ * @param {doubleParameterCallback} callback Either sends the user or an error, if there is one, to the callback.
  */
 export function readUser (callback) {
 	readUserPouch(db, (err, user) => {
+		console.log(err);
+		console.log(user);
 		callback(err, user);
 	});
 }
@@ -338,7 +371,7 @@ export function readUser (callback) {
 /**
  * Deletes the user in the local db.
  *
- * @callback (user) returns the user object that was deleted.
+ * @param {singleParameterCallback} callback Returns the user object that was deleted.
  */
 export function deleteUser (callback) {
 	deleteUserPouch(db, (user) => {
@@ -351,7 +384,7 @@ export function deleteUser (callback) {
  * Deletes the imageBlock passed in.
  *
  * @param {Object} imageBlock The object to be deleted.
- * @callback (error) Returns an error if there is one.
+ * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteImageBlock (imageBlock, shouldUpdate, callback) {
 	deleteImageBlockPouch(db, imageBlock.id, (err) => {
@@ -366,7 +399,7 @@ export function deleteImageBlock (imageBlock, shouldUpdate, callback) {
  * Deletes the imageBlock with the id passed in.
  *
  * @param {String} id The id of object to be deleted.
- * @callback (error) Returns an error if there is one.
+ * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteImageBlockByID (id, shouldUpdate, callback) {
 	deleteImageBlockPouch(db, id, (err) => {
@@ -381,7 +414,7 @@ export function deleteImageBlockByID (id, shouldUpdate, callback) {
  * Deletes the audioBlock passed in.
  *
  * @param {Object} audioBlock The object to be deleted.
- * @callback (error) Returns an error if there is one.
+ * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteAudioBlock (audioBlock, shouldUpdate, callback) {
 	deleteAudioBlockPouch(db, audioBlock.id, (err) => {
@@ -396,7 +429,7 @@ export function deleteAudioBlock (audioBlock, shouldUpdate, callback) {
  * Deletes the audioBlock with the id passed in.
  *
  * @param {String} id The id of the object to be deleted.
- * @callback (error) Returns an error if there is one.
+ * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteAudioBlockByID (id, shouldUpdate, callback) {
 	deleteAudioBlockPouch(db, id, (err) => {
@@ -411,7 +444,7 @@ export function deleteAudioBlockByID (id, shouldUpdate, callback) {
  * Deletes the collection passed in.
  *
  * @param {Object} collection The object to be deleted.
- * @callback (error) Returns an error if there is one.
+ * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteCollection (collection, shouldUpdate, callback) {
 	deleteCollectionPouch(db, collection.id, (err) => {
@@ -426,7 +459,7 @@ export function deleteCollection (collection, shouldUpdate, callback) {
  * Deletes the collection with the id passed in.
  *
  * @param {Object} imageBlock The object to be deleted.
- * @callback (error) Returns an error if there is one.
+ * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteCollectionByID (id, shouldUpdate, callback) {
 	deleteCollectionPouch(db, id, (err) => {
@@ -441,7 +474,7 @@ export function deleteCollectionByID (id, shouldUpdate, callback) {
  * Deletes the event with the id passed in.
  *
  * @param {Object} event The object to be deleted.
- * @callback (error) Returns an error if there is one.
+ * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteEvent (event, shouldUpdate, callback) {
 	deleteEventPouch(db, event.id, (err) => {
@@ -456,7 +489,7 @@ export function deleteEvent (event, shouldUpdate, callback) {
  * Deletes the event with the id passed in.
  *
  * @param {String} id The id of the object to be deleted.
- * @callback (error) Returns an error if there is one.
+ * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteEventByID (id, shouldUpdate, callback) {
 	deleteEventPouch(db, id, (err) => {
@@ -472,7 +505,7 @@ export function deleteEventByID (id, shouldUpdate, callback) {
  *
  * @param {Array} container The array where event is in.
  * @param {index} index The index in the container to delete the event.
- * @callback (error) Returns an error if there is one.
+ * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteEventAtIndex (container, index, shouldUpdate, callback) {
 	deleteEventPouch(db, container.content[index], (err) => {
@@ -487,7 +520,7 @@ export function deleteEventAtIndex (container, index, shouldUpdate, callback) {
  * Deletes the signifier passed in.
  *
  * @param {Object} signifier The object to be deleted.
- * @callback (error) Returns an error if there is one.
+ * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteSignifier (signifier, shouldUpdate, callback) {
 	deleteSignifierPouch(db, signifier.id, (err) => {
@@ -502,7 +535,7 @@ export function deleteSignifier (signifier, shouldUpdate, callback) {
  * Deletes the signifier with the id passed in.
  *
  * @param {String} id The id of the object to be deleted.
- * @callback (error) Returns an error if there is one.
+ * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteSignifierByID (id, shouldUpdate, callback) {
 	deleteSignifierPouch(db, id, (err) => {
@@ -517,7 +550,7 @@ export function deleteSignifierByID (id, shouldUpdate, callback) {
  * Deletes the signifier of the block passed in.
  *
  * @param {Object} block The object to delete the signifier from.
- * @callback (error) Returns an error if there is one.
+ * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteSignifierAtBlock (block, shouldUpdate, callback) {
 	deleteSignifierPouch(db, block.signifier, (err) => {
@@ -532,7 +565,7 @@ export function deleteSignifierAtBlock (block, shouldUpdate, callback) {
  * Deletes the task passed in.
  *
  * @param {Object} task The object to be deleted.
- * @callback (error) Returns an error if there is one.
+ * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteTask (task, shouldUpdate, callback) {
 	deleteTaskPouch(db, task.id, (err) => {
@@ -547,7 +580,7 @@ export function deleteTask (task, shouldUpdate, callback) {
  * Deletes the task with the id passed in.
  *
  * @param {String} id The id of the object to be deleted.
- * @callback (error) Returns an error if there is one.
+ * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteTaskByID (id, shouldUpdate, callback) {
 	deleteTaskPouch(db, id, (err) => {
@@ -562,7 +595,7 @@ export function deleteTaskByID (id, shouldUpdate, callback) {
  * Deletes the textBlock passed in.
  *
  * @param {Object} textBlock The object to be deleted.
- * @callback (error) Returns an error if there is one.
+ * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteTextBlock (block, shouldUpdate, callback) {
 	deleteTextBlockPouch(db, block.id, (err) => {
@@ -577,7 +610,7 @@ export function deleteTextBlock (block, shouldUpdate, callback) {
  * Deletes the textBlock with the id passed in.
  *
  * @param {String} id The id of the object to be deleted.
- * @callback (error) Returns an error if there is one.
+ * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteTextBlockByID (id, shouldUpdate, callback) {
 	deleteTextBlockPouch(db, id, (err) => {
@@ -593,7 +626,7 @@ export function deleteTextBlockByID (id, shouldUpdate, callback) {
  *
  * @param {Array} container The array to delete the textBlock from.
  * @param {Number} index The index in the container of the textBlock to be deleted.
- * @callback (error) Returns an error if there is one.
+ * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteTextBlockFromContainer (container, index, shouldUpdate, callback) {
 	deleteTextBlockPouch(db, container.contents[index], (err) => {
@@ -608,7 +641,7 @@ export function deleteTextBlockFromContainer (container, index, shouldUpdate, ca
  * Deletes the tracker passed in.
  *
  * @param {Object} tracker The object to be deleted.
- * @callback (error) Returns an error if there is one.
+ * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteTracker (tracker, shouldUpdate, callback) {
 	deleteTrackerPouch(db, tracker.id, (err) => {
@@ -623,7 +656,7 @@ export function deleteTracker (tracker, shouldUpdate, callback) {
  * Deletes the imageBlock with the id passed in.
  *
  * @param {String} id The id of the object to be deleted.
- * @callback (error) Returns an error if there is one.
+ * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteTrackerByID (id, shouldUpdate, callback) {
 	deleteTrackerPouch(db, id, (err) => {
@@ -639,7 +672,7 @@ export function deleteTrackerByID (id, shouldUpdate, callback) {
  *
  * @param {Array} container The array to delete the tracker from.
  * @param {Number} index The index in the container of the tracker to be deleted.
- * @callback (error) Returns an error if there is one.
+ * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteTrackerFromContainer (container, index, shouldUpdate, callback) {
 	deleteTrackerPouch(db, container.trackers[index], (err) => {
@@ -656,7 +689,7 @@ export function deleteTrackerFromContainer (container, index, shouldUpdate, call
  * Updates the theme of the app.
  *
  * @param {String} theme The name of the theme to switch to.
- * @callback (err) possible error
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateTheme (theme, shouldUpdate, callback) {
 	updateThemePouch(db, theme, (err) => {
@@ -671,7 +704,7 @@ export function updateTheme (theme, shouldUpdate, callback) {
  * Updates the imageBlock.
  *
  * @param {Object} imageBlock The new version of the imageBlock.
- * @callback (error) Sends an error, if there is one, to the callback.
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateImageBlock (imageBlock, shouldUpdate, callback) {
 	updateImageBlockPouch(db, imageBlock, (err) => {
@@ -686,7 +719,7 @@ export function updateImageBlock (imageBlock, shouldUpdate, callback) {
  * Updates the imageBlock with the id given.
  *
  * @param {String} id The id of the new version of the imageBlock.
- * @callback (error) Sends an error, if there is one, to the callback.
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateImageBlockByID (id, shouldUpdate, callback) {
 	db.get("0000", (err, doc) => {
@@ -708,7 +741,7 @@ export function updateImageBlockByID (id, shouldUpdate, callback) {
  * Updates the audioBlock given.
  *
  * @param {Object} audioBlock The new version of the imageBlock.
- * @callback (error) Sends an error, if there is one, to the callback.
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateAudioBlock (audioBlock, shouldUpdate, callback) {
 	updateAudioBlockPouch(db, audioBlock, (err) => {
@@ -723,7 +756,7 @@ export function updateAudioBlock (audioBlock, shouldUpdate, callback) {
  * Updates the audioBlock with the id given.
  *
  * @param {String} id The id of the new version of the audioBlock.
- * @callback (error) Sends an error, if there is one, to the callback.
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateAudioBlockByID (id, shouldUpdate, callback) {
 	db.get("0000", (err, doc) => {
@@ -745,7 +778,7 @@ export function updateAudioBlockByID (id, shouldUpdate, callback) {
  * Updates the dailtLog given.
  *
  * @param {Object} dailyLog The new version of the imageBlock.
- * @callback (error) Sends an error, if there is one, to the callback.
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateDailyLog (dailyLog, shouldUpdate, callback) {
 	updateDailyLogPouch(db, dailyLog, (err) => {
@@ -760,7 +793,7 @@ export function updateDailyLog (dailyLog, shouldUpdate, callback) {
  * Updates the dailyLog with the id given.
  *
  * @param {String} id The id of the new version of the dailyLog.
- * @callback (error) Sends an error, if there is one, to the callback.
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateDailyLogByID (id, shouldUpdate, callback) {
 	db.get("0000", (err, doc) => {
@@ -782,7 +815,7 @@ export function updateDailyLogByID (id, shouldUpdate, callback) {
  * Updates the monthlyLog given.
  *
  * @param {Object} monthlyLog The new version of the imageBlock.
- * @callback (error) Sends an error, if there is one, to the callback.
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateMonthlyLog (monthlyLog, shouldUpdate, callback) {
 	updateMonthlyLogPouch(db, monthlyLog, (err) => {
@@ -797,7 +830,7 @@ export function updateMonthlyLog (monthlyLog, shouldUpdate, callback) {
  * Updates the monthlyLog with the id given.
  *
  * @param {String} id The id of the new version of the monthlyLog.
- * @callback (error) Sends an error, if there is one, to the callback.
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateMonthlyLogByID (id, shouldUpdate, callback) {
 	db.get("0000", (err, doc) => {
@@ -819,7 +852,7 @@ export function updateMonthlyLogByID (id, shouldUpdate, callback) {
  * Updates the futureLog given.
  *
  * @param {Object} futureLog The id of the new version of the futureLog.
- * @callback (error) Sends an error, if there is one, to the callback.
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateFutureLog (futureLog, shouldUpdate, callback) {
 	updateFutureLogPouch(db, futureLog, (error) => {
@@ -834,7 +867,7 @@ export function updateFutureLog (futureLog, shouldUpdate, callback) {
  * Updates the futureLog with the id given.
  *
  * @param {String} id The id of the new version of the futureLog.
- * @callback (error) Sends an error, if there is one, to the callback.
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateFutureLogByID (id, shouldUpdate, callback) {
 	db.get("0000", (err, doc) => {
@@ -856,7 +889,7 @@ export function updateFutureLogByID (id, shouldUpdate, callback) {
  * Updates the collection given.
  *
  * @param {Object} collection The new version of the imageBlock.
- * @callback (error) Sends an error, if there is one, to the callback.
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateCollection (collection, shouldUpdate, callback) {
 	updateCollectionPouch(db, collection, (error) => {
@@ -871,7 +904,7 @@ export function updateCollection (collection, shouldUpdate, callback) {
  * Updates the collection with the id given.
  *
  * @param {String} id The id of the new version of the collection.
- * @callback (error) Sends an error, if there is one, to the callback.
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateCollectionByID (id, shouldUpdate, callback) {
 	db.get("0000", (err, doc) => {
@@ -893,7 +926,7 @@ export function updateCollectionByID (id, shouldUpdate, callback) {
  * Updates the event given.
  *
  * @param {Object} event The new version of the imageBlock.
- * @callback (error) Sends an error, if there is one, to the callback.
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateEvent (event, shouldUpdate, callback) {
 	updateEventPouch(db, event, (error) => {
@@ -908,7 +941,7 @@ export function updateEvent (event, shouldUpdate, callback) {
  * Updates the event with the id given.
  *
  * @param {String} id The id of the new version of the event.
- * @callback (error) Sends an error, if there is one, to the callback.
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateEventByID (id, shouldUpdate, callback) {
 	db.get("0000", (err, doc) => {
@@ -931,7 +964,7 @@ export function updateEventByID (id, shouldUpdate, callback) {
  *
  * @param {Array} container The Array where the event should updated in.
  * @param {Number} index The index at which the event is at in the container.
- * @callback (error) Sends an error, if there is one, to the callback.
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateEventAtIndex (container, index, shouldUpdate, callback) {
 	db.get("0000", (err, doc) => {
@@ -953,7 +986,7 @@ export function updateEventAtIndex (container, index, shouldUpdate, callback) {
  * Updates the signifier given.
  *
  * @param {Object} signifier The new version of the imageBlock.
- * @callback (error) Sends an error, if there is one, to the callback.
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateSignifier (signifier, shouldUpdate, callback) {
 	updateSignifierPouch(db, signifier, (error) => {
@@ -968,7 +1001,7 @@ export function updateSignifier (signifier, shouldUpdate, callback) {
  * Updates the signifier with the id given.
  *
  * @param {String} id The id of the new version of the signifier.
- * @callback (error) Sends an error, if there is one, to the callback.
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateSignifierByID (id, shouldUpdate, callback) {
 	db.get("0000", (err, doc) => {
@@ -990,7 +1023,7 @@ export function updateSignifierByID (id, shouldUpdate, callback) {
  * Updates the signifier in the block given.
  *
  * @param {Object} block The block to update the signifier at.
- * @callback (error) Sends an error, if there is one, to the callback.
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateSignifierAtBlock (block, shouldUpdate, callback) {
 	db.get("0000", (err, doc) => {
@@ -1012,7 +1045,7 @@ export function updateSignifierAtBlock (block, shouldUpdate, callback) {
  * Updates the task given.
  *
  * @param {Object} task The id of the new version of the imageBlock.
- * @callback (error) Sends an error, if there is one, to the callback.
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateTask (task, shouldUpdate, callback) {
 	updateTaskPouch(db, task, (err) => {
@@ -1027,7 +1060,7 @@ export function updateTask (task, shouldUpdate, callback) {
  * Updates the task with the id given.
  *
  * @param {String} id The id of the new version of the task.
- * @callback (error) Sends an error, if there is one, to the callback.
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateTaskByID (id, shouldUpdate, callback) {
 	db.get("0000", (err, doc) => {
@@ -1050,7 +1083,7 @@ export function updateTaskByID (id, shouldUpdate, callback) {
  *
  * @param {Object} block The new version of the textBlock.
  * @param {Date} date The date to be inserted if the update is to make the textBlock have an event with a date.
- * @callback (error) Sends an error, if there is one, to the callback.
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateTextBlock (block, date, shouldUpdate, callback) {
 	updateTextBlockPouch(db, block, date, (err) => {
@@ -1066,7 +1099,7 @@ export function updateTextBlock (block, date, shouldUpdate, callback) {
  *
  * @param {String} id The id of the new version of the textBlock.
  * @param {Date} date The date to be inserted if the update is to make the textBlock have an event with a date.
- * @callback (error) Sends an error, if there is one, to the callback.
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateTextBlockByID (id, date, shouldUpdate, callback) {
 	db.get("0000", (err, doc) => {
@@ -1089,7 +1122,7 @@ export function updateTextBlockByID (id, date, shouldUpdate, callback) {
  *
  * @param {Array} container The array where the textBlock is at.
  * @param {Number} index The index in the container where the textBlock is at.
- * @callback (error) Sends an error, if there is one, to the callback.
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateTextBlockFromContainer (container, index, date, shouldUpdate, callback) {
 	db.get("0000", (err, doc) => {
@@ -1111,7 +1144,7 @@ export function updateTextBlockFromContainer (container, index, date, shouldUpda
  * Updates the tracker given.
  *
  * @param {Object} tracker The new version of the tracker.
- * @callback (error) Sends an error, if there is one, to the callback.
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateTracker (tracker, shouldUpdate, callback) {
 	updateTrackerPouch(db, tracker, (err) => {
@@ -1126,7 +1159,7 @@ export function updateTracker (tracker, shouldUpdate, callback) {
  * Updates the tracker with the id given.
  *
  * @param {String} id The id of the new version of the tracker.
- * @callback (error) Sends an error, if there is one, to the callback.
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateTrackerByID (id, shouldUpdate, callback) {
 	db.get("0000", (err, doc) => {
@@ -1149,7 +1182,7 @@ export function updateTrackerByID (id, shouldUpdate, callback) {
  *
  * @param {Array} container The array where the tracker is at.
  * @param {Number} index The index in the container where the tracker is at.
- * @callback (error) Sends an error, if there is one, to the callback.
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateTrackerFromContainer (container, index, shouldUpdate, callback) {
 	db.get("0000", (err, doc) => {

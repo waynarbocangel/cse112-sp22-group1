@@ -1,6 +1,11 @@
+/**
+ * Text Block Module
+ * @module textBlockModule
+ */
 import * as localStorage from "../localStorage/userOperations.js";
 import * as shadow from "./shadow.js";
 import {currentObject} from "../index.js";
+import { BlockController } from "./blockController.js";
 
 const tabSize = 20;
 const paddingSize = 10;
@@ -224,12 +229,22 @@ function getDate (textBlock, deleteString) {
 	return date;
 }
 
+
+/**
+ * Class to create new editor block
+ */
 export class TextBlock extends HTMLElement {
+	/**
+	 * Editor block constructor
+	 * @param {BlockController} controller - the editor's controller
+	 * @param {Object} itemObject - the database item representing the editor
+	 * @param {Object} signifier - the editor's current signifier
+	 * @param {Function} callback - callback for the end of the constructor function
+	 */
 	constructor (controller, itemObject, signifier, callback) {
 		console.trace();
 		super();
-		fetch("./components/block.html").then((response) => response.text()).
-then((html) => {
+		fetch("./components/block.html").then((response) => response.text()).then((html) => {
 			let parser = new DOMParser();
 			let blockTemplateFile = parser.parseFromString(html, "text/html");
 			let blockTemplate = blockTemplateFile.getElementById("block");
@@ -300,8 +315,8 @@ then((html) => {
 	/**
 	 * Moves the textBlock to the location it was last dragged to(?)
 	 *
-	 * @param {*} newSpotToMove
-	 * @param {*} up
+	 * @param {*} newSpotToMove - the possible new spot to move to
+	 * @param {*} up - whether the cursor should move up or down
 	 */
 	moveToSpot (newSpotToMove, up) {
 		let newSpot = newSpotToMove
@@ -564,6 +579,10 @@ then((html) => {
 			this.controller.blockArray[this.controller.currentBlockIndex].setCurrentSpot();
 		});
 
+		/** 
+		 * @type {HTMLElement}
+		 * @listens document#click
+		 */
 		this.checkBox.onclick = (e) => {
 			if (this.checkBox.getAttribute("checked") === "checked") {
 				this.checkBox.setAttribute("checked", "");
@@ -605,7 +624,7 @@ then((html) => {
 		/**
 		 * Gets the user's clipboard data, filters for valid editor text, and pastes it to the textBlock.
 		 *
-		 * @param {User} e
+		 * @param {Event} e
 		 */
 		textBlock.onpaste = (e) => {
 			// Get user's pasted data
@@ -752,7 +771,7 @@ then((html) => {
 		 * If "tab" is hit, then the tab level is increased and the textBlock styling is
 		 * set up for each type of block type(?)
 		 *
-		 * @param {*} e
+		 * @param {Event} e
 		 */
 		textBlock.onkeydown = (e) => {
 			let key = e.key || e.keyCode;
@@ -813,7 +832,7 @@ then((html) => {
 					e.preventDefault();
 				} else {
 					this.controller.resetPosition = false;
-					this.controller.addNewBlock();
+					this.controller.addNewBlock(null);
 					e.preventDefault();
 				}
 			} else if (key === "ArrowDown") {
