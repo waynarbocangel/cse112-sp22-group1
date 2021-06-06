@@ -1,4 +1,7 @@
-codebase/front-end/localStorage/pouchdb-7.2.1.min.js
-codebase/front-end/components/shadow.js
+src/front-end/localStorage/pouchdb-7.2.1.min.js
+src/front-end/components/shadow.js
 **/__tests__/*
 **/unitTests/*
+documentation/scripts/linenumber.js
+documentation/scripts/prettify/lang-css.js
+documentation/scripts/prettify/prettify.js
