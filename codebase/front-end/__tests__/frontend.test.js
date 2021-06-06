@@ -12,6 +12,7 @@ describe('Basic user flow for SPA ', () => {
       expect(1).toBe(1);
     });
 
+    
     // Test 1
     it('Test1: Initial Home Page - Check Home Page', async () => {
 
@@ -25,12 +26,15 @@ describe('Basic user flow for SPA ', () => {
       
       // check that alert shows & url
     
-      
+      expect(page.url()).toBe("http://localhost:8080/login/");
     });
 
     // Test 3
     it('Log in', async () => {
-      // fill in fields, login, check link
+      // fill in fields, click login, check link
+
+      
+      //await page.click("login-form-submit");
 
     });
 
@@ -49,6 +53,6 @@ describe('Basic user flow for SPA ', () => {
     });
 
   
-
+ 
 
 });
