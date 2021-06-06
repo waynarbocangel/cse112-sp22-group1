@@ -1,4 +1,4 @@
-import * as localStorage from "./../userOperations.js";
+import * as localStorage from "../userOperations.js";
 import {makeid} from "./makeId.js";
 
 let textBlockObject = {};

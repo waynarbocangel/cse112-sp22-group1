@@ -20,20 +20,19 @@ on:
 jobs:
   generate-docs:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x, 15.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
     steps:
     - uses: actions/checkout@v2
-    - name: JSDoc Action
-      # uses: andstor/jsdoc-action@2fb2b536605bdebace2b92abb0601155d5ddc688
-      uses: andstor/jsdoc-action@v1.2.0
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
       with:
-        # Source directory to build documentation from
-        source_dir: ./codebase
-        # Output folder for the generated documentation
-        output_dir: ./codebaseDocs
-        # Recurse into subdirectories when scanning for source files
-        recurse: true
-        # The path to a Markdown file to be used as a the front page
-        front_page: ./codebase/CI-CD-pipeline.md
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+    - run: npm jsdoc
 
   back-end-build:
     runs-on: ubuntu-latest
