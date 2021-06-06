@@ -4,7 +4,7 @@
   "description": "This is the front-end for CSE 110 Spring 2021 Team 11",
   "main": "server.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --detectOpenHandles",
     "start": "nodemon server.js & nodemon ../back-end/index.js"
   },
   "author": "CSE 110 Team 11",
