@@ -3,8 +3,10 @@
  * @module index
  */
 import * as localStorage from "./localStorage/userOperations.js";
+import { CreationMenu } from "./components/creationMenu.js";
 import { CreatorBlock } from "./components/creator.js";
 import { DropdownBlock } from "./components/dropdown.js";
+import { InlineDropdown } from "./components/inlineDropdown.js";
 import { NavBar } from "./components/navbar.js";
 import { PageHeader } from "./components/header.js";
 import { TrackerBlock } from "./components/trackerBlock.js";
@@ -14,14 +16,36 @@ import { router } from "./router.js";
 
 document.querySelector("body").style.display = "none";
 
+/**
+ * The index page navbar
+ */
 export let navbar = new NavBar();
+
+/**
+ * the index page header
+ */
 export let header = new PageHeader();
+
+/**
+ * index page dropdown
+ */
+export let adderDropdown = new InlineDropdown();
+
+/**
+ * index page futureLog creation menu
+ */
+export let creationMenu = new CreationMenu("futureLog");
 export let url = "";
 export let pageNumber = 1;
 
+/**
+ * @type {DailyLog}
+ */
 export let currentObject = {};
 
 let contentWrapper = document.getElementById("contentWrapper");
+document.getElementById("adderDropdown").appendChild(adderDropdown);
+document.getElementById("creationMenu").appendChild(creationMenu);
 document.getElementById("topbar").appendChild(header);
 document.getElementById("sidebar").appendChild(navbar);
 document.getElementById("targetMenu").onclick = () => {

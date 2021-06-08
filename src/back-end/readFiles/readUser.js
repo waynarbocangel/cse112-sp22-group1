@@ -1,3 +1,7 @@
+/**
+ * Mongo Read Funcions
+ * @namespace mongoRead
+ */
 require("dotenv").config();
 const mongoose = require("mongoose");
 const schema = require(__dirname + "/../schema.js");
@@ -8,7 +12,7 @@ mongoose.set("useCreateIndex", true);
 
 /**
  * Reads the user from the online db and sends it to the callback.
- *
+ * @memberof mongoRead
  * @param {Object} userData The user data object to read from the online db.
  * @callback (response) Either sends the user as an object from the online db or and error, if there is one, to the callback.
  */

@@ -206,11 +206,17 @@ template.innerHTML = `
 	</nav>
 `;
 
+/**
+ * Class that Creates navbar
+ */
 export class NavBar extends HTMLElement {
 	static get observedAttributes () {
 		return ["open"];
 	}
 
+	/**
+	 * Navbar constructor
+	 */
 	constructor () {
 		super();
 		this.attachShadow({ mode: "open" });
@@ -343,11 +349,6 @@ export class NavBar extends HTMLElement {
 		return this.hasAttribute("open");
 	}
 
-	/**
-	 * Menu is toggeled if parameter is true
-	 *
-	 * @param {Boolean} isOpen boolean to check if menu should be toggled or not
-	 */
 	set open (isOpen) {
 		this.menu.classList.toggle("open", isOpen);
 		this.menu.classList.toggle("closed", !isOpen);

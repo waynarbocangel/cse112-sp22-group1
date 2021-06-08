@@ -4,7 +4,7 @@
  */
 import * as localStorage from "../localStorage/userOperations.js";
 import * as shadow from "./shadow.js";
-import {currentObject} from "../index.js";
+import {currentObject, adderDropdown} from "../index.js";
 import { BlockController } from "./blockController.js";
 
 const tabSize = 20;
@@ -239,7 +239,7 @@ export class TextBlock extends HTMLElement {
 	 * @param {BlockController} controller - the editor's controller
 	 * @param {Object} itemObject - the database item representing the editor
 	 * @param {Object} signifier - the editor's current signifier
-	 * @param {Function} callback - callback for the end of the constructor function
+	 * @param {singleParameterCallback} callback - callback for the end of the constructor function
 	 */
 	constructor (controller, itemObject, signifier, callback) {
 		console.trace();
@@ -281,6 +281,8 @@ export class TextBlock extends HTMLElement {
 			this.signifier = signifier
 			this.signifierIcon = this.shadowRoot.getElementById("signifier");
 			this.signifierIcon.innerHTML = this.signifier.symbol;
+			this.plus = this.shadowRoot.getElementById("plus");
+			this.more = this.shadowRoot.getElementById("more");
 			this.setupTabLevel();
 			callback(true);
 		})
@@ -315,8 +317,8 @@ export class TextBlock extends HTMLElement {
 	/**
 	 * Moves the textBlock to the location it was last dragged to(?)
 	 *
-	 * @param {*} newSpotToMove - the possible new spot to move to
-	 * @param {*} up - whether the cursor should move up or down
+	 * @param {Number} newSpotToMove - the possible new spot to move to
+	 * @param {Boolean} up - whether the cursor should move up or down
 	 */
 	moveToSpot (newSpotToMove, up) {
 		let newSpot = newSpotToMove
@@ -578,6 +580,10 @@ export class TextBlock extends HTMLElement {
 		document.addEventListener(shadow.eventName, () => {
 			this.controller.blockArray[this.controller.currentBlockIndex].setCurrentSpot();
 		});
+
+		this.plus.onclick = () => {
+			console.log("hello there");
+		}
 
 		/** 
 		 * @type {HTMLElement}

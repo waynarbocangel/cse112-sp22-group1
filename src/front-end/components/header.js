@@ -1,7 +1,13 @@
 import * as localStorage from "../localStorage/userOperations.js";
-import { navbar } from "../index.js";
+import { currentObject, creationMenu, adderDropdown, navbar } from "../index.js";
 
+/**
+ * Class that creates Page Header
+ */
 export class PageHeader extends HTMLElement {
+	/**
+	 * PageHeader constructor
+	 */
 	constructor () {
 		super();
 		this.attachShadow({ mode: "open" });
@@ -330,7 +336,7 @@ export class PageHeader extends HTMLElement {
 			
 				<button class="imgbutton plus"><img src="../public/resources/plusIcon.png"></button>
 			
-				<span class="search_bar">
+				<span class="search_bar" id="searchBar">
 					<input type="text" placeholder="Search">
 					<img src="../public/resources/search_icon.png">
 				</span>
@@ -341,18 +347,39 @@ export class PageHeader extends HTMLElement {
 
 		this.createFutureLog = this.createFutureLog.bind(this);
 		this.futureLogButton = this.shadowRoot.querySelector(".plus");
-		this.futureLogButton.addEventListener("click", () => {
-			this.createFutureLog();
-		});
 
 		this.imgbuttons = this.shadowRoot.querySelectorAll(".imgbutton");
 		this.menuToggle = this.shadowRoot.querySelector("#menuToggle input");
+		this.searchBar = this.shadowRoot.getElementById("searchBar");
 	}
 
 	/**
 	 * When header is created, the callback will listen to when the menu is toggled
 	 */
 	connectedCallback () {
+		this.futureLogButton.addEventListener("click", () => {
+			if (currentObject.objectType == "index") {
+				adderDropdown.fillDropdown([{
+					title: "New Future Log",
+					listener: () => {
+						creationMenu.setKind("futureLog");
+						creationMenu.show();
+						adderDropdown.hide();
+					}
+				}, {
+					title: "New Collection",
+					listener: () => {
+						creationMenu.setKind("collection");
+						creationMenu.show();
+						adderDropdown.hide();
+					}
+				}]);
+				let searchbarShift = this.searchBar.style.display === "none" ? 0 : this.searchBar.getBoundingClientRect().width;
+				adderDropdown.setPosition(this.offsetHeight, window.innerWidth - 210 - searchbarShift);
+				adderDropdown.toggleDropdown();
+			}
+		});
+
 		this.menuToggle.addEventListener("change", () => {
 			navbar.toggle();
 		});
@@ -372,11 +399,6 @@ export class PageHeader extends HTMLElement {
 		this.h1.contentEditable = false;
 	}
 
-	/**
-	 * Sets header title based on current page
-	 *
-	 * @param {String} title the title to set
-	 */
 	set title (title) {
 		this.shadowRoot.getElementById("title_page").innerHTML = title;
 	}

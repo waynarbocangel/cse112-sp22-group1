@@ -1,10 +1,10 @@
 
 /**
  * Creates and stores a new user created from the given parameters.
- *
+ * @memberof createFunctions
  * @param {database} db The local pouch database.
  * @param {Object} userObject The user as an object.
- * @callback (response) Eihter sends the newly created user or an error if there is one to the callback.
+ * @param {singleParameterCallback} callback Eihter sends the newly created user or an error if there is one to the callback.
  */
 export function createUserPouch (db, userObject, callback) {
 	db.put({

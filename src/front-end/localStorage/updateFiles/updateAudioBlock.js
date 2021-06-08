@@ -1,21 +1,10 @@
-/**
- * Single parameter callback
- * @callback singleParameterCallback
- * @param {Object} res - object or null if successful, error otherwise
- */
 
-/**
- * Double parameter callback
- * @callback doubleParamterCallback
- * @param {Object} err - error if failed, null otherwise
- * @param {Object} res - created / updated object if successful, null otherwise
- */
 /**
  * Finds and update the audioBlock passed in.
  * @memberof updateFunctions
  * @param {database} db The local pouch database.
  * @param {Object} audioBlock The audioBlock to be deleted.
- * @param {Function} callback Sends an error if there is one to the callback.
+ * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
 export function updateAudioBlockPouch (db, audioBlock, callback) {
 	db.get("0000", (err, doc) => {

@@ -5,7 +5,7 @@ let textBlockObject = {};
 
 /**
  * Creates and stores a new event created from the given parameters.
- *
+ * @memberof createFunctions
  * @param {database} db The local pouch database.
  * @param {String} parent The id of the parent of the new textBlock.
  * @param {String} subParent The id of the child within the parent's content list.
@@ -16,7 +16,7 @@ let textBlockObject = {};
  * @param {String} objectReference The id of the task or event linked to the textBlock.
  * @param {String} signifier The signifier used by the textBlock.
  * @param {Date} date The date of the event if the textBlock kind was an event (opional).
- * @callback (err,textBlock) Eihter sends the newly created textBlock or an error if there is one to the callback.
+ * @param {doubleParameterCallback} callback Eihter sends the newly created textBlock or an error if there is one to the callback.
  */
 export function createTextBlockPouch (db, parent, subParent, index, content, tabLevel, kind, objectReference, signifier, date, callback) {
 	db.get("0000", (err, doc) => {

@@ -1,8 +1,21 @@
+/**
+ * Router
+ * @module router
+ */
+
 import * as localStorage from "./localStorage/userOperations.js";
 import {fade, unfade} from "./transitions.js";
 import {getCurrentObject, navbar, pageNumber, setupDailyLog, setupFutureLog, setupIndex, setupMonthlyLog, url} from "./index.js";
 
+/**
+ * @typedef {Object} Router
+ * @property {String} route the route urls for the site
+ */
 export const router = {};
+
+/**
+ * @type {String}
+ */
 export let state = "";
 
 /**

@@ -4,6 +4,16 @@ import {makeid} from "./makeId.js";
 let monthlyObject = {};
 let startProcessed = false;
 
+/**
+ * Recursive function that adds monthlyLogs between start and end dates to futureLog
+ * @static
+ * @memberof createFunctions
+ * @param {Date} currentDay The day at which the function is currently at.
+ * @param {Date} startDate The start date of the monthlyLog.
+ * @param {Date} endDay The last day of the monthlyLog
+ * @param {Object} month The monthlyLog to add the dailyLogs to.
+ * @param {singleParameterCallback} callback Either sends an array of the dailyLogs added or sends an error, if ther is one, to the callback.
+ */
 function addDay (currentDay, startDate, endDay, month, callback) {
 	let dayDate = new Date(startDate.getFullYear(), startDate.getMonth(), currentDay);
 	if (currentDay > endDay) {
@@ -24,15 +34,15 @@ function addDay (currentDay, startDate, endDay, month, callback) {
 
 /**
  * Creates and stores a new monthlyLog created from the given parameters.
- *
+ * @memberof createFunctions
  * @param {database} db The local pouch database.
  * @param {String} parent The id of the parent of the new monthlyLog.
  * @param {Array} days The id's of the days included in the monthlyLog.
  * @param {Array} trackers The id's of the trackers included in the monthlyLog.
  * @param {Date} date The date of the monthlyLog.
- * @callback (err,monthlyLog) Eihter sends the newly created monthlyLog or an error if there is one to the callback.
+ * @param {doubleParameterCallback} callback Eihter sends the newly created monthlyLog or an error if there is one to the callback.
  */
-export function createMonthlyLogPouch (db, parent, content, days, trackers, date, callback) {
+export function createMonthlyLogPouch (db, parent, days, trackers, date, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err, null);
@@ -61,7 +71,6 @@ export function createMonthlyLogPouch (db, parent, content, days, trackers, date
 				objectType: "monthlyLog",
 				date: date,
 				parent: parent,
-				content: content,
 				days: days,
 				trackers: trackers
 			};
@@ -87,10 +96,9 @@ export function createMonthlyLogPouch (db, parent, content, days, trackers, date
 			})
 		}
 	}).then((res) => {
-		if (res.ok) {
+		if (res) {
 			let ending = monthlyObject.date.getDate() !== new Date(monthlyObject.date.getFullYear(), monthlyObject.date.getMonth() + 1, 0).getDate() && startProcessed;
 			let date2 = new Date(monthlyObject.date.getFullYear(), ending ? monthlyObject.date.getMonth() : monthlyObject.date.getMonth() + 1, ending ? monthlyObject.date.getDate() : 0);
-			console.log(date2);
 			let dayDate = date2.getDate();
 			let startDate = 1;
 			if (!startProcessed) {
@@ -120,7 +128,7 @@ export function createMonthlyLogPouch (db, parent, content, days, trackers, date
 						events: doc.events,
 						signifiers: doc.signifiers
 					}).then((response) => {
-						if (response.ok) {
+						if (response) {
 							callback(null, monthlyObject);
 						}
 					}).catch((error2) => {
@@ -128,6 +136,8 @@ export function createMonthlyLogPouch (db, parent, content, days, trackers, date
 					});
 				});
 			});
+		} else {
+			console.log(res);
 		}
 	}).catch((err) => {
 		callback(err, null);

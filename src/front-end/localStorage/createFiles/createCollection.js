@@ -3,12 +3,12 @@ let collectionObject = {};
 
 /**
  * Creates and stores a new collection created from the given parameters.
- *
+ * @memberof createFunctions
  * @param {database} db The local pouch database.
  * @param {String} title The title to give to the collection.
  * @param {String} parent The id of the parent of the new collection.
  * @param {Array} content An array of textBlocks to add to the collection.
- * @callback (err,collection) Eihter sends the newly created collection or an error if there is one to the callback.
+ * @param {doubleParameterCallback} callback Eihter sends the newly created collection or an error if there is one to the callback.
  */
 export function createCollectionPouch (db, title, parent, content, callback) {
 	db.get("0000", (err, doc) => {

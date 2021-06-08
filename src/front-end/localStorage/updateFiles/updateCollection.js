@@ -3,7 +3,7 @@
  * @memberof updateFunctions
  * @param {database} db The local pouch database.
  * @param {Object} collection The collection to be deleted.
- * @callback (res) Sends an error if there is one to the callback.
+ * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
 export function updateCollectionPouch (db, collection, callback) {
 	console.log(collection);

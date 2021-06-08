@@ -1,10 +1,10 @@
 
 /**
  * Finds and update the theme passed in.
- *
+ * @memberof updateFunctions
  * @param {database} db The local pouch database.
  * @param {String} theme The theme to be deleted.
- * @callback (res) Sends an error if there is one to the callback.
+ * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
 export function updateThemePouch (db, theme, callback) {
 	console.log(theme);

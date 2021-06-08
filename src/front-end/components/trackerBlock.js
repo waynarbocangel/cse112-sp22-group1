@@ -1,7 +1,17 @@
 import * as localStorage from "../localStorage/userOperations.js";
 import {createEditor} from "./blockController.js";
 
+/**
+ * Class that creates TrackerBlock
+ */
 export class TrackerBlock extends HTMLElement {
+	/**
+	 * TrackerBlock constructor
+	 * @param {String} title - Title to give the tracker
+	 * @param {String} parent - The id of the tracker's parent
+	 * @param {Object} tracker - The tracker object
+	 * @param {Object} trackerMenu - The menu where the tracker block was created from
+	 */
 	constructor (title, parent, tracker, trackerMenu) {
 		super();
 		let template = document.createElement("template");

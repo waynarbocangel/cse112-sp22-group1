@@ -62,11 +62,24 @@ export let db = new PouchDB("Users");
 /* eslint-enable */
 
 /**
+ * Single parameter callback
+ * @callback singleParameterCallback
+ * @param {Object} res - object or null if successful, error otherwise
+ */
+
+/**
+ * Double parameter callback
+ * @callback doubleParameterCallback
+ * @param {Object} err - error if failed, null otherwise
+ * @param {Object} res - created / updated object if successful, null otherwise
+ */
+
+/**
  * Creates a new user in the remote and local db's
  * (needs both front-end and back-end servers to be running)
  * @param {String} email The new user's email.
  * @param {String} pwd The new user's pwd.
- * @param {Function} callback Sends user json data to the callback.
+ * @param {singleParameterCallback} callback Sends user json data to the callback.
  */
  export function loginUser (email, pwd, callback) {
 	fetch("http://localhost:3000/readUser", {
@@ -78,24 +91,10 @@ export let db = new PouchDB("Users");
 			pwd: pwd
 		}),
 		method: "POST"
-	}).then((data) => data.json()).
-then((res) => {
+	}).then((data) => data.json()).then((res) => {
 		callback(res);
 	});
 }
-
-/**
- * Single parameter callback
- * @callback singleParameterCallback
- * @param {Object} res - object or null if successful, error otherwise
- */
-
-/**
- * Double parameter callback
- * @callback doubleParamterCallback
- * @param {Object} err - error if failed, null otherwise
- * @param {Object} res - created / updated object if successful, null otherwise
- */
 
 /**
  * Creates a user in the local db.
@@ -163,6 +162,7 @@ export function deleteDB () {
  * @param {String} parent The id of the parent of the new imageBlock.
  * @param {String} arrangement The arrangement of the image.
  * @param {Buffer} data The image data stored as a buffer.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {doubleParamterCallback} callback Either sends the imageBlock or an error, if there is one, to the callback.
  */
 export function createImageBlock (parent, arrangement, data, shouldUpdate, callback) {
@@ -180,6 +180,7 @@ export function createImageBlock (parent, arrangement, data, shouldUpdate, callb
  * @param {String} parent The id of the parent of the new audioBlock.
  * @param {String} arrangement The arrangement of the audio.
  * @param {Buffer} data The audio data stored as a buffer.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {doubleParameterCallback} callback Either sends the audioBlock or an error, if there is one, to the callback.
  */
 export function createAudioBlock (parent, arrangement, data, shouldUpdate, callback) {
@@ -197,6 +198,7 @@ export function createAudioBlock (parent, arrangement, data, shouldUpdate, callb
  * @param {String} title The title of the new collection.
  * @param {String} parent The id of the parent of the new collection.
  * @param {Array} content The array of textBlocks included in the collection.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {doubleParameterCallback} callback Either sends the collection or an error, if there is one, to the callback.
  */
 export function createCollection (title, parent, content, shouldUpdate, callback) {
@@ -215,6 +217,7 @@ export function createCollection (title, parent, content, shouldUpdate, callback
  * @param {Array} content The array of textBlocks included in the dailyLog.
  * @param {Array} trackers The array of trackers included in the dailyLog.
  * @param {Date} date The date of the dailyLog
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {doubleParameterCallback} callback Either sends the dailyLog or an error, if there is one, to the callback.
  */
 export function createDailyLog (parent, content, trackers, date, shouldUpdate, callback) {
@@ -233,6 +236,7 @@ export function createDailyLog (parent, content, trackers, date, shouldUpdate, c
  * @param {String} parent The id of the parent of the new event.
  * @param {Date} date The date of the event. (optional)
  * @param {String} signifier The id of the signifier for the new event.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {doubleParameterCallback} callback Either sends the event or an error, if there is one, to the callback.
  */
 export function createEvent (title, parent, date, signifier, shouldUpdate, callback) {
@@ -250,12 +254,12 @@ export function createEvent (title, parent, date, signifier, shouldUpdate, callb
  * @param {Date} startDate The start date of the new futureLog.
  * @param {Date} endDate The end date of the new futureLog.
  * @param {Array} months The id's of the monthlyLogs included in the new futureLog.
- * @param {Array} content The id's of the textBlocks included in the new futureLog.
  * @param {Array} trackers The id's of the trackers included in the new futureLog.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {doubleParameterCallback} callback Either sends the futureLog or an error, if there is one, to the callback.
  */
-export function createFutureLog (startDate, endDate, months, content, trackers, shouldUpdate, callback) {
-	createFutureLogPouch(db, startDate, endDate, months, content, trackers, (err, futureLog) => {
+export function createFutureLog (startDate, endDate, months, trackers, shouldUpdate, callback) {
+	createFutureLogPouch(db, startDate, endDate, months, trackers, (err, futureLog) => {
 		if (shouldUpdate) {
 			updateUserFromMongo();
 		}
@@ -267,13 +271,13 @@ export function createFutureLog (startDate, endDate, months, content, trackers, 
  * Creates a new monthlyLog from the parameters passed in and updates the online db.
  *
  * @param {String} parent The id of the parent of the new monthlyLog.
- * @param {Array} content The array of textBlocks included in the monthlyLog.
  * @param {Array} trackers The array of trackers included in the monthlyLog.
  * @param {Date} date The date of the monthlyLog
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {doubleParameterCallback} callback Either sends the monthlyLog or an error, if there is one, to the callback.
  */
-export function createMonthlyLog (parent, content, days, trackers, date, shouldUpdate, callback) {
-	createMonthlyLogPouch(db, parent, content, days, trackers, date, (error, month) => {
+export function createMonthlyLog (parent, days, trackers, date, shouldUpdate, callback) {
+	createMonthlyLogPouch(db, parent, days, trackers, date, (error, month) => {
 		if (shouldUpdate) {
 			updateUserFromMongo();
 		}
@@ -286,6 +290,7 @@ export function createMonthlyLog (parent, content, days, trackers, date, shouldU
  *
  * @param {String} meaning The meaning of the new signifier.
  * @param {String} symbol The string of the new signifier.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {doubleParameterCallback} callback Either sends the signifier or an error, if there is one, to the callback.
  */
 export function createSignifier (meaning, symbol, shouldUpdate, callback) {
@@ -304,6 +309,7 @@ export function createSignifier (meaning, symbol, shouldUpdate, callback) {
  * @param {String} text The description of the new task.
  * @param {Number} complete The value to see if task is complete or not (zero if not complete and non-zero if complete).
  * @param {String} signifier The id of the signifier for the new task.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {doubleParameterCallback} callback Either sends the dailyLog or an error, if there is one, to the callback.
  */
 export function createTask (parent, text, complete, signifier, shouldUpdate, callback) {
@@ -327,6 +333,7 @@ export function createTask (parent, text, complete, signifier, shouldUpdate, cal
  * @param {String} objectReference The id of the task or event if kind was kind or event (optional).
  * @param {String} signifier The id of the signifier that should be used by this textBlock.
  * @param {Date} date The date to be inserted if kind was an event (optional).
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {doubleParameterCallback} callback Either sends the textBlock or an error, if there is one, to the callback.
  */
 export function createTextBlock (parent, subParent, index, content, tabLevel, kind, objectReference, signifier, date, shouldUpdate, callback) {
@@ -344,6 +351,7 @@ export function createTextBlock (parent, subParent, index, content, tabLevel, ki
  * @param {String} title The title of the new tracker.
  * @param {Array} content The array of id's of textBlocks that are included in the new tracker.
  * @param {String} parent The id of the parent of the new tracker.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {doubleParameterCallback} callback Either sends the tracker or an error, if there is one, to the callback.
  */
 export function createTracker (title, content, parent, shouldUpdate, callback) {
@@ -384,6 +392,7 @@ export function deleteUser (callback) {
  * Deletes the imageBlock passed in.
  *
  * @param {Object} imageBlock The object to be deleted.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteImageBlock (imageBlock, shouldUpdate, callback) {
@@ -399,6 +408,7 @@ export function deleteImageBlock (imageBlock, shouldUpdate, callback) {
  * Deletes the imageBlock with the id passed in.
  *
  * @param {String} id The id of object to be deleted.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteImageBlockByID (id, shouldUpdate, callback) {
@@ -414,6 +424,7 @@ export function deleteImageBlockByID (id, shouldUpdate, callback) {
  * Deletes the audioBlock passed in.
  *
  * @param {Object} audioBlock The object to be deleted.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteAudioBlock (audioBlock, shouldUpdate, callback) {
@@ -429,6 +440,7 @@ export function deleteAudioBlock (audioBlock, shouldUpdate, callback) {
  * Deletes the audioBlock with the id passed in.
  *
  * @param {String} id The id of the object to be deleted.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteAudioBlockByID (id, shouldUpdate, callback) {
@@ -444,6 +456,7 @@ export function deleteAudioBlockByID (id, shouldUpdate, callback) {
  * Deletes the collection passed in.
  *
  * @param {Object} collection The object to be deleted.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteCollection (collection, shouldUpdate, callback) {
@@ -459,6 +472,7 @@ export function deleteCollection (collection, shouldUpdate, callback) {
  * Deletes the collection with the id passed in.
  *
  * @param {Object} imageBlock The object to be deleted.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteCollectionByID (id, shouldUpdate, callback) {
@@ -474,6 +488,7 @@ export function deleteCollectionByID (id, shouldUpdate, callback) {
  * Deletes the event with the id passed in.
  *
  * @param {Object} event The object to be deleted.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteEvent (event, shouldUpdate, callback) {
@@ -489,6 +504,7 @@ export function deleteEvent (event, shouldUpdate, callback) {
  * Deletes the event with the id passed in.
  *
  * @param {String} id The id of the object to be deleted.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteEventByID (id, shouldUpdate, callback) {
@@ -505,6 +521,7 @@ export function deleteEventByID (id, shouldUpdate, callback) {
  *
  * @param {Array} container The array where event is in.
  * @param {index} index The index in the container to delete the event.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteEventAtIndex (container, index, shouldUpdate, callback) {
@@ -520,6 +537,7 @@ export function deleteEventAtIndex (container, index, shouldUpdate, callback) {
  * Deletes the signifier passed in.
  *
  * @param {Object} signifier The object to be deleted.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteSignifier (signifier, shouldUpdate, callback) {
@@ -535,6 +553,7 @@ export function deleteSignifier (signifier, shouldUpdate, callback) {
  * Deletes the signifier with the id passed in.
  *
  * @param {String} id The id of the object to be deleted.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteSignifierByID (id, shouldUpdate, callback) {
@@ -550,6 +569,7 @@ export function deleteSignifierByID (id, shouldUpdate, callback) {
  * Deletes the signifier of the block passed in.
  *
  * @param {Object} block The object to delete the signifier from.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteSignifierAtBlock (block, shouldUpdate, callback) {
@@ -565,6 +585,7 @@ export function deleteSignifierAtBlock (block, shouldUpdate, callback) {
  * Deletes the task passed in.
  *
  * @param {Object} task The object to be deleted.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteTask (task, shouldUpdate, callback) {
@@ -580,6 +601,7 @@ export function deleteTask (task, shouldUpdate, callback) {
  * Deletes the task with the id passed in.
  *
  * @param {String} id The id of the object to be deleted.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteTaskByID (id, shouldUpdate, callback) {
@@ -595,6 +617,7 @@ export function deleteTaskByID (id, shouldUpdate, callback) {
  * Deletes the textBlock passed in.
  *
  * @param {Object} textBlock The object to be deleted.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteTextBlock (block, shouldUpdate, callback) {
@@ -610,6 +633,7 @@ export function deleteTextBlock (block, shouldUpdate, callback) {
  * Deletes the textBlock with the id passed in.
  *
  * @param {String} id The id of the object to be deleted.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteTextBlockByID (id, shouldUpdate, callback) {
@@ -626,6 +650,7 @@ export function deleteTextBlockByID (id, shouldUpdate, callback) {
  *
  * @param {Array} container The array to delete the textBlock from.
  * @param {Number} index The index in the container of the textBlock to be deleted.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteTextBlockFromContainer (container, index, shouldUpdate, callback) {
@@ -641,6 +666,7 @@ export function deleteTextBlockFromContainer (container, index, shouldUpdate, ca
  * Deletes the tracker passed in.
  *
  * @param {Object} tracker The object to be deleted.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteTracker (tracker, shouldUpdate, callback) {
@@ -656,6 +682,7 @@ export function deleteTracker (tracker, shouldUpdate, callback) {
  * Deletes the imageBlock with the id passed in.
  *
  * @param {String} id The id of the object to be deleted.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteTrackerByID (id, shouldUpdate, callback) {
@@ -672,6 +699,7 @@ export function deleteTrackerByID (id, shouldUpdate, callback) {
  *
  * @param {Array} container The array to delete the tracker from.
  * @param {Number} index The index in the container of the tracker to be deleted.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteTrackerFromContainer (container, index, shouldUpdate, callback) {
@@ -689,6 +717,7 @@ export function deleteTrackerFromContainer (container, index, shouldUpdate, call
  * Updates the theme of the app.
  *
  * @param {String} theme The name of the theme to switch to.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateTheme (theme, shouldUpdate, callback) {
@@ -704,6 +733,7 @@ export function updateTheme (theme, shouldUpdate, callback) {
  * Updates the imageBlock.
  *
  * @param {Object} imageBlock The new version of the imageBlock.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateImageBlock (imageBlock, shouldUpdate, callback) {
@@ -719,6 +749,7 @@ export function updateImageBlock (imageBlock, shouldUpdate, callback) {
  * Updates the imageBlock with the id given.
  *
  * @param {String} id The id of the new version of the imageBlock.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateImageBlockByID (id, shouldUpdate, callback) {
@@ -741,6 +772,7 @@ export function updateImageBlockByID (id, shouldUpdate, callback) {
  * Updates the audioBlock given.
  *
  * @param {Object} audioBlock The new version of the imageBlock.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateAudioBlock (audioBlock, shouldUpdate, callback) {
@@ -756,6 +788,7 @@ export function updateAudioBlock (audioBlock, shouldUpdate, callback) {
  * Updates the audioBlock with the id given.
  *
  * @param {String} id The id of the new version of the audioBlock.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateAudioBlockByID (id, shouldUpdate, callback) {
@@ -778,6 +811,7 @@ export function updateAudioBlockByID (id, shouldUpdate, callback) {
  * Updates the dailtLog given.
  *
  * @param {Object} dailyLog The new version of the imageBlock.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateDailyLog (dailyLog, shouldUpdate, callback) {
@@ -793,6 +827,7 @@ export function updateDailyLog (dailyLog, shouldUpdate, callback) {
  * Updates the dailyLog with the id given.
  *
  * @param {String} id The id of the new version of the dailyLog.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateDailyLogByID (id, shouldUpdate, callback) {
@@ -815,6 +850,7 @@ export function updateDailyLogByID (id, shouldUpdate, callback) {
  * Updates the monthlyLog given.
  *
  * @param {Object} monthlyLog The new version of the imageBlock.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateMonthlyLog (monthlyLog, shouldUpdate, callback) {
@@ -830,6 +866,7 @@ export function updateMonthlyLog (monthlyLog, shouldUpdate, callback) {
  * Updates the monthlyLog with the id given.
  *
  * @param {String} id The id of the new version of the monthlyLog.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateMonthlyLogByID (id, shouldUpdate, callback) {
@@ -852,6 +889,7 @@ export function updateMonthlyLogByID (id, shouldUpdate, callback) {
  * Updates the futureLog given.
  *
  * @param {Object} futureLog The id of the new version of the futureLog.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateFutureLog (futureLog, shouldUpdate, callback) {
@@ -867,6 +905,7 @@ export function updateFutureLog (futureLog, shouldUpdate, callback) {
  * Updates the futureLog with the id given.
  *
  * @param {String} id The id of the new version of the futureLog.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateFutureLogByID (id, shouldUpdate, callback) {
@@ -889,6 +928,7 @@ export function updateFutureLogByID (id, shouldUpdate, callback) {
  * Updates the collection given.
  *
  * @param {Object} collection The new version of the imageBlock.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateCollection (collection, shouldUpdate, callback) {
@@ -904,6 +944,7 @@ export function updateCollection (collection, shouldUpdate, callback) {
  * Updates the collection with the id given.
  *
  * @param {String} id The id of the new version of the collection.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateCollectionByID (id, shouldUpdate, callback) {
@@ -926,6 +967,7 @@ export function updateCollectionByID (id, shouldUpdate, callback) {
  * Updates the event given.
  *
  * @param {Object} event The new version of the imageBlock.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateEvent (event, shouldUpdate, callback) {
@@ -941,6 +983,7 @@ export function updateEvent (event, shouldUpdate, callback) {
  * Updates the event with the id given.
  *
  * @param {String} id The id of the new version of the event.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateEventByID (id, shouldUpdate, callback) {
@@ -964,6 +1007,7 @@ export function updateEventByID (id, shouldUpdate, callback) {
  *
  * @param {Array} container The Array where the event should updated in.
  * @param {Number} index The index at which the event is at in the container.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateEventAtIndex (container, index, shouldUpdate, callback) {
@@ -986,6 +1030,7 @@ export function updateEventAtIndex (container, index, shouldUpdate, callback) {
  * Updates the signifier given.
  *
  * @param {Object} signifier The new version of the imageBlock.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateSignifier (signifier, shouldUpdate, callback) {
@@ -1001,6 +1046,7 @@ export function updateSignifier (signifier, shouldUpdate, callback) {
  * Updates the signifier with the id given.
  *
  * @param {String} id The id of the new version of the signifier.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateSignifierByID (id, shouldUpdate, callback) {
@@ -1023,6 +1069,7 @@ export function updateSignifierByID (id, shouldUpdate, callback) {
  * Updates the signifier in the block given.
  *
  * @param {Object} block The block to update the signifier at.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateSignifierAtBlock (block, shouldUpdate, callback) {
@@ -1045,6 +1092,7 @@ export function updateSignifierAtBlock (block, shouldUpdate, callback) {
  * Updates the task given.
  *
  * @param {Object} task The id of the new version of the imageBlock.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateTask (task, shouldUpdate, callback) {
@@ -1060,6 +1108,7 @@ export function updateTask (task, shouldUpdate, callback) {
  * Updates the task with the id given.
  *
  * @param {String} id The id of the new version of the task.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateTaskByID (id, shouldUpdate, callback) {
@@ -1083,6 +1132,7 @@ export function updateTaskByID (id, shouldUpdate, callback) {
  *
  * @param {Object} block The new version of the textBlock.
  * @param {Date} date The date to be inserted if the update is to make the textBlock have an event with a date.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateTextBlock (block, date, shouldUpdate, callback) {
@@ -1099,6 +1149,7 @@ export function updateTextBlock (block, date, shouldUpdate, callback) {
  *
  * @param {String} id The id of the new version of the textBlock.
  * @param {Date} date The date to be inserted if the update is to make the textBlock have an event with a date.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateTextBlockByID (id, date, shouldUpdate, callback) {
@@ -1122,6 +1173,7 @@ export function updateTextBlockByID (id, date, shouldUpdate, callback) {
  *
  * @param {Array} container The array where the textBlock is at.
  * @param {Number} index The index in the container where the textBlock is at.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateTextBlockFromContainer (container, index, date, shouldUpdate, callback) {
@@ -1144,6 +1196,7 @@ export function updateTextBlockFromContainer (container, index, date, shouldUpda
  * Updates the tracker given.
  *
  * @param {Object} tracker The new version of the tracker.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateTracker (tracker, shouldUpdate, callback) {
@@ -1159,6 +1212,7 @@ export function updateTracker (tracker, shouldUpdate, callback) {
  * Updates the tracker with the id given.
  *
  * @param {String} id The id of the new version of the tracker.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateTrackerByID (id, shouldUpdate, callback) {
@@ -1182,6 +1236,7 @@ export function updateTrackerByID (id, shouldUpdate, callback) {
  *
  * @param {Array} container The array where the tracker is at.
  * @param {Number} index The index in the container where the tracker is at.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateTrackerFromContainer (container, index, shouldUpdate, callback) {
