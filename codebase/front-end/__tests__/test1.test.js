@@ -1,7 +1,7 @@
 describe('Basic user flow for SPA ', () => {
     
     beforeAll(async () => {
-      await page.goto('localhost:8080');
+      await page.goto('http://localhost:8080/login/');
       await page.waitForTimeout(500);
     });
 
