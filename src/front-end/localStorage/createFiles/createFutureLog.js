@@ -18,9 +18,11 @@ function addMonth (start, endDate, futureLog, callback) {
 	if (startDate.getMonth() === endDate.getMonth() && startDate.getFullYear() === endDate.getFullYear()) {
 		date = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getUTCDate());
 	}
+	console.log(startDate);
+	console.log(endDate);
 	localStorage.createMonthlyLog(futureLog.id, [], [], date, false, (err, month) => {
 		if (err === null) {
-			if (startDate.getMonth() > endDate.getMonth() && startDate.getFullYear() === endDate.getFullYear()) {
+			if (startDate > endDate) {
 				callback([]);
 			} else {
 				if (startDate.getDate() !== new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0).getDate()) {

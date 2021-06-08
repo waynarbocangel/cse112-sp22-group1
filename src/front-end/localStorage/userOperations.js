@@ -203,7 +203,7 @@ export function createAudioBlock (parent, arrangement, data, shouldUpdate, callb
  */
 export function createCollection (title, parent, content, shouldUpdate, callback) {
 	createCollectionPouch(db, title, parent, content, (err, collection) => {
-		if (shouldUpdate) {
+		if (shouldUpdate && !err) {
 			updateUserFromMongo();
 		}
 		callback(err, collection);
@@ -816,7 +816,7 @@ export function updateAudioBlockByID (id, shouldUpdate, callback) {
  */
 export function updateDailyLog (dailyLog, shouldUpdate, callback) {
 	updateDailyLogPouch(db, dailyLog, (err) => {
-		if (shouldUpdate) {
+		if (shouldUpdate && !err) {
 			updateUserFromMongo();
 		}
 		callback(err);
@@ -933,7 +933,7 @@ export function updateFutureLogByID (id, shouldUpdate, callback) {
  */
 export function updateCollection (collection, shouldUpdate, callback) {
 	updateCollectionPouch(db, collection, (error) => {
-		if (shouldUpdate) {
+		if (shouldUpdate && !error) {
 			updateUserFromMongo();
 		}
 		callback(error);

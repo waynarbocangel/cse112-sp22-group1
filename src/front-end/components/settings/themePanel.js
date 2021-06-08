@@ -93,23 +93,21 @@ export class ThemePanel extends HTMLElement {
             :host {
                 display: block;
                 font-family: "SF-Pro";
+                height: 100%;
             }
 
             form {
                 margin: 0;
 				display: flex;
-				flex-wrap: wrap;
-				justify-content: center;
+                flex-flow: row wrap;
+				justify-content: space-evenly;
 				align-content: center;
-				flex-direction: row;
+                height: 100%;
             }
 
-			label{
-				flex-direction: column;
+			label {
 				text-align: center;
 				font-size: 16pt;
-				margin-left: 20px;
-				margin-right: 20px;
 				margin-bottom: 30px;
 				cursor: pointer;
 			}
@@ -117,7 +115,6 @@ export class ThemePanel extends HTMLElement {
 			.themeImg{
 				width: 250px;
 				margin-top: 10px;
-				padding: 1px;
 				border-radius: 5px;
 				transition: 0.2s;
 			}
@@ -126,20 +123,32 @@ export class ThemePanel extends HTMLElement {
 				display: none;
 			}
 
-			input[type="radio"]:checked+label img.themeImg{
-				border: 8px solid var(--content-foreground-color);
+			input[type="radio"]:checked + img.themeImg{
+				box-shadow: 0 0 0 8px var(--content-foreground-color);
 				transition: 0.2s;
 			}
 
         </style>
 
         <form id="theme">
-            <input type="radio" name="themeradio" id="darkmode" /><label for="darkmode">Cool Dark<br /><img class="themeImg" src="../../public/resources/coolDark.png" /></label><br>
-            <input type="radio" name="themeradio" id="lightmode" /><label for="lightmode">Minimal Light<br /><img class="themeImg" src="../../public/resources/minimalLight.png" /></label><br>
-            <input type="radio" name="themeradio" id="highcontrast" /><label for="highcontrast">High Contrast<br /><img class="themeImg" src="../../public/resources/highContrast.png" /></label><br>
-            <input type="radio" name="themeradio" id="theme4" /><label for="theme4">Snazzy Light<br /><img class="themeImg" src="../../public/resources/snazzyLight.png" /></label><br>
-            <input type="radio" name="themeradio" id="theme5" /><label for="theme5">Classy Light<br /><img class="themeImg" src="../../public/resources/classyLight.png" /></label><br>
-            <input type="radio" name="themeradio" id="theme6" /><label for="theme6">Night Owl<br /><img class="themeImg" src="../../public/resources/nightOwl.png" /></label><br>
+            <label>Cool Dark <br />
+                <input type="radio" name="themeradio" id="darkmode" /><img class="themeImg" src="../../public/resources/coolDark.png" />
+            </label>
+            <label>Minimal Light <br />
+                <input type="radio" name="themeradio" id="lightmode" /><img class="themeImg" src="../../public/resources/minimalLight.png" />
+            </label>
+            <label>High Contrast <br />
+                <input type="radio" name="themeradio" id="highcontrast" /><img class="themeImg" src="../../public/resources/highContrast.png" />
+            </label>
+            <label>Snazzy Light <br />
+                <input type="radio" name="themeradio" id="theme4" /><img class="themeImg" src="../../public/resources/snazzyLight.png" />
+            </label>
+            <label>Classy Light <br />
+                <input type="radio" name="themeradio" id="theme5" /><img class="themeImg" src="../../public/resources/classyLight.png" />
+            </label>
+            <label>Night Owl <br />
+                <input type="radio" name="themeradio" id="theme6" /><img class="themeImg" src="../../public/resources/nightOwl.png" />
+            </label>
         </form>
         `;
         this.themeRadios = this.shadowRoot.querySelectorAll("input[type=radio]");

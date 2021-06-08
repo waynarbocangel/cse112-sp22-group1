@@ -57,10 +57,10 @@ export function createSignifierPouch (db, meaning, symbol, callback) {
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: doc.events,
-				signifiers: doc.signifiers}).then((res) => {
+				signifiers: doc.signifiers
+			}).then((res) => {
 				console.log(res);
-			}).
-catch((error) => {
+			}).catch((error) => {
 				console.log(error);
 				callback(error, null);
 			});

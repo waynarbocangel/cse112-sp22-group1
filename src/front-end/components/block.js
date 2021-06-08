@@ -242,7 +242,6 @@ export class TextBlock extends HTMLElement {
 	 * @param {singleParameterCallback} callback - callback for the end of the constructor function
 	 */
 	constructor (controller, itemObject, signifier, callback) {
-		console.trace();
 		super();
 		fetch("./components/block.html").then((response) => response.text()).then((html) => {
 			let parser = new DOMParser();

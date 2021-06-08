@@ -15,7 +15,8 @@ export function updateAudioBlockPouch (db, audioBlock, callback) {
 			let audioBlockArr = doc.audioBlocks.filter((element) => element.id !== audioBlock.id);
 			audioBlockArr.push(audioBlock);
 
-			return db.put({_id: "0000",
+			return db.put({
+				_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
 				pwd: doc.pwd,
@@ -31,7 +32,8 @@ export function updateAudioBlockPouch (db, audioBlock, callback) {
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: doc.events,
-				signifiers: doc.signifiers}, (error, res) => {
+				signifiers: doc.signifiers
+			}, (error, res) => {
 				if (error) {
 					console.log(error);
 					callback(error);

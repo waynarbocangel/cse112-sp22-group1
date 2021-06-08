@@ -24,6 +24,24 @@ export class DropdownBlock extends HTMLElement {
 				src: url("./public/fonts/SF-Pro.ttf");
 			}
 
+			.noteContainer {
+				margin-top: 7px;
+				margin-bottom: 7px;
+				margin-left: 87px;
+				display: list-item;
+				list-style-type: disc;
+				list-style-position: outside;
+			}
+
+			.eventContainer {
+				margin-top: 7px;
+				margin-bottom: 7px;
+				margin-left: 87px;
+				display: list-item;
+				list-style-type: circle;
+				list-style-position: outside;
+			}
+			
 			#wrapper{
 				padding-bottom: 0;
 				width: calc(100% - 70px);
@@ -172,6 +190,7 @@ export class DropdownBlock extends HTMLElement {
 			this.toggleItems();
 		});
 		this.header.addEventListener("click", () => {
+			console.log(this.item);
 			this.navigateToObject();
 		})
 		// This.contentWrapper.style.display = 'none';

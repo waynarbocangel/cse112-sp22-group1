@@ -5,8 +5,6 @@
 import * as localStorage from "../localStorage/userOperations.js";
 import {currentObject, adderDropdown, creationMenu} from "../index.js";
 
-const paddingSize = 10;
-
 let template = document.createElement("template");
 template.innerHTML = `
 	<style>
@@ -36,8 +34,7 @@ template.innerHTML = `
 		}
 
 		#editorIcons{
-			position: relative;
-			display: inline;
+			display: inline-block;
 			vertical-align: top;
 		}
 		
@@ -64,7 +61,7 @@ template.innerHTML = `
 		}
 
 		.paragraphIcons{
-			top: 10px;
+			margin-top: 10px;
 		}
 	</style>
 	<div id="editorIcons" class="paragraphIcons"><img src="../public/resources/plusIcon.png" class="unfocusedIcons" id="plus" /><img src="../public/resources/sixDotIcon.png" class="unfocusedIcons" id="more" /></div>

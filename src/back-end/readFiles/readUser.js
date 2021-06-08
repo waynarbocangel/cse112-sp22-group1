@@ -23,7 +23,7 @@ function readUser (userData, callback) {
 		} else {
 			let newCollections = [];
 			for (let i = 0; i < user.collections.length; i++) {
-				let collection = user.collection[i];
+				let collection = user.collections[i];
 				collection.title = security.decrypt(collection.title, userData.pwd);
 				newCollections.push(collection);
 			}
@@ -48,6 +48,7 @@ function readUser (userData, callback) {
 			let newSignifiers = [];
 			for (let i = 0; i < user.signifiers.length; i++) {
 				let signifier = user.signifiers[i];
+				console.log(signifier.meaning);
 				console.log(security.decrypt(signifier.meaning, userData.pwd));
 				signifier.meaning = security.decrypt(signifier.meaning, userData.pwd);
 				newSignifiers.push(signifier);

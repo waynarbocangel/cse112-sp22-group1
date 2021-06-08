@@ -48,7 +48,8 @@ export function createTrackerPouch (db, title, content, parent, callback) {
 
 			doc.trackers.push(trackerObject);
 			// Tracker array of parent should be updated in callback of this funciton
-			return db.put({_id: "0000",
+			return db.put({
+				_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
 				pwd: doc.pwd,

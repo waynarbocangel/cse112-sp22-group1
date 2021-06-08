@@ -43,7 +43,8 @@ export function createDailyLogPouch (db, parent, content, trackers, date, callba
 			};
 
 			doc.dailyLogs.push(dailyObject);
-			return db.put({_id: "0000",
+			return db.put({
+				_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
 				pwd: doc.pwd,

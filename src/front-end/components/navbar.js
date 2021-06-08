@@ -54,7 +54,7 @@ template.innerHTML = `
 			margin: 0 auto;
 		}
 
-		@media only screen and (max-width:900px) {
+		@media only screen and (max-width:1100px) {
 			#menu {
 				position: fixed;
 				width: 30%;
@@ -270,9 +270,7 @@ export class NavBar extends HTMLElement {
 		});
 		this.userMenu.addEventListener("click", () => {
 			let settingsMenu = document.querySelector("settings-menu");
-			if (typeof settingsMenu === SettingsMenu) {
-				settingsMenu.toggle();
-			}
+			settingsMenu.toggle();
 		});
 	}
 

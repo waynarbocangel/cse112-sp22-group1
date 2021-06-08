@@ -89,8 +89,7 @@
 		}
 
 		#editorIcons{
-			position: relative;
-			display: inline;
+			display: inline-block;
 			vertical-align: top;
 		}
 		
@@ -102,8 +101,8 @@
 		}
 
 		#editorIcons div{
-			display: inline;
-			margin-right: 0;
+			display: inline-block;
+			margin-right: 5px;
 			opacity: 1;
 			width: 20px;
 			cursor: pointer;
@@ -125,15 +124,15 @@
 		}
 		
 		.header1Icons{
-			top: 35px;
+			margin-top: 35px;
 		}
 
 		.header2Icons{
-			top: 18px;
+			margin-top: 18px;
 		}
 
 		.header3Icons{
-			top: 12px;
+			margin-top: 12px;
 		}
 
 		.noteIcons{
@@ -143,13 +142,15 @@
 		}
 
 		.paragraphIcons{
-			top: 10px;
+			margin-top: 9px;
 		}
 
 		#checkerContainer{
 			position: relative;
 			overflow: hidden;
 			user-select: none;
+			display: inline;
+			top: 8px;
 		}
 
 		#taskChecker{
@@ -157,12 +158,10 @@
 			user-select: none;
 			background-color: #fafafa;
 			border: 1px solid #cacece;
-			box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0 -15px 10px -12px rgba(0,0,0,0.05);
 			width: 18px;
 			height: 18px;
-			margin-top: 11px;
+			margin-top: 3px;
 			margin-right: 3px;
-			margin-left: -1px;
 			vertical-align: top;
 			border-radius: 3px;
 		}
@@ -180,8 +179,7 @@
 
 		#checkerContainer[checked="checked"]:after {
 			position: absolute;
-			left: 4px;
-			top: -12px;
+			left: 5px;
 			content: '\2714';
 			font-size: 13px;
 			color: #fff;

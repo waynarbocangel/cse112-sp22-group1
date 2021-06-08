@@ -21,14 +21,12 @@ function updateUser (userObject, callback) {
 		if (error) {
 			callback(error);
 		} else {
+			console.log(userObject);
 			let newCollections = [];
 			for (let i = 0; i < userObject.collections.length; i++) {
-				let collection = userObject.collection[i];
-				let oldCollection = user.collection[i];
-				if (collection.id === oldCollection.id) {
-					collection.title = security.encrypt(collection.title, userObject.pwd);
-					newCollections.push(collection);
-				}
+				let collection = userObject.collections[i];
+				collection.title = security.encrypt(collection.title, userObject.pwd);
+				newCollections.push(collection);
 			}
 			let newTextBlocks = [];
 			for (let i = 0; i < userObject.textBlocks.length; i++) {
@@ -51,7 +49,7 @@ function updateUser (userObject, callback) {
 			let newSignifiers = [];
 			for (let i = 0; i < userObject.signifiers.length; i++) {
 				let signifier = userObject.signifiers[i];
-				signifier.text = security.encrypt(signifier.meaning, userObject.pwd);
+				signifier.meaning = security.encrypt(signifier.meaning, userObject.pwd);
 				newSignifiers.push(signifier);
 			}
 			let newImageBlocks = [];

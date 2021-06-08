@@ -46,6 +46,7 @@ function encrypt (message, password) {
  * @return Returns the decrypted data.
  */
  function decrypt (data, password) {
+	console.log(data);
     let decrypted = CryptoJS.AES.decrypt(data, password);
     let originalText = decrypted.toString(CryptoJS.enc.Utf8);
     return originalText;

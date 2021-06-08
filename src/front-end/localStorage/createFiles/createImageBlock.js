@@ -45,7 +45,8 @@ export function createImageBlockPouch (db, parent, arrangement, data, callback) 
 
 			newImageBlocks.push(imageBlockObject);
 
-			return db.put({_id: "0000",
+			return db.put({
+				_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
 				pwd: doc.pwd,
@@ -61,10 +62,10 @@ export function createImageBlockPouch (db, parent, arrangement, data, callback) 
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: doc.events,
-				signifiers: doc.signifiers}).then((res) => {
+				signifiers: doc.signifiers
+			}).then((res) => {
 				console.log(res);
-			}).
-catch((error) => {
+			}).catch((error) => {
 				console.log(error);
 				callback(error, null);
 			});

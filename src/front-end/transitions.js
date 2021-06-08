@@ -47,6 +47,7 @@ export function unfade (element, callback) {
 	let end = false;
 	// Initial opacity
 	let op = 0.1;
+    element.style.opacity = op;
 	element.style.display = "block";
 	let timer = setInterval(() =>{
 		if (op >= 1) {

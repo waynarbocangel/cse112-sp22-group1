@@ -30,8 +30,8 @@ export function updateMonthlyLogPouch (db, log, callback) {
 				imageBlocks: doc.imageBlocks,
 				audioBlocks: doc.audioBlocks,
 				textBlocks: doc.textBlocks,
-				events: doc.eventBlocks,
-				tasks: doc.taskBlocks,
+				events: doc.events,
+				tasks: doc.tasks,
 				signifiers: doc.signifiers}, (error, res) => {
 				if (error) {
 					callback(error, null);
