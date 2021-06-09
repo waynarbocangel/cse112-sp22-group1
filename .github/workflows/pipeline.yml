@@ -70,13 +70,13 @@ jobs:
     - run: npm install
       working-directory: ./src/front-end
     - run: npm test --if-present
-      working-directory: ./src/front-end
+      working-directory: ./src/unitTests
     - name: JEST Report
       uses: RedaktionsNetzwerk-Deutschland/action-jest-reporter@v1.0.0
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        json-glob: ./src/front-end/testOutput.json
-        workdir: ./src/front-end
+        json-glob: ./src/unitTests/testOutput.json
+        workdir: ./src/unitTests
 
   ESLint-Check:
        runs-on: ubuntu-latest
