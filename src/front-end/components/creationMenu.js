@@ -173,7 +173,7 @@ template.innerHTML = `
         }
 
         label, input {
-            font-size: 2vw;
+            font-size: 2vh;
         }
 
         label {

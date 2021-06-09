@@ -6,11 +6,14 @@ template.innerHTML = `
 	<style>
         :host {
             z-index: 1;
+            user-select: none;
+            font-family: "SF-Pro";
         }
+
         .dropdown-content {
             display: none;
             position: absolute;
-            background-color: var(--navbar-background-color); /* rgba(236, 223, 207, 1); */
+            background-color: var(--dropdown-background-color);
             width: 190px;
             overflow: auto;
         }
@@ -22,16 +25,19 @@ template.innerHTML = `
         }
 
         #myDropdown button {
-            background-color: transparent; /* Green */
+            background-color: transparent;
             border: none;
-            color: var(--content-foreground-color); /*balck;*/
+            color: var(--dropdown-foreground-color);
             padding: 10px 18px;
-            text-align: center;
+            text-align: right;
             text-decoration: none;
             display: inline-block;
             font-size: 18px;
-            font-family: "SF-Pro";
             cursor: pointer;
+        }
+
+        li:hover {
+            background-color: var(--dropdown-hover-color);
         }
         
         .show {display: block;}
@@ -119,8 +125,8 @@ export class InlineDropdown extends HTMLElement {
 
     /**
      * Sets the position of the dropdown
-     * @param {Number} x - distance of top
-     * @param {Number} y - distance of left
+     * @param {Number} x - pixels from the left side of the screen
+     * @param {Number} y - pixels from the top of the screen
      */
     setPosition(x, y) {
         this.dropdown.style.top = `${x}px`;

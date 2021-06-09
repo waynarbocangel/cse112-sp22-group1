@@ -2,76 +2,91 @@ import * as localStorage from "../../localStorage/userOperations.js";
 const themeColors = {
     darkmode: {
         "--border-color": "#292929",
-        "--content-foreground-color": "#D4D4D4",
         "--content-background-color": "#2e3030",
-        "--tracker-foreground-color": "#FFFFFF",
+        "--content-foreground-color": "#D4D4D4",
+
         "--tracker-background-color": "#1e2020",
+        "--tracker-foreground-color": "#d4d4d4",
         "--tracker-border-color": "#404040",
-        "--navbar-foreground-color": "#FFFFFF",
+
         "--navbar-background-color": "#1e2020",
+        "--navbar-foreground-color": "#d4d4d4",
+
+        "--dropdown-background-color": "#1e2020",
+        "--dropdown-foreground-color": "#d4d4d4",
+        "--dropdown-hover-color": "#474a4a",    
         "--icon-filter": "invert()"
     },
 
     lightmode: {
         "--border-color": "#F2F2F2",
-        "--content-foreground-color": "#000000",
         "--content-background-color": "#FFFFFF",
+        "--content-foreground-color": "#000000",
+
+        "--tracker-background-color": "#2B2D42",
         "--tracker-foreground-color": "#FFFFFF",
         "--tracker-border-color": "#48486f",
-        "--tracker-background-color": "#2B2D42",
-        "--navbar-foreground-color": "#FFFFFF",
+
         "--navbar-background-color": "#F7F2EC",
+        "--navbar-foreground-color": "#FFFFFF",
+
         "--icon-filter": ""
     },
 
     highcontrast: {
         "--border-color": "#F2F2F2",
-        "--content-foreground-color": "#FFFFFF",
         "--content-background-color": "#000000",
-        "--tracker-foreground-color": "#FFFFFF",
+        "--content-foreground-color": "#FFFFFF",
+
         "--tracker-background-color": "#0000FF",
+        "--tracker-foreground-color": "#FFFFFF",
         "--tracker-border-color": "#FFFFFF",
-        "--navbar-foreground-color": "#FFFFFF",
+
         "--navbar-background-color": "#008F00",
+        "--navbar-foreground-color": "#FFFFFF",
+
         "--icon-filter": "invert()"
     },
 
     theme4: {
         "--border-color": "#F2F2F2",
-        "--content-foreground-color": "#000000",
         "--content-background-color": "#FFFFFF",
-        "--tracker-foreground-color": "#FFFFFF",
+        "--content-foreground-color": "#000000",
+
         "--tracker-background-color": "#026670",
+        "--tracker-foreground-color": "#FFFFFF",
         "--tracker-border-color": "#7671B6",
-        "--navbar-foreground-color": "#FEF9C7",
+
         "--navbar-background-color": "#FCE181",
+        "--navbar-foreground-color": "#FEF9C7",
         "--icon-filter": ""
     },
 
     theme5: {
         "--border-color": "#8E8D8A",
-        "--content-foreground-color": "#000000",
         "--content-background-color": "#EAE7DC",
+        "--content-foreground-color": "#000000",
 
-        "--tracker-foreground-color": "#FFFFFF",
         "--tracker-background-color": "#48131A",
+        "--tracker-foreground-color": "#FFFFFF",
         "--tracker-border-color": "#6F474E",
 
-        "--navbar-foreground-color": "#000000",
         "--navbar-background-color": "#D8C3A5",
+        "--navbar-foreground-color": "#000000",
         "--icon-filter": ""
     },
 
     theme6: {
         "--border-color": "#34375c",
-        "--content-foreground-color": "#E3E3E8",
         "--content-background-color": "#1A1A3D",
-        "--tracker-foreground-color": "#E3E3E8",
-        "--tracker-background-color": "#25274D",
-        "--tracker-border-color": "#464866",
-        "--navbar-foreground-color": "#000000",
-        "--navbar-background-color": "#25274D",
+        "--content-foreground-color": "#E3E3E8",
 
+        "--tracker-background-color": "#25274D",
+        "--tracker-foreground-color": "#E3E3E8",
+        "--tracker-border-color": "#464866",
+
+        "--navbar-background-color": "#25274D",
+        "--navbar-foreground-color": "#000000",
 
         "--content-placeholder-color": "#505b84",
 
