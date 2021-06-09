@@ -1,12 +1,5 @@
 
 
-/*
-beforeAll(async () => {
-    await page.goto('localhost:8080');
-    await page.waitForTimeout(500);
-  });
-*/
-
 describe('Basic user flow for navbar ', () => {
     
     //testing toggleMenu expected = false, 
