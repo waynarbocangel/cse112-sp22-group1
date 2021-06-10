@@ -1,0 +1,25 @@
+{
+  "name": "unittests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.14.3",
+    "@babel/preset-env": "^7.14.4",
+    "babel-jest": "^26.6.3",
+    "jest": "^26.6.3",
+    "jest-puppeteer": "^5.0.4",
+    "puppeteer": "^9.1.1"
+  },
+  "jest": {
+    "preset": "jest-puppeteer",
+    "testing-environment": "jsdom",
+    "verbose": true
+  }
+}

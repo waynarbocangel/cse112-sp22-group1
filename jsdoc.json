@@ -1,0 +1,18 @@
+{
+	"plugins": ["plugins/markdown"],
+	"recourseDepth": 30,
+	"source": {
+		"include": ["src"],
+		"includePattern": ".js$",
+		"excludePattern": "(node_modules|docs|shadow.js|pouchdb-7.2.1.min.js)"
+	},
+	"sourceType": "module",
+	"templates": {
+		"cleverLinks": true,
+		"monospaceLinks": true
+	},
+	"opts": {
+		"destination": "./docs",
+		"recurse": true
+	}
+}
