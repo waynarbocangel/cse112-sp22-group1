@@ -23,9 +23,10 @@ Agile is an organization technique used by teams in industries.
 
 ### Learn About Our Team!
 - [Team Page: team.md](/admin/team.md)
-
+<hr></hr>
 
 ### Admin 
+The [admin](/admin) folder holds logistics for our team.
 - [Meeting Notes](/admin/meetings)
 - [Team Contract](/admin/misc)
 <hr></hr>
@@ -33,6 +34,7 @@ Agile is an organization technique used by teams in industries.
 
 ### Design
 You can find documents for our design and planning in the [specs](/specs) directory. 
+
 This includes:
 - Architectural Decision Records (ADRs)
 - Our Brainstorming, which includes our Miro Board and Figma design
