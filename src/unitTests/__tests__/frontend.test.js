@@ -27,7 +27,15 @@ describe('Basic user flow for SPA ', async () => {
     it('Create New User Fails', async () => {
       
       // check that alert shows & url
-      await page.click('input#login-form-creat');
+      
+      page.on('dialog', async dialog => {
+          console.log('here');
+          await dialog.accept();
+        });
+        await page.click('input#login-form-create');
+
+        //await page.waitFor("#login-error-msg");
+        //await page.click("#BoxAlertBtnOk");
     
       expect(page.url()).toBe("http://localhost:8080/login/");
     });
@@ -36,6 +44,11 @@ describe('Basic user flow for SPA ', async () => {
     it('Log in fail', async () => {
         // fill in fields, click login, check link
         //await page.waitForSelector('email-field');
+
+        
+        
+        /*
+        await page.click('input#email-field');
         await page.click('input#email-field');
         await page.type('input#email-field','test10');
         await page.click('input#password-field');
@@ -43,9 +56,11 @@ describe('Basic user flow for SPA ', async () => {
         await page.click("input#login-form-submit");
         await page.waitForTimeout(5000);
         expect(page.url()).toBe("http://localhost:8080/login/");
+        */
         });
 
-    // Test 3
+    /*
+    // Test 4
     it('Log in', async () => {
       // fill in fields, click login, check link
       //await page.waitForSelector('email-field');
@@ -57,6 +72,7 @@ describe('Basic user flow for SPA ', async () => {
       await page.waitForTimeout(5000);
       expect(page.url()).toBe("http://localhost:8080/login/");
     });
+    */
 
 
     /*
