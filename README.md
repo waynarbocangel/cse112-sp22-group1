@@ -31,6 +31,14 @@ Agile is an organization technique used by teams in industries.
 <hr></hr>
 
 
+### Design
+You can find documents for our design and planning in the [specs](/specs) directory. 
+This includes:
+- Architectural Decision Records (ADRs)
+- Our Brainstorming, which includes our Miro Board and Figma design
+- Our Pitch, which contains our user personas, the purpose of our project, rabbit holes, and more
+<hr> </hr>
+
 ### Source
 Our source code for the team's Bujo app is contained in the [src](/src) folder. Within src, we have folders for backend, frontend, and testing.
 
