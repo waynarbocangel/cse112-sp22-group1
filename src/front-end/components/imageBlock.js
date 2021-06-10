@@ -1,6 +1,13 @@
 //import * as localStorage from "../localStorage/userOperations.js";
 //import { currentObject } from "../index.js";
-//const fs = require("fs");
+
+// prob 1: pouchdb not recognized
+// prob 2: buffer not recognize -- require not recognized -- import not working -- npm install not finding buffer
+
+//import * as Buffer from "./buffer";
+//const Buffer = require ("Buffer");
+//const Buffer = require ("buffer");
+//declare Buffer
 
 let template = document.createElement("template");
 template.innerHTML = `
@@ -67,34 +74,32 @@ template.innerHTML = `
   		<input type='file' name='image' />
 	</form>
 
-	<image src="" alt="" />
+	<image id="output" src="" alt="" />
 `;
 
-// export class ImageBlock extends HTMLElement {
-// 	constructor () {
-// 		super();
-// 		this.attachShadow({ mode: "open" });
-// 		this.shadowRoot.appendChild(template.content.cloneNode(true));
-// 		this.plus = this.shadowRoot.getElementById("plus");
-// 		this.more = this.shadowRoot.getElementById("more");
-// 		this.buffer = null
-// 	}
+export class ImageBlock extends HTMLElement {
+	constructor () {
+		super();
+		this.attachShadow({ mode: "open" });
+		this.shadowRoot.appendChild(template.content.cloneNode(true));
+		this.plus = this.shadowRoot.getElementById("plus");
+		this.more = this.shadowRoot.getElementById("more");
+		this.buffer = null
+	}
 
-// 	connectedCallback () {
-// 		// let imageBlock = this.shadowRoot.getElementById("imageBlock");
-// 		// //imageBlock.focus();
+	connectedCallback () {
+		let imageBlock = this.shadowRoot.getElementById("imageBlock");
+		//imageBlock.focus();
 
-// 		// this.plus.onclick = () => {
-// 		// 	let imageInput = this.shadowRoot.querySelector("form > input[type=file]");
-// 		// 	this.shadowRoot.querySelector("img").src = imageInput;
-// 		// 	let image = imageInput.files[0];
-// 		// 	let fileBuffer = fs.readFile(image);
-// 		// 	this.buffer = fileBuffer;
+		this.plus.onclick = () => {
+			let imageInput = this.shadowRoot.querySelector("form > input[type=file]").files[0];
+			this.shadowRoot.querySelector("img").src = URL.createObjectURL(imageInput);
+			this.buffer = Buffer.from(imageInput);
 			
-// 		// 	localStorage.createImageBlock(null, null, this.buffer, (err, imageBlock) => {
+			/*localStorage.createImageBlock(null, null, this.buffer, (err, imageBlock) => {
 
-// 		// 	});
-// 		// }
-// 	}
-// }
-// window.customElements.define("image-block", ImageBlock);
+			});*/
+		}
+	}
+}
+window.customElements.define("image-block", ImageBlock);

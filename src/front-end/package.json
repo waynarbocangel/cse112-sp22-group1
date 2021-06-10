@@ -10,6 +10,8 @@
   "author": "CSE 110 Team 11",
   "license": "ISC",
   "dependencies": {
+    "buffer": "^5.7.1",
+    "Buffer": "*",
     "express": "^4.17.1"
   },
   "devDependencies": {
