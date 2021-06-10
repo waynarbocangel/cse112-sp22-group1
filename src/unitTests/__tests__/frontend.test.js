@@ -1,6 +1,4 @@
 // Puppeteer
-jest.setTimeout(35000);
-
 describe('Basic user flow for SPA ', () => {
     
     beforeAll(async () => {
@@ -8,7 +6,7 @@ describe('Basic user flow for SPA ', () => {
       await page.waitForTimeout(1000);
     });
 
-
+    /*
     // Testing test
     test(' 1 and 1', async ()=>{
       expect(1).toBe(1);
@@ -30,7 +28,6 @@ describe('Basic user flow for SPA ', () => {
       // check that alert shows & url
       
         page.on('dialog', async dialog => {
-          console.log('here');
           await dialog.accept();
         });
         await page.click('input#login-form-create');
@@ -56,34 +53,64 @@ describe('Basic user flow for SPA ', () => {
     
         });
 
+    */
     
-    /*
     // Test 4
     it('Log in', async () => {
       // fill in fields, click login, check link
-      //await page.waitForSelector('email-field');
       await page.click('input#email-field', {clickCount:3});
       await page.type('input#email-field','test3');
       await page.click('input#password-field',{clickCount:3});
       await page.type('input#password-field','qwert');
-      await page.click("input#login-form-submit");
-      //await page.waitForNavigation();
-      await page.waitForTimeout(5000);
-      //let pageHeader = document.querySelector("topbar").shadowRoot.querySelector("#inner")
+      await page.click("input#login-form-submit");      
+      await page.waitForNavigation();
+      expect(page.url()).toBe("http://localhost:8080/");   
+    }, 10000);
+    
+/*
+    //Test 5 
+    it('testing click user', async()=>{
+        //let navbar = await page.$("nav-bar");
+        // let navbar = (await page.waitForFunction(() => document.querySelector('nav-bar'))).asElement();
+        // let but1= document.querySelector('nav-bar').shadowRoot.querySelector('#user');
+        //await navbar.shadowRoot.$
+        
+       // const button = await (await page.evaluateHandle(`document.querySelector("#sidebar > nav-bar").shadowRoot.querySelector("#user")`)).asElement();
+        //button.click();
+       
 
+         
+        const navbar = await (await page.$("nav-bar")).asElement;
+        const userButton = await page.evaluateHandle(nb => {
+                return nb.shadowRoot.getElementById("user");
+            },
+            navbar);
 
-      //console.log(pageHeader.title);
+        /*
+        const userButton = await page.evaluateHandle(`document.querySelector("#sidebar > nav-bar").shadowRoot.querySelector("#user")`);
+        await userButton.click();
+        console.log(userButton);
+        
+        await page.waitForTimeout(1000);
+    }, 10000);
+*/
+    
+    it('testing click user without asElement', async()=>{
+        //let navbar = await page.$("nav-bar");
+        // let navbar = (await page.waitForFunction(() => document.querySelector('nav-bar'))).asElement();
+        // let but1= document.querySelector('nav-bar').shadowRoot.querySelector('#user');
+        //await navbar.shadowRoot.$
+        
+        const mobileMenuButton = await page.evaluateHandle(`document.querySelector("#topbar > page-header")
+        .shadowRoot.querySelector("#menuToggle > input[type=checkbox]")`);
+        await mobileMenuButton.asElement.click();
 
-      
-    }, 5000);
-    */
-
-    //Test 5
-    /*
-    it('user', async()=>{
-
-    });
-    */
+       /*  await page.waitForTimeout(1000);
+        const userButton = await page.evaluateHandle(`document.querySelector("#sidebar > nav-bar").shadowRoot.querySelector("#user")`);
+        await userButton.click();
+        console.log(userButton); */
+    }, 10000);
+   
 
     /*
     test('Create Future Log', () => {
