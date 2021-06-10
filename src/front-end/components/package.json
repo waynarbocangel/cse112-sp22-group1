@@ -10,9 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "shadow-selection-polyfill": "^1.1.0"
-  },
-  "jest": {
-    "preset": "jest-puppeteer",
-    "verbose": true
   }
+  
+  
 }

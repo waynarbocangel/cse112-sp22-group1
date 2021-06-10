@@ -75,7 +75,7 @@ creator-block {
 /*
 .noteContainer:before{content: '\f081';} */
 
-@media only screen and (max-width:1100px) {
+@media only screen and (max-width:900px) {
 	#topbar {
 		margin-left: 0;
 		text-align: center;
@@ -92,7 +92,7 @@ creator-block {
 	opacity: 0;
 }
 
-@media only screen and (max-width:1100px) {
+@media only screen and (max-width:900px) {
 	/* TODO: use img instead of background-image for theme */
 	#targetMenu {
 		display: block;

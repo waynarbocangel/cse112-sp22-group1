@@ -1,10 +1,10 @@
 
 /**
  * Finds and deletes the imageBlock.
- * @memberof deleteFunctions
+ *
  * @param {database} db The local pouch database.
  * @param {String} id The id of the object to be deleted.
- * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
+ * @callback (res) Sends an error if there is one to the callback.
  */
 export function deleteImageBlockPouch (db, id, callback) {
 	localStorage.readUser((err, user) => {

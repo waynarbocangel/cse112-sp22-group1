@@ -54,7 +54,7 @@ template.innerHTML = `
 			margin: 0 auto;
 		}
 
-		@media only screen and (max-width:1100px) {
+		@media only screen and (max-width:900px) {
 			#menu {
 				position: fixed;
 				width: 30%;
@@ -206,17 +206,11 @@ template.innerHTML = `
 	</nav>
 `;
 
-/**
- * Class that Creates navbar
- */
 export class NavBar extends HTMLElement {
 	static get observedAttributes () {
 		return ["open"];
 	}
 
-	/**
-	 * Navbar constructor
-	 */
 	constructor () {
 		super();
 		this.attachShadow({ mode: "open" });
@@ -270,7 +264,9 @@ export class NavBar extends HTMLElement {
 		});
 		this.userMenu.addEventListener("click", () => {
 			let settingsMenu = document.querySelector("settings-menu");
-			settingsMenu.toggle();
+			if (typeof settingsMenu === SettingsMenu) {
+				settingsMenu.toggle();
+			}
 		});
 	}
 
@@ -347,6 +343,11 @@ export class NavBar extends HTMLElement {
 		return this.hasAttribute("open");
 	}
 
+	/**
+	 * Menu is toggeled if parameter is true
+	 *
+	 * @param {Boolean} isOpen boolean to check if menu should be toggled or not
+	 */
 	set open (isOpen) {
 		this.menu.classList.toggle("open", isOpen);
 		this.menu.classList.toggle("closed", !isOpen);

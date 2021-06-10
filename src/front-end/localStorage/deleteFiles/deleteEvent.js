@@ -1,9 +1,9 @@
 /**
  * Finds and deletes the event.
- * @memberof deleteFunctions
+ *
  * @param {database} db The local pouch database.
  * @param {String} id The id of the object to be deleted.
- * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
+ * @callback (res) Sends an error if there is one to the callback.
  */
 export function deleteEventPouch (db, id, callback) {
 	console.log("deleteEvent" + id);

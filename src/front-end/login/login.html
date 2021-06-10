@@ -3,6 +3,7 @@
     
 
 <head>
+	<script defer type="module" src="reloader.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
@@ -27,10 +28,10 @@
         
         <!-- insert form: login form -->
         <form id="login-form">
-            <input type="text" name="email" id="email-field" class="login-form-field" placeholder="Email" autocomplete="on">
-            <input type="password" name="password" id="password-field" class="login-form-field" placeholder="Password" autocomplete="on">
-            <input type="submit" value="Log In" id="login-form-submit" autocomplete="on">
-            <input type="submit" value= "Create Account" id="login-form-create" autocomplete="on">
+            <input type="text" name="email" id="email-field" class="login-form-field" placeholder="Email">
+            <input type="password" name="password" id="password-field" class="login-form-field" placeholder="Password">
+            <input type="submit" value="Log In" id="login-form-submit">
+            <input type="submit" value= "Create Account" id="login-form-create">
         </form>
 
 
@@ -43,11 +44,8 @@
     <p id=name>My Journal</h2>
 
     <a href="https://github.com/cse110-sp21-group11/cse110-sp21-group11">Contact us</a>
-	<script type="module" src="./reloader.js"></script>
-	<script src="./login.js" type="module"></script>
-	<script src="../localStorage/pouchdb-7.2.1.min.js"></script>
-	<script src="../components/datepicker.min.js"></script>
-    
+	<script src="//cdn.jsdelivr.net/npm/pouchdb@7.2.1/dist/pouchdb.min.js"></script>
+    <script src="./login.js" type="module"></script>
 </body>
 
 </html>

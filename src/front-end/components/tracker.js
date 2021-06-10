@@ -3,17 +3,12 @@ import { CreatorBlock } from "./creator.js";
 import { TrackerBlock } from "./trackerBlock.js";
 import { currentObject } from "../index.js";
 
-/**
- * Class that creates a trackerMenu
- */
+// Tracker side menu web component
 export class TrackerMenu extends HTMLElement {
     static get observedAttributes () {
         return ["open"];
     }
 
-	/**
-	 * TrackerMenu constructor
-	 */
     constructor (title) {
         super();
 		this.attachShadow({ mode: "open" });
@@ -231,6 +226,11 @@ export class TrackerMenu extends HTMLElement {
         return this.hasAttribute("open");
     }
 
+	/**
+	 * Sets or removes attributes based on whether parameter is true or false
+	 *
+	 * @param {Boolean} isOpen parameter to decide setting or removing attributes
+	 */
     set open (isOpen) {
         this.shadowRoot.querySelector(".wrapper").classList.toggle("open", isOpen);
         this.shadowRoot.querySelector(".wrapper").classList.toggle("closed", !isOpen);
@@ -250,6 +250,9 @@ export class TrackerMenu extends HTMLElement {
 		return this.shadowRoot.querySelector(".tracker_header h1").innerText;
 	}
 
+	/**
+	 * Sets tracker title
+	 */
     set title (text) {
         this.shadowRoot.querySelector(".tracker_header h1").innerText = text;
     }

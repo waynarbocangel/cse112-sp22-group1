@@ -3,12 +3,12 @@ let trackerObject = {};
 
 /**
  * Creates and stores a new tracker created from the given parameters.
- * @memberof createFunctions
+ *
  * @param {database} db The local pouch database.
  * @param {String} title The title of the tracker.
  * @param {Array} content The id's of the textBlocks of the new tracker.
  * @param {String} parent The id of the parent of the tracker.
- * @param {doubleParameterCallback} callback Eihter sends the newly created tracker or an error if there is one to the callback.
+ * @callback (err,tracker) Eihter sends the newly created tracker or an error if there is one to the callback.
  */
 export function createTrackerPouch (db, title, content, parent, callback) {
 	console.log("making tracjer");
@@ -48,8 +48,7 @@ export function createTrackerPouch (db, title, content, parent, callback) {
 
 			doc.trackers.push(trackerObject);
 			// Tracker array of parent should be updated in callback of this funciton
-			return db.put({
-				_id: "0000",
+			return db.put({_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
 				pwd: doc.pwd,

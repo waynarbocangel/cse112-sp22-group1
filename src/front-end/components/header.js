@@ -1,14 +1,7 @@
 import * as localStorage from "../localStorage/userOperations.js";
-import * as dropdown from "../fillDropdown.js";
-import { currentObject, creationMenu, adderDropdown, navbar } from "../index.js";
+import { navbar } from "../index.js";
 
-/**
- * Class that creates Page Header
- */
 export class PageHeader extends HTMLElement {
-	/**
-	 * PageHeader constructor
-	 */
 	constructor () {
 		super();
 		this.attachShadow({ mode: "open" });
@@ -156,25 +149,25 @@ export class PageHeader extends HTMLElement {
 					display: none;
 				}
 
-				@media screen and (max-width: 1450px) {
+				@media screen and (max-width: 1250px) {
 					.search_bar input {
 						width: 220px;
 					}
 				}
 
-				@media screen and (max-width: 1280px) {
+				@media screen and (max-width: 1080px) {
 					.search_bar input {
 						width: 170px;
 					}
 				}
 
-				@media screen and (max-width: 1220px) {
+				@media screen and (max-width: 1020px) {
 					.search_bar {
 						display: none;
 					}
 				}
 
-				@media screen and (max-width: 1100px) {
+				@media screen and (max-width: 900px) {
 					
 					:host {
 						margin-left: 20px;
@@ -337,7 +330,7 @@ export class PageHeader extends HTMLElement {
 			
 				<button class="imgbutton plus"><img src="../public/resources/plusIcon.png"></button>
 			
-				<span class="search_bar" id="searchBar">
+				<span class="search_bar">
 					<input type="text" placeholder="Search">
 					<img src="../public/resources/search_icon.png">
 				</span>
@@ -348,41 +341,27 @@ export class PageHeader extends HTMLElement {
 
 		this.createFutureLog = this.createFutureLog.bind(this);
 		this.futureLogButton = this.shadowRoot.querySelector(".plus");
+		this.futureLogButton.addEventListener("click", () => {
+			this.createFutureLog();
+		});
 
 		this.imgbuttons = this.shadowRoot.querySelectorAll(".imgbutton");
 		this.menuToggle = this.shadowRoot.querySelector("#menuToggle input");
-		this.searchBar = this.shadowRoot.getElementById("searchBar");
 	}
 
 	/**
 	 * When header is created, the callback will listen to when the menu is toggled
 	 */
 	connectedCallback () {
-		this.futureLogButton.addEventListener("click", () => {
-            let searchbarShift = this.searchBar.style.display === "none" ? 0 : this.searchBar.getBoundingClientRect().width;
-            dropdown.openCreationDropdown(this.offsetHeight, window.innerWidth - 210 - searchbarShift);
-		});
-
 		this.menuToggle.addEventListener("change", () => {
 			navbar.toggle();
 		});
-
-		this.h1.onblur = () => {
-			if (this.h1.contentEditable) {
-				currentObject.title = this.h1.innerText;
-				localStorage.updateCollection(currentObject, true, (err) => {
-					if (err) {
-						console.log(err);
-					}
-				});
-			}
-		};
 	}
 
 	/**
 	 * Makes header content editable
 	 */
-	makeEditable () {
+	makeEditabe () {
 		this.h1.contentEditable = true;
 	}
 
@@ -393,6 +372,11 @@ export class PageHeader extends HTMLElement {
 		this.h1.contentEditable = false;
 	}
 
+	/**
+	 * Sets header title based on current page
+	 *
+	 * @param {String} title the title to set
+	 */
 	set title (title) {
 		this.shadowRoot.getElementById("title_page").innerHTML = title;
 	}
