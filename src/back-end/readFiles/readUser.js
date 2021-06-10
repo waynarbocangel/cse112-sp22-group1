@@ -1,7 +1,3 @@
-/**
- * Mongo Read Funcions
- * @namespace mongoRead
- */
 require("dotenv").config();
 const mongoose = require("mongoose");
 const schema = require(__dirname + "/../schema.js");
@@ -12,7 +8,7 @@ mongoose.set("useCreateIndex", true);
 
 /**
  * Reads the user from the online db and sends it to the callback.
- * @memberof mongoRead
+ *
  * @param {Object} userData The user data object to read from the online db.
  * @callback (response) Either sends the user as an object from the online db or and error, if there is one, to the callback.
  */
@@ -23,7 +19,7 @@ function readUser (userData, callback) {
 		} else {
 			let newCollections = [];
 			for (let i = 0; i < user.collections.length; i++) {
-				let collection = user.collections[i];
+				let collection = user.collection[i];
 				collection.title = security.decrypt(collection.title, userData.pwd);
 				newCollections.push(collection);
 			}
@@ -48,7 +44,6 @@ function readUser (userData, callback) {
 			let newSignifiers = [];
 			for (let i = 0; i < user.signifiers.length; i++) {
 				let signifier = user.signifiers[i];
-				console.log(signifier.meaning);
 				console.log(security.decrypt(signifier.meaning, userData.pwd));
 				signifier.meaning = security.decrypt(signifier.meaning, userData.pwd);
 				newSignifiers.push(signifier);

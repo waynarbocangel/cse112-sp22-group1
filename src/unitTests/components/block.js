@@ -27,24 +27,24 @@ const html = `<template id="block">
 		margin: 7px 0 12px;
 		font-size: 18px;
 		line-height: 28px;
-		width: calc(100% - 44px);
+		width: calc(100% - 74px);
 	}
 
-	.note{
+	.note{	
 		margin: 0;
-		margin-left: -40px;
+		margin-left: -62px;
 		position: relative;
 		font-size: 18px;
 		line-height: 28px;
 		vertical-align: top;
-		width: calc(100% - 70px);
+		width: calc(100% - 95px);
 	}
 
 	.task{
 		margin: 7px 0 2px;
 		font-size: 18px;
 		line-height: 28px;
-		width: calc(100% - 70px);
+		width: calc(100% - 96px);
 	}
 
 	.header1{
@@ -52,7 +52,7 @@ const html = `<template id="block">
 		line-height: 50px;
 		font-weight: bold;
 		margin: 15px 0 20px;
-		width: calc(100% - 44px);
+		width: calc(100% - 74px);
 	}
 
 	.header2{
@@ -60,7 +60,7 @@ const html = `<template id="block">
 		line-height: 36px;
 		font-weight: bold;
 		margin: 8px 0 13px;
-		width: calc(100% - 44px);
+		width: calc(100% - 74px);
 	}
 
 	.header3{
@@ -68,7 +68,7 @@ const html = `<template id="block">
 		line-height: 30px;
 		font-weight: bold;
 		margin: 7px 0 10px;
-		width: calc(100% - 44px);
+		width: calc(100% - 74px);
 	}
 
 	.bold{
@@ -101,13 +101,21 @@ const html = `<template id="block">
 		filter: var(--icon-filter);
 	}
 
+	#editorIcons div{
+		display: inline;
+		margin-right: 0;
+		opacity: 1;
+		width: 20px;
+		cursor: pointer;
+	}
+
 	.unfocusedIcons{
 		opacity: 0.3;
 		transition: 0.2s;
 	}
 
 	.focusedIcons{
-		opacity: 0.7;
+		opacity: 0.5;
 		transition: 0.2s;
 	}
 
@@ -131,7 +139,7 @@ const html = `<template id="block">
 	.noteIcons{
 		position: relative;
 		top: 2px;
-		left: -65px;
+		left: -87px;
 	}
 
 	.paragraphIcons{
@@ -179,8 +187,12 @@ const html = `<template id="block">
 		color: #fff;
 	}
 
+	#signifier{
+		opacity: 1;
+	}
+
 </style>
-<div id="editorIcons" class="paragraphIcons"><img src="../public/resources/plusIcon.png" class="unfocusedIcons"/><img src="../public/resources/sixDotIcon.png" class="unfocusedIcons"/></div>
+<div id="editorIcons" class="paragraphIcons"><img src="../public/resources/plusIcon.png" class="unfocusedIcons"/><img src="../public/resources/sixDotIcon.png" class="unfocusedIcons"/><div id="signifier"></div></div>
 <div id="checkerContainer" checked=""><div id="taskChecker"></div></div>
 <div id="textBlock" contenteditable="true" ondrop="return false;" placeholder='Type "/" to create a block'></div>
 </template>
@@ -193,11 +205,9 @@ const protectedKeys = ["Control", "Alt", "CapsLock", "Escape", "PageUp", "PageDo
 export class TextBlock extends HTMLElement{
 	constructor(controller, itemObject, callback){
 		super();
-		
 		/* fetch("./components/block.html").then((response) => {
 			return response.text();
 		}).then((html) => { */
-			/* console.log(html); */
 			let parser = new DOMParser();
 			let blockTemplateFile = parser.parseFromString(html, 'text/html');
 			let blockTemplate = blockTemplateFile.getElementById("block");
