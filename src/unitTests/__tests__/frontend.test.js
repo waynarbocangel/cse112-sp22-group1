@@ -36,7 +36,7 @@ describe('Basic user flow for SPA ', () => {
     // Test 3
     it('Log in fail', async () => {
         // fill in fields, click login, check link
-        //await page.waitForSelector('email-field');   
+        //await page.waitForSelector('email-field');
         await page.click('input#email-field', {clickCount:3});
         await page.type('input#email-field','test10');
         await page.click('input#password-field',{clickCount:3});
@@ -44,7 +44,6 @@ describe('Basic user flow for SPA ', () => {
         await page.click("input#login-form-submit");
         await page.waitForTimeout(5000);
         expect(page.url()).toBe("http://localhost:8080/login/");
-    
         });
 
     */
