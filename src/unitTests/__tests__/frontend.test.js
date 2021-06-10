@@ -1,4 +1,6 @@
 // Puppeteer
+jest.setTimeout(35000);
+
 describe('Basic user flow for SPA ', () => {
 
     beforeAll(async () => {
@@ -61,7 +63,6 @@ describe('Basic user flow for SPA ', () => {
 
 
     //Test 5 
-
     it('testing opening the settings menu by clicking the user button', async () => {
         const userButton = await page.evaluateHandle(`document.querySelector("#sidebar > nav-bar").shadowRoot.querySelector("#user")`);
         await userButton.evaluate(e => e.click());
@@ -84,7 +85,6 @@ describe('Basic user flow for SPA ', () => {
 
         // start on dark theme
         await darkThemeButton.evaluate(e => e.click());
-
         //check the background color
         const firstBackgroundColor = await page.$eval(":root", root => getComputedStyle(root).backgroundColor);
         console.log(firstBackgroundColor);
@@ -92,8 +92,8 @@ describe('Basic user flow for SPA ', () => {
         // switch to light theme
         await lightThemeButton.evaluate(e => e.click());
         const lightBackgroundColor = await page.$eval(":root", root => getComputedStyle(root).backgroundColor);
+        console.log("first " + firstBackgroundColor);
         console.log("light " + lightBackgroundColor);
-        console.log("firstt " + firstBackgroundColor);
         expect(lightBackgroundColor).not.toBe(firstBackgroundColor);
 
         // go back to dark theme
@@ -103,7 +103,7 @@ describe('Basic user flow for SPA ', () => {
         expect(secondDarkBackgroundColor).toBe(firstBackgroundColor);
     }, 10000);
 
-    it('test closing the settings menu', () => {
+    it('test closing the settings menu', async() => {
         const userButton = await page.evaluateHandle(`document.querySelector("#sidebar > nav-bar").shadowRoot.querySelector("#user")`);
         await userButton.evaluate(e => e.click());
 
@@ -124,7 +124,7 @@ describe('Basic user flow for SPA ', () => {
     });
     */
 
-    it('testing logout button', () => {
+    it('testing logout button', async () => {
         // open the settings menu
         const userButton = await page.evaluateHandle(`document.querySelector("#sidebar > nav-bar").shadowRoot.querySelector("#user")`);
         await userButton.evaluate(e => e.click());
@@ -133,11 +133,11 @@ describe('Basic user flow for SPA ', () => {
         const settingsMenu = await page.$('settings-menu');
 
         const settingsMenuHidden = await settingsMenu.evaluate(e => e.getAttribute('aria-hidden'));
-        expect(settingsMenuHidden).toBe("false");
+        expect(settingsMenuHidden).toBe("true");
 
         const logoutButton = await page.evaluateHandle(`document.querySelector("#settings-panel-generated-0 > general-settings-panel").shadowRoot.querySelector("#logout")`);
         await logoutButton.evaluate(e => e.click());
-
+        await page.waitForNavigation();
         expect(page.url()).toBe('http://localhost:8080/login/');
-    });
+    }, 10000);
 });

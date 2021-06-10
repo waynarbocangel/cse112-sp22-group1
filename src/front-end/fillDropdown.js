@@ -54,11 +54,30 @@ export let creationDropdownContents = {
 };
 
 
-export let utilDropdownContents = {
+export function openCreationDropdown(x, y) {
+    if (creationDropdownContents[currentObject.objectType] === undefined) {
+        return;
+    }
+
+    adderDropdown.setPosition(x, y);
+
+    adderDropdown.fillDropdown(creationDropdownContents[currentObject.objectType]);
+}
+
+export function openUtilDropdown(x, y, item) {
+    if (utilDropdownContents[currentObject.objectType] === undefined) {
+        return;
+    }
+
+    adderDropdown.setPosition(x, y);
+
+    
+ let utilDropdownContents = {
     "index": [
         {
             title: "Delete",
             listener: () => {
+                item
             }
         }
     ],
@@ -70,22 +89,6 @@ export let utilDropdownContents = {
     ]
 }
 
-export function openCreationDropdown(x, y) {
-    if (creationDropdownContents[currentObject.objectType] === undefined) {
-        return;
-    }
-
-    adderDropdown.setPosition(x, y);
-
-    adderDropdown.fillDropdown(creationDropdownContents[currentObject.objectType]);
-}
-
-export function openUtilDropdown(x, y) {
-    if (utilDropdownContents[currentObject.objectType] === undefined) {
-        return;
-    }
-
-    adderDropdown.setPosition(x, y);
 
     adderDropdown.fillDropdown(utilDropdownContents[currentObject.objectType]);
 }
