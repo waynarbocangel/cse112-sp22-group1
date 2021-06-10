@@ -1,22 +1,14 @@
 // Puppeteer
 describe('Basic user flow for SPA ', () => {
-    
+
     beforeAll(async () => {
-      await page.goto('http://localhost:8080/login');
-      await page.waitForTimeout(1000);
+        await page.goto('http://localhost:8080/login');
+        await page.waitForTimeout(1000);
     });
 
     /*
-    // Testing test
-    test(' 1 and 1', async ()=>{
-      expect(1).toBe(1);
-    });
-
-    
-    
     // Test 1
     it('Test1: Initial Home Page - Check Home Page', async () => {
-
       // Remember to change this after deploy
       expect(page.url()).toBe("http://localhost:8080/login/");
       
@@ -54,63 +46,73 @@ describe('Basic user flow for SPA ', () => {
         });
 
     */
-    
+
     // Test 4
     it('Log in', async () => {
-      // fill in fields, click login, check link
-      await page.click('input#email-field', {clickCount:3});
-      await page.type('input#email-field','test3');
-      await page.click('input#password-field',{clickCount:3});
-      await page.type('input#password-field','qwert');
-      await page.click("input#login-form-submit");      
-      await page.waitForNavigation();
-      expect(page.url()).toBe("http://localhost:8080/");   
+        // fill in fields, click login, check link
+        await page.click('input#email-field', { clickCount: 3 });
+        await page.type('input#email-field', 'test13');
+        await page.click('input#password-field', { clickCount: 3 });
+        await page.type('input#password-field', 'qwert');
+        await page.click("input#login-form-submit");
+        await page.waitForNavigation();
+        expect(page.url()).toBe("http://localhost:8080/");
     }, 10000);
-    
-/*
+
+
     //Test 5 
-    it('testing click user', async()=>{
-        //let navbar = await page.$("nav-bar");
-        // let navbar = (await page.waitForFunction(() => document.querySelector('nav-bar'))).asElement();
-        // let but1= document.querySelector('nav-bar').shadowRoot.querySelector('#user');
-        //await navbar.shadowRoot.$
-        
-       // const button = await (await page.evaluateHandle(`document.querySelector("#sidebar > nav-bar").shadowRoot.querySelector("#user")`)).asElement();
-        //button.click();
-       
 
-         
-        const navbar = await (await page.$("nav-bar")).asElement;
-        const userButton = await page.evaluateHandle(nb => {
-                return nb.shadowRoot.getElementById("user");
-            },
-            navbar);
-
-        /*
+    it('testing opening the settings menu by clicking the user button', async () => {
         const userButton = await page.evaluateHandle(`document.querySelector("#sidebar > nav-bar").shadowRoot.querySelector("#user")`);
-        await userButton.click();
-        console.log(userButton);
-        
-        await page.waitForTimeout(1000);
-    }, 10000);
-*/
-    
-    it('testing click user without asElement', async()=>{
-        //let navbar = await page.$("nav-bar");
-        // let navbar = (await page.waitForFunction(() => document.querySelector('nav-bar'))).asElement();
-        // let but1= document.querySelector('nav-bar').shadowRoot.querySelector('#user');
-        //await navbar.shadowRoot.$
-        
-        const mobileMenuButton = await page.evaluateHandle(`document.querySelector("#topbar > page-header")
-        .shadowRoot.querySelector("#menuToggle > input[type=checkbox]")`);
-        await mobileMenuButton.asElement.click();
+        await userButton.evaluate(e => e.click());
 
-       /*  await page.waitForTimeout(1000);
-        const userButton = await page.evaluateHandle(`document.querySelector("#sidebar > nav-bar").shadowRoot.querySelector("#user")`);
-        await userButton.click();
-        console.log(userButton); */
+        //press user button
+        const settingsMenu = await page.$('settings-menu');
+
+        const settingsMenuHidden = await settingsMenu.evaluate(e => e.getAttribute('aria-hidden'));
+        expect(settingsMenuHidden).toBe("false");
     }, 10000);
-   
+
+    it('testing changing themes', async () => {
+        //pressing  theme tab 
+        const themeTab = await page.evaluateHandle(`document.querySelector("#settings-tab-generated-1")`);
+        await themeTab.evaluate(e => e.click());
+
+        //checking background color
+        const darkThemeButton = await page.evaluateHandle(`document.querySelector("#settings-panel-generated-1 > theme-panel").shadowRoot.querySelector("#theme > label:nth-child(1)")`);
+        const lightThemeButton = await page.evaluateHandle(`document.querySelector("#settings-panel-generated-1 > theme-panel").shadowRoot.querySelector("#theme > label:nth-child(2)")`);
+
+        // start on dark theme
+        await darkThemeButton.evaluate(e => e.click());
+
+        //check the background color
+        const firstBackgroundColor = await page.$eval(":root", root => getComputedStyle(root).backgroundColor);
+        console.log(firstBackgroundColor);
+
+        // switch to light theme
+        await lightThemeButton.evaluate(e => e.click());
+        const lightBackgroundColor = await page.$eval(":root", root => getComputedStyle(root).backgroundColor);
+        console.log("light " + lightBackgroundColor);
+        console.log("firstt " + firstBackgroundColor);
+        expect(lightBackgroundColor).not.toBe(firstBackgroundColor);
+
+        // go back to dark theme
+        await darkThemeButton.evaluate(e => e.click());
+        const secondDarkBackgroundColor = await page.$eval(":root", root => getComputedStyle(root).backgroundColor);
+        console.log(secondDarkBackgroundColor, secondDarkBackgroundColor == firstBackgroundColor);
+        expect(secondDarkBackgroundColor).toBe(firstBackgroundColor);
+    }, 10000);
+
+    it('test closing the settings menu', () => {
+        const userButton = await page.evaluateHandle(`document.querySelector("#sidebar > nav-bar").shadowRoot.querySelector("#user")`);
+        await userButton.evaluate(e => e.click());
+
+        //press user button
+        const settingsMenu = await page.$('settings-menu');
+
+        const settingsMenuHidden = await settingsMenu.evaluate(e => e.getAttribute('aria-hidden'));
+        expect(settingsMenuHidden).toBe("true");
+    }, 10000);
 
     /*
     test('Create Future Log', () => {
@@ -120,12 +122,22 @@ describe('Basic user flow for SPA ', () => {
     test ('Create Daily Log', () => {
 
     });
-
-    test ('Change Theme', () => {
-
-    });
-
-  
     */
-    
+
+    it('testing logout button', () => {
+        // open the settings menu
+        const userButton = await page.evaluateHandle(`document.querySelector("#sidebar > nav-bar").shadowRoot.querySelector("#user")`);
+        await userButton.evaluate(e => e.click());
+
+        //press user button
+        const settingsMenu = await page.$('settings-menu');
+
+        const settingsMenuHidden = await settingsMenu.evaluate(e => e.getAttribute('aria-hidden'));
+        expect(settingsMenuHidden).toBe("false");
+
+        const logoutButton = await page.evaluateHandle(`document.querySelector("#settings-panel-generated-0 > general-settings-panel").shadowRoot.querySelector("#logout")`);
+        await logoutButton.evaluate(e => e.click());
+
+        expect(page.url()).toBe('http://localhost:8080/login/');
+    });
 });
