@@ -3,12 +3,12 @@ let audioBlockObject = {};
 
 /**
  * Creates and stores a new audioBlock created from the given parameters.
- *
+ * @memberof createFunctions
  * @param {database} db The local pouch database.
  * @param {String} parent The id of the parent of new audioBlock.
  * @param {String} arrangement Arrangement of the audioBlock.
  * @param {Buffer} data audio of the audioBlock stored as a buffer.
- * @callback (err,audioBlock) Eihter sends the newly created audioBlock or an error if there is one to the callback.
+ * @param {doubleParameterCallback} callback Eihter sends the newly created audioBlock or an error if there is one to the callback.
  */
 export function createAudioBlockPouch (db, parent, arrangement, data, callback) {
 	db.get("0000", (err, doc) => {

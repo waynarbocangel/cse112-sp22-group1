@@ -32,6 +32,16 @@ import {makeid} from "./makeId.js";
 let monthlyObject = {};
 let startProcessed = false;
 
+/**
+ * Recursive function that adds monthlyLogs between start and end dates to futureLog
+ * @static
+ * @memberof createFunctions
+ * @param {Date} currentDay The day at which the function is currently at.
+ * @param {Date} startDate The start date of the monthlyLog.
+ * @param {Date} endDay The last day of the monthlyLog
+ * @param {Object} month The monthlyLog to add the dailyLogs to.
+ * @param {singleParameterCallback} callback Either sends an array of the dailyLogs added or sends an error, if ther is one, to the callback.
+ */
 function addDay (currentDay, startDate, endDay, month, callback) {
 	let dayDate = new Date(startDate.getFullYear(), startDate.getMonth(), currentDay);
 	if (currentDay > endDay) {
@@ -52,15 +62,15 @@ function addDay (currentDay, startDate, endDay, month, callback) {
 
 /**
  * Creates and stores a new monthlyLog created from the given parameters.
- *
+ * @memberof createFunctions
  * @param {database} db The local pouch database.
  * @param {String} parent The id of the parent of the new monthlyLog.
  * @param {Array} days The id's of the days included in the monthlyLog.
  * @param {Array} trackers The id's of the trackers included in the monthlyLog.
  * @param {Date} date The date of the monthlyLog.
- * @callback (err,monthlyLog) Eihter sends the newly created monthlyLog or an error if there is one to the callback.
+ * @param {doubleParameterCallback} callback Eihter sends the newly created monthlyLog or an error if there is one to the callback.
  */
-export function createMonthlyLogPouch (db, parent, content, days, trackers, date, callback) {
+export function createMonthlyLogPouch (db, parent, days, trackers, date, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err, null);
@@ -89,7 +99,6 @@ export function createMonthlyLogPouch (db, parent, content, days, trackers, date
 				objectType: "monthlyLog",
 				date: date,
 				parent: parent,
-				content: content,
 				days: days,
 				trackers: trackers
 			};
@@ -175,13 +184,13 @@ export function restart () {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockControllerModule.html">blockControllerModule</a></li><li><a href="module-index.html">index</a></li><li><a href="module-localStorage.html">localStorage</a></li><li><a href="module-textBlockModule.html">textBlockModule</a></li></ul><h3>Namespaces</h3><ul><li><a href="createFunctions.html">createFunctions</a></li><li><a href="deleteFunctions.html">deleteFunctions</a></li><li><a href="readFunctions.html">readFunctions</a></li><li><a href="updateFunctions.html">updateFunctions</a></li></ul><h3>Classes</h3><ul><li><a href="module-blockControllerModule.BlockController.html">BlockController</a></li><li><a href="module-textBlockModule.TextBlock.html">TextBlock</a></li></ul><h3>Global</h3><ul><li><a href="global.html#decrypt">decrypt</a></li><li><a href="global.html#encrypt">encrypt</a></li><li><a href="global.html#makeid">makeid</a></li><li><a href="global.html#passHash">passHash</a></li><li><a href="global.html#stateSwitch">stateSwitch</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockControllerModule.html">blockControllerModule</a></li><li><a href="module-creatorModule.html">creatorModule</a></li><li><a href="module-index.html">index</a></li><li><a href="module-localStorage.html">localStorage</a></li><li><a href="module-router.html">router</a></li><li><a href="module-schema.html">schema</a></li><li><a href="module-server.html">server</a></li><li><a href="module-textBlockModule.html">textBlockModule</a></li><li><a href="module-transitions.html">transitions</a></li></ul><h3>Namespaces</h3><ul><li><a href="createFunctions.html">createFunctions</a></li><li><a href="deleteFunctions.html">deleteFunctions</a></li><li><a href="mongoDelete.html">mongoDelete</a></li><li><a href="mongoRead.html">mongoRead</a></li><li><a href="mongoUpdate.html">mongoUpdate</a></li><li><a href="readFunctions.html">readFunctions</a></li><li><a href="securityFunctions.html">securityFunctions</a></li><li><a href="updateFunctions.html">updateFunctions</a></li></ul><h3>Classes</h3><ul><li><a href="CreationMenu.html">CreationMenu</a></li><li><a href="DropdownBlock.html">DropdownBlock</a></li><li><a href="InlineDropdown.html">InlineDropdown</a></li><li><a href="module-blockControllerModule.BlockController.html">BlockController</a></li><li><a href="module-creatorModule.CreatorBlock.html">CreatorBlock</a></li><li><a href="module-textBlockModule.TextBlock.html">TextBlock</a></li><li><a href="NavBar.html">NavBar</a></li><li><a href="PageHeader.html">PageHeader</a></li><li><a href="TrackerBlock.html">TrackerBlock</a></li><li><a href="TrackerMenu.html">TrackerMenu</a></li></ul><h3>Global</h3><ul><li><a href="global.html#makeid">makeid</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Jun 06 2021 13:21:31 GMT-0400 (Bolivia Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Mon Jun 07 2021 04:03:35 GMT-0400 (Bolivia Time)
 </footer>
 
 <script> prettyPrint(); </script>

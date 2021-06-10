@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: front-end/components/inlineDropdown.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: front-end/components/inlineDropdown.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { creationMenu } from "../index.js";
+
+const template = document.createElement("template");
+
+template.innerHTML = `
+	&lt;style>
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: rgba(236, 223, 207, 0.4);
+            width: 190px;
+            overflow: auto;
+            z-index: 1;
+        }
+
+        .dropdown-content ul {
+            padding: 5px 8px;
+			margin: 0;
+            list-style-type: none;
+        }
+
+        #myDropdown button {
+            background-color: transparent; /* Green */
+            border: none;
+            color: balck;
+            padding: 10px 18px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 18px;
+            font-family: "SF-Pro";
+            cursor: pointer;
+        }
+        
+        .show {display: block;}
+
+
+	&lt;/style> 
+	&lt;div class="dropdown">
+		&lt;div id="myDropdown" class="dropdown-content">
+			&lt;ul id="dropdownList">
+			&lt;/ul>
+		&lt;/div>
+	&lt;/div>
+	
+`;
+
+/**
+ * Class that Creates Inline DropDown
+ */
+export class InlineDropdown extends HTMLElement {
+	/**
+	 * Inline DropDown constructor
+	 */
+	constructor () {
+		super();
+		this.attachShadow({mode: "open"});
+		this.shadowRoot.appendChild(template.content.cloneNode(true));
+		this.dropdown = this.shadowRoot.getElementById("myDropdown");
+		this.list = this.shadowRoot.getElementById("dropdownList");
+		this.clicked = false;
+	}
+
+	connectedCallback () {
+		window.onresize = () => {
+			this.hide();
+		}
+
+		window.onclick = (e) => {
+			if(!this.contains(e.target) &amp;&amp; !this.clicked){
+				this.hide();
+			}
+			this.clicked = false;
+		}
+	}
+
+	/**
+	 * Displays dropdown if hidden or hides it if shown
+	 */
+	toggleDropdown () {
+		this.dropdown.classList.toggle("show");
+		this.clicked = true;
+	}
+	
+	/**
+	 * Hides dropdown
+	 */
+	hide () {
+		this.dropdown.classList.toggle("show", false);
+	}
+	
+	/**
+	 * Shows dropdown
+	 */
+	show () {
+		this.dropdown.classList.toggle("show", true);
+	}
+
+	/**
+	 * Fill the dropdown
+	 * @param {Array&lt;Object>} elements 
+	 */
+	fillDropdown (elements) {
+		while (this.list.childNodes.length > 0){
+			this.list.childNodes[0].remove();
+		}
+		for (let i = 0; i &lt; elements.length; i++){
+			let title = elements[i].title;
+			let newButton = document.createElement("button");
+			newButton.innerHTML = title;
+			let listWrapper = document.createElement("li");
+			listWrapper.appendChild(newButton);
+			this.list.appendChild(listWrapper);
+			newButton.onclick = elements[i].listener;
+		}
+	}
+	
+	/**
+	 * Sets the position of the dropdown
+	 * @param {Number} x - distance of top
+	 * @param {Number} y - distance of left
+	 */
+	setPosition(x,y){
+		this.dropdown.style.top = `${x}px`;
+		this.dropdown.style.left = `${y}px`;
+	}
+}
+
+window.customElements.define("inline-dropdown", InlineDropdown);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockControllerModule.html">blockControllerModule</a></li><li><a href="module-creatorModule.html">creatorModule</a></li><li><a href="module-index.html">index</a></li><li><a href="module-localStorage.html">localStorage</a></li><li><a href="module-router.html">router</a></li><li><a href="module-schema.html">schema</a></li><li><a href="module-server.html">server</a></li><li><a href="module-textBlockModule.html">textBlockModule</a></li><li><a href="module-transitions.html">transitions</a></li></ul><h3>Namespaces</h3><ul><li><a href="createFunctions.html">createFunctions</a></li><li><a href="deleteFunctions.html">deleteFunctions</a></li><li><a href="mongoDelete.html">mongoDelete</a></li><li><a href="mongoRead.html">mongoRead</a></li><li><a href="mongoUpdate.html">mongoUpdate</a></li><li><a href="readFunctions.html">readFunctions</a></li><li><a href="securityFunctions.html">securityFunctions</a></li><li><a href="updateFunctions.html">updateFunctions</a></li></ul><h3>Classes</h3><ul><li><a href="CreationMenu.html">CreationMenu</a></li><li><a href="DropdownBlock.html">DropdownBlock</a></li><li><a href="InlineDropdown.html">InlineDropdown</a></li><li><a href="module-blockControllerModule.BlockController.html">BlockController</a></li><li><a href="module-creatorModule.CreatorBlock.html">CreatorBlock</a></li><li><a href="module-textBlockModule.TextBlock.html">TextBlock</a></li><li><a href="NavBar.html">NavBar</a></li><li><a href="PageHeader.html">PageHeader</a></li><li><a href="TrackerBlock.html">TrackerBlock</a></li><li><a href="TrackerMenu.html">TrackerMenu</a></li></ul><h3>Global</h3><ul><li><a href="global.html#makeid">makeid</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Mon Jun 07 2021 04:03:35 GMT-0400 (Bolivia Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
