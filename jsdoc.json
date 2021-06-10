@@ -4,7 +4,7 @@
 	"source": {
 		"include": ["src"],
 		"includePattern": ".js$",
-		"excludePattern": "(node_modules|docs|shadow.js|pouchdb-7.2.1.min.js)"
+		"excludePattern": "(node_modules|docs|shadow.js|pouchdb-7.2.1.min.js|datepicker.min.js)"
 	},
 	"sourceType": "module",
 	"templates": {

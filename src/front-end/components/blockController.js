@@ -1,20 +1,7 @@
-/**
- * Block Controller Module
- * @module blockControllerModule
- */
 import * as localStorage from "../localStorage/userOperations.js";
 import { TextBlock } from "./block.js";
 
-/**
- * Controller for TextBlock object
- */
-export class BlockController extends Object {
-    
-	/**
-	 * @param {HTMLElement} container 
-	 * @param {Object} parent 
-	 * @param {String} subParent 
-	 */
+export class Controller extends Object {
 	constructor (container, parent, subParent) {
 		super();
 		this.blockArray = [];
@@ -27,12 +14,6 @@ export class BlockController extends Object {
 		this.subParent = subParent;
 	}
 
-	/**
-	 * Creates new block in container from a stored block
-	 * @param {*} block 
-	 * @param {*} signifier 
-	 * @param {*} callback 
-	 */
 	createNewBlock (block, signifier, callback) {
 		let newBlock = new TextBlock(this, block, signifier, (success) => {
 			if (success) {
@@ -51,10 +32,6 @@ export class BlockController extends Object {
 		});
 	}
 
-	/**
-	 * Adds a new block from an enter key press in a TextBlock object
-	 * @param {Object} block Stored block 
-	 */
 	addNewBlock (block) {
 		let newBlock = new TextBlock(this, block, this.generalSignifier, (success) => {
 			if (success) {
@@ -71,9 +48,7 @@ export class BlockController extends Object {
 			}
 		});
 	}
-	/**
-	 * Moves the cursor to the immediatly next block
-	 */
+
 	moveToNextBlock () {
 		let currentBlock = this.blockArray[this.currentBlockIndex];
 		if (this.currentBlockIndex < this.blockArray.length - 1) {
@@ -81,9 +56,7 @@ export class BlockController extends Object {
 			nextBlock.moveToSpot(currentBlock.currentPointerSpot, false);
 		}
 	}
-	/**
-	 * Moves the cursor to the immediatly previous block
-	 */
+
 	moveToPreviousBlock () {
 		let currentBlock = this.blockArray[this.currentBlockIndex];
 		if (this.currentBlockIndex > 0) {
@@ -92,9 +65,6 @@ export class BlockController extends Object {
 		}
 	}
 
-	/**
-	 * Removes the currently focused array 
-	 */
 	removeBlock () {
 		let currentBlock = this.blockArray[this.currentBlockIndex];
 		this.blockArray.splice(this.currentBlockIndex, 1);
@@ -215,7 +185,7 @@ export class BlockController extends Object {
  */
 export function createEditor (container, parent, subParent, callback) {
 
-	let controller = new BlockController(container, parent, subParent);
+	let controller = new Controller(container, parent, subParent);
 	setTimeout(() => {
 		let itemObject = null;
 		let objectArr = [];

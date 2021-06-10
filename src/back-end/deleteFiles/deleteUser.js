@@ -1,3 +1,7 @@
+/**
+ * Online Delete Functions
+ * @namespace mongoDelete
+ */
 require("dotenv").config();
 const mongoose = require("mongoose");
 const schema = require(__dirname + "/../schema.js");
@@ -7,7 +11,7 @@ mongoose.set("useCreateIndex", true);
 
 /**
  * Deletes the user from the online db.
- *
+ * @memberof mongoDelete
  * @param {Object} userObject The object of the user to be deleted.
  * @callback (res) Sends either the user deleted or and error if there was one.
  */

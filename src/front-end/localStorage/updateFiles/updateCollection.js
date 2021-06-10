@@ -1,6 +1,6 @@
 /**
  * Finds and update the collection passed in.
- * @memberof updateFunctions
+ *
  * @param {database} db The local pouch database.
  * @param {Object} collection The collection to be deleted.
  * @callback (res) Sends an error if there is one to the callback.

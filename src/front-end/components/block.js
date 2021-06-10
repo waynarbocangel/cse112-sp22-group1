@@ -1,211 +1,7 @@
-/**
- * Text Block Module
- * @module textBlockModule
- */
 import * as localStorage from "../localStorage/userOperations.js";
 import * as shadow from "./shadow.js";
 import {currentObject} from "../index.js";
-import { BlockController } from "./blockController.js";
 
-const html = `<template id="block">
-<style>
-	@font-face {
-		font-family:"SF-Pro";
-		src: url("./public/fonts/SF-Pro.ttf");
-	}
-	#textBlock {
-		font-family: "SF-Pro";
-		border: none;
-		overflow: auto;
-		outline: none;
-		resize: none;
-		display: inline-block;
-	}
-
-	#textBlock:empty::before{
-		content: attr(placeholder);
-		color: gray;
-	}
-
-	.eventNodateFocused::after{
-		content: attr(dateFiller);
-		color: gray;
-	}
-
-	.unstylized{
-		margin: 7px 0 12px;
-		font-size: 18px;
-		line-height: 28px;
-		width: calc(100% - 74px);
-	}
-
-	.note{	
-		margin: 0;
-		margin-left: -62px;
-		position: relative;
-		font-size: 18px;
-		line-height: 28px;
-		vertical-align: top;
-		width: calc(100% - 95px);
-	}
-
-	.task{
-		margin: 7px 0 2px;
-		font-size: 18px;
-		line-height: 28px;
-		width: calc(100% - 96px);
-	}
-
-	.header1{
-		font-size: 42px;
-		line-height: 50px;
-		font-weight: bold;
-		margin: 15px 0 20px;
-		width: calc(100% - 74px);
-	}
-
-	.header2{
-		font-size: 30px;
-		line-height: 36px;
-		font-weight: bold;
-		margin: 8px 0 13px;
-		width: calc(100% - 74px);
-	}
-
-	.header3{
-		font-size: 25px;
-		line-height: 30px;
-		font-weight: bold;
-		margin: 7px 0 10px;
-		width: calc(100% - 74px);
-	}
-
-	.bold{
-		font-weight: 900;
-	}
-
-	.italics{
-		font-style: italic;
-	}
-
-	.underlined{
-		text-decoration: underline;
-	}
-
-	.crossed{
-		text-decoration: line-through;
-		text-decoration-thickness: 2px;
-	}
-
-	#editorIcons{
-		position: relative;
-		display: inline;
-		vertical-align: top;
-	}
-	
-	#editorIcons img{
-		margin-right: 7px;
-		height: 15px;
-		cursor: pointer;
-		filter: var(--icon-filter);
-	}
-
-	#editorIcons div{
-		display: inline;
-		margin-right: 0;
-		opacity: 1;
-		width: 20px;
-		cursor: pointer;
-	}
-
-	.unfocusedIcons{
-		opacity: 0.3;
-		transition: 0.2s;
-	}
-
-	.focusedIcons{
-		opacity: 0.5;
-		transition: 0.2s;
-	}
-
-	#editorIcons img:hover{
-		opacity: 0.8;
-		transition: opacity 0.2s;
-	}
-	
-	.header1Icons{
-		top: 35px;
-	}
-
-	.header2Icons{
-		top: 18px;
-	}
-
-	.header3Icons{
-		top: 12px;
-	}
-
-	.noteIcons{
-		position: relative;
-		top: 2px;
-		left: -87px;
-	}
-
-	.paragraphIcons{
-		top: 10px;
-	}
-
-	#checkerContainer{
-		position: relative;
-		overflow: hidden;
-		user-select: none;
-	}
-
-	#taskChecker{
-		display: inline-block;
-		user-select: none;
-		background-color: #fafafa;
-		border: 1px solid #cacece;
-		box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0 -15px 10px -12px rgba(0,0,0,0.05);
-		width: 18px;
-		height: 18px;
-		margin-top: 11px;
-		margin-right: 3px;
-		margin-left: -1px;
-		vertical-align: top;
-		border-radius: 3px;
-	}
-
-	#taskChecker:active, #checkerContainer[checked="checked"]:active #taskChecker{
-		box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0 1px 3px rgba(0,0,0,0.1);
-	}
-
-	#checkerContainer[checked="checked"] #taskChecker{
-		background-color: #218be2;
-		border: 1px solid #218be2;
-		box-shadow: 0 1px 2px rgba(0, 87, 168, 0.05);
-		color: #218be2;
-	}
-
-	#checkerContainer[checked="checked"]:after {
-		position: absolute;
-		left: 4px;
-		top: -12px;
-		content: '\\2714';
-		font-size: 13px;
-		color: #fff;
-	}
-
-	#signifier{
-		opacity: 1;
-	}
-
-</style>
-<div id="editorIcons" class="paragraphIcons"><img src="../public/resources/plusIcon.png" class="unfocusedIcons"/><img src="../public/resources/sixDotIcon.png" class="unfocusedIcons"/><div id="signifier"></div></div>
-<div id="checkerContainer" checked=""><div id="taskChecker"></div></div>
-<div id="textBlock" contenteditable="true" ondrop="return false;" placeholder='Type "/" to create a block'></div>
-</template>
-`
 const tabSize = 20;
 const paddingSize = 10;
 const protectedKeys = ["Control", "Alt", "CapsLock", "Escape", "PageUp", "PageDown", "End", "Home", "PrintScreen", "Insert", "Delete", "Backspace", "Tab", "Enter", "Meta", "ArrowTop", "ArrowBottom", "ArrowRight", "ArrowLeft", "Shift", " "]
@@ -428,22 +224,12 @@ function getDate (textBlock, deleteString) {
 	return date;
 }
 
-
-/**
- * Class to create new editor block
- */
 export class TextBlock extends HTMLElement {
-	/**
-	 * Editor block constructor
-	 * @param {BlockController} controller - the editor's controller
-	 * @param {Object} itemObject - the database item representing the editor
-	 * @param {Object} signifier - the editor's current signifier
-	 * @param {Function} callback - callback for the end of the constructor function
-	 */
 	constructor (controller, itemObject, signifier, callback) {
 		console.trace();
 		super();
-		/* fetch("./components/block.html").then((response) => response.text()).then((html) => { */
+		fetch("./components/block.html").then((response) => response.text()).
+then((html) => {
 			let parser = new DOMParser();
 			let blockTemplateFile = parser.parseFromString(html, "text/html");
 			let blockTemplate = blockTemplateFile.getElementById("block");
@@ -482,7 +268,7 @@ export class TextBlock extends HTMLElement {
 			this.signifierIcon.innerHTML = this.signifier.symbol;
 			this.setupTabLevel();
 			callback(true);
-	/* 	}) */
+		})
 
 	}
 
@@ -514,8 +300,8 @@ export class TextBlock extends HTMLElement {
 	/**
 	 * Moves the textBlock to the location it was last dragged to(?)
 	 *
-	 * @param {*} newSpotToMove - the possible new spot to move to
-	 * @param {*} up - whether the cursor should move up or down
+	 * @param {*} newSpotToMove
+	 * @param {*} up
 	 */
 	moveToSpot (newSpotToMove, up) {
 		let newSpot = newSpotToMove
@@ -778,10 +564,6 @@ export class TextBlock extends HTMLElement {
 			this.controller.blockArray[this.controller.currentBlockIndex].setCurrentSpot();
 		});
 
-		/** 
-		 * @type {HTMLElement}
-		 * @listens document#click
-		 */
 		this.checkBox.onclick = (e) => {
 			if (this.checkBox.getAttribute("checked") === "checked") {
 				this.checkBox.setAttribute("checked", "");
@@ -823,7 +605,7 @@ export class TextBlock extends HTMLElement {
 		/**
 		 * Gets the user's clipboard data, filters for valid editor text, and pastes it to the textBlock.
 		 *
-		 * @param {Event} e
+		 * @param {User} e
 		 */
 		textBlock.onpaste = (e) => {
 			// Get user's pasted data
@@ -970,7 +752,7 @@ export class TextBlock extends HTMLElement {
 		 * If "tab" is hit, then the tab level is increased and the textBlock styling is
 		 * set up for each type of block type(?)
 		 *
-		 * @param {Event} e
+		 * @param {*} e
 		 */
 		textBlock.onkeydown = (e) => {
 			let key = e.key || e.keyCode;
@@ -1031,7 +813,7 @@ export class TextBlock extends HTMLElement {
 					e.preventDefault();
 				} else {
 					this.controller.resetPosition = false;
-					this.controller.addNewBlock(null);
+					this.controller.addNewBlock();
 					e.preventDefault();
 				}
 			} else if (key === "ArrowDown") {

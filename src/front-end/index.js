@@ -1,7 +1,3 @@
-/**
- * Index module
- * @module index
- */
 import * as localStorage from "./localStorage/userOperations.js";
 import { CreatorBlock } from "./components/creator.js";
 import { DropdownBlock } from "./components/dropdown.js";
