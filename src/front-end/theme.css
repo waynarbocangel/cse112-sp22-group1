@@ -7,8 +7,8 @@
 :root {
     --border-color: #F2F2F2;
 
-    --content-foreground-color: #000000;
     --content-background-color: #FFFFFF;
+    --content-foreground-color: #000000;
 
     --tracker-background-color: #2B2D42;
     --tracker-foreground-color: #FFFFFF;
@@ -16,6 +16,10 @@
 
     --navbar-background-color: #F7F2EC;
     --navbar-foreground-color: #FFFFFF;
+
+    --dropdown-background-color: #000000;
+    --dropdown-foreground-color: #FFFFFF;
+    --dropdown-hover-color: #FFFFFF;
 
     --icon-filter: ;
 

@@ -9,23 +9,22 @@ export class DropdownBlock extends HTMLElement {
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.innerHTML = `
 		<style>
-			@font-face {
-				font-family:"SF-Pro";
-				src: url("./public/fonts/SF-Pro.ttf");
-			}
+            :host {
+                font-family: "SF-Pro";
 
-			#wrapper{
-				padding-bottom: 0;
-				user-select: none; 
+                user-select: none; 
 				-webkit-user-select: none;
 				-moz-user-select: none; 
 				-khtml-user-select: none; 
 				-ms-user-select: none;
+            }
+
+			#wrapper {
+				padding-bottom: 0;
 			}
 
-			#title{
+			#title {
 				display: inline-block;
-				font-family: "SF-Pro";
 				font-size: calc(20pt - ${level * 2}pt);
 				font-weight: calc(900 - ${level * 200});
 				letter-spacing: calc(1.2px - ${level * 0.35}px);
@@ -34,7 +33,7 @@ export class DropdownBlock extends HTMLElement {
 				transition: 0.2s;
 			}
 
-			#title:hover{
+			#title:hover {
 				border-bottom: 2px solid rgba(0,0,0,0.9);
 				transition: 0.2s;
 			}
@@ -61,13 +60,13 @@ export class DropdownBlock extends HTMLElement {
                 transition: 0.2s;
             }
 
-			:not(.closed) #contentWrapper{
+			:not(.closed) #contentWrapper {
 				max-height: 0;
 				overflow: hidden;
 				transition: max-height 0.2s ease-out;
 			}
 
-			.closed #contentWrapper{
+			.closed #contentWrapper {
 				max-height: auto;
 				transition: max-height 0.2s ease-out;
 			}
@@ -79,8 +78,8 @@ export class DropdownBlock extends HTMLElement {
                 overflow-x: none;
             }
 
-			.singleItemWrapper{
-				border-top: 1px solid rgba(0,0,0,0.08);
+			.singleItemWrapper {
+				border-top: 1px solid var(--border-color);
 			}
 
 		</style>

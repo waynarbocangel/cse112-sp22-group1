@@ -1,5 +1,5 @@
-import {LogPage} from "./components/log.js";
+import {ImageBlock} from "./components/imageBlock.js";
 
 let template = document.getElementById("template");
 
-template.appendChild(new LogPage());
+template.appendChild(new ImageBlock());
