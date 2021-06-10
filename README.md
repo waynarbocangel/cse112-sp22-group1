@@ -27,5 +27,5 @@ Agile is an organization technique used by teams in industries.
 
 
 
-
-[Team Page: team.md](/admin/team.md)
+### Learn About Our Team!
+- [Team Page: team.md](/admin/team.md)
