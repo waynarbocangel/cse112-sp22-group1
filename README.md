@@ -20,6 +20,7 @@ The project is to create a virtual bullet journal that will help users organize 
 Agile is an organization technique used by teams in industries. 
 <hr></hr> 
 
+# Admin 
 [Meeting Notes](/admin/meetings)
 <hr></hr>
 
