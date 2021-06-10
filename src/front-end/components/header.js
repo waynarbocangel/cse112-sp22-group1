@@ -1,4 +1,5 @@
 import * as localStorage from "../localStorage/userOperations.js";
+import * as dropdown from "../fillDropdown.js";
 import { currentObject, creationMenu, adderDropdown, navbar } from "../index.js";
 
 /**
@@ -358,26 +359,8 @@ export class PageHeader extends HTMLElement {
 	 */
 	connectedCallback () {
 		this.futureLogButton.addEventListener("click", () => {
-			if (currentObject.objectType == "index") {
-				adderDropdown.fillDropdown([{
-					title: "New Future Log",
-					listener: () => {
-						creationMenu.setKind("futureLog");
-						creationMenu.show();
-						adderDropdown.hide();
-					}
-				}, {
-					title: "New Collection",
-					listener: () => {
-						creationMenu.setKind("collection");
-						creationMenu.show();
-						adderDropdown.hide();
-					}
-				}]);
-				let searchbarShift = this.searchBar.style.display === "none" ? 0 : this.searchBar.getBoundingClientRect().width;
-				adderDropdown.setPosition(this.offsetHeight, window.innerWidth - 210 - searchbarShift);
-				adderDropdown.toggleDropdown();
-			}
+            let searchbarShift = this.searchBar.style.display === "none" ? 0 : this.searchBar.getBoundingClientRect().width;
+            dropdown.openCreationDropdown(this.offsetHeight, window.innerWidth - 210 - searchbarShift);
 		});
 
 		this.menuToggle.addEventListener("change", () => {

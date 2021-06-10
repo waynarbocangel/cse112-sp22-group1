@@ -1,6 +1,5 @@
 import * as localStorage from "../userOperations.js";
 import {makeid} from "./makeId.js";
-import {restart} from "./createMonthlyLog.js";
 let futureObject = {};
 
 /**
@@ -14,13 +13,9 @@ let futureObject = {};
  */
 function addMonth (start, endDate, futureLog, callback) {
 	let startDate = start;
-	let date = startDate.getTime() === futureObject.startDate.getTime() ? new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getUTCDate()) : new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
-	if (startDate.getMonth() === endDate.getMonth() && startDate.getFullYear() === endDate.getFullYear()) {
-		date = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getUTCDate());
-	}
-	console.log(startDate);
-	console.log(endDate);
-	localStorage.createMonthlyLog(futureLog.id, [], [], date, false, (err, month) => {
+	let date = startDate.getTime() === futureObject.startDate.getTime() ? new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getUTCDate()) : new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+	let finalDate = (startDate.getMonth() === endDate.getMonth() && startDate.getFullYear() === endDate.getFullYear()) ? endDate : new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
+	localStorage.createMonthlyLog(futureLog.id, [], [], date, finalDate, false, (err, month) => {
 		if (err === null) {
 			if (startDate > endDate) {
 				callback([]);
@@ -133,8 +128,8 @@ export function createFutureLogPouch (db, startDate, endDate, months, trackers, 
 						textBlocks: doc.textBlocks,
 						tasks: doc.tasks,
 						events: doc.events,
-						signifiers: doc.signifiers}, (err, res2) => {
-						restart();
+						signifiers: doc.signifiers
+					}, (err, res2) => {
 						if (err) {
 							callback(err, null);
 						} else if (res2.ok) {

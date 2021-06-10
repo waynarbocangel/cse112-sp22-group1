@@ -32,7 +32,7 @@ const themeColors = {
         "--navbar-foreground-color": "#FFFFFF",
 
         "--dropdown-background-color": "#f7f2ec",
-        "--dropdown-foreground-color": "#ffffff",
+        "--dropdown-foreground-color": "#000000",
         "--dropdown-hover-color": "#dfdcd8",
 
         "--icon-filter": ""
@@ -50,7 +50,7 @@ const themeColors = {
         "--navbar-background-color": "#008F00",
         "--navbar-foreground-color": "#FFFFFF",
 
-        "--dropdown-background-color": "#000000",
+        "--dropdown-background-color": "#008F00",
         "--dropdown-foreground-color": "#ffffff",
         "--dropdown-hover-color": "#FF00FF",
 

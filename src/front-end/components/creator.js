@@ -1,9 +1,10 @@
-/**
+/**w
  * Creator Module
  * @module creatorModule
  */
 import * as localStorage from "../localStorage/userOperations.js";
 import {currentObject, adderDropdown, creationMenu} from "../index.js";
+import * as dropdown from "../fillDropdown.js";
 
 let template = document.createElement("template");
 template.innerHTML = `
@@ -90,80 +91,30 @@ export class CreatorBlock extends HTMLElement {
 	connectedCallback () {
 		let textBlock = this.shadowRoot.getElementById("textBlock");
 		this.plus.onclick = () => {
-			if (currentObject.objectType == "index") {
-				adderDropdown.fillDropdown([{
-					title: "New Future Log",
-					listener: () => {
-						creationMenu.setKind("futureLog");
-						creationMenu.show();
-						adderDropdown.hide();
-					}
-				}, {
-					title: "New Collection",
-					listener: () => {
-						creationMenu.setKind("collection");
-						creationMenu.show();
-						adderDropdown.hide();
-					}
-				}]);
-				let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? - 100 : textBlock.offsetHeight + 5;
-				adderDropdown.setPosition(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left);
-				adderDropdown.toggleDropdown();
-			} else if (currentObject.objectType == "futureLog") {
-				adderDropdown.fillDropdown([{
-					title: "New Monthly Log",
-					listener: () => {
-						creationMenu.setKind("monthlyLog");
-						creationMenu.show();
-						adderDropdown.hide();
-					}
-				}, {
-					title: "New Tracker",
-					listener: () => {
-						creationMenu.setKind("tracker");
-						creationMenu.show();
-						adderDropdown.hide();
-					}
-				}]);
-				let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? - 100 : textBlock.offsetHeight + 5;
-				adderDropdown.setPosition(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left);
-				adderDropdown.toggleDropdown();
-			} else if (currentObject.objectType == "monthlyLog") {
-				adderDropdown.fillDropdown([{
-					title: "New Daily Log",
-					listener: () => {
-						creationMenu.setKind("dailyLog");
-						creationMenu.show();
-						adderDropdown.hide();
-					}
-				}, {
-					title: "New Tracker",
-					listener: () => {
-						creationMenu.setKind("tracker");
-						creationMenu.show();
-						adderDropdown.hide();
-					}
-				}]);
-				let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? - 100 : textBlock.offsetHeight + 5;
-				adderDropdown.setPosition(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left);
-				adderDropdown.toggleDropdown();
-			}
+            let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? - 100 : textBlock.offsetHeight + 5;
+            dropdown.openCreationDropdown(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left);
 		}
 		textBlock.onkeydown = (e) => {
 			let key = e.key;
 			if (key === "Enter") {
 				e.preventDefault();
 				let content = textBlock.innerHTML;
-				if (content === "/futurelog") {
+				if (content === "/futurelog" && currentObject.objectType === "index") {
 					creationMenu.setKind("futureLog");
 					creationMenu.show();
 					adderDropdown.hide();
-				} else if (content === "/monthlylog") {
-					alert("New Monthly Log will be created");
-				} else if (content === "/dailylog") {
-					alert("New Daily Log will be created");
-				} else if (content === "/collection") {
-					alert("New Collection will be created");
+				} else if (content === "/monthlylog" && currentObject.objectType === "futureLog") {
+					creationMenu.setKind("monthlyLog");
+					creationMenu.show();
+					adderDropdown.hide();
+				} else if (content === "/dailylog" && currentObject.objectType === "monthlyLog") {
+					creationMenu.setKind("dailyLog");
+					creationMenu.show();
+					adderDropdown.hide();
+				} else if (content === "/collection" && currentObject.objectType === "index") {
+					creationMenu.setKind("collection");
+					creationMenu.show();
+					adderDropdown.hide();
 				} else if (content === "/tracker") {
 					localStorage.createTracker("Practice Tracker", [], currentObject.id, true, (err, tracker) => {
 						if (err) {
@@ -177,5 +128,4 @@ export class CreatorBlock extends HTMLElement {
 		}
 	}
 }
-
 window.customElements.define("creator-block", CreatorBlock);

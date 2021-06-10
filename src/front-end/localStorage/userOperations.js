@@ -276,8 +276,8 @@ export function createFutureLog (startDate, endDate, months, trackers, shouldUpd
  * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {doubleParameterCallback} callback Either sends the monthlyLog or an error, if there is one, to the callback.
  */
-export function createMonthlyLog (parent, days, trackers, date, shouldUpdate, callback) {
-	createMonthlyLogPouch(db, parent, days, trackers, date, (error, month) => {
+export function createMonthlyLog (parent, days, trackers, date, endDate, shouldUpdate, callback) {
+	createMonthlyLogPouch(db, parent, days, trackers, date, endDate, (error, month) => {
 		if (shouldUpdate) {
 			updateUserFromMongo();
 		}
