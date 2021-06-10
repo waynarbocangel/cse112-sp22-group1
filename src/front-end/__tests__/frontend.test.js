@@ -40,8 +40,6 @@ describe('Basic user flow for SPA ', () => {
       // fill in fields, click login, check link
 
       //page.goBack();
-
-
       //page.reload();
 
       /*
@@ -50,7 +48,7 @@ describe('Basic user flow for SPA ', () => {
       const login = page.waitForSelector('login-form-submit', {visible: true});
       page.click(login);
       */
-     
+
       //await page.click('login-form-submit');  
     
       //await page.goto('http://localhost:8080');
