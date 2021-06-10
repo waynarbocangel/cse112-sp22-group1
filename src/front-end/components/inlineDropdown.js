@@ -1,5 +1,3 @@
-import { creationMenu } from "../index.js";
-
 const template = document.createElement("template");
 
 template.innerHTML = `
@@ -14,7 +12,6 @@ template.innerHTML = `
             display: none;
             position: absolute;
             background-color: var(--dropdown-background-color);
-            width: 190px;
             overflow: auto;
         }
 
@@ -28,13 +25,17 @@ template.innerHTML = `
             background-color: transparent;
             border: none;
             color: var(--dropdown-foreground-color);
-            padding: 10px 18px;
-            text-align: right;
+            padding: 10px 1px 10px 18px;
+            text-align: left;
             text-decoration: none;
             display: inline-block;
             font-size: 18px;
             cursor: pointer;
+            width: 100%;
+            min-width: 190px;
         }
+
+        
 
         li:hover {
             background-color: var(--dropdown-hover-color);
@@ -95,6 +96,7 @@ export class InlineDropdown extends HTMLElement {
      */
     hide() {
         this.dropdown.classList.toggle("show", false);
+        this.clicked = false;
     }
 
     /**
@@ -102,6 +104,7 @@ export class InlineDropdown extends HTMLElement {
      */
     show() {
         this.dropdown.classList.toggle("show", true);
+        this.clicked = true;
     }
 
     /**
@@ -109,8 +112,12 @@ export class InlineDropdown extends HTMLElement {
      * @param {Array<Object>} elements 
      */
     fillDropdown(elements) {
-        while (this.list.childNodes.length > 0) {
-            this.list.childNodes[0].remove();
+        while (this.list.firstChild) {
+            this.list.lastChild.remove();
+        }
+        if (!elements.length) {
+            this.hide();
+            return;
         }
         for (let i = 0; i < elements.length; i++) {
             let title = elements[i].title;
@@ -121,6 +128,8 @@ export class InlineDropdown extends HTMLElement {
             this.list.appendChild(listWrapper);
             newButton.onclick = elements[i].listener;
         }
+
+        this.show();
     }
 
     /**
@@ -135,3 +144,4 @@ export class InlineDropdown extends HTMLElement {
 }
 
 window.customElements.define("inline-dropdown", InlineDropdown);
+

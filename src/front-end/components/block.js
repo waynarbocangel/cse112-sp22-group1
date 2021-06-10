@@ -249,7 +249,6 @@ export class TextBlock extends HTMLElement {
 			let blockTemplate = blockTemplateFile.getElementById("block");
 			this.attachShadow({ mode: "open" });
 			this.shadowRoot.appendChild(blockTemplate.content.cloneNode(true));
-			this.root = this.shadowRoot;
 			this.characterIndex = 0;
 			this.kind = "paragraph";
 			this.initialHeight = 3;
@@ -285,7 +284,6 @@ export class TextBlock extends HTMLElement {
 			this.setupTabLevel();
 			callback(true);
 		})
-
 	}
 
 	/**

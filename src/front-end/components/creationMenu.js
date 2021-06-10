@@ -1,5 +1,6 @@
 import * as localStorage from "../localStorage/userOperations.js";
 import { DropdownBlock } from "./dropdown.js";
+import { createEditor } from "./blockController.js";
 import { currentObject } from "../index.js";
 
 const template = document.createElement("template");
@@ -16,8 +17,12 @@ const futureLogCreator = `
 `;
 const monthlyLogCreator = `
 <form class="monthly" title="New Monthly Log">
-	<label for="pick-month"> Pick a Month:</label>
-	<input type="month" id="monthly" name="monthly">
+	<label>From: <br />
+	<input id="monthlyFrom" name="monthly-from">
+	</label>
+	<label>To: <br />
+	<input id="monthlyTo" name="monthly-to">
+	</label>
 </form>
 `;
 const dailyLogCreator = `
@@ -249,7 +254,9 @@ export class CreationMenu extends HTMLElement {
         })
         this.create.addEventListener("click", () => {
 			if (this.kind === "futureLog") {
-                this.createFutureLogTracker();
+                this.createFutureLog ();
+			} else if (this.kind === "monthlyLog") {
+				this.createMonthlyLog();
 			} else if (this.kind === "collection") {
                 this.createCollection();
 			} else if (this.kind === "tracker") {
@@ -287,8 +294,33 @@ export class CreationMenu extends HTMLElement {
 			this.endPicker = datepicker(this.shadowRoot.getElementById("futureTo"), {id: 1});
 		} else if (kind === "monthlyLog") {
 			this.content.innerHTML = monthlyLogCreator;
+			if (this.startPicker !== null && this.endPicker !== null) {
+				this.startPicker.remove();
+				this.endPicker.remove();
+			}
+			this.startPicker = datepicker(this.shadowRoot.getElementById("monthlyFrom"), {id: 1, onSelect: (instance, date) => {
+				if (new Date(this.shadowRoot.getElementById("monthlyTo").value).getMonth() !== date.getMonth() && instance.getRange().end) {
+					this.shadowRoot.getElementById("monthlyTo").value = "";
+					this.endPicker.setDate();
+					alert("Your start and end date must me on the same month");
+				}
+				this.startPicker.hide();
+			}});
+			this.endPicker = datepicker(this.shadowRoot.getElementById("monthlyTo"), {id: 1, onSelect: (instance, date) => {
+				if (new Date(this.shadowRoot.getElementById("monthlyFrom").value).getMonth() !== date.getMonth() && instance.getRange().end) {
+					this.shadowRoot.getElementById("monthlyFrom").value = "";
+					this.startPicker.setDate();
+					alert("Your start and end date must me on the same month");
+				}
+				this.endPicker.hide();
+			}});
 		} else if (kind === "dailyLog") {
 			this.content.innerHTML = dailyLogCreator;
+			if (this.startPicker !== null && this.endPicker !== null) {
+				this.startPicker.remove();
+				this.endPicker.remove();
+			}
+			this.startPicker = datepicker(this.shadowRoot.getElementById("daily"), {id: 1});
 		} else if (kind === "collection") {
 			this.content.innerHTML = collectionCreator;
 		} else if (kind === "tracker") {
@@ -298,48 +330,113 @@ export class CreationMenu extends HTMLElement {
         this.heading.textContent = this.content.querySelector("form").getAttribute("title");
 	}
 
-    createFutureLogTracker() {
+    createFutureLog () {
         let start = new Date(this.shadowRoot.getElementById("futureFrom").value);
         let end = new Date(this.shadowRoot.getElementById("futureTo").value);
-        console.log(start);
-        console.log(end);
-        localStorage.createFutureLog(start, end, [], [], true, (err, futureLog) => {
-            if (err) {
-                console.log(err);
-            } else if (futureLog) {
-                localStorage.readUser((error, user) => {
-                    if(error){
-                        console.log(error);
-                    } else {
-                        let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-                        let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-                        let contentWrapper = document.getElementById("contentWrapper");
-                        let futureLogStart = new Date(futureLog.startDate);
-                        let futureLogEnd = new Date(futureLog.endDate);
-                        let dropdown = new DropdownBlock(`Future Log ${monthNames[futureLogStart.getMonth()]} ${futureLogStart.getFullYear()} - ${monthNames[futureLogEnd.getMonth()]} ${futureLogEnd.getFullYear()}`, futureLog, 1);
-                        contentWrapper.insertBefore(dropdown, contentWrapper.lastChild);
+		if (start && end){
+			localStorage.createFutureLog(start, end, [], [], true, (err, futureLog) => {
+				if (err) {
+					console.log(err);
+				} else if (futureLog) {
+					localStorage.readUser((error, user) => {
+						if(error){
+							console.log(error);
+						} else {
+							let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+							let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+							let contentWrapper = document.getElementById("contentWrapper");
+							let futureLogStart = new Date(futureLog.startDate);
+							let futureLogEnd = new Date(futureLog.endDate);
+							let dropdown = new DropdownBlock(`Future Log ${monthNames[futureLogStart.getMonth()]} ${futureLogStart.getFullYear()} - ${monthNames[futureLogEnd.getMonth()]} ${futureLogEnd.getFullYear()}`, futureLog, 1);
+							contentWrapper.insertBefore(dropdown, contentWrapper.lastChild);
 
-                        if (contentWrapper.childNodes.length === 1) {
-                            dropdown.titleWrapper.classList.add("singleItemWrapper");
-                        }
+							if (contentWrapper.childNodes.length >= 1) {
+								dropdown.titleWrapper.classList.add("singleItemWrapper");
+							}
 
-                        for (let j = 0; j < futureLog.months.length; j++) {
-                            let currentMonth = user.monthlyLogs.filter((month) => month.id === futureLog.months[j].monthlyLog)[0];
-                            let dropdownMonth = new DropdownBlock(`${monthNames[new Date(currentMonth.date).getMonth()]} ${new Date(currentMonth.date).getFullYear()}`, currentMonth, 2);
-                            dropdown.contentWrapper.appendChild(dropdownMonth);
-                            for (let k = 0; k < currentMonth.days.length; k++) {
-                                let currentDay = user.dailyLogs.filter((day) => day.id === currentMonth.days[k].dailyLog)[0];
-                                let dropdownDay = new DropdownBlock(`${weekDays[new Date(currentDay.date).getDay()]}, ${monthNames[new Date(currentDay.date).getMonth()]} ${new Date(currentDay.date).getUTCDate()}`, currentDay, 3);
-                                dropdownMonth.contentWrapper.appendChild(dropdownDay);
-                            }
-                        }
-                        this.hide();
-                        dropdown.scrollIntoView({behavior: "smooth"});
-                    }
-                });
-            }
-        })
+							for (let j = 0; j < futureLog.months.length; j++) {
+								let currentMonth = user.monthlyLogs.filter((month) => month.id === futureLog.months[j].monthlyLog)[0];
+								let dropdownMonth = new DropdownBlock(`${monthNames[new Date(currentMonth.date).getMonth()]} ${new Date(currentMonth.date).getFullYear()}`, currentMonth, 2);
+								dropdown.contentWrapper.appendChild(dropdownMonth);
+								for (let k = 0; k < currentMonth.days.length; k++) {
+									let currentDay = user.dailyLogs.filter((day) => day.id === currentMonth.days[k].dailyLog)[0];
+									let dropdownDay = new DropdownBlock(`${weekDays[new Date(currentDay.date).getDay()]}, ${monthNames[new Date(currentDay.date).getMonth()]} ${new Date(currentDay.date).getUTCDate()}`, currentDay, 3);
+									dropdownMonth.contentWrapper.appendChild(dropdownDay);
+								}
+							}
+							this.hide();
+							dropdown.scrollIntoView({behavior: "smooth"});
+						}
+					});
+				}
+			});
+		} else {
+			alert("You must pick a start and end date!")
+			this.loadingWheel.style.display = "none";
+		}
     }
+
+	createMonthlyLog() {
+		let start = new Date(this.shadowRoot.getElementById("monthlyFrom").value);
+        let end = new Date(this.shadowRoot.getElementById("monthlyTo").value);
+		console.log((new Date(currentObject.startdate) > end || new Date(currentObject.endDate) < start));
+		if ((new Date(currentObject.startDate) > end || new Date(currentObject.endDate) < start) && start !== null && end !== null) {
+			console.log(start);
+			console.log(end);
+			localStorage.createMonthlyLog(currentObject.id, [], [], start, end, true, (err, monthlyLog) => {
+				if (err) {
+					console.log(err);
+				} else if (monthlyLog) {
+					localStorage.readUser((error, user) => {
+						if(error){
+							console.log(error);
+						} else {
+							let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+							let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+							let contentWrapper = document.getElementById("contentWrapper");
+							let currentMonth = monthlyLog;
+							let dropdownMonth = new DropdownBlock(`${monthNames[new Date(currentMonth.date).getMonth()]} ${new Date(currentMonth.date).getFullYear()}`, currentMonth, 1);
+							contentWrapper.insertBefore(dropdownMonth, contentWrapper.lastChild);
+							if (contentWrapper.childNodes.length >= 1) {
+								dropdownMonth.titleWrapper.classList.add("singleItemWrapper");
+							}
+							if (new Date(currentObject.startDate) > end) {
+								currentObject.startDate = start.toDateString();
+								currentObject.months.splice(0, 0, {id: monthlyLog.id, content: [], monthlyLog: monthlyLog.id});
+							} else {
+								currentObject.endDate = end.toDateString();
+								currentObject.months.push({id: monthlyLog.id, content: [], monthlyLog: monthlyLog.id});
+							}
+							localStorage.updateFutureLog(currentObject, true, (res) => {
+								if (res.ok) {
+									createEditor(dropdownMonth.contentWrapper, currentObject, currentMonth.id, (resp) => {
+										if (resp) {
+											for (let k = 0; k < currentMonth.days.length; k++) {
+												let currentDay = user.dailyLogs.filter((day) => day.id === currentMonth.days[k].dailyLog)[0];
+												let dropdownDay = new DropdownBlock(`${weekDays[new Date(currentDay.date).getDay()]}, ${monthNames[new Date(currentDay.date).getMonth()]} ${new Date(currentDay.date).getUTCDate()}`, currentDay, 2);
+												dropdownMonth.contentWrapper.appendChild(dropdownDay);
+												createEditor(dropdownDay.contentWrapper, currentMonth, currentDay.id, () => {});
+											}
+											this.hide();
+											dropdown.scrollIntoView({behavior: "smooth"});
+										}
+									});
+								} else {
+									console.log(errors);
+								}
+							})
+						}
+					});
+				}
+			});
+		} else if (!start || !end) {
+			alert("You must pick a start and end date!")
+			this.loadingWheel.style.display = "none";
+		} else {
+			alert("You already have these months in your Future Log, please delete them before creating them again");
+			this.loadingWheel.style.display = "none";
+		}
+	}
 
     createCollection() {
         let title = this.shadowRoot.getElementById("collection-title").value;
@@ -371,4 +468,4 @@ export class CreationMenu extends HTMLElement {
     }
 }
 
-customElements.define("creation-menu", CreationMenu);
+window.customElements.define("creation-menu", CreationMenu);

@@ -1,5 +1,7 @@
+import * as dropdown from "../fillDropdown.js";
 import {navbar, currentObject, adderDropdown, creationMenu} from "../index.js";
 import {router} from "../router.js";
+
 const tabspace = 3;
 
 /**
@@ -165,27 +167,25 @@ export class DropdownBlock extends HTMLElement {
 	 */
     connectedCallback () {
 		this.plus.onclick = () => {
+            let offsetValue = this.plus.getBoundingClientRect().top + this.plus.offsetHeight + 105 > window.innerHeight ? - 105 : this.plus.offsetHeight + 10;
+            dropdown.openCreationDropdown(this.plus.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left);
+		}
+
+        this.more.onclick = () => {
 			if (currentObject.objectType == "index") {
 				adderDropdown.fillDropdown([{
-					title: "New Future Log",
+					title: "Delete",
 					listener: () => {
 						creationMenu.setKind("futureLog");
 						creationMenu.show();
 						adderDropdown.hide();
 					}
-				}, {
-					title: "New Collection",
-					listener: () => {
-						creationMenu.setKind("collection");
-						creationMenu.show();
-						adderDropdown.hide();
-					}
 				}]);
-				let offsetValue = this.plus.getBoundingClientRect().top + this.plus.offsetHeight + 105 > window.innerHeight ? - 105 : this.plus.offsetHeight + 10;
-				adderDropdown.setPosition(this.plus.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left);
-				adderDropdown.toggleDropdown();
+				let offsetValue = this.more.getBoundingClientRect().top + this.more.offsetHeight + 105 > window.innerHeight ? - 105 : this.more.offsetHeight + 10;
+				adderDropdown.setPosition(this.more.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.more.getBoundingClientRect().left);
 			}
 		}
+
 		this.removeAttribute("closed");
         this.button.addEventListener("click", () => {
 			this.toggleItems();
