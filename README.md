@@ -21,8 +21,8 @@ Agile is an organization technique used by teams in industries.
 <hr></hr> 
 
 ### Admin 
-[Meeting Notes](/admin/meetings)
-[Team Contract](/admin/misc)
+- [Meeting Notes](/admin/meetings)
+- [Team Contract](/admin/misc)
 <hr></hr>
 
 
