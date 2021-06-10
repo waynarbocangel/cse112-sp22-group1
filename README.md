@@ -14,11 +14,15 @@ Team Members:
 - Waynar Bocangel  
 <hr></hr>
 
-Project Goal:  
+### Project Goal  
 
 The project is to create a virtual bullet journal that will help users organize tasks and projects in agile fashion.
 Agile is an organization technique used by teams in industries. 
 <hr></hr> 
+
+### Learn About Our Team!
+- [Team Page: team.md](/admin/team.md)
+
 
 ### Admin 
 - [Meeting Notes](/admin/meetings)
@@ -26,6 +30,9 @@ Agile is an organization technique used by teams in industries.
 <hr></hr>
 
 
+### Source
+Our source code for the team's Bujo app is contained in the [src](/src) folder. Within src, we have folders for backend, frontend, and testing.
 
-### Learn About Our Team!
-- [Team Page: team.md](/admin/team.md)
+
+
+
