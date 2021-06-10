@@ -27,6 +27,7 @@ describe('Testing the functionality of text block', () => {
     test('Check classlist property is updated correctly when changed to Note', ()=>{
         textBlock.setupNote();
         expect(textBlock.shadowRoot.getElementById('textBlock').classList.contains('note')).toBe(true);
+        expect(textBlock.shadowRoot.getElementById('textBlock').getAttribute("placeholder")).toEqual("Note");
     });
     test('Check classlist property is updated correctly when changed to Task', ()=>{
         textBlock.setupTask();
@@ -37,6 +38,7 @@ describe('Testing the functionality of text block', () => {
         textBlock.setupEvent();
         expect(textBlock.shadowRoot.getElementById('textBlock').getAttribute("placeholder")).toEqual("Event:");
         expect(textBlock.shadowRoot.getElementById('textBlock').getAttribute("dateFiller")).toEqual(" use @ for time HH:MM and # for weekdays or dates MM/DD/YY");
+        expect(textBlock.shadowRoot.getElementById('textBlock').classList.contains('eventNodateFocused')).toBe(true);
     });
     test('Check classlist property is updated correctly when changed to setupEvent', ()=>{
         textBlock.removeStyles();
