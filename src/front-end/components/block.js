@@ -855,7 +855,7 @@ export class TextBlock extends HTMLElement {
 				this.setupTabLevel();
 				e.preventDefault();
 			} else if (key === "@" && this.kind === "event") {
-				if (this.atPressed) {
+				if (this.timeSetter) {
 					e.stopPropagation();
 					e.preventDefault();
 				} else {
@@ -874,7 +874,7 @@ export class TextBlock extends HTMLElement {
 					textBlock.setAttribute("dateFiller", dateFiller);
 				}
 			} else if (key === "#" && this.kind === "event") {
-				if (this.hashPressed) {
+				if (this.dateSetter) {
 					e.stopPropagation();
 					e.preventDefault();
 				} else {

@@ -1,7 +1,7 @@
 import * as localStorage from "../../localStorage/userOperations.js";
 const themeColors = {
     darkmode: {
-        "--border-color": "#292929",
+        "--border-color": "#4d4d4d",
         "--content-background-color": "#2e3030",
         "--content-foreground-color": "#D4D4D4",
 
@@ -14,7 +14,8 @@ const themeColors = {
 
         "--dropdown-background-color": "#1e2020",
         "--dropdown-foreground-color": "#d4d4d4",
-        "--dropdown-hover-color": "#474a4a",    
+        "--dropdown-hover-color": "#474a4a",
+
         "--icon-filter": "invert()"
     },
 
@@ -29,6 +30,10 @@ const themeColors = {
 
         "--navbar-background-color": "#F7F2EC",
         "--navbar-foreground-color": "#FFFFFF",
+
+        "--dropdown-background-color": "#f7f2ec",
+        "--dropdown-foreground-color": "#ffffff",
+        "--dropdown-hover-color": "#dfdcd8",
 
         "--icon-filter": ""
     },
@@ -45,6 +50,10 @@ const themeColors = {
         "--navbar-background-color": "#008F00",
         "--navbar-foreground-color": "#FFFFFF",
 
+        "--dropdown-background-color": "#000000",
+        "--dropdown-foreground-color": "#ffffff",
+        "--dropdown-hover-color": "#FF00FF",
+
         "--icon-filter": "invert()"
     },
 
@@ -55,10 +64,15 @@ const themeColors = {
 
         "--tracker-background-color": "#026670",
         "--tracker-foreground-color": "#FFFFFF",
-        "--tracker-border-color": "#7671B6",
+        "--tracker-border-color": "#1d7d86",
 
         "--navbar-background-color": "#FCE181",
-        "--navbar-foreground-color": "#FEF9C7",
+        "--navbar-foreground-color": "#fed442",
+
+        "--dropdown-background-color": "#FFFFFF",
+        "--dropdown-foreground-color": "#000000",
+        "--dropdown-hover-color": "#efeded",
+
         "--icon-filter": ""
     },
 
@@ -73,6 +87,11 @@ const themeColors = {
 
         "--navbar-background-color": "#D8C3A5",
         "--navbar-foreground-color": "#000000",
+
+        "--dropdown-background-color": "#D8C3A5",
+        "--dropdown-foreground-color": "#000000",
+        "--dropdown-hover-color": "#c8ae89",
+
         "--icon-filter": ""
     },
 
@@ -89,6 +108,10 @@ const themeColors = {
         "--navbar-foreground-color": "#000000",
 
         "--content-placeholder-color": "#505b84",
+
+        "--dropdown-background-color": "#D8C3A5",
+        "--dropdown-foreground-color": "#000000",
+        "--dropdown-hover-color": "#c8ae89",
 
         "--icon-filter": "invert()"
     }
@@ -108,7 +131,6 @@ export class ThemePanel extends HTMLElement {
             :host {
                 display: block;
                 font-family: "SF-Pro";
-                height: 100%;
             }
 
             form {
@@ -117,7 +139,6 @@ export class ThemePanel extends HTMLElement {
                 flex-flow: row wrap;
 				justify-content: space-evenly;
 				align-content: center;
-                height: 100%;
             }
 
 			label {
@@ -127,18 +148,18 @@ export class ThemePanel extends HTMLElement {
 				cursor: pointer;
 			}
 
-			.themeImg{
+			.themeImg {
 				width: 250px;
 				margin-top: 10px;
 				border-radius: 5px;
 				transition: 0.2s;
 			}
 
-			input[type="radio"]{
+			input[type="radio"] {
 				display: none;
 			}
 
-			input[type="radio"]:checked + img.themeImg{
+			input[type="radio"]:checked + img.themeImg {
 				box-shadow: 0 0 0 8px var(--content-foreground-color);
 				transition: 0.2s;
 			}

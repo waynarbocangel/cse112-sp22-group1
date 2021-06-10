@@ -106,10 +106,46 @@ export class CreatorBlock extends HTMLElement {
 						adderDropdown.hide();
 					}
 				}]);
-				console.log(textBlock.getBoundingClientRect().top);
-				console.log(textBlock.offsetHeight);
-				console.log(textBlock.top);
-				adderDropdown.setPosition(textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 5, this.plus.getBoundingClientRect().left);
+				let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? - 100 : textBlock.offsetHeight + 5;
+				adderDropdown.setPosition(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left);
+				adderDropdown.toggleDropdown();
+			} else if (currentObject.objectType == "futureLog") {
+				adderDropdown.fillDropdown([{
+					title: "New Monthly Log",
+					listener: () => {
+						creationMenu.setKind("monthlyLog");
+						creationMenu.show();
+						adderDropdown.hide();
+					}
+				}, {
+					title: "New Tracker",
+					listener: () => {
+						creationMenu.setKind("tracker");
+						creationMenu.show();
+						adderDropdown.hide();
+					}
+				}]);
+				let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? - 100 : textBlock.offsetHeight + 5;
+				adderDropdown.setPosition(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left);
+				adderDropdown.toggleDropdown();
+			} else if (currentObject.objectType == "monthlyLog") {
+				adderDropdown.fillDropdown([{
+					title: "New Daily Log",
+					listener: () => {
+						creationMenu.setKind("dailyLog");
+						creationMenu.show();
+						adderDropdown.hide();
+					}
+				}, {
+					title: "New Tracker",
+					listener: () => {
+						creationMenu.setKind("tracker");
+						creationMenu.show();
+						adderDropdown.hide();
+					}
+				}]);
+				let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? - 100 : textBlock.offsetHeight + 5;
+				adderDropdown.setPosition(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left);
 				adderDropdown.toggleDropdown();
 			}
 		}

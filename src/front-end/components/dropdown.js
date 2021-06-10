@@ -19,10 +19,15 @@ export class DropdownBlock extends HTMLElement {
         this.attachShadow({ mode: "open" });
         this.shadowRoot.innerHTML = `
 		<style>
-			@font-face {
+            :host {
 				font-family:"SF-Pro";
-				src: url("./public/fonts/SF-Pro.ttf");
-			}
+
+				user-select: none; 
+				-webkit-user-select: none;
+				-moz-user-select: none; 
+				-khtml-user-select: none; 
+				-ms-user-select: none;
+            }
 
 			.noteContainer {
 				margin-top: 7px;
@@ -45,11 +50,6 @@ export class DropdownBlock extends HTMLElement {
 			#wrapper{
 				padding-bottom: 0;
 				width: calc(100% - 70px);
-				user-select: none; 
-				-webkit-user-select: none;
-				-moz-user-select: none; 
-				-khtml-user-select: none; 
-				-ms-user-select: none;
 			}
 
 			#title{
@@ -112,7 +112,7 @@ export class DropdownBlock extends HTMLElement {
             }
 
 			.singleItemWrapper{
-				border-top: 1px solid rgba(0,0,0,0.08);
+				border-top: 1px solid var(--border-color);
 			}
 
 			#editorIcons{
@@ -181,7 +181,8 @@ export class DropdownBlock extends HTMLElement {
 						adderDropdown.hide();
 					}
 				}]);
-				adderDropdown.setPosition(this.plus.getBoundingClientRect().top + this.plus.offsetHeight + 10, this.plus.getBoundingClientRect().left);
+				let offsetValue = this.plus.getBoundingClientRect().top + this.plus.offsetHeight + 105 > window.innerHeight ? - 105 : this.plus.offsetHeight + 10;
+				adderDropdown.setPosition(this.plus.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left);
 				adderDropdown.toggleDropdown();
 			}
 		}
