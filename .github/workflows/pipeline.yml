@@ -107,6 +107,7 @@ jobs:
          - run: yarn install
          - uses: stefanoeb/eslint-action@1.0.2
            with:
-             files: ./src/
+             files: ./src/front-end
+                    ./src/back-end
            env:
              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
