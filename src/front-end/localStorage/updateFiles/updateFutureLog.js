@@ -1,9 +1,9 @@
 /**
  * Finds and update the futureLog passed in.
- * @memberof updateFunctions
+ *
  * @param {database} db The local pouch database.
  * @param {Object} log The futureLog to be deleted.
- * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
+ * @callback (res) Sends an error if there is one to the callback.
  */
 export function updateFutureLogPouch (db, log, callback) {
 	console.log(log);

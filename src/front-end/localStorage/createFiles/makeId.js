@@ -1,7 +1,7 @@
 
 /**
  * Creates and returns a random id of length 30.
- * @memberof createFunctions
+ *
  * @return Returns a randomly generated id of length 30.
  */
 export function makeid () {

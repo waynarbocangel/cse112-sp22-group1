@@ -3,13 +3,13 @@ let taskObject = {};
 
 /**
  * Creates and stores a new task created from the given parameters.
- * @memberof createFunctions
+ *
  * @param {database} db The local pouch database.
  * @param {String} parent The id of the parent of the new task.
  * @param {String} text Description of the task.
  * @param {Number} complete Number to keep track if task is complete or not. (zero for non-complete and non-zero for complete)
  * @param {String} signifier The id of the signifier the task is supposed to use.
- * @param {doubleParameterCallback} callback Eihter sends the newly created task or an error if there is one to the callback.
+ * @callback (err,task) Eihter sends the newly created task or an error if there is one to the callback.
  */
 export function createTaskPouch (db, parent, text, complete, signifier, callback) {
 	db.get("0000", (err, doc) => {
@@ -45,8 +45,7 @@ export function createTaskPouch (db, parent, text, complete, signifier, callback
 
 			doc.tasks.push(taskObject);
 
-			return db.put({
-				_id: "0000",
+			return db.put({_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
 				pwd: doc.pwd,
@@ -62,10 +61,10 @@ export function createTaskPouch (db, parent, text, complete, signifier, callback
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: doc.events,
-				signifiers: doc.signifiers
-			}).then((res) => {
+				signifiers: doc.signifiers}).then((res) => {
 				console.log(res);
-			}).catch((error) => {
+			}).
+catch((error) => {
 				console.log(error);
 				callback(error, null);
 			});

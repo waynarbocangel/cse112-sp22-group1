@@ -1,7 +1,7 @@
-import { fade, unfade } from "../../transitions.js";
+import {fade, unfade} from "../../transitions.js";
 /* eslint-disable */
-import { GeneralSettingsPanel } from "./generalSettingsPanel.js";
-import { ThemePanel } from "./themePanel.js";
+import {GeneralSettingsPanel} from "./generalSettingsPanel.js";
+import {ThemePanel} from "./themePanel.js";
 /* eslint-enable */
 
 /*
@@ -64,8 +64,6 @@ export class SettingsMenu extends HTMLElement {
 
                 :host {
                     font-family: "SF-Pro";
-                    position: fixed;
-                    z-index: 10;
                 }
 
                 .overlay {
@@ -77,29 +75,30 @@ export class SettingsMenu extends HTMLElement {
                     bottom: 0;
                     right: 0;
                     background-color: #0000007F;
+                    z-index: 10;
                     user-select: none;
                 }
 
-                .close {
+                #close {
                     color: var(--content-foreground-color);
 
                     width: 40px;
                     height: 40px;
-                    margin-left: auto;
+
 
                     border: none;
                     background-color: transparent;
                     cursor: pointer;
                 }
 
-				.close img {
+				#dismiss {
 					filter: var(--icon-filter);
 					width: 20px;
 					opacity: 0.5;
 					transition: 0.2s;
 				}
 
-				.close:hover img {
+				#dismiss:hover {
 					opacity: 1;
 					transition: 0.2s;
 				}
@@ -145,14 +144,12 @@ export class SettingsMenu extends HTMLElement {
                 }
 
                 h1 {
-                    grid-column-start: 2;
                     text-align: center;
                     flex: 1;
                 }
 
-                header {
-                    display: grid;
-                    grid-template-columns: 1fr auto 1fr;
+                .header {
+                    display: flex;
                     align-items: center;
                     height: 60px;
                     margin-left: 10px;
@@ -177,10 +174,10 @@ export class SettingsMenu extends HTMLElement {
                     </div>
 
                     <div class="content">
-                        <header>
+                        <div class="header">
                             <h1>Settings</h1>
-                            <button class="close"><img id="dismiss" src="../../public/resources/xIcon.png" /></button>
-                        </header>
+                            <button id="close"><img id="dismiss" src="../../public/resources/xIcon.png" /></button>
+                        </div>
 
                         <div class="options">
                             <slot name="settings-panel"></slot>
@@ -190,9 +187,9 @@ export class SettingsMenu extends HTMLElement {
             </div>
         `;
 
-        this.shadowRoot.querySelector(".close").addEventListener("click", () => {
-            this.hide();
-        });
+        this.shadowRoot.getElementById("close").addEventListener("click", () => {
+ this.hide();
+});
 
         this.tabSlot = this.shadowRoot.querySelector("slot[name=settings-tab]");
         this.panelSlot = this.shadowRoot.querySelector("slot[name=settings-panel]");
@@ -203,7 +200,7 @@ export class SettingsMenu extends HTMLElement {
         this.tabSlot.addEventListener("slotchange", () => this.linkPanels);
         this.panelSlot.addEventListener("slotchange", () => this.linkPanels);
 
-        this.headerTitle = this.shadowRoot.querySelector("header h1");
+        this.headerTitle = this.shadowRoot.querySelector(".header h1");
     }
 
     connectedCallback () {
@@ -212,8 +209,8 @@ export class SettingsMenu extends HTMLElement {
         this.classList.toggle("open", false);
         this.setAttribute("aria-hidden", true);
 
-        this.style.display = "none";
-        this.removeAttribute("open");
+		this.style.display = "none";
+		this.removeAttribute("open");
 
         Promise.all([customElements.whenDefined("settings-tab"), customElements.whenDefined("settings-panel")]).
             then(() => this.linkPanels());
@@ -239,8 +236,8 @@ export class SettingsMenu extends HTMLElement {
         let tabs = this.tabs();
 
         if (tabs.length === 0) {
-            return;
-        }
+ return;
+}
 
         let selectedTab = null;
         for (let tab of tabs) {
@@ -266,11 +263,11 @@ export class SettingsMenu extends HTMLElement {
 
         // Deselect all the tabs and hide all the panels
         tabs.forEach((tab) => {
-            tab.selected = false
-        });
+ tab.selected = false
+});
         panels.forEach((panel) => {
-            panel.hidden = true
-        });
+ panel.hidden = true
+});
 
         let panelId = selectedTab.getAttribute("aria-controls");
         let selectedPanel = this.querySelector(`#${panelId}`);
@@ -301,14 +298,14 @@ export class SettingsMenu extends HTMLElement {
         this.classList.toggle("open", isOpen);
         this.setAttribute("aria-hidden", !isOpen);
         if (isOpen) {
-            this.setAttribute("open", "true");
-            unfade(this, () => {
-                this.focus();
-            });
+			this.setAttribute("open", "true");
+			unfade(this, () => {
+				this.focus();
+			});
         } else {
-            fade(this, () => {
-                this.removeAttribute("open");
-            });
+			fade(this, () => {
+				this.removeAttribute("open");
+			});
         }
     }
 
@@ -361,7 +358,7 @@ export class SettingsTab extends HTMLElement {
 
     constructor () {
         super();
-        this.attachShadow({ mode: "open" });
+        this.attachShadow({mode: "open"});
         this.shadowRoot.appendChild(settingsTabTemplate.content.cloneNode(true));
     }
 
@@ -369,7 +366,7 @@ export class SettingsTab extends HTMLElement {
         this.setAttribute("role", "tab");
         if (!this.id) {
             this.id = `settings-tab-generated-${tabId}`;
-            tabId += 1;
+			tabId += 1;
         }
 
         this.setAttribute("aria-selected", "false");
@@ -403,7 +400,7 @@ export class SettingsPanel extends HTMLElement {
         this.setAttribute("role", "tabpanel");
         if (!this.id) {
             this.id = `settings-panel-generated-${panelId}`;
-            panelId += 1;
+			panelId += 1;
         }
     }
 }

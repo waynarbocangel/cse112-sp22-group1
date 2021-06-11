@@ -1,3 +1,4 @@
+// Removed readUser and deleteDB from import because eslint complained they're never used
 import {createUser, db, loginUser} from "../localStorage/userOperations.js";
 import {createUserPouch} from "../localStorage/createFiles/createUser.js";
 let email = document.getElementById("email-field");

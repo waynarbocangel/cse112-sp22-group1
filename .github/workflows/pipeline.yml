@@ -77,7 +77,7 @@ jobs:
         #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
        #json-glob: ./src/unitTests/testOutput.json
        # workdir: ./src/unitTests
-       
+
   test-build:
     runs-on: ubuntu-latest
     strategy:
@@ -100,13 +100,14 @@ jobs:
         json-glob: ./src/unitTests/testOutput.json
         workdir: ./src/unitTests
 
-  ESLint-Check:
-       runs-on: ubuntu-latest
-       steps:
-         - uses: actions/checkout@v2
-         - run: yarn install
-         - uses: stefanoeb/eslint-action@1.0.2
-           with:
-             files: ./src/
-           env:
-             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #ESLint-Check:
+       #runs-on: ubuntu-latest
+       #steps:
+         #- uses: actions/checkout@v2
+         #- run: yarn install
+         #- uses: stefanoeb/eslint-action@1.0.2
+           #with:
+             #files: ./src/front-end
+                    #./src/back-end
+           #env:
+             #GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

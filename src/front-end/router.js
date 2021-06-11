@@ -1,21 +1,8 @@
-/**
- * Router
- * @module router
- */
-
 import * as localStorage from "./localStorage/userOperations.js";
 import {fade, unfade} from "./transitions.js";
-import {getCurrentObject, navbar, pageNumber, setupCollection, setupDailyLog, setupFutureLog, setupIndex, setupMonthlyLog, url} from "./index.js";
+import {getCurrentObject, navbar, pageNumber, setupDailyLog, setupFutureLog, setupIndex, setupMonthlyLog, url} from "./index.js";
 
-/**
- * @typedef {Object} Router
- * @property {String} route the route urls for the site
- */
 export const router = {};
-
-/**
- * @type {String}
- */
 export let state = "";
 
 /**
@@ -51,8 +38,6 @@ function stateSwitch (newState, prev) {
 					setupMonthlyLog(btn, newState);
 				} else if (state.includes("#futureLog")) {
 					setupFutureLog(btn, newState);
-				} else if (state.includes("#collection")) {
-					setupCollection(btn, newState);
 				}
 				if (!prev) {
 					history.pushState({page: pageNumber}, "", url);
