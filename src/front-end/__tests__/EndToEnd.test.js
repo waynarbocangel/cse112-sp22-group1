@@ -113,16 +113,6 @@ describe('Basic user flow for SPA ', () => {
         expect(settingsMenuHidden).toBe("true");
     }, 10000);
 
-    /*
-    test('Create Future Log', () => {
-      // TODO
-    });
-
-    test ('Create Daily Log', () => {
-
-    });
-    */
-
     it('testing logout button', async () => {
         // open the settings menu
         const userButton = await page.evaluateHandle(`document.querySelector("#sidebar > nav-bar").shadowRoot.querySelector("#user")`);

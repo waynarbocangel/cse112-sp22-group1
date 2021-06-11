@@ -19,6 +19,10 @@ describe('testing securityFunctions', ()=>{
         expect(hashed).toBe(hashed);
     });
 
+    test('testing hash password', ()=>{      
+        let hashed = sec.passHash(password);
+        expect(hashed).not.toBe(password);
+    });
     
     //testing encrypt
     test('testing encrypt', (done)=>{
