@@ -26,10 +26,22 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import * as localStorage from "../localStorage/userOperations.js";
+            <pre class="prettyprint source linenums"><code>/**
+ * Block Controller Module
+ * @module blockControllerModule
+ */
+import * as localStorage from "../localStorage/userOperations.js";
 import { TextBlock } from "./block.js";
 
-export class Controller extends Object {
+/**
+ * Controller for TextBlock object
+ */
+export class BlockController extends Object {
+	/**
+	 * @param {HTMLElement} container 
+	 * @param {Object} parent 
+	 * @param {String} subParent 
+	 */
 	constructor (container, parent, subParent) {
 		super();
 		this.blockArray = [];
@@ -42,6 +54,12 @@ export class Controller extends Object {
 		this.subParent = subParent;
 	}
 
+	/**
+	 * Creates new block in container from a stored block
+	 * @param {*} block 
+	 * @param {*} signifier 
+	 * @param {*} callback 
+	 */
 	createNewBlock (block, signifier, callback) {
 		let newBlock = new TextBlock(this, block, signifier, (success) => {
 			if (success) {
@@ -60,6 +78,10 @@ export class Controller extends Object {
 		});
 	}
 
+	/**
+	 * Adds a new block from an enter key press in a TextBlock object
+	 * @param {Object} block Stored block 
+	 */
 	addNewBlock (block) {
 		let newBlock = new TextBlock(this, block, this.generalSignifier, (success) => {
 			if (success) {
@@ -76,7 +98,9 @@ export class Controller extends Object {
 			}
 		});
 	}
-
+	/**
+	 * Moves the cursor to the immediatly next block
+	 */
 	moveToNextBlock () {
 		let currentBlock = this.blockArray[this.currentBlockIndex];
 		if (this.currentBlockIndex &lt; this.blockArray.length - 1) {
@@ -84,7 +108,9 @@ export class Controller extends Object {
 			nextBlock.moveToSpot(currentBlock.currentPointerSpot, false);
 		}
 	}
-
+	/**
+	 * Moves the cursor to the immediatly previous block
+	 */
 	moveToPreviousBlock () {
 		let currentBlock = this.blockArray[this.currentBlockIndex];
 		if (this.currentBlockIndex > 0) {
@@ -93,6 +119,9 @@ export class Controller extends Object {
 		}
 	}
 
+	/**
+	 * Removes the currently focused array 
+	 */
 	removeBlock () {
 		let currentBlock = this.blockArray[this.currentBlockIndex];
 		this.blockArray.splice(this.currentBlockIndex, 1);
@@ -213,7 +242,7 @@ export class Controller extends Object {
  */
 export function createEditor (container, parent, subParent, callback) {
 
-	let controller = new Controller(container, parent, subParent);
+	let controller = new BlockController(container, parent, subParent);
 	setTimeout(() => {
 		let itemObject = null;
 		let objectArr = [];
@@ -298,13 +327,13 @@ export function createEditor (container, parent, subParent, callback) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#containsNextElement">containsNextElement</a></li><li><a href="global.html#createEditor">createEditor</a></li><li><a href="global.html#days">days</a></li><li><a href="global.html#debug">debug</a></li><li><a href="global.html#decrypt">decrypt</a></li><li><a href="global.html#deleteDB">deleteDB</a></li><li><a href="global.html#encrypt">encrypt</a></li><li><a href="global.html#findCaretFocus">findCaretFocus</a></li><li><a href="global.html#getCurrentObject">getCurrentObject</a></li><li><a href="global.html#getDate">getDate</a></li><li><a href="global.html#getNextDayOfTheWeek">getNextDayOfTheWeek</a></li><li><a href="global.html#getSelectionDirection">getSelectionDirection</a></li><li><a href="global.html#includesClock">includesClock</a></li><li><a href="global.html#isLeapyear">isLeapyear</a></li><li><a href="global.html#makeid">makeid</a></li><li><a href="global.html#passHash">passHash</a></li><li><a href="global.html#populateEditor">populateEditor</a></li><li><a href="global.html#populateEditorRecursive">populateEditorRecursive</a></li><li><a href="global.html#setupCollection">setupCollection</a></li><li><a href="global.html#setupDailyLog">setupDailyLog</a></li><li><a href="global.html#setupFutureLog">setupFutureLog</a></li><li><a href="global.html#setupIndex">setupIndex</a></li><li><a href="global.html#setupMonthlyLog">setupMonthlyLog</a></li><li><a href="global.html#stateSwitch">stateSwitch</a></li><li><a href="global.html#updateUserFromMongo">updateUserFromMongo</a></li><li><a href="global.html#walkFromNode">walkFromNode</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockControllerModule.html">blockControllerModule</a></li><li><a href="module-creatorModule.html">creatorModule</a></li><li><a href="module-index.html">index</a></li><li><a href="module-localStorage.html">localStorage</a></li><li><a href="module-router.html">router</a></li><li><a href="module-schema.html">schema</a></li><li><a href="module-server.html">server</a></li><li><a href="module-textBlockModule.html">textBlockModule</a></li><li><a href="module-transitions.html">transitions</a></li></ul><h3>Namespaces</h3><ul><li><a href="createFunctions.html">createFunctions</a></li><li><a href="deleteFunctions.html">deleteFunctions</a></li><li><a href="mongoDelete.html">mongoDelete</a></li><li><a href="mongoRead.html">mongoRead</a></li><li><a href="mongoUpdate.html">mongoUpdate</a></li><li><a href="readFunctions.html">readFunctions</a></li><li><a href="securityFunctions.html">securityFunctions</a></li><li><a href="updateFunctions.html">updateFunctions</a></li></ul><h3>Classes</h3><ul><li><a href="CreationMenu.html">CreationMenu</a></li><li><a href="DropdownBlock.html">DropdownBlock</a></li><li><a href="InlineDropdown.html">InlineDropdown</a></li><li><a href="module-blockControllerModule.BlockController.html">BlockController</a></li><li><a href="module-creatorModule.CreatorBlock.html">CreatorBlock</a></li><li><a href="module-textBlockModule.TextBlock.html">TextBlock</a></li><li><a href="NavBar.html">NavBar</a></li><li><a href="PageHeader.html">PageHeader</a></li><li><a href="TrackerBlock.html">TrackerBlock</a></li><li><a href="TrackerMenu.html">TrackerMenu</a></li></ul><h3>Global</h3><ul><li><a href="global.html#makeid">makeid</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sat Jun 05 2021 20:07:56 GMT-0400 (Bolivia Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Mon Jun 07 2021 04:03:35 GMT-0400 (Bolivia Time)
 </footer>
 
 <script> prettyPrint(); </script>
