@@ -41,7 +41,7 @@ This includes:
 - Our Pitch, which contains our user personas, the purpose of our project, rabbit holes, and more
 <hr> </hr>
 
-### Source
+### Source and Testing
 Our source code for the team's Bujo app is contained in the [src](/src) folder. Within src, we have folders for backend, frontend, and testing.
 
 Our test reports are also included here.
