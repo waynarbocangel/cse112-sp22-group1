@@ -2,10 +2,11 @@
  * Creator Module
  * @module creatorModule
  */
- import * as dropdown from "../fillDropdown.js";
+/* eslint-disable */ 
+import * as dropdown from "../fillDropdown.js";
 import * as localStorage from "../localStorage/userOperations.js";
 import {adderDropdown, currentObject, creationMenu} from "../index.js";
-
+/* eslint-disable */
 let template = document.createElement("template");
 template.innerHTML = `
 	<style>

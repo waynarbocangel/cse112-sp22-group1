@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as localStorage from "../localStorage/userOperations.js";
 import * as dropdown from "../fillDropdown.js";
 import { currentObject, creationMenu, adderDropdown, navbar } from "../index.js";

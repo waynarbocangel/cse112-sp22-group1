@@ -34,7 +34,7 @@ export class BlockController extends Object {
 	 * @param {*} callback
 	 */
 	createNewBlock (block, signifier, callback) {
-		if( block.objectType = "textBlock") {
+		if (block.objectType = "textBlock") {
 			let newBlock = new TextBlock(this, block, signifier, (success) => {
 				if (success) {
 					if (this.currentBlockIndex < this.blockArray.length - 1) {

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { currentObject, header } from "../index.js";
 import { router } from "../router.js";
 import {SettingsMenu} from "./settings/settings.js";

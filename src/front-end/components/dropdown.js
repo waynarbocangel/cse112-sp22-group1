@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as dropdown from "../fillDropdown.js";
 import {navbar, currentObject, adderDropdown, creationMenu} from "../index.js";
 import {router} from "../router.js";
