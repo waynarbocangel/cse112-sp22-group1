@@ -35,7 +35,7 @@ export class BlockController extends Object {
 	 * @param {*} callback
 	 */
 	createNewBlock (block, signifier, callback) {
-		if (block.objectType = "textBlock") {
+		if (block.objectType == "textBlock") {
 			let newBlock = new TextBlock(this, block, signifier, (success) => {
 				if (success) {
 					if (this.currentBlockIndex < this.blockArray.length - 1) {
@@ -51,8 +51,8 @@ export class BlockController extends Object {
 					callback(newBlock);
 				}
 			});
-		} else if (block.objectType = "imageBlock") {
-			let newImageBlock = new ImageBlock(block)
+		} else if (block.objectType === "imageBlock") {
+			console.log("it was image");
 		}
 	}
 
