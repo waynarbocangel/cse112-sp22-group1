@@ -1,4 +1,4 @@
-import { currentObject, adderDropdown, creationMenu } from "./index.js";
+import {  adderDropdown, currentObject, creationMenu } from "./index.js";
 
 export let creationDropdownContents = {
     "index": [
