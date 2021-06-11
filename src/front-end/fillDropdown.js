@@ -1,4 +1,5 @@
-import { currentObject, adderDropdown, creationMenu } from "./index.js";
+/* eslint-disable */
+import {adderDropdown, creationMenu , currentObject} from "./index.js";
 
 export let creationDropdownContents = {
     "index": [
@@ -9,7 +10,7 @@ export let creationDropdownContents = {
                 creationMenu.show();
             }
         },
-        {
+		{
             title: "New Collection",
             listener: () => {
                 creationMenu.setKind("collection");

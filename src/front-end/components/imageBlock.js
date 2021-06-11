@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as localStorage from "../localStorage/userOperations.js";
 import { currentObject } from "../index.js";
 

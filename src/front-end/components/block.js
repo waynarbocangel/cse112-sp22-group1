@@ -4,8 +4,10 @@
  */
 import * as localStorage from "../localStorage/userOperations.js";
 import * as shadow from "./shadow.js";
-import {currentObject} from "../index.js";
+/* eslint-disable */
 import { BlockController } from "./blockController.js";
+/* eslint-disable */
+import { currentObject} from "../index.js";
 
 const tabSize = 20;
 const paddingSize = 10;

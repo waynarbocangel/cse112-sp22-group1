@@ -2,6 +2,7 @@ import * as localStorage from "../localStorage/userOperations.js";
 import { CreatorBlock } from "./creator.js";
 import { TrackerBlock } from "./trackerBlock.js";
 import { currentObject } from "../index.js";
+
 /* eslint-disable */
 /**
  * Class that creates a trackerMenu

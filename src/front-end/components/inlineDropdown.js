@@ -58,10 +58,11 @@ template.innerHTML = `
  * Class that Creates Inline DropDown
  */
 export class InlineDropdown extends HTMLElement {
-    
+	/* eslint-disable */
 	/**
      * Inline DropDown constructor
      */
+	/* eslint-disable */
     constructor () {
         super();
         this.attachShadow({ mode: "open" });
