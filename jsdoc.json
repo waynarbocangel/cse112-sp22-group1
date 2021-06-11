@@ -1,10 +1,10 @@
 {
 	"plugins": ["plugins/markdown"],
-	"recourseDepth": 20,
+	"recourseDepth": 30,
 	"source": {
 		"include": ["src"],
 		"includePattern": ".js$",
-		"excludePattern": "(node_modules/)"
+		"excludePattern": "(node_modules|docs|shadow.js|pouchdb-7.2.1.min.js|datepicker.min.js)"
 	},
 	"sourceType": "module",
 	"templates": {

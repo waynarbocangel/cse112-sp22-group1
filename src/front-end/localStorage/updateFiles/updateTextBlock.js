@@ -1,5 +1,13 @@
 import * as localStorage from "../userOperations.js";
 
+/**
+ * Updates textBlock in the local db
+ * @static
+ * @memberof updateFunctions
+ * @param {Object} db The local db.
+ * @param {Array} textBlockArr Updated array of textBlocks to save to db.
+ * @param {singleParameterCallback} callback Sends an error to callback if there is one.
+ */
 function updateBlock (db, textBlockArr, callback) {
 	localStorage.readUser((err, user) => {
 		if (err === null) {
@@ -38,10 +46,10 @@ function updateBlock (db, textBlockArr, callback) {
 
 /**
  * Finds and update the textBlock passed in.
- *
+ * @memberof updateFunctions
  * @param {database} db The local pouch database.
  * @param {Object} textBlock The textBlock to be deleted.
- * @callback (res) Sends an error if there is one to the callback.
+ * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
 export function updateTextBlockPouch (db, textBlock, date, callback) {
 	console.log(textBlock);

@@ -1,5 +1,14 @@
 import * as localStorage from "../userOperations.js";
 
+/**
+ * Removes textblock from local db and updates local db
+ * @static
+ * @memberof deleteFunctions
+ * @param {Object} db The local db.
+ * @param {Object} block TextBlock to delete.
+ * @param {String} id The textBlock parent id
+ * @param {singleParameterCallback} callback Sends an error to callback if there is one.
+ */
 function deleteBlock (db, block, id, callback) {
 	localStorage.readUser((err, user) => {
 		if (err === null) {
@@ -70,10 +79,10 @@ catch((error) => {
 
 /**
  * Finds and deletes the textBlock.
- *
+ * @memberof deleteFunctions
  * @param {database} db The local pouch database.
  * @param {String} id The id of the object to be deleted.
- * @callback (res) Sends an error if there is one to the callback.
+ * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
 export function deleteTextBlockPouch (db, id, callback) {
 	console.log("delete textblock is being deleted");

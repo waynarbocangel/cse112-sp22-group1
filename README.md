@@ -1,5 +1,5 @@
-# cse110-sp21-group11
-This is the repository for team 11's CSE 110 project.  
+# CSE 110 Group 11
+This is the repository for Team 11's CSE 110 project.  
 Team Name: It's not a bug, It's a feature
 
 Team Members:   
@@ -14,13 +14,13 @@ Team Members:
 - Waynar Bocangel  
 <hr></hr>
 
-Project goal:  
+Project Goal:  
 
 The project is to create a virtual bullet journal that will help users organize tasks and projects in agile fashion.
 Agile is an organization technique used by teams in industries. 
 <hr></hr> 
 
-[Meeting notes](/admin/meetings)
+[Meeting Notes](/admin/meetings)
 <hr></hr>
 
-[team.md](/admin/team.md)
+[Team Page: team.md](/admin/team.md)

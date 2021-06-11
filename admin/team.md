@@ -5,8 +5,6 @@
 We debug all bugs one bullet at the time.
 
 ## Team Members
-- Likith Palabindela
-  - I'm sophomore in Muir college, who's majoring in Computer Science! I'm really interested and passionate about **machine learning** and **neural networks**, and I hope to do more research on them. Here is the link to my GitHub Page: [https://likithpala7.github.io/CSE_110/](https://likithpala7.github.io/CSE_110/)
 
 - Waynar Bocangel
   - I am a 20 year old Computer Engineering Undergradute Student at the University of California San Diego! I am currently on my second year at UC San Diego, but I have learned a thing or two about Computer Science and Programming by this time. Here is the link to my GitHub Page: [https://waynarbocangel.github.io/CSE110Lab01/](https://waynarbocangel.github.io/CSE110Lab01/)

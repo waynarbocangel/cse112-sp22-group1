@@ -69,14 +69,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
       working-directory: ./src/front-end
-    - run: npm test --if-present
-      working-directory: ./src/front-end
-    - name: JEST Report
-      uses: RedaktionsNetzwerk-Deutschland/action-jest-reporter@v1.0.0
-      with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        json-glob: ./src/front-end/testOutput.json
-        workdir: ./src/front-end
 
   ESLint-Check:
        runs-on: ubuntu-latest

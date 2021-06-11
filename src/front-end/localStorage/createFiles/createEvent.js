@@ -3,13 +3,13 @@ let eventObject = {};
 
 /**
  * Creates and stores a new event created from the given parameters.
- *
+ * @memberof createFunctions
  * @param {database} db The local pouch database.
  * @param {String} title The title of the event.
  * @param {String} parent The id of the parent of the new dailyLog.
  * @param {Date} date The date of the event (optional).
  * @param {String} signifier The id of the signifier used for the event.
- * @callback (err,event) Eihter sends the newly created dailyLog or an error if there is one to the callback.
+ * @param {doubleParameterCallback} callback Eihter sends the newly created dailyLog or an error if there is one to the callback.
  */
 export function createEventPouch (db, title, parent, date, signifier, callback) {
 	db.get("0000", (err, doc) => {
@@ -46,7 +46,8 @@ export function createEventPouch (db, title, parent, date, signifier, callback) 
 
 			doc.events.push(eventObject);
 
-			return db.put({_id: "0000",
+			return db.put({
+				_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
 				pwd: doc.pwd,
@@ -62,7 +63,8 @@ export function createEventPouch (db, title, parent, date, signifier, callback) 
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: doc.events,
-				signifiers: doc.signifiers}).then((res) => {
+				signifiers: doc.signifiers
+			}).then((res) => {
 				console.log(res);
 			}).catch((error) => {
 				callback(error, null);

@@ -1,9 +1,9 @@
 /**
  * Finds and deletes the signifier.
- *
+ * @memberof deleteFunctions
  * @param {database} db The local pouch database.
  * @param {String} id The id of the object to be deleted.
- * @callback (res) Sends an error if there is one to the callback.
+ * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
 export function deleteSignifierPouch (db, id, callback) {
 	db.get("0000", (err, doc) => {

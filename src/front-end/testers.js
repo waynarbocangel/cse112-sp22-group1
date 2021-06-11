@@ -1,5 +1,5 @@
-import {LogPage} from "./components/log.js";
+import {AudioBlock} from "./components/audioBlock.js";
 
 let template = document.getElementById("template");
 
-template.appendChild(new LogPage());
+template.appendChild(new AudioBlock());
