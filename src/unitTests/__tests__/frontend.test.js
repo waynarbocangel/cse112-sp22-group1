@@ -8,7 +8,7 @@ describe('Basic user flow for SPA ', () => {
         await page.waitForTimeout(1000);
     });
 
-    /*
+    
     // Test 1
     it('Test1: Initial Home Page - Check Home Page', async () => {
       // Remember to change this after deploy
@@ -46,7 +46,7 @@ describe('Basic user flow for SPA ', () => {
         expect(page.url()).toBe("http://localhost:8080/login/");
         });
 
-    */
+    
 
     // Test 4
     it('Log in', async () => {
