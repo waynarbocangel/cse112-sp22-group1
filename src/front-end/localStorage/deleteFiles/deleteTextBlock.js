@@ -1,7 +1,7 @@
 import * as localStorage from "../userOperations.js";
 
 /**
- * removes textblock from local db and updates local db
+ * Removes textblock from local db and updates local db
  * @static
  * @memberof deleteFunctions
  * @param {Object} db The local db.

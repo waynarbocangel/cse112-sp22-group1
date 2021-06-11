@@ -119,6 +119,7 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 										events: user.events,
 										signifiers: user.signifiers
 									}).then((res) => {
+										console.log(res);
 										callback(null, textBlockObject);
 									}).catch((error3) => {
 										console.log(error3);

@@ -16,7 +16,7 @@ export function deleteFutureLogPouch (db, log, parent, callback) {
 			let newTextBlocks = [];
 			Array.prototype.push.apply(newTextBlocks, user.textBlocks);
 			for (let i = 0; i < log.months.length; i++) {
-				
+
 				for (let j = 0; j < log.months[i].content.length; j++) {
 					localStorage.deleteTextBlockByID(log.months[i].content[j], 1, (err) => {
 						if (err) {
@@ -38,12 +38,12 @@ export function deleteFutureLogPouch (db, log, parent, callback) {
 
 			// Removing all trackers from log from user trackers
 			let newTrackers = [];
-			Array.prototype.push.apply(newTackers, user.trackers);
-			for (let i = 0; i < log.trackers.length; i ++) {
+			Array.prototype.push.apply(newTrackers, user.trackers);
+			for (let i = 0; i < log.trackers.length; i++) {
 				newTrackers = newTrackers.filter((object) => object.id !== log.trackers[i]);
 			}
 
-			//Removing monthlyLog trackers
+			// Removing monthlyLog trackers
 			for (let i = 0; i < log.months.length; i++) {
 				let monthlyLog = user.monthlyLogs.filter((object) => object.id === log.months[i].monthlyLog)[0];
 				for (let j = 0; j < monthlyLog.trackers.length; j++) {
@@ -62,7 +62,7 @@ export function deleteFutureLogPouch (db, log, parent, callback) {
 			// Removing all log dailyLogs from user dailyLogs
 			let newDailyLogs = [];
 			for (let i = 0; i < log.months.length; i++) {
-				let monthlyLog = user.monthlyLogs.filter((object) => object.id === log.months[i].monthlyLog)[0];				
+				let monthlyLog = user.monthlyLogs.filter((object) => object.id === log.months[i].monthlyLog)[0];
 				for (let j = 0; j < monthlyLog.days.length; j++) {
 					Array.prototype.push.apply(newDailyLogs, user.dailyLogs.filter((object) => object.id !== monthlyLog.days[i].dailyLog));
 				}
@@ -78,9 +78,8 @@ export function deleteFutureLogPouch (db, log, parent, callback) {
 			let newFutureLogs = user.futureLogs.filter((object) => object.id !== log.id);
 
 			// Removing the log from user index
-			let userArr = [];
 			let newIndex = user.index.content.filter((id) => id !== parent);
-			
+
 			return db.put({_id: "0000",
 				_rev: user._rev,
 				email: user.email,
@@ -100,12 +99,12 @@ export function deleteFutureLogPouch (db, log, parent, callback) {
 				signifiers: user.signifiers}).then((res) => {
 					console.log(res);
 					callback(null);
-				}).catch((error) => {
-				console.log(error);
-				callback(error);
+				}).catch((error2) => {
+				console.log(error2);
+				callback(error2);
 			});
 		}
-		
+
 		console.log(err);
 		callback(err);
 	});

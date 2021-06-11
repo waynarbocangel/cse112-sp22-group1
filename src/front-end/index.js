@@ -22,20 +22,22 @@ document.querySelector("body").style.display = "none";
 export let navbar = new NavBar();
 
 /**
- * the index page header
+ * The index page header
  */
 export let header = new PageHeader();
 
 /**
- * index page dropdown
+ * Index page dropdown
  */
 export let adderDropdown = new InlineDropdown();
 
 /**
- * index page futureLog creation menu
+ * Index page futureLog creation menu
  */
 export let creationMenu = new CreationMenu("futureLog");
+/* eslint-disable */
 let plusIndex = 0;
+/* eslint-disable */
 export let url = "";
 export let pageNumber = 1;
 

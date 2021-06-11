@@ -1,6 +1,6 @@
 import { currentObject, header } from "../index.js";
-import {SettingsMenu} from "./settings/settings.js";
 import { router } from "../router.js";
+import {SettingsMenu} from "./settings/settings.js";
 
 const template = document.createElement("template");
 

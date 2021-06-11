@@ -36,6 +36,7 @@ export function updateMonthlyLogPouch (db, log, callback) {
 				if (error) {
 					callback(error, null);
 				} else {
+					console.log(res);
 					callback(null, log);
 				}
 			});

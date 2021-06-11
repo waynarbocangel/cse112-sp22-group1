@@ -131,7 +131,7 @@ export function createUser (email, pwd, callback) {
  */
  export function updateUserFromMongo () {
 	updateUserOnline(db, (user) => {
-		console.log("updated user" , user);
+		console.log("updated user", user);
 	});
 }
 

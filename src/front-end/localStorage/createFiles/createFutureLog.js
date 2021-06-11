@@ -14,7 +14,9 @@ let futureObject = {};
 function addMonth (start, endDate, futureLog, callback) {
 	let startDate = start;
 	let date = startDate.getTime() === futureObject.startDate.getTime() ? new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getUTCDate()) : new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+	/* eslint-disable */
 	let finalDate = (startDate.getMonth() === endDate.getMonth() && startDate.getFullYear() === endDate.getFullYear()) ? endDate : new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
+	/* eslint-disable */
 	localStorage.createMonthlyLog(futureLog.id, [], [], date, finalDate, false, (err, month) => {
 		if (err === null) {
 			if (startDate > endDate) {

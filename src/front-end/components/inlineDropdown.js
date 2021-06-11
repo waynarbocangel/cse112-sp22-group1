@@ -58,10 +58,11 @@ template.innerHTML = `
  * Class that Creates Inline DropDown
  */
 export class InlineDropdown extends HTMLElement {
-    /**
+    
+	/**
      * Inline DropDown constructor
      */
-    constructor() {
+    constructor () {
         super();
         this.attachShadow({ mode: "open" });
         this.shadowRoot.appendChild(template.content.cloneNode(true));
@@ -69,24 +70,25 @@ export class InlineDropdown extends HTMLElement {
         this.list = this.shadowRoot.getElementById("dropdownList");
         this.clicked = false;
     }
-
+	/* eslint-disable */
     connectedCallback() {
-        document.addEventListener('resize', (e) => {
+        document.addEventListener("resize", (e) => {
             this.hide();
         });
 
-        document.addEventListener('click', (e) => {
+        document.addEventListener("click", (e) => {
             if (!this.contains(e.target) && !this.clicked) {
                 this.hide();
             }
             this.clicked = false;
         });
     }
+	/* eslint-disable */
 
     /**
      * Displays dropdown if hidden or hides it if shown
      */
-    toggleDropdown() {
+    toggleDropdown () {
         this.dropdown.classList.toggle("show");
         this.clicked = true;
     }
@@ -94,7 +96,7 @@ export class InlineDropdown extends HTMLElement {
     /**
      * Hides dropdown
      */
-    hide() {
+    hide () {
         this.dropdown.classList.toggle("show", false);
         this.clicked = false;
     }
@@ -102,7 +104,7 @@ export class InlineDropdown extends HTMLElement {
     /**
      * Shows dropdown
      */
-    show() {
+    show () {
         this.dropdown.classList.toggle("show", true);
         this.clicked = true;
     }
@@ -137,7 +139,7 @@ export class InlineDropdown extends HTMLElement {
      * @param {Number} x - pixels from the left side of the screen
      * @param {Number} y - pixels from the top of the screen
      */
-    setPosition(x, y) {
+    setPosition (x, y) {
         this.dropdown.style.top = `${x}px`;
         this.dropdown.style.left = `${y}px`;
     }
