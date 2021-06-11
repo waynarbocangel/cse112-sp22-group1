@@ -4,7 +4,7 @@
  */
 import * as localStorage from "../localStorage/userOperations.js";
 import * as shadow from "./shadow.js";
-import {currentObject, adderDropdown} from "../index.js";
+import {currentObject} from "../index.js";
 import { BlockController } from "./blockController.js";
 
 const tabSize = 20;
@@ -234,6 +234,7 @@ function getDate (textBlock, deleteString) {
  * Class to create new editor block
  */
 export class TextBlock extends HTMLElement {
+	
 	/**
 	 * Editor block constructor
 	 * @param {BlockController} controller - the editor's controller
@@ -582,7 +583,7 @@ export class TextBlock extends HTMLElement {
 			console.log("hello there");
 		}
 
-		/** 
+		/**
 		 * @type {HTMLElement}
 		 * @listens document#click
 		 */

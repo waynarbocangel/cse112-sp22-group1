@@ -1,10 +1,10 @@
-/**w
+/**
  * Creator Module
  * @module creatorModule
  */
+ import * as dropdown from "../fillDropdown.js";
 import * as localStorage from "../localStorage/userOperations.js";
-import {currentObject, adderDropdown, creationMenu} from "../index.js";
-import * as dropdown from "../fillDropdown.js";
+import {adderDropdown, currentObject, creationMenu} from "../index.js";
 
 let template = document.createElement("template");
 template.innerHTML = `
@@ -91,7 +91,7 @@ export class CreatorBlock extends HTMLElement {
 	connectedCallback () {
 		let textBlock = this.shadowRoot.getElementById("textBlock");
 		this.plus.onclick = () => {
-            let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? - 100 : textBlock.offsetHeight + 5;
+            let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? -100 : textBlock.offsetHeight + 5;
             dropdown.openCreationDropdown(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left);
 		}
 		textBlock.onkeydown = (e) => {

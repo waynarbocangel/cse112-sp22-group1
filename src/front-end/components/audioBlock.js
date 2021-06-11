@@ -79,23 +79,17 @@ export class AudioBlock extends HTMLElement {
 
 		this.plus.onclick = () => {
 			let audioInput = this.shadowRoot.querySelector("form > input[type=file]").files[0];
-			
+
 			console.log("this is an audio file", audioInput);
 			let fileReader = new FileReader();
-			let file = null;
 			fileReader.onload = (e) => {
-				file = e.target.result
 				console.log("this is filereader", e);
 				this.buffer = e.target.result;
-				
 				localStorage.createAudioBlock(currentObject.id, "full", this.buffer, true, (err, audioBlock) => {
 					if (err) {
 						console.log(err);
 					} else {
 						console.log(audioBlock);
-						/*var urlCreator = window.URL || window.webkitURL;
-						let blob = new Blob([audioBlock.data]);
-						let audioUrl = urlCreator.createObjectURL( blob );*/
 						let audio = document.createElement("audio");
 						let source = document.createElement("source");
 						this.shadowRoot.appendChild(audio);
