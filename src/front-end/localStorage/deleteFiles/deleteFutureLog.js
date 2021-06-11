@@ -105,7 +105,7 @@ export function deleteFutureLogPouch (db, log, parent, callback) {
 			});
 		}
 
-		console.log(err);
-		callback(err);
+		console.log(error);
+		callback(error);
 	});
 }

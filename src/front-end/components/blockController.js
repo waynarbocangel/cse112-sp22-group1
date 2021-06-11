@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * Block Controller Module
  * @module blockControllerModule
