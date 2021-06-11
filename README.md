@@ -21,6 +21,9 @@ The project is to create a virtual bullet journal that will help users organize 
 Agile is an organization technique used by teams in industries. 
 <hr></hr> 
 
+### Final Public Video
+[https://youtu.be/x8fMTuzM9ps](https://youtu.be/x8fMTuzM9ps)
+
 ### Learn About Our Team!
 - [Team Page: team.md](/admin/team.md)
 <hr></hr>
