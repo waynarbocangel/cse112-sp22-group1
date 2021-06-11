@@ -1,9 +1,7 @@
 
-let create = require ('../createFiles/createUser.js');
+//importing security functions
 let sec = require ('../security/securityFunctions.js');
-//let mon = require('mongoose');
-//let schema =require('../schema.js'); 
-//import * as sec from "../security/securityFunctions.js";
+
 
 
 beforeAll(done => {
@@ -37,31 +35,5 @@ describe('testing securityFunctions', ()=>{
         done();
     });
     
-    //testing creauteruser
-    
-    /*
-    test("testName", (done) => {
-        function handleCallBack(e){
-          try{
-            console.log(e);
-            expect(1).toBe(1);
-            done();
-          } catch (error) {
-            done(error);
-          }
-        }
-        create.createUser("abc", "123", handleCallBack);
-      });
-      */
-    //closing servers
-    
-    /*
-    afterAll(done => {
-        // Closing the DB connection allows Jest to exit successfully.
-        //sec.mongoose.connection.close();
-        //schema.mongoose.connection.close();
-        sec.closeall();
-        done();
-      }); */
-      
+ 
 });
