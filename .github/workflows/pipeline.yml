@@ -68,7 +68,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install
-      working-directory: ./src/front-end   
+      working-directory: ./src/front-end
 
   ESLint-Check:
        runs-on: ubuntu-latest
