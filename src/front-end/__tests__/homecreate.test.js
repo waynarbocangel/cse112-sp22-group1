@@ -1,4 +1,4 @@
-// Puppeteer
+// Only tests home and create fail
 
 jest.setTimeout(35000);
 
