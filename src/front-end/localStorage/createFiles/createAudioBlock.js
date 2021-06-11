@@ -34,7 +34,7 @@ export function createAudioBlockPouch (db, parent, arrangement, data, callback) 
 			}
 			audioBlockObject = {
 				id: id,
-				objectType: "imageBlock",
+				objectType: "audioBlock",
 				parent: parent,
 				arrangement: arrangement,
 				data: data

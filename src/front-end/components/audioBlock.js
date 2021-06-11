@@ -1,3 +1,4 @@
+import * as localStorage from "../localStorage/userOperations.js";
 
 
 let template = document.createElement("template");
@@ -60,14 +61,12 @@ template.innerHTML = `
 		}
 	</style>
 	<div id="editorIcons" class="paragraphIcons"><img src="../public/resources/plusIcon.png" class="unfocusedIcons" id="plus" /><img src="../public/resources/sixDotIcon.png" class="unfocusedIcons" id="more" /></div>
-	<audio controls id="audioBlock">
-		<source />
-		Your browser does not support audio
-	</audio>
+	<form action='/api/audio' method="post" enctype="multipart/form-data">
+  		<input type='file' name="audio" />
+	</form>
 `;
-/*
 export class AudioBlock extends HTMLElement {
-	constructor (controller, itemObject, signifier, callback) {
+	constructor () {
 		super();
 		this.attachShadow({ mode: "open" });
 		this.shadowRoot.appendChild(template.content.cloneNode(true));
@@ -77,23 +76,39 @@ export class AudioBlock extends HTMLElement {
 	}
 
 	connectedCallback () {
-		let audioBlock = this.shadowRoot.getElementById("audioBlock");
-		textBlock.focus();
-
-		document.addEventListener(shadow.eventName, () => {
-			this.controller.blockArray[this.controller.currentBlockIndex].setCurrentSpot();
-		});
 
 		this.plus.onclick = () => {
-			let audioInput = document.getElementById("audioBlock");
-		    let audio = audioInput.files[0];
-			let fileBuffer = Buffer.from(audio);
-			this.buffer = fileBuffer;
+			let audioInput = this.shadowRoot.querySelector("form > input[type=file]").files[0];
 			
-			localStorage.createAudioBlock(currentObject.id, this.buffer, (err, imageBlock) => {
-
-			});
+			console.log("this is an audio file", audioInput);
+			let fileReader = new FileReader();
+			let file = null;
+			fileReader.onload = (e) => {
+				file = e.target.result
+				console.log("this is filereader", e);
+				this.buffer = e.target.result;
+				
+				localStorage.createAudioBlock(null, null, this.buffer, 0, (err, audioBlock) => {
+					if (err) {
+						console.log(err);
+					} else {
+						console.log(audioBlock);
+						var urlCreator = window.URL || window.webkitURL;
+						let blob = new Blob([audioBlock.data]);
+						let audioUrl = urlCreator.createObjectURL( blob );
+						let audio = document.createElement("audio");
+						let source = document.createElement("source");
+						this.shadowRoot.appendChild(audio);
+						audio.appendChild(source);
+						source.setAttribute("src", audioUrl);
+						source.setAttribute("type", "audio/mpeg");
+						audio.setAttribute("controls", "controls");
+					}
+				});
+			}
+			fileReader.readAsArrayBuffer(audioInput);
 		}
 	}
 }
-*/
+
+window.customElements.define("audio-block", AudioBlock);

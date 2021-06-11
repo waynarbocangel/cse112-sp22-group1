@@ -1,13 +1,5 @@
-//import * as localStorage from "../localStorage/userOperations.js";
+import * as localStorage from "../localStorage/userOperations.js";
 //import { currentObject } from "../index.js";
-
-// prob 1: pouchdb not recognized
-// prob 2: buffer not recognize -- require not recognized -- import not working -- npm install not finding buffer
-
-//import * as Buffer from "./buffer";
-//const Buffer = require ("Buffer");
-//const Buffer = require ("buffer");
-//declare Buffer
 
 let template = document.createElement("template");
 template.innerHTML = `
@@ -74,7 +66,7 @@ template.innerHTML = `
   		<input type='file' name='image' />
 	</form>
 
-	<image id="output" src="" alt="" />
+	<image id="output" src="" alt=""/>
 `;
 
 export class ImageBlock extends HTMLElement {
@@ -88,18 +80,33 @@ export class ImageBlock extends HTMLElement {
 	}
 
 	connectedCallback () {
-		let imageBlock = this.shadowRoot.getElementById("imageBlock");
-		//imageBlock.focus();
 
 		this.plus.onclick = () => {
 			let imageInput = this.shadowRoot.querySelector("form > input[type=file]").files[0];
-			this.shadowRoot.querySelector("img").src = URL.createObjectURL(imageInput);
-			this.buffer = Buffer.from(imageInput);
 			
-			/*localStorage.createImageBlock(null, null, this.buffer, (err, imageBlock) => {
-
-			});*/
+			console.log("this is an image file", imageInput);
+			let fileReader = new FileReader();
+			let file = null;
+			fileReader.onload = (e) => {
+				file = e.target.result
+				console.log("this is filereader", e);
+				this.buffer = e.target.result;
+				
+				localStorage.createImageBlock(null, null, this.buffer, 0, (err, imageBlock) => {
+					if (err) {
+						console.log(err);
+					} else {
+						console.log(imageBlock);
+						var urlCreator = window.URL || window.webkitURL;
+						let blob = new Blob([imageBlock.data]);
+						var imageUrl = urlCreator.createObjectURL( blob );
+						this.shadowRoot.querySelector("#output").src = imageUrl;
+					}
+				});
+			}
+			fileReader.readAsArrayBuffer(imageInput);
 		}
 	}
 }
+
 window.customElements.define("image-block", ImageBlock);
