@@ -64,6 +64,7 @@ export function createImageBlockPouch (db, parent, arrangement, data, callback) 
 				events: doc.events,
 				signifiers: doc.signifiers
 			}).then((res) => {
+				console.log("created imageBlock successfull");
 				console.log(res);
 			}).catch((error) => {
 				console.log(error);

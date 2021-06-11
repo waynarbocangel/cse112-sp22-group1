@@ -50,7 +50,21 @@ export let creationDropdownContents = {
                 creationMenu.show();
             }
         }
-    ]
+    ], 
+	"textEditor": [
+		{
+			title: "New Block",
+			listener: () => {
+
+			}
+		}, 
+		{
+			title: "New Image",
+			listener: () => {
+				
+			}
+		}
+	]
 };
 
 

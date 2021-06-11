@@ -34,6 +34,7 @@ import {createUserPouch} from "./createFiles/createUser.js";
 import {deleteAudioBlockPouch} from "./deleteFiles/deleteAudioBlock.js";
 import {deleteCollectionPouch} from "./deleteFiles/deleteCollection.js";
 import {deleteEventPouch} from "./deleteFiles/deleteEvent.js";
+import {deleteFutureLogPouch} from "./deleteFiles/deleteFutureLog.js";
 import {deleteImageBlockPouch} from "./deleteFiles/deleteImageBlock.js";
 import {deleteSignifierPouch} from "./deleteFiles/deleteSignifier.js";
 import {deleteTaskPouch} from "./deleteFiles/deleteTask.js";
@@ -130,7 +131,7 @@ export function createUser (email, pwd, callback) {
  */
  export function updateUserFromMongo () {
 	updateUserOnline(db, (user) => {
-		console.log(user);
+		console.log("updated user" , user);
 	});
 }
 
@@ -606,6 +607,22 @@ export function deleteTask (task, shouldUpdate, callback) {
  */
 export function deleteTaskByID (id, shouldUpdate, callback) {
 	deleteTaskPouch(db, id, (err) => {
+		if (shouldUpdate) {
+			updateUserFromMongo();
+		}
+		callback(err);
+	});
+}
+
+/**
+ * Deletes the futureLog passed in and its children.
+ *
+ * @param {Object} futureLog The object to be deleted.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
+ * @param {singleParameterCallback} callback Returns an error if there is one.
+ */
+ export function deleteFutureLog (futureLog, shouldUpdate, callback) {
+	deleteFutureLogPouch(db, futureLog.id, futureLog.parent, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo();
 		}

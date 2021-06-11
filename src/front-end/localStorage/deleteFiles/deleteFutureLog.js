@@ -1,6 +1,14 @@
 import * as localStorage from "../userOperations.js";
 
-function deleteFutureLog (db, log, parent, callback) {
+/**
+ * Finds and deletes the futureLog and deletes all children associated.
+ * @memberof deleteFunctions
+ * @param {database} db The local pouch database.
+ * @param {String} id The id of the object to be deleted.
+ * @param {String} parent The id of the parent.
+ * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
+ */
+export function deleteFutureLogPouch (db, log, parent, callback) {
 	localStorage.readUser((error, user) => {
 		if (error === null) {
 
@@ -10,14 +18,20 @@ function deleteFutureLog (db, log, parent, callback) {
 			for (let i = 0; i < log.months.length; i++) {
 				
 				for (let j = 0; j < log.months[i].content.length; j++) {
-					newTextBlocks = newTextBlocks.filter((object) => object.id !== log.months[i].content[j]);
+					localStorage.deleteTextBlockByID(log.months[i].content[j], 1, (err) => {
+						if (err) {
+							callback(err);
+						}
+					});
 				}
 
 				// Removing all textBlocks from each day in monthlyLog
 				let monthlyLog = user.monthlyLogs.filter((object) => object.id === log.months[i].monthlyLog)[0];
 				for (let j = 0; j < monthlyLog.days.length; j++) {
 					for (let k = 0; k < monthlyLog.days[j].content.length; k++) {
-						newTextBlocks = newTextBlocks.filter((object) => object.id !== monthlyLog.days[i].content[k]);
+						localStorage.deleteTextBlockByID(monthlyLog.days[j].content[k], 1, (err) => {
+							callback(err);
+						});
 					}
 				}
 			}

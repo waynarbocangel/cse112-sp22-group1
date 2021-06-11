@@ -5,12 +5,15 @@
  * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
 export function updateUserOnline (db, callback) {
+	console.log("getting user");
 	db.get("0000", (err, doc) => {
 		if (err) {
+			console.log("the user is broken in pouch");
 			callback(err);
 		} else {
 			try {
-				console.log(doc);
+				console.log("this is the user now", doc);
+				console.log("about to fetch");
 				fetch("http://localhost:3000/updateUser", {
 					headers: {
 						"content-type": "application/json; charset=UTF-8"
@@ -18,9 +21,11 @@ export function updateUserOnline (db, callback) {
 					body: JSON.stringify(doc),
 					method: "POST"
 				}).then((data) => data.json()).then((userData) => {
+					console.log("fetch succesful");
 					console.log(userData);
 				});
 			} catch (error) {
+				console.log("there is an error when fetching");
 				console.log(error.text);
 			}
 		}

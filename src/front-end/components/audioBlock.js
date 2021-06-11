@@ -1,5 +1,5 @@
 import * as localStorage from "../localStorage/userOperations.js";
-
+import { currentObject } from "../index.js";
 
 let template = document.createElement("template");
 template.innerHTML = `
@@ -88,25 +88,25 @@ export class AudioBlock extends HTMLElement {
 				console.log("this is filereader", e);
 				this.buffer = e.target.result;
 				
-				localStorage.createAudioBlock(null, null, this.buffer, 0, (err, audioBlock) => {
+				localStorage.createAudioBlock(currentObject.id, "full", this.buffer, true, (err, audioBlock) => {
 					if (err) {
 						console.log(err);
 					} else {
 						console.log(audioBlock);
-						var urlCreator = window.URL || window.webkitURL;
+						/*var urlCreator = window.URL || window.webkitURL;
 						let blob = new Blob([audioBlock.data]);
-						let audioUrl = urlCreator.createObjectURL( blob );
+						let audioUrl = urlCreator.createObjectURL( blob );*/
 						let audio = document.createElement("audio");
 						let source = document.createElement("source");
 						this.shadowRoot.appendChild(audio);
 						audio.appendChild(source);
-						source.setAttribute("src", audioUrl);
+						source.setAttribute("src", audioBlock.data);
 						source.setAttribute("type", "audio/mpeg");
 						audio.setAttribute("controls", "controls");
 					}
 				});
 			}
-			fileReader.readAsArrayBuffer(audioInput);
+			fileReader.readAsDataURL(audioInput);
 		}
 	}
 }

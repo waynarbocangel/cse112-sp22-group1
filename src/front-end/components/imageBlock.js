@@ -1,5 +1,5 @@
 import * as localStorage from "../localStorage/userOperations.js";
-//import { currentObject } from "../index.js";
+import { currentObject } from "../index.js";
 
 let template = document.createElement("template");
 template.innerHTML = `
@@ -62,9 +62,7 @@ template.innerHTML = `
 	</style>
 	<div id="editorIcons" class="paragraphIcons"><img src="../public/resources/plusIcon.png" class="unfocusedIcons" id="plus" /><img src="../public/resources/sixDotIcon.png" class="unfocusedIcons" id="more" /></div>
 	
-	<form action='/api/images' method="post" enctype="multipart/form-data">
-  		<input type='file' name='image' />
-	</form>
+  	<input type='file' name='image' />
 
 	<image id="output" src="" alt=""/>
 `;
@@ -82,8 +80,13 @@ export class ImageBlock extends HTMLElement {
 	connectedCallback () {
 
 		this.plus.onclick = () => {
+			let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? - 100 : textBlock.offsetHeight + 5;
+
+		};
+
+		this.plus.onclick = () => {
 			let imageInput = this.shadowRoot.querySelector("form > input[type=file]").files[0];
-			
+
 			console.log("this is an image file", imageInput);
 			let fileReader = new FileReader();
 			let file = null;
@@ -91,20 +94,17 @@ export class ImageBlock extends HTMLElement {
 				file = e.target.result
 				console.log("this is filereader", e);
 				this.buffer = e.target.result;
-				
-				localStorage.createImageBlock(null, null, this.buffer, 0, (err, imageBlock) => {
+
+				localStorage.createImageBlock(currentObject.id, "full", this.buffer, true, (err, imageBlock) => {
 					if (err) {
 						console.log(err);
 					} else {
 						console.log(imageBlock);
-						var urlCreator = window.URL || window.webkitURL;
-						let blob = new Blob([imageBlock.data]);
-						var imageUrl = urlCreator.createObjectURL( blob );
-						this.shadowRoot.querySelector("#output").src = imageUrl;
+						this.shadowRoot.querySelector("#output").src = imageBlock.data;
 					}
 				});
 			}
-			fileReader.readAsArrayBuffer(imageInput);
+			fileReader.readAsDataURL(imageInput);
 		}
 	}
 }
