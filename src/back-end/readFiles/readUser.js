@@ -69,7 +69,8 @@ function readUser (userData, callback) {
 			for (let i = 0; i < user.trackers.length; i++) {
 				let tracker = user.trackers[i];
 				tracker.title = security.decrypt(tracker.title, userData.pwd);
-				newTrackers.push(tracker);
+                newTrackers.push(tracker);
+                console.log('Testing Build Process');
 			}
 			let decodedUser = {
 				email: user.email,
