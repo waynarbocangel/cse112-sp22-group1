@@ -9,7 +9,7 @@ const cssMinimizer = require("css-minimizer-webpack-plugin");
 module.exports = merge(common, {
 	mode: "production",
     output: {
-        path: path.join(__dirname, "/dist"),
+        path: path.join(__dirname, "/prod/dist"),
         filename: "bundle.[name].[hash].js"
     },
 	module: {
@@ -32,7 +32,8 @@ module.exports = merge(common, {
 				removeAttributeQuotes: true,
 				collapseWhitespace: true,
 				removeComments: true
-			}
+			},
+			chunks: ["index"]
         }),
 		new html({
 			filename: "login.html",
@@ -41,9 +42,10 @@ module.exports = merge(common, {
 				removeAttributeQuotes: true,
 				collapseWhitespace: true,
 				removeComments: true
-			}
+			},
+			chunks: ["login"]
         }),
-		new miniCSS({filename: "[name].[hash].css"}),
+		new miniCSS({filename: ({ chunk }) => `[name].[hash].css`}),
         new cleanWebpack.CleanWebpackPlugin()
     ]
 });

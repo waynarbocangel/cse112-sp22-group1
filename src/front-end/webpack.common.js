@@ -2,8 +2,8 @@ const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
     entry: {
-		"index.js": "./index.js",
-		"login.js": "./login/login.js"
+		"index": "./index.js",
+		"login": "./login/login.js"
 	},
     module: {
         rules: [
@@ -15,12 +15,12 @@ module.exports = {
                 }
             },
             {
-                test: /\.(otf|svg)$/,
+                test: /\.(otf|svg|png|jpe?g|gif)$/,
                 use: {
                     loader: "file-loader",
                     options: {
-                        name: "[name].[hash].[ext]",
-                        outputPath: "resources"
+                        name: "[name].[ext]",
+                        outputPath: "public/resources/imported"
                     }
                 }
             }
@@ -29,9 +29,11 @@ module.exports = {
 	plugins: [
 		new CopyPlugin({
             patterns: [
-              { from: "./localStorage/pouchdb-7.2.1.min.js" },
-
+            	{ from: "./localStorage/pouchdb-7.2.1.min.js" },
+				{ from: "./login/bugP3.png" },
+				{ from: "./public/resources", to: "public/resources"},
+				{ from: "./public/fonts", to: "public/fonts" }
             ],
-          }),
+        })
 	]
 }

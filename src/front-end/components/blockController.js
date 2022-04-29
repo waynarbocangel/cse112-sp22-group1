@@ -258,5 +258,5 @@ export function createEditor (container, parent, subParent, callback) {
 				}
 			}
 		})
-	}, 20);
+	}, 80);
 }

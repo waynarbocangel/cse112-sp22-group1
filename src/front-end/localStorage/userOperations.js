@@ -1,3 +1,4 @@
+import {api, origin} from "../constants.js";
 import {createAudioBlockPouch} from "./createFiles/createAudioBlock.js";
 import {createCollectionPouch} from "./createFiles/createCollection.js";
 import {createDailyLogPouch} from "./createFiles/createDailyLog.js";
@@ -81,9 +82,10 @@ export function deleteDB () {
  * @callback (res) Sends user json data to the callback.
  */
 export function loginUser (email, pwd, callback) {
-	fetch("http://localhost:3000/readUser", {
+	fetch(`${api}/readUser`, {
 		headers: {
-			"content-type": "application/json; charset=UTF-8"
+			"content-type": "application/json; charset=UTF-8",
+			"Origin": origin
 		},
 		body: JSON.stringify({
 			email: email,
@@ -104,9 +106,10 @@ then((res) => {
  * @callback (res) Sends the new user object to the callback.
  */
 export function createUser (email, pwd, callback) {
-    fetch("http://localhost:3000/createUser", {
+    fetch(`${api}/createUser`, {
 		headers: {
-			"content-type": "application/json; charset=UTF-8"
+			"content-type": "application/json; charset=UTF-8",
+			"Origin": origin
 		},
 		body: JSON.stringify({
 			email: email,

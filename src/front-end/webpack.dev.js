@@ -18,12 +18,21 @@ module.exports = merge(common, {
     },
 	plugins: [
         new html({
-            template: "./index.html"
+            template: "./index.html",
+			chunks: ["index"]
         }),
 		new html({
 			filename: "login.html",
-            template: "./login/login.html"
+            template: "./login/login.html",
+			chunks: ["login"]
         }),
-		new miniCSS({filename: "main.css"})
-    ]
+		new miniCSS({filename: ({ chunk }) => `[name].css`})
+    ],
+	devServer: {
+		historyApiFallback: {
+			rewrites: [
+				{from: /^\/login/, to: "/login.html"}
+			]
+		}
+	}
 });
