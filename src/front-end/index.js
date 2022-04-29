@@ -7,6 +7,7 @@ import { TrackerBlock } from "./components/trackerBlock.js";
 import { TrackerMenu } from "./components/tracker.js";
 import { createEditor } from "./components/blockController.js";
 import { router } from "./router.js";
+import "./index.css";
 
 document.querySelector("body").style.display = "none";
 
@@ -47,7 +48,7 @@ export function getCurrentObject (urlFromRouter) {
 	}
 	localStorage.readUser((err, user) => {
 		if (err) {
-			window.location.href = "http://localhost:8080/login";
+			window.location.href = "http://localhost:8080/login.html";
 		} else if (id === undefined || id === null) {
 			currentObject = user.index;
 		} else {
