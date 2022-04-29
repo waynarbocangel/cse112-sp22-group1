@@ -1,0 +1,26 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy Node.js App
+      uses: appleboy/ssh-action@v0.1.2
+      with:
+        host: ${{secrets.SSH_HOST}} # IP Address of Server
+        key: ${{secrets.SSH_KEY}} # Private/Public Key of Server
+        username: ${{secrets.SSH_USERNAME}} # user for Server
+
+        script: |
+          cd /var/www/boojo.bitfrost.app/cse112-sp22-group
+          git pull origin main
+          cd  ./src/back-end/
+          npm i
+          cd ../front-end/prod/
+          npm i
+          echo 'Deployed to DigitalOcean'

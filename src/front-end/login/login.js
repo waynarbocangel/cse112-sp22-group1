@@ -1,10 +1,24 @@
 // Removed readUser and deleteDB from import because eslint complained they're never used
-import {createUser, db, loginUser} from "../localStorage/userOperations.js";
-import {createUserPouch} from "../localStorage/createFiles/createUser.js";
+import { createUser, db, loginUser, readUser } from "../localStorage/userOperations.js";
+import { createUserPouch } from "../localStorage/createFiles/createUser.js";
+
+// CSS Imports
+/* eslint-disable */
+import "./login.css";
+/* eslint-enable */
+
 let email = document.getElementById("email-field");
 let password = document.getElementById("password-field");
 let logIn = document.getElementById("login-form-submit");
 let createAccount = document.getElementById("login-form-create");
+
+readUser((err, user) => {
+	if (err) {
+		console.log(user);
+	} else {
+		window.location.href = origin;
+	}
+});
 
 document.onsubmit = (e) => {
 	console.log(e);
@@ -28,7 +42,7 @@ logIn.onclick = (e) => {
 				console.log(user.index);
 				createUserPouch(db, user, (userData) => {
 					console.log(userData);
-					window.location.href = "http://localhost:8080/success";
+					window.location.href = "/";
 				});
 			}
 		});
@@ -51,7 +65,7 @@ createAccount.onclick = (e) => {
 				user.pwd = password.value;
 				createUserPouch(db, user, (userData) => {
 					console.log(userData);
-					window.location.href = "http://localhost:8080/success";
+					window.location.href = "/";
 				});
 			}
 		});

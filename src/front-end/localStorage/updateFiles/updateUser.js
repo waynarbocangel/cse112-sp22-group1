@@ -1,3 +1,5 @@
+import { api, origin } from "../../constants";
+
 /**
  * Finds and update the user in the local db from the online db.
  *
@@ -12,9 +14,10 @@ export function updateUserOnline (db, callback) {
 		} else {
 			try {
 				console.log(doc);
-				fetch("http://localhost:3000/updateUser", {
+				fetch(`${api}/updateUser`, {
 					headers: {
-						"content-type": "application/json; charset=UTF-8"
+						"content-type": "application/json; charset=UTF-8",
+						"Origin": origin
 					},
 					body: JSON.stringify(doc),
 					method: "POST"

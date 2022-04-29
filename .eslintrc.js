@@ -26,16 +26,12 @@ module.exports = {
         "class-methods-use-this": "off",
         "comma-dangle": "error",
         "comma-spacing": [
-            "error",
-            {
+            "error", {
                 "after": true,
                 "before": false
             }
         ],
-        "comma-style": [
-            "error",
-            "last"
-        ],
+        "comma-style": ["error", "last"],
         "complexity": ["error", 100],
         "computed-property-spacing": "error",
         "consistent-return": "off",
@@ -146,8 +142,7 @@ module.exports = {
         "no-sequences": "error",
         "no-shadow": "error",
         "no-tabs": [
-            "error",
-            {
+            "error", {
                 "allowIndentationTabs": true
             }
         ],
@@ -198,10 +193,7 @@ module.exports = {
         "prefer-spread": "error",
         "prefer-template": "off",
         "quote-props": "off",
-        "quotes": [
-            "error",
-            "double"
-        ],
+        "quotes": ["error", "double"],
         "radix": "error",
         "require-atomic-updates": "error",
         "require-await": "error",
@@ -209,34 +201,22 @@ module.exports = {
         "rest-spread-spacing": "error",
         "semi": "off",
         "semi-spacing": "error",
-        "semi-style": [
-            "error",
-            "last"
-        ],
+        "semi-style": ["error", "last"],
         "sort-imports": "error",
         "sort-keys": "off",
         "sort-vars": "error",
         "space-before-blocks": "error",
         "space-before-function-paren": "error",
-        "space-in-parens": [
-            "error",
-            "never"
-        ],
+        "space-in-parens": ["error", "never"],
         "space-infix-ops": "error",
         "space-unary-ops": "error",
         "spaced-comment": "error",
-        "strict": [
-            "error",
-            "never"
-        ],
+        "strict": ["error", "never"],
         "switch-colon-spacing": "error",
         "symbol-description": "error",
         "template-curly-spacing": "error",
         "template-tag-spacing": "error",
-        "unicode-bom": [
-            "error",
-            "never"
-        ],
+        "unicode-bom": ["error", "never"],
         "vars-on-top": "error",
         "wrap-iife": "error",
         "wrap-regex": "error",

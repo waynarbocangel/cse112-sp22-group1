@@ -1,7 +1,10 @@
 src/front-end/localStorage/pouchdb-7.2.1.min.js
 src/front-end/components/shadow.js
+src/front-end/prod/*
 **/__tests__/*
+**/__test__/*
 **/unitTests/*
+**/node_modules/*
 documentation/scripts/linenumber.js
 documentation/scripts/prettify/lang-css.js
 documentation/scripts/prettify/prettify.js

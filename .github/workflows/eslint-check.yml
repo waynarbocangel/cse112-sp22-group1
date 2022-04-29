@@ -1,0 +1,29 @@
+name: ESLint Check
+
+on:
+  push:
+    branches:
+      - back-end_drop
+      - front-end_drop
+      - ci/cd-pipeline-1
+      - pipeline-test
+      - pipeline2.0
+
+  pull_request:
+    branches:
+      - main
+      - back-end_drop
+      - front-end_drop
+
+jobs:
+  ESLint-Check:
+       runs-on: ubuntu-latest
+       steps:
+         - uses: actions/checkout@v2
+         - run: yarn install
+         - uses: stefanoeb/eslint-action@1.0.2
+           with:
+             files: ./src/front-end
+                    ./src/back-end
+           env:
+             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

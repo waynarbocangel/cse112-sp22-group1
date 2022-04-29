@@ -5,7 +5,9 @@
   "main": ".eslintrc.js",
   "dependencies": {},
   "scripts": {
-    "jsdoc": "jsdoc -c jsdoc.json"
+    "jsdoc": "jsdoc -c jsdoc.json",
+	"lint": "./node_modules/.bin/eslint ./src/back-end ./src/front-end -c ./.eslintrc.js --ignore-path ./.eslintignore",
+    "lintFix": "./node_modules/.bin/eslint --fix ./src/back-end ./src/front-end -c ./.eslintrc.js --ignore-path ./.eslintignore"
   },
   "repository": {
     "type": "git",
@@ -24,7 +26,7 @@
     "eslint": "^7.26.0",
     "jest": "^27.0.4",
     "jest-puppeteer": "^5.0.3",
-    "jsdoc": "^3.6.7",
+    "jsdoc": "^3.6.10",
     "puppeteer": "^9.1.1"
   },
   "jest": {
