@@ -4,8 +4,8 @@ const app = express();
 
 app.use(express.static(__dirname + "/dist"));
 
-app.listen("8080", () => {
-	console.log("server has started listening to port 8080");
+app.listen("4000", () => {
+	console.log("server has started listening to port 4000");
 });
 
 app.get("/login", (req, res) => {
