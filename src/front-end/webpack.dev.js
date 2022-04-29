@@ -11,28 +11,26 @@ module.exports = merge(common, {
         filename: "bundle.[name].js"
     },
     module: {
-        rules: [{
+        rules: [
+{
             test: /\.css$/,
             use: [miniCSS.loader, "css-loader"]
-        }]
+        }
+]
     },
 	plugins: [
         new html({
             template: "./index.html",
 			chunks: ["index"]
-        }),
-		new html({
+        }), new html({
 			filename: "login.html",
             template: "./login/login.html",
 			chunks: ["login"]
-        }),
-		new miniCSS({filename: ({ chunk }) => `[name].css`})
+        }), new miniCSS({filename: () => "[name].css"})
     ],
 	devServer: {
 		historyApiFallback: {
-			rewrites: [
-				{from: /^\/login/, to: "/login.html"}
-			]
+			rewrites: [{from: /^\/login/, to: "/login.html"}]
 		}
 	}
 });

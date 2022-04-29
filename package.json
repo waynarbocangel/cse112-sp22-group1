@@ -6,8 +6,8 @@
   "dependencies": {},
   "scripts": {
     "jsdoc": "jsdoc -c jsdoc.json",
-	"lint": "./node_modules/.bin/eslint ./*.js",
-    "lintFix": "./node_modules/.bin/eslint --fix ./*.js"
+	"lint": "./node_modules/.bin/eslint ./src/back-end ./src/front-end -c ./.eslintrc.js --ignore-path ./.eslintignore",
+    "lintFix": "./node_modules/.bin/eslint --fix ./src/back-end ./src/front-end -c ./.eslintrc.js --ignore-path ./.eslintignore"
   },
   "repository": {
     "type": "git",

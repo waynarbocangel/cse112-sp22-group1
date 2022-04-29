@@ -13,17 +13,16 @@ module.exports = merge(common, {
         filename: "bundle.[name].[hash].js"
     },
 	module: {
-        rules: [{
+        rules: [
+{
             test: /\.css$/,
             use: [miniCSS.loader, "css-loader"]
-        }]
+        }
+]
     },
 	optimization: {
 		minimize: true,
-		minimizer: [
-			`...`,
-			new cssMinimizer()
-		]
+		minimizer: ["...", new cssMinimizer()]
 	},
 	plugins: [
         new html({
@@ -34,8 +33,7 @@ module.exports = merge(common, {
 				removeComments: true
 			},
 			chunks: ["index"]
-        }),
-		new html({
+        }), new html({
 			filename: "login.html",
             template: "./login/login.html",
 			minify: {
@@ -44,8 +42,6 @@ module.exports = merge(common, {
 				removeComments: true
 			},
 			chunks: ["login"]
-        }),
-		new miniCSS({filename: ({ chunk }) => `[name].[hash].css`}),
-        new cleanWebpack.CleanWebpackPlugin()
+        }), new miniCSS({filename: () => "[name].[hash].css"}), new cleanWebpack.CleanWebpackPlugin()
     ]
 });

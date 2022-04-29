@@ -1,8 +1,12 @@
 // Removed readUser and deleteDB from import because eslint complained they're never used
-import { createUser, db, loginUser } from "../localStorage/userOperations.js";
+import { createUser, db, loginUser, readUser } from "../localStorage/userOperations.js";
 import { createUserPouch } from "../localStorage/createFiles/createUser.js";
-import { readUser } from "../localStorage/userOperations.js";
+
+// CSS Imports
+/* eslint-disable */
 import "./login.css";
+/* eslint-enable */
+
 let email = document.getElementById("email-field");
 let password = document.getElementById("password-field");
 let logIn = document.getElementById("login-form-submit");

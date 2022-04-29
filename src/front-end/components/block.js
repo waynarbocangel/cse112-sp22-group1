@@ -258,7 +258,7 @@ blockTemplate.innerHTML = `
 			width: calc(100% - 74px);
 		}
 
-		.note{	
+		.note{
 			margin: 0;
 			margin-left: -62px;
 			position: relative;
@@ -464,7 +464,7 @@ export class TextBlock extends HTMLElement {
 		this.setupTabLevel();
 		setTimeout(() => {
 			callback(true);
-		}, 30);	
+		}, 30);
 	}
 
 	/**

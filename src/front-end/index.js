@@ -7,7 +7,10 @@ import { TrackerBlock } from "./components/trackerBlock.js";
 import { TrackerMenu } from "./components/tracker.js";
 import { createEditor } from "./components/blockController.js";
 import { router } from "./router.js";
+// CSS imports
+/* eslint-disable */
 import "./index.css";
+/* eslint-enable */
 
 document.querySelector("body").style.display = "none";
 
