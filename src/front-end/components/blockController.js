@@ -1,5 +1,5 @@
 import * as localStorage from "../localStorage/userOperations.js";
-import { TextBlock } from "./block.js";
+import { TextBlock } from "./block.jsx";
 
 export class Controller extends Object {
 	constructor (container, parent, subParent) {
