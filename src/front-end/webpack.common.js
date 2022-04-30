@@ -1,5 +1,6 @@
 const CopyPlugin = require("copy-webpack-plugin");
 
+/* eslint-disable */
 module.exports = {
     entry: {
 		"index": "./index.js",
@@ -8,7 +9,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/,
+                test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 use: {
                     loader: "babel-loader"
@@ -31,3 +32,4 @@ module.exports = {
         })
 	]
 }
+/* eslint-enable */

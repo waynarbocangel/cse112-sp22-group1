@@ -5,7 +5,9 @@ const common = require("./webpack.common");
 const merge = require("webpack-merge").merge;
 const miniCSS = require("mini-css-extract-plugin");
 const cssMinimizer = require("css-minimizer-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
+/* eslint-disable */
 module.exports = merge(common, {
 	mode: "production",
     output: {
@@ -14,15 +16,16 @@ module.exports = merge(common, {
     },
 	module: {
         rules: [
-{
-            test: /\.css$/,
-            use: [miniCSS.loader, "css-loader"]
-        }
-]
+			{
+				test: /\.css$/,
+				use: [miniCSS.loader, "css-loader"]
+			}
+		]
     },
 	optimization: {
 		minimize: true,
-		minimizer: ["...", new cssMinimizer()]
+		minimizer: ["...", new cssMinimizer()],
+		usedExports: true
 	},
 	plugins: [
         new html({
@@ -42,6 +45,9 @@ module.exports = merge(common, {
 				removeComments: true
 			},
 			chunks: ["login"]
-        }), new miniCSS({filename: () => "[name].[hash].css"}), new cleanWebpack.CleanWebpackPlugin()
+        }), new miniCSS({filename: () => "[name].[hash].css"}), new cleanWebpack.CleanWebpackPlugin(), new CopyPlugin({
+            patterns: [{ from: "./components/*.css", to: "[name].css", info: { minified: true } }]
+        })
     ]
 });
+/* eslint-enable */
