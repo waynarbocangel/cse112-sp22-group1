@@ -1,0 +1,20 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - pipeline2.0
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy Node.js App
+      uses: appleboy/ssh-action@v0.1.2
+      with:
+        host: ${{secrets.SSH_HOST}} # IP Address of Server
+        key: ${{secrets.SSH_KEY}} # Private/Public Key of Server
+        username: ${{secrets.SSH_USERNAME}} # user for Server
+
+        script: |
+          ls
