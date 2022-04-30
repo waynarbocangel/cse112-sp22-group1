@@ -19,8 +19,9 @@ jobs:
         script: |
           cd ../var/www/boojo.bitfrost.app/cse112-sp22-group1
           git pull origin main
-          cd  src/back-end/
-          npm i
-          cd ../front-end/prod/
-          npm i
+          cd  src/back-end
+          PATH=$PATH:/${{secrets.SSH_USER_NAME}}/.npm-global/bin
+          npm install
+          cd ../front-end/prod
+          npm install
           echo 'Deployed to DigitalOcean'
