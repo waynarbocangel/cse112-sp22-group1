@@ -17,5 +17,7 @@ jobs:
         username: ${{secrets.SSH_USERNAME}} # user for Server
 
         script: |
-          cd cse112-sp22-group1
+          cd cse112-sp22-group1/src/back-end
+          ls
+          cd ..
           ls
