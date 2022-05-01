@@ -1,5 +1,5 @@
 import * as localStorage from "./localStorage/userOperations.js";
-import { CreatorBlock } from "./components/creator.js";
+import { CreatorBlock } from "./components/creator.jsx";
 import { DropdownBlock } from "./components/dropdown.js";
 import { NavBar } from "./components/navbar.js";
 import { PageHeader } from "./components/header.js";
@@ -51,7 +51,7 @@ export function getCurrentObject (urlFromRouter) {
 	}
 	localStorage.readUser((err, user) => {
 		if (err) {
-			window.location.href = "http://localhost:8080/login";
+			window.location.href = "/login";
 		} else if (id === undefined || id === null) {
 			currentObject = user.index;
 		} else {
