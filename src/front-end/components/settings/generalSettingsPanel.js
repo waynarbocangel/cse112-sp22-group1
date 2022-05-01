@@ -54,10 +54,10 @@ export class GeneralSettingsPanel extends HTMLElement {
 		this.logoutButton.onclick = () => {
 			if (navigator.onLine) {
 				localStorage.deleteDB();
-				window.location.href = "http://localhost:8080/login";
+				window.location.href = "/login";
 			} else if (confirm("You're logging out while offline, all your local changes will be deleted if you continue!")) {
 				localStorage.deleteDB();
-				window.location.href = "http://localhost:8080/login";
+				window.location.href = "/login";
 			}
 		}
 	}

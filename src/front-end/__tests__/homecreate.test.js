@@ -5,7 +5,7 @@ jest.setTimeout(35000);
 describe('Basic user flow for SPA ', () => {
 
     beforeAll(async () => {
-        await page.goto('http://localhost:8080/login');
+        await page.goto('/login');
         await page.waitForTimeout(1000);
     });
 
@@ -13,7 +13,7 @@ describe('Basic user flow for SPA ', () => {
     // Test 1
     it('Test1: Initial Home Page - Check Home Page', async () => {
       // Remember to change this after deploy
-      expect(page.url()).toBe("http://localhost:8080/login/");
+      expect(page.url()).toBe("/login/");
       
     });
 

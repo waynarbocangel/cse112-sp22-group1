@@ -1,5 +1,5 @@
 import * as localStorage from "../localStorage/userOperations.js";
-import { CreatorBlock } from "./creator.js";
+import { CreatorBlock } from "./creator.jsx";
 import { TrackerBlock } from "./trackerBlock.js";
 import { currentObject } from "../index.js";
 
