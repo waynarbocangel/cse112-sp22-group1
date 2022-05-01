@@ -232,7 +232,7 @@ function getDate (textBlock, deleteString) {
 }
 
 let blockTemplate = <template>
-	<style>@import "./block.css";</style>
+	<link type="text/css" rel="stylesheet" href="./block.css" />
 	<div id="editorIcons" class="paragraphIcons"><img src="../public/resources/plusIcon.png" class="unfocusedIcons"/><img src="../public/resources/sixDotIcon.png" class="unfocusedIcons"/><div id="signifier"></div></div>
 	<div id="checkerContainer" checked=""><div id="taskChecker"></div></div>
 	<div id="textBlock" contenteditable="true" ondrop={()=>false} placeholder='Type "/" to create a block'></div>
