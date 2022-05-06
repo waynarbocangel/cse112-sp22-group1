@@ -8,12 +8,16 @@ on:
       - ci/cd-pipeline-1
       - pipeline-test
       - pipeline2.0
+      - front-end
+      - back-end
 
   pull_request:
     branches:
       - main
       - back-end_drop
       - front-end_drop
+      - front-end
+      - back-end
 
 jobs:
   front-end-build:
