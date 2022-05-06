@@ -1,11 +1,6 @@
 require("dotenv").config();
-const mongoose = require("mongoose");
 const security = require(__dirname + "/../security/securityFunctions.js");
 const schema = require(__dirname + "/../schema.js");
-
-
-mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
-mongoose.set("useCreateIndex", true);
 
 /**
  * Makes and returns a randomly generated id of length 30.

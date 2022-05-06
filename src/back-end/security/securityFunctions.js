@@ -1,10 +1,6 @@
 require("dotenv").config();
 const CryptoJS = require("crypto-js");
-const mongoose = require("mongoose");
 const schema = require(__dirname + "/../schema.js");
-
-mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
-mongoose.set("useCreateIndex", true);
 
 // Matching key for hashing and encrypting
 let key = process.env.HASHKEY;

@@ -1,10 +1,6 @@
 require("dotenv").config();
-const mongoose = require("mongoose");
 const schema = require(__dirname + "/../schema.js");
 const security = require(__dirname + "/../security/securityFunctions.js");
-
-mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
-mongoose.set("useCreateIndex", true);
 
 /**
  * Reads the user from the online db and sends it to the callback.

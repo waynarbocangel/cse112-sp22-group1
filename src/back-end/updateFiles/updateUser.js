@@ -1,10 +1,6 @@
 require("dotenv").config();
-const mongoose = require("mongoose");
 const security = require(__dirname + "/../security/securityFunctions.js");
 const schema = require(__dirname + "/../schema.js");
-
-mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
-mongoose.set("useCreateIndex", true);
 
 /**
  * Updated the user from the local db to send to the online db.
