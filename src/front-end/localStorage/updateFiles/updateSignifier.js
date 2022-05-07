@@ -1,11 +1,11 @@
 /**
  * Finds and update the signifier passed in.
- *
+ * @memberof updateFunctions
  * @param {database} db The local pouch database.
  * @param {Object} signifier The signifier to be deleted.
- * @callback (res) Sends an error if there is one to the callback.
+ * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
-export function updateSignifierPouch (db, signifier, callback) {
+ export function updateSignifierPouch (db, signifier, callback) {
 	console.log(signifier);
 	db.get("0000", (err, doc) => {
 		if (err) {

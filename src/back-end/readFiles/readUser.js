@@ -1,10 +1,14 @@
+/**
+ * Mongo Read Functions
+ * @namespace mongoRead
+ */
 require("dotenv").config();
 const schema = require(__dirname + "/../schema.js");
 const security = require(__dirname + "/../security/securityFunctions.js");
 
 /**
  * Reads the user from the online db and sends it to the callback.
- *
+ * @memberof mongoRead
  * @param {Object} userData The user data object to read from the online db.
  * @callback (response) Either sends the user as an object from the online db or and error, if there is one, to the callback.
  */
@@ -15,7 +19,7 @@ function readUser (userData, callback) {
 		} else {
 			let newCollections = [];
 			for (let i = 0; i < user.collections.length; i++) {
-				let collection = user.collection[i];
+				let collection = user.collections[i];
 				collection.title = security.decrypt(collection.title, userData.pwd);
 				newCollections.push(collection);
 			}
@@ -40,6 +44,7 @@ function readUser (userData, callback) {
 			let newSignifiers = [];
 			for (let i = 0; i < user.signifiers.length; i++) {
 				let signifier = user.signifiers[i];
+				console.log(signifier.meaning);
 				console.log(security.decrypt(signifier.meaning, userData.pwd));
 				signifier.meaning = security.decrypt(signifier.meaning, userData.pwd);
 				newSignifiers.push(signifier);
@@ -60,7 +65,8 @@ function readUser (userData, callback) {
 			for (let i = 0; i < user.trackers.length; i++) {
 				let tracker = user.trackers[i];
 				tracker.title = security.decrypt(tracker.title, userData.pwd);
-				newTrackers.push(tracker);
+                newTrackers.push(tracker);
+                console.log("Testing Build Process");
 			}
 			let decodedUser = {
 				email: user.email,

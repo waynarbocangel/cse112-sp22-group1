@@ -5,7 +5,7 @@ let textBlockObject = {};
 
 /**
  * Creates and stores a new event created from the given parameters.
- *
+ * @memberof createFunctions
  * @param {database} db The local pouch database.
  * @param {String} parent The id of the parent of the new textBlock.
  * @param {String} subParent The id of the child within the parent's content list.
@@ -16,13 +16,14 @@ let textBlockObject = {};
  * @param {String} objectReference The id of the task or event linked to the textBlock.
  * @param {String} signifier The signifier used by the textBlock.
  * @param {Date} date The date of the event if the textBlock kind was an event (opional).
- * @callback (err,textBlock) Eihter sends the newly created textBlock or an error if there is one to the callback.
+ * @param {doubleParameterCallback} callback Eihter sends the newly created textBlock or an error if there is one to the callback.
  */
 export function createTextBlockPouch (db, parent, subParent, index, content, tabLevel, kind, objectReference, signifier, date, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err, null);
 		} else {
+			console.log(subParent);
 			let id = makeid();
 			let arrays = [];
 			Array.prototype.push.apply(arrays, doc.dailyLogs);
@@ -82,21 +83,21 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 										if (subParent === null) {
 											parentArr[0].content.push(id);
 										} else if (parentArr[0].objectType === "monthlyLog") {
-											let newContents = parentArr[0].days.filter((day) => day.id === subParent);
+											let newContents = parentArr[0].days.filter((day) => day.dailyLog === subParent)[0];
 											newContents.content.push(id);
 										} else if (parentArr[0].objectType === "futureLog") {
-											let newContents = parentArr[0].months.filter((month) => month.id === subParent);
+											let newContents = parentArr[0].months.filter((month) => month.monthlyLog === subParent)[0];
 											newContents.content.push(id);
 										}
 									} else if (subParent === null) {
-											parentArr[0].content.splice(index, 0, id);
-										} else if (parentArr[0].objectType === "monthlyLog") {
-											let newContents = parentArr[0].days.filter((day) => day.id === subParent);
-											newContents.content.splice(index, 0, id);
-										} else if (parentArr[0].objectType === "futureLog") {
-											let newContents = parentArr[0].months.filter((month) => month.id === subParent);
-											newContents.content.splice(index, 0, id);
-										}
+										parentArr[0].content.splice(index, 0, id);
+									} else if (parentArr[0].objectType === "monthlyLog") {
+										let newContents = parentArr[0].days.filter((day) => day.dailyLog === subParent)[0];
+										newContents.content.splice(index, 0, id);
+									} else if (parentArr[0].objectType === "futureLog") {
+										let newContents = parentArr[0].months.filter((month) => month.monthlyLog === subParent)[0];
+										newContents.content.splice(index, 0, id);
+									}
 
 									user.textBlocks.push(textBlockObject);
 
@@ -116,10 +117,11 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 										textBlocks: user.textBlocks,
 										tasks: user.tasks,
 										events: user.events,
-										signifiers: user.signifiers}).then((res) => {
+										signifiers: user.signifiers
+									}).then((res) => {
 										console.log(res);
-									}).
-catch((error3) => {
+										callback(null, textBlockObject);
+									}).catch((error3) => {
 										console.log(error3);
 										callback(error3, null);
 									});
@@ -156,25 +158,26 @@ catch((error3) => {
 										if (subParent === null) {
 											parentArr[0].content.push(id);
 										} else if (parentArr[0].objectType === "monthlyLog") {
-											let newContents = parentArr[0].days.filter((day) => day.id === subParent);
+											let newContents = parentArr[0].days.filter((day) => day.dailyLog === subParent)[0];
 											newContents.content.push(id);
 										} else if (parentArr[0].objectType === "futureLog") {
-											let newContents = parentArr[0].months.filter((month) => month.id === subParent);
+											let newContents = parentArr[0].months.filter((month) => month.monthlyLog === subParent)[0];
 											newContents.content.push(id);
 										}
 									} else if (subParent === null) {
-											parentArr[0].content.splice(index, 0, id);
-										} else if (parentArr[0].objectType === "monthlyLog") {
-											let newContents = parentArr[0].days.filter((day) => day.id === subParent);
-											newContents.content.splice(index, 0, id);
-										} else if (parentArr[0].objectType === "futureLog") {
-											let newContents = parentArr[0].months.filter((month) => month.id === subParent);
-											newContents.content.splice(index, 0, id);
-										}
+										parentArr[0].content.splice(index, 0, id);
+									} else if (parentArr[0].objectType === "monthlyLog") {
+										let newContents = parentArr[0].days.filter((day) => day.dailyLog === subParent)[0];
+										newContents.content.splice(index, 0, id);
+									} else if (parentArr[0].objectType === "futureLog") {
+										let newContents = parentArr[0].months.filter((month) => month.monthlyLog === subParent)[0];
+										newContents.content.splice(index, 0, id);
+									}
 
 									user.textBlocks.push(textBlockObject);
 
-									return db.put({_id: "0000",
+									return db.put({
+										_id: "0000",
 										_rev: user._rev,
 										email: user.email,
 										pwd: user.pwd,
@@ -190,10 +193,10 @@ catch((error3) => {
 										textBlocks: user.textBlocks,
 										tasks: user.tasks,
 										events: user.events,
-										signifiers: user.signifiers}).then((res) => {
+										signifiers: user.signifiers
+									}).then((res) => {
 										console.log(res);
-									}).
-catch((error2) => {
+									}).catch((error2) => {
 										console.log(error2);
 										callback(error2, null);
 									});
@@ -206,6 +209,7 @@ catch((error2) => {
 				let userArr = [];
 				Array.prototype.push.apply(userArr, doc.dailyLogs);
 				Array.prototype.push.apply(userArr, doc.monthlyLogs);
+				Array.prototype.push.apply(userArr, doc.futureLogs);
 				Array.prototype.push.apply(userArr, doc.trackers);
 				Array.prototype.push.apply(userArr, doc.collections);
 
@@ -221,21 +225,21 @@ catch((error2) => {
 					if (subParent === null) {
 						parentArr[0].content.push(id);
 					} else if (parentArr[0].objectType === "monthlyLog") {
-						let newContents = parentArr[0].days.filter((day) => day.id === subParent);
+						let newContents = parentArr[0].days.filter((day) => day.dailyLog === subParent)[0];
 						newContents.content.push(id);
 					} else if (parentArr[0].objectType === "futureLog") {
-						let newContents = parentArr[0].months.filter((month) => month.id === subParent);
+						let newContents = parentArr[0].months.filter((month) => month.monthlyLog === subParent)[0];
 						newContents.content.push(id);
 					}
 				} else if (subParent === null) {
-						parentArr[0].content.splice(index, 0, id);
-					} else if (parentArr[0].objectType === "monthlyLog") {
-						let newContents = parentArr[0].days.filter((day) => day.id === subParent);
-						newContents.content.splice(index, 0, id);
-					} else if (parentArr[0].objectType === "futureLog") {
-						let newContents = parentArr[0].months.filter((month) => month.id === subParent);
-						newContents.content.splice(index, 0, id);
-					}
+					parentArr[0].content.splice(index, 0, id);
+				} else if (parentArr[0].objectType === "monthlyLog") {
+					let newContents = parentArr[0].days.filter((day) => day.dailyLog === subParent)[0];
+					newContents.content.splice(index, 0, id);
+				} else if (parentArr[0].objectType === "futureLog") {
+					let newContents = parentArr[0].months.filter((month) => month.monthlyLog === subParent)[0];
+					newContents.content.splice(index, 0, id);
+				}
 
 				doc.textBlocks.push(textBlockObject);
 
@@ -255,10 +259,10 @@ catch((error2) => {
 					textBlocks: doc.textBlocks,
 					tasks: doc.tasks,
 					events: doc.events,
-					signifiers: doc.signifiers}).then((res) => {
+					signifiers: doc.signifiers
+				}).then((res) => {
 					console.log(res);
-				}).
-catch((error) => {
+				}).catch((error) => {
 					callback(error, null);
 				});
 			}

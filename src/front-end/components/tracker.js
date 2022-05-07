@@ -3,12 +3,17 @@ import { CreatorBlock } from "./creator.jsx";
 import { TrackerBlock } from "./trackerBlock.js";
 import { currentObject } from "../index.js";
 
-// Tracker side menu web component
+/**
+ * Class that creates a trackerMenu
+ */
 export class TrackerMenu extends HTMLElement {
     static get observedAttributes () {
         return ["open"];
     }
 
+	/**
+	 * TrackerMenu constructor
+	 */
     constructor (title) {
         super();
 		this.attachShadow({ mode: "open" });
