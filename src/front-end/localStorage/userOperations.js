@@ -18,7 +18,7 @@
  * Local Storage
  * @module localStorage
  */
-import { api, origin } from "../../constants.js";
+import { api, origin } from "../constants.js";
 // -------------importing from create-----------------------------------------
 import {createAudioBlockPouch} from "./createFiles/createAudioBlock.js";
 import {createCollectionPouch} from "./createFiles/createCollection.js";
