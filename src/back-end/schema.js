@@ -1,3 +1,7 @@
+/**
+ * Schema
+ * @module schema
+ */
 require("dotenv").config();
 const mongoose = require("mongoose");
 
@@ -76,7 +80,7 @@ const userSchema = {
 				{
 					id: String,
 					content: [String],
-					dailyLog: [String]
+					dailyLog: String
 				}
 			],
 			trackers: [String]
@@ -103,7 +107,7 @@ const userSchema = {
 				{
 					id: String,
 					content: [String],
-					monthlyLog: [String]
+					monthlyLog: String
 				}
 			],
 			trackers: [String]

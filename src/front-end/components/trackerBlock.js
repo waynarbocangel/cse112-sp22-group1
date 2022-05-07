@@ -1,7 +1,19 @@
+
 import * as localStorage from "../localStorage/userOperations.js";
 import {createEditor} from "./blockController.js";
 
+/**
+ * Class that creates TrackerBlock
+ */
 export class TrackerBlock extends HTMLElement {
+
+	/**
+	 * TrackerBlock constructor
+	 * @param {String} title - Title to give the tracker
+	 * @param {String} parent - The id of the tracker's parent
+	 * @param {Object} tracker - The tracker object
+	 * @param {Object} trackerMenu - The menu where the tracker block was created from
+	 */
 	constructor (title, parent, tracker, trackerMenu) {
 		super();
 		let template = document.createElement("template");
@@ -22,7 +34,7 @@ export class TrackerBlock extends HTMLElement {
 					margin: 7px 0 12px;
 					vertical-align: top;
 				}
-	
+
 				#title:hover{
 					border-bottom: 2px solid rgba(255,255,255,0.9);
 					transition: 0.2s;

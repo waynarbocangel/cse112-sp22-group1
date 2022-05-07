@@ -1,5 +1,6 @@
+
 import { currentObject, header } from "../index.js";
-import {SettingsMenu} from "./settings/settings.js";
+import { SettingsMenu } from "./settings/settings.js";
 import { router } from "../router.js";
 
 const template = document.createElement("template");
@@ -54,7 +55,7 @@ template.innerHTML = `
 			margin: 0 auto;
 		}
 
-		@media only screen and (max-width:900px) {
+		@media only screen and (max-width:1100px) {
 			#menu {
 				position: fixed;
 				width: 30%;
@@ -206,11 +207,17 @@ template.innerHTML = `
 	</nav>
 `;
 
+/**
+ * Class that Creates navbar
+ */
 export class NavBar extends HTMLElement {
 	static get observedAttributes () {
 		return ["open"];
 	}
 
+	/**
+	 * Navbar constructor
+	 */
 	constructor () {
 		super();
 		this.attachShadow({ mode: "open" });

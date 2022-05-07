@@ -24,8 +24,7 @@
 }
 
 #editorIcons{
-	position: relative;
-	display: inline;
+	display: inline-block;
 	vertical-align: top;
 }
 
@@ -52,5 +51,59 @@
 }
 
 .paragraphIcons{
-	top: 10px;
+	margin-top: 10px;
+}@font-face {
+	font-family:"SF-Pro";
+	src: url("./public/fonts/SF-Pro.ttf");
+}
+#textBlock {
+	font-family: "SF-Pro";
+	border: none;
+	overflow: auto;
+	outline: none;
+	resize: none;
+	display: inline-block;
+}
+
+#textBlock:empty::before{
+	content: attr(placeholder);
+	color: gray;
+}
+
+.unstylized{
+	margin: 7px 0 12px;
+	font-size: 18px;
+	line-height: 28px;
+	width: calc(100% - 44px);
+}
+
+#editorIcons{
+	display: inline-block;
+	vertical-align: top;
+}
+
+#editorIcons img{
+	margin-right: 7px;
+	height: 15px;
+	cursor: pointer;
+	filter: var(--icon-filter);
+}
+
+.unfocusedIcons{
+	opacity: 0.3;
+	transition: 0.2s;
+}
+
+.focusedIcons{
+	opacity: 0.5;
+	transition: 0.2s;
+}
+
+#editorIcons img:hover{
+	opacity: 0.8;
+	transition: opacity 0.2s;
+}
+
+.paragraphIcons{
+	margin-top: 10px;
 }
