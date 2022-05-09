@@ -20,6 +20,8 @@ jobs:
           cd ../var/www/boojo.bitfrost.app/cse112-sp22-group1
           git pull origin main
           cd  src/back-end
+          rm constants.js
+          mv constants_prod.js constants.js
           PATH=$PATH:/${{secrets.SSH_USERNAME}}/.nvm/versions/node/v16.14.2/bin
           npm install
           cd ../front-end/prod
