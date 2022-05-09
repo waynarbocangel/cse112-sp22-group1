@@ -1,20 +1,26 @@
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
-const deleteUser = require(__dirname + "/deleteFiles/deleteUser.js");
-const createUser = require(__dirname + "/createFiles/createUser.js");
-const updateUser = require(__dirname + "/updateFiles/updateUser.js");
-const readUser = require(__dirname + "/readFiles/readUser.js");
-const security = require(__dirname + "/security/securityFunctions.js");
+const constants = require(`${__dirname}/constants.js`)
+const deleteUser = require(`${__dirname}/deleteFiles/deleteUser.js`);
+const createUser = require(`${__dirname}/createFiles/createUser.js`);
+const updateUser = require(`${__dirname}/updateFiles/updateUser.js`);
+const readUser = require(`${__dirname}/readFiles/readUser.js`);
+const security = require(`${__dirname}/security/securityFunctions.js`);
 
 /* Initialize Express */
 const app = express();
 app.use(express.json({limit: "50mb", extended: true}));
 app.use(express.urlencoded({limit: "50mb", extended: true}));
 app.use((req, res, next) => {
-	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Origin", constants.accessControlOrigin);
     res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
     res.header("Access-Control-Allow-Headers", "Content-Type");
+
+    /* https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin#cors_and_caching */
+    if (constants.accessControlOrigin !== "*") {
+        res.header("Vary", "Origin");
+    }
     next();
 });
 
