@@ -43,8 +43,9 @@ jobs:
       id: git
       run:  |
             RESULT=$(git status)
-            if [[ $RESULT == *"dist"* ]]; then
+            if [[ $RESULT == *"/dist"* ]]; then
               echo There have been changes
+              echo $RESULT
               echo "::set-output name=changes::true"
             fi
     - name: Checking application was built
