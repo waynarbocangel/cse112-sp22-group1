@@ -46,7 +46,7 @@ jobs:
               else
                 if [[ $file == *.css ]] || [[ $file == *.html ]]
                 then
-                  NEWFILE=$(cat ${file} | tr '\n' ' ' | tr -dc '[:alnum]\r')
+                  NEWFILE=$(cat ${file} | tr '\n' ' ' | tr -dc '[:alnum:]\r')
                   CURRENTPROD="${CURRENTPROD}${NEWFILE}"
                 else
                   CURRENTPROD="${CURRENTPROD}${file##*/}"
@@ -72,7 +72,7 @@ jobs:
               else
                 if [[ $file == *.css ]] || [[ $file == *.html ]]
                 then
-                  NEWFILE=$(cat ${file} | tr '\n' ' ' | tr -dc '[:alnum]\r')
+                  NEWFILE=$(cat ${file} | tr '\n' ' ' | tr -dc '[:alnum:]\r')
                   CURRENTPROD="${CURRENTPROD}${NEWFILE}"
                 else
                   CURRENTPROD="${CURRENTPROD}${file##*/}"
