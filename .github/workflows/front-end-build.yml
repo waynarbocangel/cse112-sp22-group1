@@ -44,10 +44,11 @@ jobs:
       run:  |
             RESULT=$(git status)
             if [[ $RESULT == *"dist"* ]]; then
+              echo There have been changes
               echo "::set-output name=changes::true"
             fi
     - name: Checking application was built
-      if: contains(steps.git.outputs.result, 'true')
+      if: contains(steps.git.outputs.changes, 'true')
       run:  |
             echo You need to build before pushing
             exit 1
