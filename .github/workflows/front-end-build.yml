@@ -33,54 +33,56 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-    - run:  |
-            CURRENTPROD=""
+    - name: "Current_Prod"
+      run:  |
+            ORIGINALPROD=""
             for file in ./prod/dist/*; do
               if  [ -d $file ]; then
                 for subdict in $file/*; do
                   for element in $subdict/*; do
-                    CURRENTPROD="${CURRENTPROD}${element##*/}"
+                    ORIGINALPROD="${ORIGINALPROD}${element##*/}"
                   done
                 done
               else
                 if [[ $file == *.css ]] || [[ $file == *.html ]]
                 then
                   NEWFILE=$(cat ${file} | tr '\n' ' ')
-                  CURRENTPROD="${CURRENTPROD}${NEWFILE}"
+                  ORIGINALPROD="${ORIGINALPROD}${NEWFILE}"
                 else
-                  CURRENTPROD="${CURRENTPROD}${file##*/}"
+                  ORIGINALPROD="${ORIGINALPROD}${file##*/}"
                 fi
               fi
             done
-            echo "ORIGINALPROD=$CURRENTPROD" >> $GITHUB_ENV
+            echo "::set-output name=ORIGINALPROD::$ORIGINALPROD"
       working-directory: ./src/front-end
     - run: npm install
       working-directory: ./src/front-end
     - run: npm run build
       working-directory: ./src/front-end
-    - run:  |
-            CURRENTPROD=""
+    - name: "Testing_Prod"
+      run:  |
+            NEWPROD=""
             for file in ./prod/dist/*; do
               if  [ -d $file ]; then
                 for subdict in $file/*; do
                   for element in $subdict/*; do
-                    CURRENTPROD="${CURRENTPROD}${element##*/}"
+                    NEWPROD="${NEWPROD}${element##*/}"
                   done
                 done
               else
                 if [[ $file == *.css ]] || [[ $file == *.html ]]
                 then
                   NEWFILE=$(cat ${file} | tr '\n' ' ')
-                  CURRENTPROD="${CURRENTPROD}${NEWFILE}"
+                  NEWPROD="${NEWPROD}${NEWFILE}"
                 else
-                  CURRENTPROD="${CURRENTPROD}${file##*/}"
+                  NEWPROD="${NEWPROD}${file##*/}"
                 fi
               fi
             done
-            echo "NEWPROD=$CURRENTPROD" >> $GITHUB_ENV
+            echo "::set-output name=NEWPROD::$NEWPROD"
       working-directory: ./src/front-end
     - name: Checking application was built
-      if: env.ORIGINALPROD != env.NEWPROD
+      if: ${{ steps.Curent_Prod.outputs.ORIGINALPROD != steps.Testing_Prod.outputs.NEWPROD }}
       run:  |
             echo You need to build before pushing
             exit 1
