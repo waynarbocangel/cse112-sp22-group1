@@ -34,14 +34,50 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run:  |
-            echo "ORIGINALPROD=$(cat * prod/dist | tr '\n' ' ')" >> $GITHUB_ENV
+            CURRENTPROD=""
+            for file in ./src/front-end/prod/dist/*; do
+              if  [ -d $file ]; then
+                for subdict in $file/*; do
+                  for element in $subdict/*; do
+                    CURRENTPROD="${CURRENTPROD}${element##*/}"
+                  done
+                done
+              else
+                if [[ $file == *.css ]] || [[ $file == *.html ]]
+                then
+                  NEWFILE=$(cat ${file} | tr '\n' ' ')
+                  CURRENTPROD="${CURRENTPROD}${NEWFILE}"
+                else
+                  CURRENTPROD="${CURRENTPROD}${file##*/}"
+                fi
+              fi
+            done
+            echo "ORIGINALPROD=$CURRENTPROD" >> $GITHUB_ENV
       working-directory: ./src/front-end
     - run: npm install
       working-directory: ./src/front-end
     - run: npm run build
       working-directory: ./src/front-end
     - run:  |
-            echo "NEWPROD=$(cat * prod/dist | tr '\n' ' ')" >> $GITHUB_ENV
+            CURRENTPROD=""
+            for file in ./src/front-end/prod/dist/*; do
+              if  [ -d $file ]; then
+                for subdict in $file/*; do
+                  for element in $subdict/*; do
+                    CURRENTPROD="${CURRENTPROD}${element##*/}"
+                  done
+                done
+              else
+                if [[ $file == *.css ]] || [[ $file == *.html ]]
+                then
+                  NEWFILE=$(cat ${file} | tr '\n' ' ')
+                  CURRENTPROD="${CURRENTPROD}${NEWFILE}"
+                else
+                  CURRENTPROD="${CURRENTPROD}${file##*/}"
+                fi
+              fi
+            done
+            echo "NEWPROD=$CURRENTPROD" >> $GITHUB_ENV
       working-directory: ./src/front-end
     - if: env.ORIGINALPROD != env.NEWPROD
       run:  |
