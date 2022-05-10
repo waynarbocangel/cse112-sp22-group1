@@ -83,8 +83,6 @@ jobs:
       working-directory: ./src/front-end
     - name: Checking application was built
       run:  |
-            echo ${{ env.ORIGINALPROD }}
-            echo ${{ env.NEWPROD }}
             if [[ ${{ env.ORIGINALPROD }} != ${{ env.NEWPROD}} ]]
             then
               echo You need to build before pushing
