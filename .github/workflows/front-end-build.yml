@@ -35,7 +35,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run:  |
             CURRENTPROD=""
-            for file in ./src/front-end/prod/dist/*; do
+            for file in ./prod/dist/*; do
               if  [ -d $file ]; then
                 for subdict in $file/*; do
                   for element in $subdict/*; do
@@ -60,7 +60,7 @@ jobs:
       working-directory: ./src/front-end
     - run:  |
             CURRENTPROD=""
-            for file in ./src/front-end/prod/dist/*; do
+            for file in ./prod/dist/*; do
               if  [ -d $file ]; then
                 for subdict in $file/*; do
                   for element in $subdict/*; do
@@ -79,7 +79,8 @@ jobs:
             done
             echo "NEWPROD=$CURRENTPROD" >> $GITHUB_ENV
       working-directory: ./src/front-end
-    - if: env.ORIGINALPROD != env.NEWPROD
+    - name: Checking application was built
+      if: env.ORIGINALPROD != env.NEWPROD
       run:  |
             echo You need to build before pushing
             exit 1
