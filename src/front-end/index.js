@@ -83,7 +83,7 @@
 	 }
 	 localStorage.readUser((err, user) => {
 		 if (err) {
-			 window.location.href = "http://localhost:8080/login";
+			 window.location.href = "/login";
 		 } else if (id === undefined || id === null) {
 			 currentObject = user.index;
 		 } else {
