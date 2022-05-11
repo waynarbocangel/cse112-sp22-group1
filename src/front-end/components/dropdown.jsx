@@ -42,8 +42,7 @@ export class DropdownBlock extends HTMLElement {
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
 		this.shadowRoot.getElementById("titleWrapper").class = (level > 1 ? "singleItemWrapper" : "");
-        this.shadowRoot.host.setAttribute("--level", level);
-        this.shadowRoot.host.setAttribute("--tabspace", tabspace);
+        this.shadowRoot.host.setAttribute("style", `--level: ${level}; --tabspace: ${tabspace}`);
 
         this.button = this.shadowRoot.getElementById("arrow");
         this.wrapper = this.shadowRoot.getElementById("wrapper");

@@ -1,58 +1,19 @@
-const template = document.createElement("template");
+// JSX Engine Import
+/* eslint-disable */
+/** @jsx createElement */
+/** @jsxFrag createFragment */
+import { createElement, createFragment } from "../jsxEngine.js";
+/* eslint-enable */
 
-template.innerHTML = `
-	<style>
-        :host {
-            z-index: 1;
-            user-select: none;
-            font-family: "SF-Pro";
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: var(--dropdown-background-color);
-            overflow: auto;
-        }
-
-        .dropdown-content ul {
-            padding: 5px 8px;
-			margin: 0;
-            list-style-type: none;
-        }
-
-        #myDropdown button {
-            background-color: transparent;
-            border: none;
-            color: var(--dropdown-foreground-color);
-            padding: 10px 1px 10px 18px;
-            text-align: left;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 18px;
-            cursor: pointer;
-            width: 100%;
-            min-width: 190px;
-        }
-
-        
-
-        li:hover {
-            background-color: var(--dropdown-hover-color);
-        }
-        
-        .show {display: block;}
-
-
-	</style> 
-	<div class="dropdown">
+let template = <template>
+    <link type="text/css" rel="stylesheet" href="inlineDropdown.css" />
+    <div class="dropdown">
 		<div id="myDropdown" class="dropdown-content">
 			<ul id="dropdownList">
 			</ul>
 		</div>
 	</div>
-	
-`;
+</template>;
 
 /**
  * Class that Creates Inline DropDown

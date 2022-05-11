@@ -1,71 +1,31 @@
+/**
+ * Audio Block
+ * @module audioBlockModule
+ */
 import * as localStorage from "../localStorage/userOperations.js";
 import { currentObject } from "../index.js";
 
-let template = document.createElement("template");
-template.innerHTML = `
-	<style>
-		@font-face {
-			font-family:"SF-Pro";
-			src: url("./public/fonts/SF-Pro.ttf");
-		}
-		#textBlock {
-			font-family: "SF-Pro";
-			border: none;
-			overflow: auto;
-			outline: none;
-			resize: none;
-			display: inline-block;
-		}
+// JSX Engine Import
+/* eslint-disable */
+/** @jsx createElement */
+/** @jsxFrag createFragment */
+import { createElement, createFragment } from "../jsxEngine.js";
+/* eslint-enable */
 
-		#textBlock:empty::before{
-			content: attr(placeholder);
-			color: gray;
-		}
-
-		.unstylized{
-			margin: 7px 0 12px;
-			font-size: 18px;
-			line-height: 28px;
-			width: calc(100% - 44px);
-		}
-
-		#editorIcons{
-			display: inline-block;
-			vertical-align: top;
-		}
-		
-		#editorIcons img{
-			margin-right: 7px;
-			height: 15px;
-			cursor: pointer;
-			filter: var(--icon-filter);
-		}
-
-		.unfocusedIcons{
-			opacity: 0.3;
-			transition: 0.2s;
-		}
-
-		.focusedIcons{
-			opacity: 0.5;
-			transition: 0.2s;
-		}
-
-		#editorIcons img:hover{
-			opacity: 0.8;
-			transition: opacity 0.2s;
-		}
-
-		.paragraphIcons{
-			margin-top: 10px;
-		}
-	</style>
+let template = <template>
 	<div id="editorIcons" class="paragraphIcons"><img src="../public/resources/plusIcon.png" class="unfocusedIcons" id="plus" /><img src="../public/resources/sixDotIcon.png" class="unfocusedIcons" id="more" /></div>
 	<form action='/api/audio' method="post" enctype="multipart/form-data">
   		<input type='file' name="audio" />
 	</form>
-`;
+</template>
+
+/**
+ * Class that creates an AudioBlock
+ */
 export class AudioBlock extends HTMLElement {
+	/**
+	 * AudioBlock constructor
+	 */
 	constructor () {
 		super();
 		this.attachShadow({ mode: "open" });

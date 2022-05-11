@@ -3,10 +3,10 @@
 * @module index
 */
 import * as localStorage from "./localStorage/userOperations.js";
-import { CreationMenu } from "./components/creationMenu.js";
+import { CreationMenu } from "./components/creationMenu.jsx";
 import { CreatorBlock } from "./components/creator.jsx";
 import { DropdownBlock } from "./components/dropdown.jsx";
-import { InlineDropdown } from "./components/inlineDropdown.js";
+import { InlineDropdown } from "./components/inlineDropdown.jsx";
 import { NavBar } from "./components/navbar.jsx";
 import { PageHeader } from "./components/header.jsx";
 import { TrackerBlock } from "./components/trackerBlock.jsx";
