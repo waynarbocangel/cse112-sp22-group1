@@ -13,6 +13,7 @@ import { createElement, createFragment } from "../jsxEngine.js";
 /* eslint-enable */
 
 let template = <template>
+	<link type="text/css" rel="stylesheet" href="audioBlock.css" />
 	<div id="editorIcons" class="paragraphIcons"><img src="../public/resources/plusIcon.png" class="unfocusedIcons" id="plus" /><img src="../public/resources/sixDotIcon.png" class="unfocusedIcons" id="more" /></div>
 	<form action='/api/audio' method="post" enctype="multipart/form-data">
   		<input type='file' name="audio" />
