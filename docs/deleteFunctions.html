@@ -119,7 +119,7 @@
 
 
 <div class="description">
-    <p>removes textblock from local db and updates local db</p>
+    <p>Removes textblock from local db and updates local db</p>
 </div>
 
 
@@ -831,6 +831,212 @@
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="front-end_localStorage_deleteFiles_deleteEvent.js.html">front-end/localStorage/deleteFiles/deleteEvent.js</a>, <a href="front-end_localStorage_deleteFiles_deleteEvent.js.html#line8">line 8</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".exports.deleteFutureLogPouch"><span class="type-signature">(static) </span>exports.deleteFutureLogPouch<span class="signature">(db, id, parent, callback)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Finds and deletes the futureLog and deletes all children associated.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>db</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">database</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The local pouch database.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The id of the object to be deleted.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>parent</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The id of the parent.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">singleParameterCallback</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Sends an error if there is one to the callback.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="front-end_localStorage_deleteFiles_deleteFutureLog.js.html">front-end/localStorage/deleteFiles/deleteFutureLog.js</a>, <a href="front-end_localStorage_deleteFiles_deleteFutureLog.js.html#line11">line 11</a>
     </li></ul></dd>
     
 
@@ -1974,13 +2180,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockControllerModule.html">blockControllerModule</a></li><li><a href="module-creatorModule.html">creatorModule</a></li><li><a href="module-index.html">index</a></li><li><a href="module-localStorage.html">localStorage</a></li><li><a href="module-router.html">router</a></li><li><a href="module-schema.html">schema</a></li><li><a href="module-server.html">server</a></li><li><a href="module-textBlockModule.html">textBlockModule</a></li><li><a href="module-transitions.html">transitions</a></li></ul><h3>Namespaces</h3><ul><li><a href="createFunctions.html">createFunctions</a></li><li><a href="deleteFunctions.html">deleteFunctions</a></li><li><a href="mongoDelete.html">mongoDelete</a></li><li><a href="mongoRead.html">mongoRead</a></li><li><a href="mongoUpdate.html">mongoUpdate</a></li><li><a href="readFunctions.html">readFunctions</a></li><li><a href="securityFunctions.html">securityFunctions</a></li><li><a href="updateFunctions.html">updateFunctions</a></li></ul><h3>Classes</h3><ul><li><a href="CreationMenu.html">CreationMenu</a></li><li><a href="DropdownBlock.html">DropdownBlock</a></li><li><a href="InlineDropdown.html">InlineDropdown</a></li><li><a href="module-blockControllerModule.BlockController.html">BlockController</a></li><li><a href="module-creatorModule.CreatorBlock.html">CreatorBlock</a></li><li><a href="module-textBlockModule.TextBlock.html">TextBlock</a></li><li><a href="NavBar.html">NavBar</a></li><li><a href="PageHeader.html">PageHeader</a></li><li><a href="TrackerBlock.html">TrackerBlock</a></li><li><a href="TrackerMenu.html">TrackerMenu</a></li></ul><h3>Global</h3><ul><li><a href="global.html#makeid">makeid</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockControllerModule.html">blockControllerModule</a></li><li><a href="module-index.html">index</a></li><li><a href="module-localStorage.html">localStorage</a></li><li><a href="module-router.html">router</a></li><li><a href="module-schema.html">schema</a></li><li><a href="module-transitions.html">transitions</a></li></ul><h3>Namespaces</h3><ul><li><a href="createFunctions.html">createFunctions</a></li><li><a href="deleteFunctions.html">deleteFunctions</a></li><li><a href="mongoDelete.html">mongoDelete</a></li><li><a href="mongoRead.html">mongoRead</a></li><li><a href="mongoUpdate.html">mongoUpdate</a></li><li><a href="readFunctions.html">readFunctions</a></li><li><a href="securityFunctions.html">securityFunctions</a></li><li><a href="updateFunctions.html">updateFunctions</a></li></ul><h3>Classes</h3><ul><li><a href="CreationMenu.html">CreationMenu</a></li><li><a href="DropdownBlock.html">DropdownBlock</a></li><li><a href="InlineDropdown.html">InlineDropdown</a></li><li><a href="module-blockControllerModule.BlockController.html">BlockController</a></li><li><a href="NavBar.html">NavBar</a></li><li><a href="PageHeader.html">PageHeader</a></li><li><a href="TrackerBlock.html">TrackerBlock</a></li><li><a href="TrackerMenu.html">TrackerMenu</a></li></ul><h3>Global</h3><ul><li><a href="global.html#makeid">makeid</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Mon Jun 07 2021 04:03:36 GMT-0400 (Bolivia Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed May 11 2022 16:59:20 GMT-0700 (Pacific Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>
