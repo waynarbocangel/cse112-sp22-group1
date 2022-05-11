@@ -1,8 +1,37 @@
-import { fade, unfade } from "../../transitions.js";
+import {fade, unfade} from "../transitions.js";
 /* eslint-disable */
-import { GeneralSettingsPanel } from "./generalSettingsPanel.js";
-import { ThemePanel } from "./themePanel.js";
+import {GeneralSettingsPanel} from "./generalSettingsPanel.jsx";
+import {ThemePanel} from "./themePanel.jsx";
 /* eslint-enable */
+
+// JSX Engine Import
+/* eslint-disable */
+/** @jsx createElement */
+/** @jsxFrag createFragment */
+import { createElement, createFragment } from "../jsxEngine.js";
+/* eslint-enable */
+
+let template = <template>
+	<link type="text/css" rel="stylesheet" href="settings.css" />
+    <div class="overlay">
+        <div class="menu">
+            <div class="sidebar">
+                <slot name="settings-tab"></slot>
+            </div>
+
+            <div class="content">
+                <header>
+                    <h1>Settings</h1>
+                    <button class="close"><img id="dismiss" src="../../public/resources/xIcon.png" /></button>
+                </header>
+
+                <div class="options">
+                    <slot name="settings-panel"></slot>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
 
 /*
  * Settings Menu
@@ -54,141 +83,7 @@ export class SettingsMenu extends HTMLElement {
     constructor () {
         super();
         this.attachShadow({ mode: "open" });
-
-        this.shadowRoot.innerHTML = `
-            <style>
-                @font-face {
-                    font-family:"SF-Pro";
-                    src: url("./public/fonts/SF-Pro.ttf");
-                }
-
-                :host {
-                    font-family: "SF-Pro";
-                    position: fixed;
-                    z-index: 10;
-                }
-
-                .overlay {
-                    position: fixed;
-                    width: 100%;
-                    height: 100%;
-                    top: 0;
-                    left: 0;
-                    bottom: 0;
-                    right: 0;
-                    background-color: #0000007F;
-                    user-select: none;
-                }
-
-                .close {
-                    color: var(--content-foreground-color);
-
-                    width: 40px;
-                    height: 40px;
-                    margin-left: auto;
-
-                    border: none;
-                    background-color: transparent;
-                    cursor: pointer;
-                }
-
-				.close img {
-					filter: var(--icon-filter);
-					width: 20px;
-					opacity: 0.5;
-					transition: 0.2s;
-				}
-
-				.close:hover img {
-					opacity: 1;
-					transition: 0.2s;
-				}
-
-                .menu {
-                    display: flex;
-                    position: absolute;
-					border-radius: 10px;
-					overflow: hidden;
-                    top: 50%;
-                    left: 50%;
-                    width: 80%;
-                    height: 80%;
-					max-width: 800px;
-					max-height: 800px;
-                    transform: translate(-50%,-50%);
-                    -ms-transform: translate(-50%,-50%);
-                    background-color: var(--content-background-color);
-                }
-
-                .sidebar {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-
-                    left: 0;
-                    top: 0;
-                    bottom: 0;
-                    background-color: var(--navbar-background-color);
-                }
-
-                .content {
-                    display: flex;
-                    flex-direction: column;
-                    flex: 1;
-                }
-
-                .options {
-                    display: flex;
-                    flex: 1;
-                    overflow-y: auto;
-                    padding: 20px;
-                }
-
-                h1 {
-                    grid-column-start: 2;
-                    text-align: center;
-                    flex: 1;
-                }
-
-                header {
-                    display: grid;
-                    grid-template-columns: 1fr auto 1fr;
-                    align-items: center;
-                    height: 60px;
-                    margin-left: 10px;
-                    margin-right: 10px;
-                    border-bottom: 2px solid var(--border-color);
-                }
-
-                ::slotted(settings-tab[selected]) {
-                    background-color: var(--content-background-color);
-                }
-                
-                ::slotted(settings-panel) {
-                    flex: 1;
-                    overflow-y: auto;
-                }
-            </style>
-
-            <div class="overlay">
-                <div class="menu">
-                    <div class="sidebar">
-                        <slot name="settings-tab"></slot>
-                    </div>
-
-                    <div class="content">
-                        <header>
-                            <h1>Settings</h1>
-                            <button class="close"><img id="dismiss" src="../../public/resources/xIcon.png" /></button>
-                        </header>
-
-                        <div class="options">
-                            <slot name="settings-panel"></slot>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
+        this.shadowRoot.appendChild(template.content.cloneNode(true));
 
         this.shadowRoot.querySelector(".close").addEventListener("click", () => {
             this.hide();

@@ -1,4 +1,4 @@
-import * as localStorage from "../../localStorage/userOperations.js";
+import * as localStorage from "../localStorage/userOperations.js";
 const themeColors = {
     darkmode: {
         "--border-color": "#4d4d4d",
@@ -117,76 +117,42 @@ const themeColors = {
     }
 }
 
+// JSX Engine Import
+/* eslint-disable */
+/** @jsx createElement */
+/** @jsxFrag createFragment */
+import { createElement, createFragment } from "../jsxEngine.js";
+/* eslint-enable */
+
+let template = <template>
+	<link type="text/css" rel="stylesheet" href="themePanel.css" />
+    <form id="theme">
+        <label>Cool Dark <br />
+            <input type="radio" name="themeradio" id="darkmode" /><img class="themeImg" src="../../public/resources/coolDark.png" />
+        </label>
+        <label>Minimal Light <br />
+            <input type="radio" name="themeradio" id="lightmode" /><img class="themeImg" src="../../public/resources/minimalLight.png" />
+        </label>
+        <label>High Contrast <br />
+            <input type="radio" name="themeradio" id="highcontrast" /><img class="themeImg" src="../../public/resources/highContrast.png" />
+        </label>
+        <label>Snazzy Light <br />
+            <input type="radio" name="themeradio" id="theme4" /><img class="themeImg" src="../../public/resources/snazzyLight.png" />
+        </label>
+        <label>Classy Light <br />
+            <input type="radio" name="themeradio" id="theme5" /><img class="themeImg" src="../../public/resources/classyLight.png" />
+        </label>
+        <label>Night Owl <br />
+            <input type="radio" name="themeradio" id="theme6" /><img class="themeImg" src="../../public/resources/nightOwl.png" />
+        </label>
+    </form>
+</template>
+
 export class ThemePanel extends HTMLElement {
     constructor () {
         super();
         this.attachShadow({mode: "open"});
-        this.shadowRoot.innerHTML = `
-        <style>
-            @font-face {
-                font-family:"SF-Pro";
-                src: url("./public/fonts/SF-Pro.ttf");
-            }
-
-            :host {
-                display: block;
-                font-family: "SF-Pro";
-            }
-
-            form {
-                margin: 0;
-				display: flex;
-                flex-flow: row wrap;
-				justify-content: space-evenly;
-				align-content: center;
-            }
-
-			label {
-				text-align: center;
-				font-size: 16pt;
-				margin-bottom: 30px;
-				cursor: pointer;
-			}
-
-			.themeImg {
-				width: 250px;
-				margin-top: 10px;
-				border-radius: 5px;
-				transition: 0.2s;
-			}
-
-			input[type="radio"] {
-				display: none;
-			}
-
-			input[type="radio"]:checked + img.themeImg {
-				box-shadow: 0 0 0 8px var(--content-foreground-color);
-				transition: 0.2s;
-			}
-
-        </style>
-
-        <form id="theme">
-            <label>Cool Dark <br />
-                <input type="radio" name="themeradio" id="darkmode" /><img class="themeImg" src="../../public/resources/coolDark.png" />
-            </label>
-            <label>Minimal Light <br />
-                <input type="radio" name="themeradio" id="lightmode" /><img class="themeImg" src="../../public/resources/minimalLight.png" />
-            </label>
-            <label>High Contrast <br />
-                <input type="radio" name="themeradio" id="highcontrast" /><img class="themeImg" src="../../public/resources/highContrast.png" />
-            </label>
-            <label>Snazzy Light <br />
-                <input type="radio" name="themeradio" id="theme4" /><img class="themeImg" src="../../public/resources/snazzyLight.png" />
-            </label>
-            <label>Classy Light <br />
-                <input type="radio" name="themeradio" id="theme5" /><img class="themeImg" src="../../public/resources/classyLight.png" />
-            </label>
-            <label>Night Owl <br />
-                <input type="radio" name="themeradio" id="theme6" /><img class="themeImg" src="../../public/resources/nightOwl.png" />
-            </label>
-        </form>
-        `;
+        this.shadowRoot.appendChild(template.content.cloneNode(true));
         this.themeRadios = this.shadowRoot.querySelectorAll("input[type=radio]");
     }
 
