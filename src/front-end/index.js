@@ -1,18 +1,18 @@
 /**
- * Index module
- * @module index
- */
- import * as localStorage from "./localStorage/userOperations.js";
- import { CreationMenu } from "./components/creationMenu.js";
- import { CreatorBlock } from "./components/creator.jsx";
- import { DropdownBlock } from "./components/dropdown.js";
- import { InlineDropdown } from "./components/inlineDropdown.js";
- import { NavBar } from "./components/navbar.js";
- import { PageHeader } from "./components/header.js";
- import { TrackerBlock } from "./components/trackerBlock.js";
- import { TrackerMenu } from "./components/tracker.js";
- import { createEditor } from "./components/blockController.js";
- import { router } from "./router.js";
+* Index module
+* @module index
+*/
+import * as localStorage from "./localStorage/userOperations.js";
+import { CreationMenu } from "./components/creationMenu.js";
+import { CreatorBlock } from "./components/creator.jsx";
+import { DropdownBlock } from "./components/dropdown.jsx";
+import { InlineDropdown } from "./components/inlineDropdown.js";
+import { NavBar } from "./components/navbar.jsx";
+import { PageHeader } from "./components/header.jsx";
+import { TrackerBlock } from "./components/trackerBlock.jsx";
+import { TrackerMenu } from "./components/tracker.jsx";
+import { createEditor } from "./components/blockController.js";
+import { router } from "./router.js";
 
  // CSS imports
  /* eslint-disable */

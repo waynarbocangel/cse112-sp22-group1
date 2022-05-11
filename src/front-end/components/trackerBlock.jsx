@@ -2,6 +2,21 @@
 import * as localStorage from "../localStorage/userOperations.js";
 import {createEditor} from "./blockController.js";
 
+// JSX Engine Import
+/* eslint-disable */
+/** @jsx createElement */
+/** @jsxFrag createFragment */
+import { createElement, createFragment } from "../jsxEngine.js";
+/* eslint-enable */
+
+let template = <template>
+	<link type="text/css" rel="stylesheet" href="trackerBlock.css" />
+    <div id="container">
+		<div id="editorIcons" class="paragraphIcons"><img src="../public/resources/plusIcon.png" class="unfocusedIcons"/><img src="../public/resources/sixDotIcon.png" class="unfocusedIcons"/></div>
+		<div id="title">Test</div>
+	</div>
+</template>
+
 /**
  * Class that creates TrackerBlock
  */
@@ -16,55 +31,6 @@ export class TrackerBlock extends HTMLElement {
 	 */
 	constructor (title, parent, tracker, trackerMenu) {
 		super();
-		let template = document.createElement("template");
-		template.innerHTML = `
-			<style>
-				#container{
-					heigt: 35px;
-				}
-
-				#title{
-					position: relative;
-					display: inline-block;
-					cursor: pointer;
-					border-bottom: 2px solid rgba(255,255,255,0.4);
-					transition: 0.2s;
-					font-size: 18px;
-					line-height: 28px;
-					margin: 7px 0 12px;
-					vertical-align: top;
-				}
-
-				#title:hover{
-					border-bottom: 2px solid rgba(255,255,255,0.9);
-					transition: 0.2s;
-				}
-
-				#editorIcons{
-					position: relative;
-					display: inline;
-					vertical-align: top;
-					top: 10px;
-				}
-				
-				#editorIcons img{
-					margin-right: 7px;
-					height: 15px;
-					cursor: pointer;
-					filter: var(--icon-filter);
-				}
-
-				@media screen and (max-width: 700px) {
-					.plus{
-						position: absolute;
-					}
-				}
-			</style>
-			<div id="container">
-				<div id="editorIcons" class="paragraphIcons"><img src="../public/resources/plusIcon.png" class="unfocusedIcons"/><img src="../public/resources/sixDotIcon.png" class="unfocusedIcons"/></div>
-				<div id="title">Test</div>
-			</div>
-		`;
 		this.parent = parent;
 		this.item = tracker;
 		this.trackerMenu = trackerMenu;

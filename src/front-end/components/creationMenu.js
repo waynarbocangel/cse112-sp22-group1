@@ -1,6 +1,6 @@
 /* eslint-disable */
 import * as localStorage from "../localStorage/userOperations.js";
-import { DropdownBlock } from "./dropdown.js";
+import { DropdownBlock } from "./dropdown.jsx";
 import { createEditor } from "./blockController.js";
 import { currentObject } from "../index.js";
 
