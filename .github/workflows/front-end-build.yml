@@ -33,32 +33,9 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Checks git status
-      id: preGit
-      run:  |
-            RESULT=$(git status)
-            if [[ $RESULT == *"/dist"* ]]; then
-              echo There have been changes
-              echo $RESULT
-              echo "::set-output name=changes::true"
-            fi
     - name: Installs dependencies
       run: npm install
       working-directory: ./src/front-end
     - name: Builds project
       run: npm run build
       working-directory: ./src/front-end
-    - name: Checks git status
-      id: git
-      run:  |
-            RESULT=$(git status)
-            if [[ $RESULT == *"/dist"* ]]; then
-              echo There have been changes
-              echo $RESULT
-              echo "::set-output name=changes::true"
-            fi
-    - name: Checking application was built
-      if: contains(steps.git.outputs.changes, 'true')
-      run:  |
-            echo You need to build before pushing
-            exit 1
