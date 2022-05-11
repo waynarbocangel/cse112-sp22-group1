@@ -33,7 +33,7 @@ let textBlockObject = {};
 
 /**
  * Creates and stores a new event created from the given parameters.
- *
+ * @memberof createFunctions
  * @param {database} db The local pouch database.
  * @param {String} parent The id of the parent of the new textBlock.
  * @param {String} subParent The id of the child within the parent's content list.
@@ -44,13 +44,14 @@ let textBlockObject = {};
  * @param {String} objectReference The id of the task or event linked to the textBlock.
  * @param {String} signifier The signifier used by the textBlock.
  * @param {Date} date The date of the event if the textBlock kind was an event (opional).
- * @callback (err,textBlock) Eihter sends the newly created textBlock or an error if there is one to the callback.
+ * @param {doubleParameterCallback} callback Eihter sends the newly created textBlock or an error if there is one to the callback.
  */
 export function createTextBlockPouch (db, parent, subParent, index, content, tabLevel, kind, objectReference, signifier, date, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err, null);
 		} else {
+			console.log(subParent);
 			let id = makeid();
 			let arrays = [];
 			Array.prototype.push.apply(arrays, doc.dailyLogs);
@@ -110,21 +111,21 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 										if (subParent === null) {
 											parentArr[0].content.push(id);
 										} else if (parentArr[0].objectType === "monthlyLog") {
-											let newContents = parentArr[0].days.filter((day) => day.id === subParent);
+											let newContents = parentArr[0].days.filter((day) => day.dailyLog === subParent)[0];
 											newContents.content.push(id);
 										} else if (parentArr[0].objectType === "futureLog") {
-											let newContents = parentArr[0].months.filter((month) => month.id === subParent);
+											let newContents = parentArr[0].months.filter((month) => month.monthlyLog === subParent)[0];
 											newContents.content.push(id);
 										}
 									} else if (subParent === null) {
-											parentArr[0].content.splice(index, 0, id);
-										} else if (parentArr[0].objectType === "monthlyLog") {
-											let newContents = parentArr[0].days.filter((day) => day.id === subParent);
-											newContents.content.splice(index, 0, id);
-										} else if (parentArr[0].objectType === "futureLog") {
-											let newContents = parentArr[0].months.filter((month) => month.id === subParent);
-											newContents.content.splice(index, 0, id);
-										}
+										parentArr[0].content.splice(index, 0, id);
+									} else if (parentArr[0].objectType === "monthlyLog") {
+										let newContents = parentArr[0].days.filter((day) => day.dailyLog === subParent)[0];
+										newContents.content.splice(index, 0, id);
+									} else if (parentArr[0].objectType === "futureLog") {
+										let newContents = parentArr[0].months.filter((month) => month.monthlyLog === subParent)[0];
+										newContents.content.splice(index, 0, id);
+									}
 
 									user.textBlocks.push(textBlockObject);
 
@@ -144,10 +145,11 @@ export function createTextBlockPouch (db, parent, subParent, index, content, tab
 										textBlocks: user.textBlocks,
 										tasks: user.tasks,
 										events: user.events,
-										signifiers: user.signifiers}).then((res) => {
+										signifiers: user.signifiers
+									}).then((res) => {
 										console.log(res);
-									}).
-catch((error3) => {
+										callback(null, textBlockObject);
+									}).catch((error3) => {
 										console.log(error3);
 										callback(error3, null);
 									});
@@ -184,25 +186,26 @@ catch((error3) => {
 										if (subParent === null) {
 											parentArr[0].content.push(id);
 										} else if (parentArr[0].objectType === "monthlyLog") {
-											let newContents = parentArr[0].days.filter((day) => day.id === subParent);
+											let newContents = parentArr[0].days.filter((day) => day.dailyLog === subParent)[0];
 											newContents.content.push(id);
 										} else if (parentArr[0].objectType === "futureLog") {
-											let newContents = parentArr[0].months.filter((month) => month.id === subParent);
+											let newContents = parentArr[0].months.filter((month) => month.monthlyLog === subParent)[0];
 											newContents.content.push(id);
 										}
 									} else if (subParent === null) {
-											parentArr[0].content.splice(index, 0, id);
-										} else if (parentArr[0].objectType === "monthlyLog") {
-											let newContents = parentArr[0].days.filter((day) => day.id === subParent);
-											newContents.content.splice(index, 0, id);
-										} else if (parentArr[0].objectType === "futureLog") {
-											let newContents = parentArr[0].months.filter((month) => month.id === subParent);
-											newContents.content.splice(index, 0, id);
-										}
+										parentArr[0].content.splice(index, 0, id);
+									} else if (parentArr[0].objectType === "monthlyLog") {
+										let newContents = parentArr[0].days.filter((day) => day.dailyLog === subParent)[0];
+										newContents.content.splice(index, 0, id);
+									} else if (parentArr[0].objectType === "futureLog") {
+										let newContents = parentArr[0].months.filter((month) => month.monthlyLog === subParent)[0];
+										newContents.content.splice(index, 0, id);
+									}
 
 									user.textBlocks.push(textBlockObject);
 
-									return db.put({_id: "0000",
+									return db.put({
+										_id: "0000",
 										_rev: user._rev,
 										email: user.email,
 										pwd: user.pwd,
@@ -218,10 +221,10 @@ catch((error3) => {
 										textBlocks: user.textBlocks,
 										tasks: user.tasks,
 										events: user.events,
-										signifiers: user.signifiers}).then((res) => {
+										signifiers: user.signifiers
+									}).then((res) => {
 										console.log(res);
-									}).
-catch((error2) => {
+									}).catch((error2) => {
 										console.log(error2);
 										callback(error2, null);
 									});
@@ -234,6 +237,7 @@ catch((error2) => {
 				let userArr = [];
 				Array.prototype.push.apply(userArr, doc.dailyLogs);
 				Array.prototype.push.apply(userArr, doc.monthlyLogs);
+				Array.prototype.push.apply(userArr, doc.futureLogs);
 				Array.prototype.push.apply(userArr, doc.trackers);
 				Array.prototype.push.apply(userArr, doc.collections);
 
@@ -249,21 +253,21 @@ catch((error2) => {
 					if (subParent === null) {
 						parentArr[0].content.push(id);
 					} else if (parentArr[0].objectType === "monthlyLog") {
-						let newContents = parentArr[0].days.filter((day) => day.id === subParent);
+						let newContents = parentArr[0].days.filter((day) => day.dailyLog === subParent)[0];
 						newContents.content.push(id);
 					} else if (parentArr[0].objectType === "futureLog") {
-						let newContents = parentArr[0].months.filter((month) => month.id === subParent);
+						let newContents = parentArr[0].months.filter((month) => month.monthlyLog === subParent)[0];
 						newContents.content.push(id);
 					}
 				} else if (subParent === null) {
-						parentArr[0].content.splice(index, 0, id);
-					} else if (parentArr[0].objectType === "monthlyLog") {
-						let newContents = parentArr[0].days.filter((day) => day.id === subParent);
-						newContents.content.splice(index, 0, id);
-					} else if (parentArr[0].objectType === "futureLog") {
-						let newContents = parentArr[0].months.filter((month) => month.id === subParent);
-						newContents.content.splice(index, 0, id);
-					}
+					parentArr[0].content.splice(index, 0, id);
+				} else if (parentArr[0].objectType === "monthlyLog") {
+					let newContents = parentArr[0].days.filter((day) => day.dailyLog === subParent)[0];
+					newContents.content.splice(index, 0, id);
+				} else if (parentArr[0].objectType === "futureLog") {
+					let newContents = parentArr[0].months.filter((month) => month.monthlyLog === subParent)[0];
+					newContents.content.splice(index, 0, id);
+				}
 
 				doc.textBlocks.push(textBlockObject);
 
@@ -283,10 +287,10 @@ catch((error2) => {
 					textBlocks: doc.textBlocks,
 					tasks: doc.tasks,
 					events: doc.events,
-					signifiers: doc.signifiers}).then((res) => {
+					signifiers: doc.signifiers
+				}).then((res) => {
 					console.log(res);
-				}).
-catch((error) => {
+				}).catch((error) => {
 					callback(error, null);
 				});
 			}
@@ -308,13 +312,13 @@ catch((error) => {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#createEditor">createEditor</a></li><li><a href="global.html#decrypt">decrypt</a></li><li><a href="global.html#deleteDB">deleteDB</a></li><li><a href="global.html#encrypt">encrypt</a></li><li><a href="global.html#getCurrentObject">getCurrentObject</a></li><li><a href="global.html#makeid">makeid</a></li><li><a href="global.html#passHash">passHash</a></li><li><a href="global.html#populateEditor">populateEditor</a></li><li><a href="global.html#populateEditorRecursive">populateEditorRecursive</a></li><li><a href="global.html#setupCollection">setupCollection</a></li><li><a href="global.html#setupDailyLog">setupDailyLog</a></li><li><a href="global.html#setupFutureLog">setupFutureLog</a></li><li><a href="global.html#setupIndex">setupIndex</a></li><li><a href="global.html#setupMonthlyLog">setupMonthlyLog</a></li><li><a href="global.html#stateSwitch">stateSwitch</a></li><li><a href="global.html#updateUserFromMongo">updateUserFromMongo</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-blockControllerModule.html">blockControllerModule</a></li><li><a href="module-index.html">index</a></li><li><a href="module-localStorage.html">localStorage</a></li><li><a href="module-router.html">router</a></li><li><a href="module-schema.html">schema</a></li><li><a href="module-transitions.html">transitions</a></li></ul><h3>Namespaces</h3><ul><li><a href="createFunctions.html">createFunctions</a></li><li><a href="deleteFunctions.html">deleteFunctions</a></li><li><a href="mongoDelete.html">mongoDelete</a></li><li><a href="mongoRead.html">mongoRead</a></li><li><a href="mongoUpdate.html">mongoUpdate</a></li><li><a href="readFunctions.html">readFunctions</a></li><li><a href="securityFunctions.html">securityFunctions</a></li><li><a href="updateFunctions.html">updateFunctions</a></li></ul><h3>Classes</h3><ul><li><a href="CreationMenu.html">CreationMenu</a></li><li><a href="DropdownBlock.html">DropdownBlock</a></li><li><a href="InlineDropdown.html">InlineDropdown</a></li><li><a href="module-blockControllerModule.BlockController.html">BlockController</a></li><li><a href="NavBar.html">NavBar</a></li><li><a href="PageHeader.html">PageHeader</a></li><li><a href="TrackerBlock.html">TrackerBlock</a></li><li><a href="TrackerMenu.html">TrackerMenu</a></li></ul><h3>Global</h3><ul><li><a href="global.html#makeid">makeid</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Sun May 08 2022 20:38:35 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed May 11 2022 16:59:20 GMT-0700 (Pacific Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>
