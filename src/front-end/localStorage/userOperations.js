@@ -78,14 +78,15 @@ export let db = new PouchDB("Users");
  */
 
 /**
- * Creates a new user in the remote and local db's
+ * Attempts to authenticate a user session.
  * (needs both front-end and back-end servers to be running)
  * @param {String} email The new user's email.
  * @param {String} pwd The new user's pwd.
- * @param {singleParameterCallback} callback Sends user json data to the callback.
+ * @param {singleParameterCallback} callback Sends an object containing an error on error, null on success.
  */
 export function loginUser (email, pwd, callback) {
-	fetch(`${api}/readUser`, {
+	fetch(`${api}/auth`, {
+        credentials: "same-origin",
 		headers: {
 			"content-type": "application/json; charset=UTF-8",
 			"Origin": origin
@@ -101,6 +102,24 @@ export function loginUser (email, pwd, callback) {
 }
 
 /**
+ * Retrieves the information from the currently logged in user from the server.
+ * (needs both front-end and back-end servers to be running)
+ * @param {singleParameterCallback} callback The user object on success, an error on failure.
+ */
+export function getUser (callback) {
+	fetch(`${api}/user`, {
+        credentials: "same-origin",
+		headers: {
+			"content-type": "application/json; charset=UTF-8",
+			"Origin": origin
+		},
+		method: "GET"
+	}).then((data) => data.json()).then((res) => {
+		callback(res);
+	});
+}
+
+/**
  * Creates a user in the local db.
  * (needs both front-end and back-end servers to be running)
  * @param {String} email The new user's email.
@@ -108,7 +127,7 @@ export function loginUser (email, pwd, callback) {
  * @param {singleParameterCallback} callback Sends the new user object to the callback.
  */
 export function createUser (email, pwd, callback) {
-	fetch(`${api}/createUser`, {
+	fetch(`${api}/user`, {
 		headers: {
 			"content-type": "application/json; charset=UTF-8",
 			"Origin": origin
@@ -122,7 +141,6 @@ export function createUser (email, pwd, callback) {
 		if (userData.error) {
 			callback(userData);
 		} else {
-			userData.pwd = pwd;
 			createUserPouch(db, userData, (user) => {
 				callback(user);
 			});

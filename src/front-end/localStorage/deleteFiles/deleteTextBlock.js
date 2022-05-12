@@ -49,7 +49,6 @@ function deleteBlock (db, block, id, callback) {
 			return db.put({_id: "0000",
 				_rev: user._rev,
 				email: user.email,
-				pwd: user.pwd,
 				theme: user.theme,
 				index: user.index,
 				dailyLogs: user.dailyLogs,
