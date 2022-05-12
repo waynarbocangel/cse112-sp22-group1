@@ -1,11 +1,11 @@
 /**
  * Finds and update the event passed in.
- *
+ * @memberof updateFunctions
  * @param {database} db The local pouch database.
  * @param {Object} event The event to be deleted.
- * @callback (res) Sends an error if there is one to the callback.
+ * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
-export function updateEventPouch (db, event, callback) {
+ export function updateEventPouch (db, event, callback) {
 	console.log(event);
 	db.get("0000", (err, doc) => {
 		if (err) {

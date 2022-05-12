@@ -1,0 +1,120 @@
+:host {
+    font-family:"SF-Pro";
+    --level: 0;
+    --tabspace: 0;
+    user-select: none; 
+    -webkit-user-select: none;
+    -moz-user-select: none; 
+    -khtml-user-select: none; 
+    -ms-user-select: none;
+}
+
+.noteContainer {
+    margin-top: 7px;
+    margin-bottom: 7px;
+    margin-left: 87px;
+    display: list-item;
+    list-style-type: disc;
+    list-style-position: outside;
+}
+
+.eventContainer {
+    margin-top: 7px;
+    margin-bottom: 7px;
+    margin-left: 87px;
+    display: list-item;
+    list-style-type: circle;
+    list-style-position: outside;
+}
+
+#wrapper{
+    padding-bottom: 0;
+    width: calc(100% - 70px);
+}
+
+#title{
+    display: inline-block;
+    font-family: "SF-Pro";
+    margin-left: 7.5px;
+    font-size: calc(20pt - var(--level) * 2pt);
+    font-weight: calc(900 - var(--level) * 200);
+    letter-spacing: calc(1.2px - var(--level) * 0.35px);
+    cursor: pointer;
+    border-bottom: 2px solid var(--content-foreground-color); /*rgba(0,0,0,0.4);*/
+    transition: 0.2s;
+}
+
+#title:hover{
+    border-bottom: 2px solid var(--content-foreground-color); /*rgba(0,0,0,0.9);*/
+    transition: 0.2s;
+}
+
+#arrow {
+    width: 12px;
+    height: 12px;
+    background-color: rgba(0,0,0,0);
+    border: none;
+    cursor: pointer;
+}
+
+#arrow img {
+    max-width: calc(22px - var(--level) * 3px);
+    max-height: calc(22px - var(--level) * 3px);
+
+    filter: var(--icon-filter);
+}
+:not(.closed) #arrow img {
+    transform: rotate(0deg);
+    transition: transform 0.2s;
+}
+
+.closed #arrow img {
+    transform: rotate(90deg);
+    transition: 0.2s;
+}
+
+:not(.closed) #contentWrapper{
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
+.closed #contentWrapper{
+    max-height: auto;
+    transition: max-height 0.2s ease-out;
+}
+
+#contentWrapper {
+    position: relative;
+    left: calc(var(--tabspace) * 1em);
+    width: calc(100% - var(--tabspace) * var(--level) * 1em);
+    overflow-x: none;
+}
+
+.singleItemWrapper{
+    border-top: 1px solid var(--border-color);
+}
+
+#editorIcons{
+    position: relative;
+    display: inline;
+    float: left;
+    top: calc(17.5px - var(--level) * 1px);
+    vertical-align: top;
+}
+
+#editorIcons img{
+    margin-right: 7px;
+    height: 15px;
+    cursor: pointer;
+    filter: var(--icon-filter);
+}
+.unfocusedIcons{
+    opacity: 0.5;
+    transition: 0.2s;
+}
+
+#editorIcons img:hover{
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}

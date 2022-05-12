@@ -8,3 +8,4 @@ src/front-end/prod/*
 documentation/scripts/linenumber.js
 documentation/scripts/prettify/lang-css.js
 documentation/scripts/prettify/prettify.js
+.vscode

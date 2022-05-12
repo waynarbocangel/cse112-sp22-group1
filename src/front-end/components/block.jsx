@@ -1,5 +1,10 @@
+/**
+ * Text Block Module
+ * @module textBlockModule
+ */
 import * as localStorage from "../localStorage/userOperations.js";
 import * as shadow from "./shadow.js";
+import { BlockController } from "./blockController.js";
 import {currentObject} from "../index.js";
 
 // JSX Engine Import
@@ -233,18 +238,26 @@ function getDate (textBlock, deleteString) {
 
 let blockTemplate = <template>
 	<link type="text/css" rel="stylesheet" href="./block.css" />
-	<div id="editorIcons" class="paragraphIcons"><img src="../public/resources/plusIcon.png" class="unfocusedIcons"/><img src="../public/resources/sixDotIcon.png" class="unfocusedIcons"/><div id="signifier"></div></div>
+	<div id="editorIcons" class="paragraphIcons"><img src="../public/resources/plusIcon.png" class="unfocusedIcons" id="plus" /><img src="../public/resources/sixDotIcon.png" class="unfocusedIcons" id="more" /><div id="signifier"></div></div>
 	<div id="checkerContainer" checked=""><div id="taskChecker"></div></div>
-	<div id="textBlock" contentEditable="true" onDrop={()=>false} placeholder='Type "/" to create a block'></div>
+	<div id="textBlock" contentEditable="true" ondrop={()=>false} placeholder='Type "/" to create a block'></div>
 </template>;
 
+/**
+ * Class to create new editor block
+ */
 export class TextBlock extends HTMLElement {
+	/**
+	 * Editor block constructor
+	 * @param {BlockController} controller - the editor's controller
+	 * @param {Object} itemObject - the database item representing the editor
+	 * @param {Object} signifier - the editor's current signifier
+	 * @param {singleParameterCallback} callback - callback for the end of the constructor function
+	 */
 	constructor (controller, itemObject, signifier, callback) {
 		super();
 		this.attachShadow({ mode: "open" });
 		this.shadowRoot.appendChild(blockTemplate.content.cloneNode(true));
-		this.shadowRoot.adoptedStyleSheets = []
-		this.root = this.shadowRoot;
 		this.characterIndex = 0;
 		this.kind = "paragraph";
 		this.initialHeight = 3;
@@ -275,6 +288,8 @@ export class TextBlock extends HTMLElement {
 		this.signifier = signifier
 		this.signifierIcon = this.shadowRoot.getElementById("signifier");
 		this.signifierIcon.innerHTML = this.signifier.symbol;
+		this.plus = this.shadowRoot.getElementById("plus");
+		this.more = this.shadowRoot.getElementById("more");
 		this.setupTabLevel();
 		setTimeout(() => {
 			callback(true);
@@ -284,7 +299,7 @@ export class TextBlock extends HTMLElement {
 	/**
 	 * Keeps track of current location of textBlock
 	 */
-	setCurrentSpot () {
+	 setCurrentSpot () {
 		let container = this.shadowRoot.getElementById("textBlock");
 		let range = shadow.getRange(this.shadowRoot);
 		if (range === null) {
@@ -309,8 +324,8 @@ export class TextBlock extends HTMLElement {
 	/**
 	 * Moves the textBlock to the location it was last dragged to(?)
 	 *
-	 * @param {*} newSpotToMove
-	 * @param {*} up
+	 * @param {Number} newSpotToMove - the possible new spot to move to
+	 * @param {Boolean} up - whether the cursor should move up or down
 	 */
 	moveToSpot (newSpotToMove, up) {
 		let newSpot = newSpotToMove
@@ -573,6 +588,14 @@ export class TextBlock extends HTMLElement {
 			this.controller.blockArray[this.controller.currentBlockIndex].setCurrentSpot();
 		});
 
+		this.plus.onclick = () => {
+			console.log("hello there");
+		}
+
+		/**
+		 * @type {HTMLElement}
+		 * @listens document#click
+		 */
 		this.checkBox.onclick = (e) => {
 			if (this.checkBox.getAttribute("checked") === "checked") {
 				this.checkBox.setAttribute("checked", "");
@@ -614,7 +637,7 @@ export class TextBlock extends HTMLElement {
 		/**
 		 * Gets the user's clipboard data, filters for valid editor text, and pastes it to the textBlock.
 		 *
-		 * @param {User} e
+		 * @param {Event} e
 		 */
 		textBlock.onpaste = (e) => {
 			// Get user's pasted data
@@ -761,7 +784,7 @@ export class TextBlock extends HTMLElement {
 		 * If "tab" is hit, then the tab level is increased and the textBlock styling is
 		 * set up for each type of block type(?)
 		 *
-		 * @param {*} e
+		 * @param {Event} e
 		 */
 		textBlock.onkeydown = (e) => {
 			let key = e.key || e.keyCode;
@@ -822,7 +845,7 @@ export class TextBlock extends HTMLElement {
 					e.preventDefault();
 				} else {
 					this.controller.resetPosition = false;
-					this.controller.addNewBlock();
+					this.controller.addNewBlock(null);
 					e.preventDefault();
 				}
 			} else if (key === "ArrowDown") {
@@ -840,7 +863,7 @@ export class TextBlock extends HTMLElement {
 				this.setupTabLevel();
 				e.preventDefault();
 			} else if (key === "@" && this.kind === "event") {
-				if (this.atPressed) {
+				if (this.timeSetter) {
 					e.stopPropagation();
 					e.preventDefault();
 				} else {
@@ -859,7 +882,7 @@ export class TextBlock extends HTMLElement {
 					textBlock.setAttribute("dateFiller", dateFiller);
 				}
 			} else if (key === "#" && this.kind === "event") {
-				if (this.hashPressed) {
+				if (this.dateSetter) {
 					e.stopPropagation();
 					e.preventDefault();
 				} else {
