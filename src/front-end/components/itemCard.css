@@ -1,0 +1,47 @@
+@font-face {
+	font-family:"SF-Pro";
+}
+.card{
+    font: "SF-Pro";
+    display: inline-block;
+    overflow: hidden;
+    border-radius: 15px;
+    justify-content: space-between;
+    padding: 0 0 1rem;
+    min-width: 12vw;
+    background-color: #ffffff;
+    
+    box-shadow: 0 0 10px grey;
+}
+#titleWrapper{
+    padding-left: 1.5vw;
+    padding-right: 1.5vw;
+}
+#title{
+    font-size: 18pt;
+    text-align: center;
+    text-decoration: underline;
+}
+#date{
+    font-size: 12pt;
+    text-align: center;
+}
+#buttonWrapper{
+    text-align:center;
+}
+button{
+    cursor: pointer;    
+    font-size: 16px;
+    border: none;
+    color: white;
+    padding: 4px 8px;
+    text-decoration: none;
+    margin: 4px 5px;
+    border-radius: 6px;
+}
+#openButton{
+    background-color: #33b5e5;
+}
+#peakButton{
+    background-color:#ffbb33;
+}
