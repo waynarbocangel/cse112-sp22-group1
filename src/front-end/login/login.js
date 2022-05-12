@@ -1,5 +1,5 @@
 // Removed readUser and deleteDB from import because eslint complained they're never used
-import { createUser, db, loginUser, readUser } from "../localStorage/userOperations.js";
+import { createUser, db, getUser, loginUser, readUser } from "../localStorage/userOperations.js";
 import { createUserPouch } from "../localStorage/createFiles/createUser.js";
 
 // CSS Imports
@@ -32,20 +32,26 @@ logIn.onclick = (e) => {
 	} else if (password.value === "") {
 		alert("You need to fill in the password field");
 	} else {
-		loginUser(email.value, password.value, (user) => {
-			if (user.error !== undefined) {
-				alert(user.error);
-			} else if (user.email === undefined) {
-				alert("Wrong username or password");
-			} else {
-				user.pwd = password.value;
-				console.log(user.index);
-				createUserPouch(db, user, (userData) => {
-					console.log(userData);
-					window.location.href = "/";
-				});
-			}
-		});
+        loginUser(email.value, password.value, (err) => {
+            if (err.error) {
+                alert(err.error);
+                return;
+            }
+            getUser((user) => {
+                if (user.error !== undefined) {
+                    alert(user.error);
+                } else if (user.email === undefined) {
+                    alert("Wrong username or password");
+                } else {
+                    user.pwd = password.value;
+                    console.log(user.index);
+                    createUserPouch(db, user, (userData) => {
+                        console.log(userData);
+                        window.location.href = "/";
+                    });
+                }
+            });
+        });
 	}
 };
 

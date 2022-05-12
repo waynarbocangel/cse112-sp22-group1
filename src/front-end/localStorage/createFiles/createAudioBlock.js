@@ -48,7 +48,6 @@ export function createAudioBlockPouch (db, parent, arrangement, data, callback) 
 			return db.put({_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
-				pwd: doc.pwd,
 				theme: doc.theme,
 				index: doc.index,
 				dailyLogs: doc.dailyLogs,
