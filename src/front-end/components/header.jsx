@@ -19,15 +19,13 @@ let template = <template>
 			<span></span>
 		</div>
 		<span class="header">
-			<button class="imgbutton" id="header_back"><img src="../public/resources/left-chevron.png" /></button>
-	
-			<h1 id="title_page">Template Page Title</h1>
-	
-			<button class="imgbutton" id="header_forward"><img src="../public/resources/right-chevron.png" /></button>
-		</span>
-	
-		<button class="imgbutton plus"><img src="../public/resources/plusIcon.png" /></button>
-	
+			<div>
+				<button class="imgbutton" id="header_back"><img src="../public/resources/left-chevron.png" /></button>
+				<h1 id="title_page">Template Page Title</h1>
+				<button class="imgbutton" id="header_forward"><img src="../public/resources/right-chevron.png" /></button>
+			</div>
+			<button class="new-button">New</button>
+		</span> 
 		<span class="search_bar" id="searchBar">
 			<input type="text" placeholder="Search" />
 			<img src="../public/resources/search_icon.png" />
