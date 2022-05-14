@@ -59,11 +59,10 @@ export class PageHeader extends HTMLElement {
 	 */
 	connectedCallback () {
 		this.futureLogButton.addEventListener("click", () => {
-            let searchbarShift = this.searchBar.style.display === "none" ? 0 : this.searchBar.getBoundingClientRect().width;
 			const headerTopOffset = this.titleHeader.offsetTop + this.titleHeader.offsetHeight;
 			const headerLeftOffset = this.titleHeader.offsetLeft + this.titleHeader.offsetWidth - 206;
 			/* dropDown window appears to be 206 px, not sure why previous value was 210 */
-            dropdown.openCreationDropdown(headerTopOffset, headerLeftOffset);
+			dropdown.openCreationDropdown(headerTopOffset, headerLeftOffset);
 		});
 
 		this.menuToggle.addEventListener("change", () => {
