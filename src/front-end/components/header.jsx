@@ -37,7 +37,6 @@ let template = <template>
  * Class that creates Page Header
  */
 export class PageHeader extends HTMLElement {
-
 	/**
 	 * PageHeader constructor
 	 */
@@ -48,7 +47,8 @@ export class PageHeader extends HTMLElement {
 		this.h1 = this.shadowRoot.getElementById("title_page");
 
 		this.createFutureLog = this.createFutureLog.bind(this);
-		this.futureLogButton = this.shadowRoot.querySelector(".plus");
+		this.futureLogButton = this.shadowRoot.querySelector(".new-button");
+		this.titleHeader = this.shadowRoot.querySelector(".header");
 		this.imgbuttons = this.shadowRoot.querySelectorAll(".imgbutton");
 		this.menuToggle = this.shadowRoot.querySelector("#menuToggle input");
 		this.searchBar = this.shadowRoot.getElementById("searchBar");
@@ -60,7 +60,10 @@ export class PageHeader extends HTMLElement {
 	connectedCallback () {
 		this.futureLogButton.addEventListener("click", () => {
             let searchbarShift = this.searchBar.style.display === "none" ? 0 : this.searchBar.getBoundingClientRect().width;
-            dropdown.openCreationDropdown(this.offsetHeight, window.innerWidth - 210 - searchbarShift);
+			const headerTopOffset = this.titleHeader.offsetTop + this.titleHeader.offsetHeight;
+			const headerLeftOffset = this.titleHeader.offsetLeft + this.titleHeader.offsetWidth - 206;
+			/* dropDown window appears to be 206 px, not sure why previous value was 210 */
+            dropdown.openCreationDropdown(headerTopOffset, headerLeftOffset);
 		});
 
 		this.menuToggle.addEventListener("change", () => {
