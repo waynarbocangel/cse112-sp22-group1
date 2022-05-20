@@ -1,3 +1,8 @@
+/**
+ * Card Module
+ * @module itemCardModule
+ */
+
 // JSX Engine Import
 /* eslint-disable */
 /** @jsx createElement */
@@ -21,20 +26,46 @@ let template = <template>
 </template>
 
 export class ItemCard extends HTMLElement {
-    constructor () {
+
+    /**
+     * ItemCard constructor
+     *
+     * @param {String} title - item card title
+     * @param {Number} from - collection start date
+     * @param {Number} to - collection end date
+     * @param {String} ID - Collection id
+     */
+    constructor (title, from, to, ID) {
         super();
         console.log(template);
 		this.attachShadow({ mode: "open" });
 		this.shadowRoot.appendChild(template.content.cloneNode(true));
+        // Set card title
+        this.setTitle(title);
+        // Set card dates
+        this.setDate(from, to);
+        // Set card id
+        this.ID = ID;
         this.bindOpenButton();
         this.bindPeakButton();
     }
 
+    /**
+     * Sets title for item card
+     *
+     * @param {String} cardTitle
+     */
     setTitle (cardTitle) {
         const title = this.shadowRoot.getElementById("title");
         title.innerText = cardTitle;
     }
 
+    /**
+     * Sets Date for item card
+     *
+     * @param {Number} from
+     * @param {Number} to
+     */
     setDate (from, to) {
         const date = this.shadowRoot.getElementById("date");
         let dateString = "";
