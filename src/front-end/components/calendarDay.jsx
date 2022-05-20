@@ -73,10 +73,16 @@ export class CalendarDay extends HTMLElement {
 		alert("Log should be opened");
 	}
 
+	/**
+	 * Peaks into the log for this date
+	 */
 	peakInto = () =>{
 		alert("Log should show peak");
 	}
 
+	/** 
+	 * Creates new log at a given date
+	 */
 	createLog = () => {
 		alert("Creating log");
 	}
