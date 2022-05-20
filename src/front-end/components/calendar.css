@@ -1,0 +1,55 @@
+:host{
+	font-family: 'SF-Pro';
+}
+
+header{
+	display: grid;
+	grid-template-columns: repeat(7, 155px);
+	text-align: center;
+}
+
+header h1{
+	font-size: 21px;
+	color: rgba(0, 0, 0, 0.6);
+}
+
+section {
+	display: grid;
+	background-color: #F9F7F3FF;
+	width: 1085px;
+	border-radius: 10px;
+	grid-template-columns: repeat(7, 155px);
+}
+
+section > calendar-day:nth-of-type(n){
+	--border-left: 1px solid rgba(140, 140, 140, 0.1);
+	--border-top: 1px solid rgba(140, 140, 140, 0.1);
+}
+
+section > calendar-day:nth-last-of-type(-n + 7){
+	--border-bottom: 1px solid rgba(140, 140, 140, 0.1);
+}
+
+section > calendar-day:nth-of-type(7n){
+	--border-right: 1px solid rgba(140, 140, 140, 0.1);
+}
+
+section > calendar-day:nth-of-type(1){
+	--top-left-radius: 10px;
+	--border-top-left-radius: 10px;
+}
+
+section > calendar-day:nth-of-type(7){
+	--top-right-radius: 10px;
+	--border-top-right-radius: 10px;
+}
+
+section > calendar-day:nth-last-of-type(7) {
+	--bottom-left-radius: 10px;
+	--border-bottom-left-radius: 10px;
+}
+
+section > calendar-day:last-of-type{
+	--bottom-right-radius: 10px;
+	--border-bottom-right-radius: 10px;
+}

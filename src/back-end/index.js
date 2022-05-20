@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const session = require("express-session");
 const mongoose = require("mongoose");
 const constants = require(`${__dirname}/constants.js`)
 const deleteUser = require(`${__dirname}/deleteFiles/deleteUser.js`);
@@ -23,9 +24,19 @@ app.use((req, res, next) => {
     }
     next();
 });
+app.use(session({
+    secret: constants.sessionSecret,
+    saveUninitialized: false,
+    cookie: constants.sessionCookieObject,
+    resave: false,
+    name: "sessionAuth"
+}));
 
 /* Connect to the databse once in our startup code */
-mongoose.connect(process.env.DB, {useUnifiedTopology: true, useNewUrlParser: true});
+mongoose.connect(process.env.DB, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true
+});
 mongoose.set("useCreateIndex", true);
 
 /* Listen for connection on port 2827 */
@@ -33,49 +44,62 @@ app.listen("2827", () => {
 	console.log("server has started listening to port 2827");
 });
 
-/* Defines the /createUser route for creating users */
-app.post("/createUser", express.json({type: "*/*"}), (req, res) =>{
-	createUser.createUser(req.body.email, req.body.pwd, (user) => {
+/* Defines the route for authenticating a user */
+app.post("/auth", express.json({ type: "*/*" }), (req, res) => {
+    security.authenticate(req.body, (success) => {
+        req.session.authed = success;
+        if (req.session.authed) {
+            req.session.email = req.body.email;
+            req.session.key = security.passHash(security.encrypt(req.body.pwd, constants.sessionSecret));
+            res.send(JSON.stringify({ error: null }));
+        } else {
+            res.send(JSON.stringify({ error: "failed authentication" }));
+        }
+    })
+});
+
+/* Defines the /user route for creating users */
+app.post("/user", express.json({ type: "*/*" }), (req, res) => {
+    let passHash = security.passHash(req.body.pwd);
+    let key = security.passHash(security.encrypt(passHash, constants.sessionSecret));
+	createUser.createUser(req.body.email, passHash, key, (user) => {
 		res.send(user);
 	});
 });
 
-/* Defines the /updateUser route for updating user information */
-app.post("/updateUser", express.json({type: "*/*"}), (req, res) =>{
-	security.authenticate(req.body, (success) => {
-		if (success) {
-			updateUser.updateUser(req.body, (user) => {
-				res.send(user);
-			});
-		} else {
-			res.send(JSON.stringify({error: "failed authentication"}));
-		}
-	});
+/* Defines the /user route for querying user info */
+app.get("/user", express.json({ type: "*/*" }), (req, res) => {
+    if (req.session.authed) {
+        readUser.readUser(req.session.email, req.session.key, (user) => {
+            res.send(user);
+        });
+    } else {
+        res.send(JSON.stringify({ error: "failed authentication" }));
+    }
 });
 
-/* Defines the /readUser route for querying user info */
-app.post("/readUser", express.json({type: "*/*"}), (req, res) => {
-	security.authenticate(req.body, (success) => {
-		if (success) {
-			readUser.readUser(req.body, (user) => {
-				console.log(user);
-				res.send(user);
-			});
-		} else {
-			res.send(JSON.stringify({error: "failed authentication"}));
-		}
-	});
+/* Defines the /user route for updating user information */
+app.put("/user", express.json({ type: "*/*" }), (req, res) => {
+    if (req.session.authed) {
+        updateUser.updateUser(req.session.email, req.session.key, req.body, (user) => {
+            req.session.email = user.email;
+            res.send(user);
+        });
+    } else {
+        res.send(JSON.stringify({ error: "failed authentication" }));
+    }
 });
 
-/* Defines the /deleteUser route for deleting a user */
-app.post("/deleteUser", express.json({type: "*/*"}), (req, res) => {
-	security.authenticate(req.body, (success) => {
-		if (success) {
-			deleteUser.deleteUser(req.body, (user) => {
-				res.send(user);
-			});
-		} else {
-			res.send(JSON.stringify({error: "failed authentication"}));
-		}
-	});
+/* Defines the /user route for deleting a user */
+app.delete("/user", express.json({ type: "*/*" }), (req, res) => {
+    if (req.session.authed) {
+        deleteUser.deleteUser(req.session.email, (user) => {
+            req.session.authed = false;
+            delete req.session.email;
+            delete req.session.key;
+            res.send(user);
+        });
+    } else {
+        res.send(JSON.stringify({ error: "failed authentication" }));
+    }
 });

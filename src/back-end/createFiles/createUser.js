@@ -1,12 +1,12 @@
 require("dotenv").config();
-const security = require(__dirname + "/../security/securityFunctions.js");
-const schema = require(__dirname + "/../schema.js");
+const security = require(`${__dirname}/../security/securityFunctions.js`);
+const schema = require(`${__dirname}/../schema.js`);
 
 /**
  * Makes and returns a randomly generated id of length 30.
  * @return Returns the randome generated id of length 30.
  */
- function makeid () {
+const makeid = () => {
 	let length = 30;
     let result = [];
     let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -21,10 +21,11 @@ const schema = require(__dirname + "/../schema.js");
  * Creates a user in the remote db.
  *
  * @param {String} email The email of the new user.
- * @param {String} pwd The pwd of the new user.
+ * @param {String} pwdHash The hash of the user's password.
+ * @param {String} key The encryption key for this user.
  * @callback (error) Sends an error if there is one.
  */
-function createUser (email, pwd, callback) {
+const createUser = (email, pwdHash, key, callback) => {
 	schema.User.findOne({
 		email: email
 	}, (error, user) => {
@@ -33,7 +34,7 @@ function createUser (email, pwd, callback) {
 		} else if (user === null) {
 			const newUser = new schema.User({
 				email: email,
-				pwd: security.passHash(pwd),
+				pwd: pwdHash,
 				theme: "lightmode",
 				index: {
 					objectType: "index",
@@ -53,7 +54,7 @@ function createUser (email, pwd, callback) {
 					{
 						id: makeid(),
 						objectType: "signifier",
-						meaning: security.encrypt("general", pwd),
+						meaning: security.encrypt("general", key),
 						symbol: "&#x1F7E0;"
 					}
 				]
@@ -68,7 +69,7 @@ function createUser (email, pwd, callback) {
 				}
 			});
 		} else {
-			callback({error: "This email already has an account!"});
+			callback({ error: "This email already has an account!" });
 		}
 	});
 }

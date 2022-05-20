@@ -83,7 +83,6 @@ export function deleteFutureLogPouch (db, log, parent, callback) {
 			return db.put({_id: "0000",
 				_rev: user._rev,
 				email: user.email,
-				pwd: user.pwd,
 				theme: user.theme,
 				index: newIndex,
 				dailyLogs: newDailyLogs,

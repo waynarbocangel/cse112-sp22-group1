@@ -16,13 +16,14 @@ import { api, origin } from "../../constants.js";
 			try {
 				console.log("this is the user now", doc);
 				console.log("about to fetch");
-				fetch(`${api}/updateUser`, {
+				fetch(`${api}/user`, {
+                    credentials: "same-origin",
 					headers: {
 						"content-type": "application/json; charset=UTF-8",
 						"Origin": origin
 					},
 					body: JSON.stringify(doc),
-					method: "POST"
+					method: "PUT"
 				}).then((data) => data.json()).then((userData) => {
 					console.log("fetch succesful");
 					console.log(userData);

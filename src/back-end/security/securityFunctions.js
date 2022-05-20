@@ -4,10 +4,10 @@
  */
 require("dotenv").config();
 const CryptoJS = require("crypto-js");
-const schema = require(__dirname + "/../schema.js");
+const schema = require(`${__dirname}/../schema.js`);
 
-// Matching key for hashing and encrypting
-let key = process.env.HASHKEY;
+/* Matching key for hashing and encrypting */
+const KEY = process.env.HASHKEY;
 
 /**
  * Hashes the password passed in and then returns it.
@@ -15,12 +15,11 @@ let key = process.env.HASHKEY;
  * @param {String} password The password to hash.
  * @return Returns the hashed password.
  */
-function passHash (password) {
-    let hashed = CryptoJS.HmacSHA256(password, key);
+const passHash = (password) => {
+    let hashed = CryptoJS.HmacSHA256(password, KEY);
     hashed = hashed.toString();
     return hashed;
 }
-
 
 /**
  * Encrypts the message using the password as key and then returns the encrypted message.
@@ -29,7 +28,7 @@ function passHash (password) {
  * @param {String} password The password to user as a key.
  * @return The encrypted message.
  */
-function encrypt (message, password) {
+const encrypt = (message, password) => {
     let encrypted = CryptoJS.AES.encrypt(message, password).toString();
     return encrypted;
 }
@@ -41,7 +40,7 @@ function encrypt (message, password) {
  * @param {String} password The password to user as key.
  * @return Returns the decrypted data.
  */
- function decrypt (data, password) {
+const decrypt = (data, password) => {
     let decrypted = CryptoJS.AES.decrypt(data, password);
     let originalText = decrypted.toString(CryptoJS.enc.Utf8);
     return originalText;
@@ -53,8 +52,8 @@ function encrypt (message, password) {
  * @param {Object} userData The object that contains the email and password to authenticate.
  * @callback (response) Sends either true or false based on whether the email and password were authenticated or not.
  */
-function authenticate (userData, callback) {
-    schema.User.findOne({email: userData.email}, (error, user) => {
+const authenticate = (userData, callback) => {
+    schema.User.findOne({ email: userData.email }, (error, user) => {
         if (error || user === null) {
             callback(false);
         } else {
@@ -64,7 +63,7 @@ function authenticate (userData, callback) {
     })
 }
 
-// For exporting
+/* For exporting */
 module.exports = {
     passHash: passHash,
     encrypt: encrypt,
