@@ -9,9 +9,9 @@
     justify-content: space-between;
     padding: 0 0 1rem;
     min-width: 12vw;
-    background-color: #F9F7F3FF;
+    background-color: var(--card-backgound);
     
-    box-shadow: 0 0 10px grey;
+    box-shadow: 0 0 10px var(--card-shadow);
 }
 #titleWrapper{
     padding-left: 1.5vw;
@@ -40,8 +40,8 @@ button{
     border-radius: 6px;
 }
 #openButton{
-    background-color: #33B5E5FF;
+    background-color: var(--primary-button-color);
 }
 #peakButton{
-    background-color:#FFBB33FF;
+    background-color:var(--secondary-button-color);
 }
