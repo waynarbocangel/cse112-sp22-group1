@@ -43,7 +43,10 @@ export class ItemCard extends HTMLElement {
         // Set card title
         this.setTitle(title);
         // Set card dates
-        this.setDate(from, to);
+        // eslint-disable-next-line no-empty
+        if (from === null) {} else {
+            this.setDate(from, to);
+        }
         // Set card id
         this.ID = ID;
         this.bindOpenButton();
@@ -99,14 +102,14 @@ export class ItemCard extends HTMLElement {
     }
 
     bindOpenButton () {
-        this.shadowRoot.getElementById("openButton").addEventListener(() => {
+        this.shadowRoot.getElementById("openButton").addEventListener("click", () => {
             let pressed = this.shadowRoot.getElementById("title").innerText + " open button was pressed!";
             console.log(pressed);
         })
     }
 
     bindPeakButton () {
-        this.shadowRoot.getElementById("peakButton").addEventListener(() => {
+        this.shadowRoot.getElementById("peakButton").addEventListener("click", () => {
             let pressed = this.shadowRoot.getElementById("title").innerText + " peak button was pressed!";
             console.log(pressed);
         })
