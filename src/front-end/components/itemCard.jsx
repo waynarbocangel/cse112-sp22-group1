@@ -87,16 +87,16 @@ export class ItemCard extends HTMLElement {
         }
         switch (to % 10) {
             case 1:
-                dateString = dateString + from.toString() + "st";
+                dateString = dateString + to.toString() + "st";
             break;
             case 2:
-                dateString = dateString + from.toString() + "nd";
+                dateString = dateString + to.toString() + "nd";
             break;
             case 3:
-                dateString = dateString + from.toString() + "rd";
+                dateString = dateString + to.toString() + "rd";
                 break;
             default:
-                dateString = dateString + from.toString() + "th";
+                dateString = dateString + to.toString() + "th";
         }
         date.innerText = dateString;
     }
