@@ -220,7 +220,7 @@ const userSchema = {
 	events: [
 
         /**
-         * @typedef {Object} Event
+         * @typedef {Object} JournalEvent
          * @property {String} id The event's id
          * @property {String} objectType The type of object
          * @property {String} title title of the event
