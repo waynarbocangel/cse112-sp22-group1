@@ -10,13 +10,20 @@ import { createElement, createFragment } from "../jsxEngine.js";
 let calendarTemplate = <template>
 	<link type="text/css" rel="stylesheet" href="calendar.css" />
 	<header>
-		<h1>Sunday</h1>
-		<h1>Monday</h1>
-		<h1>Tuesday</h1>
-		<h1>Wednesday</h1>
-		<h1>Thursday</h1>
-		<h1>Friday</h1>
-		<h1>Saturday</h1>
+		<h1 class="days">Sunday</h1>
+		<h1 class="days">Monday</h1>
+		<h1 class="days">Tuesday</h1>
+		<h1 class="days">Wednesday</h1>
+		<h1 class="days">Thursday</h1>
+		<h1 class="days">Friday</h1>
+		<h1 class="days">Saturday</h1>
+		<h1 class="mobileDays">S</h1>
+		<h1 class="mobileDays">M</h1>
+		<h1 class="mobileDays">T</h1>
+		<h1 class="mobileDays">W</h1>
+		<h1 class="mobileDays">T</h1>
+		<h1 class="mobileDays">F</h1>
+		<h1 class="mobileDays">S</h1>
 	</header>
 	<section id="days"></section>
 </template>;
@@ -35,6 +42,7 @@ export class Calendar extends HTMLElement {
 		this.attachShadow({ mode: "open" });
 		this.shadowRoot.appendChild(calendarTemplate.content.cloneNode(true));
 		this.days = this.shadowRoot.getElementById("days");
+		this.lastSelected = null;
 		let firstDay = new Date(month.getFullYear(), month.getMonth(), 1);
 		let lastDay = new Date(month.getFullYear(), month.getMonth() + 1, 0);
 		let totalLines = Math.ceil((lastDay.getDate() - firstDay.getDate() + firstDay.getDay()) / 7);
@@ -59,15 +67,25 @@ export class Calendar extends HTMLElement {
 					let inRange = (currentDate.getDate() >= start || currentDate.getDate() <= end);
 					let currentLog = inRange ? logs[k + (i * 7)] : null;
 					console.log(inRange);
-					let newBlock = new CalendarDay(currentDate, eventsMap.get(currentDate.getDate()), currentLog, inRange);
+					let newBlock = new CalendarDay(this, currentDate, eventsMap.get(currentDate.getDate()), currentLog, inRange);
 					this.days.appendChild(newBlock);
 					shouldMove = true;
 					continue;
 				}
-				this.days.appendChild(new CalendarDay(null, undefined, null, false));
+				this.days.appendChild(new CalendarDay(this, null, undefined, null, false));
 			}
 		}
 	}
+
+	/**
+	 * Selects a new day in mobile view of calendar
+	 * @param {CalendarDay} dayToSelect 
+	 */
+	newDaySelected = (dayToSelect) => {
+		this.lastSelected.deselectDay();
+		this.lastSelected = dayToSelect;
+	}
+
 }
 
 window.customElements.define("log-calendar", Calendar);
