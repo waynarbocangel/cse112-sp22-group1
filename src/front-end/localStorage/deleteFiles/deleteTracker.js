@@ -31,7 +31,7 @@ export function deleteTrackerPouch (db, id, callback) {
 
 			doc.trackers = newTrackerList;
 
-			return db.put({
+			let newUser = {
 				_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
@@ -48,10 +48,10 @@ export function deleteTrackerPouch (db, id, callback) {
 				tasks: doc.tasks,
 				events: doc.events,
 				signifiers: doc.signifiers
-			}, (error, res) => {
-				if (error) {
-					callback(error);
-				} else if (res.ok) {
+			};
+
+			return db.put(newUser).then((res) => {
+				if (res.ok) {
 					callback(null);
 				}
 			});

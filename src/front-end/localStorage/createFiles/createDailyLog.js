@@ -1,4 +1,5 @@
 import {makeid} from "./makeId.js";
+import * as localStorage from "../userOperations.js";
 let dailyObject = {};
 
 /**
@@ -7,66 +8,61 @@ let dailyObject = {};
  * @param {database} db The local pouch database.
  * @param {String} parent The id of the parent of the new dailyLog.
  * @param {Array} content Array of textBlocks that should appear in dailyLog.
+ * @param {Array} collections Array of collections that should appead in dailyLog
  * @param {Array} trackers Array of trackers that should appear in dailyLog.
  * @param {Date} date The date of the dailyLog.
  * @param {doubleParameterCallback} callback Eihter sends the newly created dailyLog or an error if there is one to the callback.
  */
-export function createDailyLogPouch (db, parent, content, trackers, date, callback) {
-	db.get("0000", (err, doc) => {
+export function createDailyLogPouch (db, parent, content, collections, trackers, date, callback) {
+	localStorage.readUser((err, user) => {
+		/* istanbul ignore next */
 		if (err) {
+			/* istanbul ignore next */
 			callback(err, null);
 		} else {
-			let id = makeid();
-			let arrays = [];
-			Array.prototype.push.apply(arrays, doc.dailyLogs);
-			Array.prototype.push.apply(arrays, doc.monthlyLogs);
-			Array.prototype.push.apply(arrays, doc.futureLogs);
-			Array.prototype.push.apply(arrays, doc.collections);
-			Array.prototype.push.apply(arrays, doc.trackers);
-			Array.prototype.push.apply(arrays, doc.textBlocks);
-			Array.prototype.push.apply(arrays, doc.tasks);
-			Array.prototype.push.apply(arrays, doc.events);
-			Array.prototype.push.apply(arrays, doc.signifiers);
-			Array.prototype.push.apply(arrays, doc.imageBlocks);
-			Array.prototype.push.apply(arrays, doc.audioBlocks);
-
-			while (arrays.filter((element) => element.id === id).length > 0) {
-				id = makeid();
-			}
+			let id = makeid(user);
+			
 			dailyObject = {
 				id: id,
 				objectType: "dailyLog",
 				date: date,
 				parent: parent,
 				content: content,
+				collections: collections,
 				trackers: trackers
 			};
 
-			doc.dailyLogs.push(dailyObject);
-			return db.put({
+			user.dailyLogs.push(dailyObject);
+			let newUser = {
 				_id: "0000",
-				_rev: doc._rev,
-				email: doc.email,
-				theme: doc.theme,
-				index: doc.index,
-				dailyLogs: doc.dailyLogs,
-				monthlyLogs: doc.monthlyLogs,
-				futureLogs: doc.futureLogs,
-				collections: doc.collections,
-				trackers: doc.trackers,
-				imageBlocks: doc.imageBlocks,
-				audioBlocks: doc.audioBlocks,
-				textBlocks: doc.textBlocks,
-				tasks: doc.tasks,
-				events: doc.events,
-				signifiers: doc.signifiers
+				_rev: user._rev,
+				email: user.email,
+				theme: user.theme,
+				index: user.index,
+				dailyLogs: user.dailyLogs,
+				monthlyLogs: user.monthlyLogs,
+				futureLogs: user.futureLogs,
+				collections: user.collections,
+				trackers: user.trackers,
+				imageBlocks: user.imageBlocks,
+				audioBlocks: user.audioBlocks,
+				textBlocks: user.textBlocks,
+				tasks: user.tasks,
+				events: user.events,
+				signifiers: user.signifiers
+			};
+			return db.put(newUser).then((res) => {
+				if (res.ok) {
+					callback(null, dailyObject);
+					localStorage.setUser(newUser);
+				}
+			/* istanbul ignore next */
+			}).catch((err) => {
+				/* istanbul ignore next */
+				callback(err, null);
+				/* istanbul ignore next */
+				return;
 			});
 		}
-	}).then((res) => {
-		if (res) {
-			callback(null, dailyObject);
-		}
-	}).catch((error) => {
-		callback(error, null);
 	});
 }

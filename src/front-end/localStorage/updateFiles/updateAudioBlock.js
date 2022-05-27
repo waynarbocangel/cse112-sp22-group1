@@ -1,3 +1,4 @@
+import { setUser } from "../userOperations";
 
 /**
  * Finds and update the audioBlock passed in.
@@ -14,8 +15,7 @@
 
 			let audioBlockArr = doc.audioBlocks.filter((element) => element.id !== audioBlock.id);
 			audioBlockArr.push(audioBlock);
-
-			return db.put({
+			let newUser = {
 				_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
@@ -32,11 +32,10 @@
 				tasks: doc.tasks,
 				events: doc.events,
 				signifiers: doc.signifiers
-			}, (error, res) => {
-				if (error) {
-					console.log(error);
-					callback(error);
-				} else {
+			};
+			db.put(newUser).then((res) => {
+				if (res) {
+					setUser(newUser);
 					callback(res);
 				}
 			});

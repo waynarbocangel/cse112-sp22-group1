@@ -64,6 +64,10 @@ app.post("/user", express.json({ type: "*/*" }), (req, res) => {
     let passHash = security.passHash(req.body.pwd);
     let key = security.passHash(security.encrypt(passHash, constants.sessionSecret));
 	createUser.createUser(req.body.email, passHash, key, (user) => {
+        req.session.authed = true;
+        req.session.email = req.body.email;
+        req.session.key = key;
+        console.log("Create Called");
 		res.send(user);
 	});
 });
@@ -82,9 +86,14 @@ app.get("/user", express.json({ type: "*/*" }), (req, res) => {
 /* Defines the /user route for updating user information */
 app.put("/user", express.json({ type: "*/*" }), (req, res) => {
     if (req.session.authed) {
+        console.log("Update Called");
         updateUser.updateUser(req.session.email, req.session.key, req.body, (user) => {
-            req.session.email = user.email;
-            res.send(user);
+            if (user) {
+                req.session.email = user.email;
+                res.send(user);
+            } else {
+                res.send(JSON.stringify({ error: "couldn't update" }));
+            }   
         });
     } else {
         res.send(JSON.stringify({ error: "failed authentication" }));
@@ -93,11 +102,13 @@ app.put("/user", express.json({ type: "*/*" }), (req, res) => {
 
 /* Defines the /user route for deleting a user */
 app.delete("/user", express.json({ type: "*/*" }), (req, res) => {
+    console.log("Started Deleting");
     if (req.session.authed) {
         deleteUser.deleteUser(req.session.email, (user) => {
             req.session.authed = false;
             delete req.session.email;
             delete req.session.key;
+            console.log("Delete Called");
             res.send(user);
         });
     } else {

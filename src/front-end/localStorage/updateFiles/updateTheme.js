@@ -1,3 +1,4 @@
+import { setUser } from "../userOperations";
 
 /**
  * Finds and update the theme passed in.
@@ -12,8 +13,8 @@
 		if (err) {
 			callback(err);
 		} else {
-
-			return db.put({_id: "0000",
+			let newUser = {
+				_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
 				theme: theme,
@@ -28,11 +29,11 @@
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: doc.events,
-				signifiers: doc.signifiers}, (error, res) => {
-				if (error) {
-					callback(error);
-				} else {
-					console.log(res);
+				signifiers: doc.signifiers
+			};
+			db.put(newUser).then((res) => {
+				if (res) {
+					setUser(newUser);
 					callback(null);
 				}
 			});

@@ -1,3 +1,4 @@
+import { setUser } from "../userOperations";
 
 /**
  * Finds and update the monthlyLog passed in.
@@ -14,9 +15,8 @@
 		} else {
 			let monthlyLogArr = doc.monthlyLogs.filter((element) => element.id !== log.id);
 			monthlyLogArr.push(log);
-
-			// Added return here so if updateMonthlyLog breaks maybe its because of this
-			return db.put({_id: "0000",
+			let newUser = {
+				_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
 				theme: doc.theme,
@@ -31,11 +31,12 @@
 				textBlocks: doc.textBlocks,
 				events: doc.events,
 				tasks: doc.tasks,
-				signifiers: doc.signifiers}, (error, res) => {
-				if (error) {
-					callback(error, null);
-				} else {
-					console.log(res);
+				signifiers: doc.signifiers
+			};
+			// Added return here so if updateMonthlyLog breaks maybe its because of this
+			db.put(newUser).then((res) => {
+				if (res) {
+					setUser(newUser);
 					callback(null, log);
 				}
 			});

@@ -1,3 +1,5 @@
+import { setUser } from "../userOperations";
+
 /**
  * Finds and update the task passed in.
  * @memberof updateFunctions
@@ -14,30 +16,29 @@
 			let taskArr = doc.tasks.filter((element) => element.id !== task.id);
 			taskArr.push(task);
 			console.log("taskArr is, ", taskArr);
-
-			return db.put({
-						_id: "0000",
-						_rev: doc._rev,
-						email: doc.email,
-						theme: doc.theme,
-						index: doc.index,
-						dailyLogs: doc.dailyLogs,
-						monthlyLogs: doc.monthlyLogs,
-						futureLogs: doc.futureLogs,
-						trackers: doc.trackers,
-						collections: doc.collections,
-						imageBlocks: doc.imageBlocks,
-						audioBlocks: doc.audioBlocks,
-						textBlocks: doc.textBlocks,
-						tasks: taskArr,
-						events: doc.events,
-						signifiers: doc.signifiers
-					}, (error, res) => {
-						if (error) {
-							callback(error);
-						} else {
-							callback(res);
-						}
+			let newUser = {
+				_id: "0000",
+				_rev: doc._rev,
+				email: doc.email,
+				theme: doc.theme,
+				index: doc.index,
+				dailyLogs: doc.dailyLogs,
+				monthlyLogs: doc.monthlyLogs,
+				futureLogs: doc.futureLogs,
+				trackers: doc.trackers,
+				collections: doc.collections,
+				imageBlocks: doc.imageBlocks,
+				audioBlocks: doc.audioBlocks,
+				textBlocks: doc.textBlocks,
+				tasks: taskArr,
+				events: doc.events,
+				signifiers: doc.signifiers
+			};
+			db.put(newUser).then((res) => {
+				if (res) {
+					setUser(newUser);
+					callback(res);
+				}
 			});
 		}
 	})

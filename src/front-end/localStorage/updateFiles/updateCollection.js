@@ -1,3 +1,5 @@
+import { setUser } from "../userOperations";
+
 /**
  * Finds and update the collection passed in.
  * @memberof updateFunctions
@@ -14,8 +16,7 @@
 			let collectionArr = doc.collections.filter((element) => element.id !== collection.id);
 			collectionArr.push(collection);
 			doc.collections = collectionArr;
-
-			return db.put({
+			let newUser = {
 				_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
@@ -32,10 +33,10 @@
 				tasks: doc.tasks,
 				events: doc.events,
 				signifiers: doc.signifiers
-			}, (error, res) => {
-				if (error) {
-					callback(error);
-				} else if (res) {
+			};
+			db.put(newUser).then((res) => {
+				if (res) {
+					setUser(newUser);
 					callback(null);
 				}
 			});

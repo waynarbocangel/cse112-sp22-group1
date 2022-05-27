@@ -37,7 +37,7 @@ export class TextBlock extends HTMLElement {
 	 * @param {Object} signifier - the editor's current signifier
 	 * @param {singleParameterCallback} callback - callback for the end of the constructor function
 	 */
-	constructor (controller, itemObject, signifier, callback) {
+	constructor (controller, itemObject, signifiers, callback) {
 		super();
 		this.attachShadow({ mode: "open" });
 		this.shadowRoot.appendChild(blockTemplate.content.cloneNode(true));
@@ -68,7 +68,7 @@ export class TextBlock extends HTMLElement {
 		this.timeSetter = false;
 		this.dateSetter = false;
 		this.eventDelete = true;
-		this.signifier = signifier;
+		this.signifiers = signifiers
 		this.signifierIcon = this.shadowRoot.getElementById("signifier");
 		this.signifierIcon.innerHTML = this.signifier.symbol;
 		this.plus = this.shadowRoot.getElementById("plus");
@@ -474,7 +474,7 @@ export class TextBlock extends HTMLElement {
 					}, 150);
 				}
 			} else if (textBlock.textContent !== "") {
-				localStorage.createTextBlock(this.controller.parent.id, this.controller.subParent, this.controller.currentBlockIndex, textBlock.textContent, this.tabLevel, this.kind, null, this.signifier.id, date, true, (err, block) => {
+				localStorage.createTextBlock(this.controller.parent, this.controller.subParent, this.controller.currentBlockIndex, textBlock.textContent, this.tabLevel, this.kind, null, this.signifiers, date, true, (err, block) => {
 					if (err) {
 						console.log(err);
 					} else {

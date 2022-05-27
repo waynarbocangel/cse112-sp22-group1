@@ -1,3 +1,5 @@
+import { setUser } from "../userOperations";
+
 /**
  * Finds and update the event passed in.
  * @memberof updateFunctions
@@ -13,8 +15,8 @@
 		} else {
 			let eventArr = doc.events.filter((element) => element.id !== event.id);
 			eventArr.push(event);
-
-			return db.put({_id: "0000",
+			let newUser = {
+				_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
 				theme: doc.theme,
@@ -29,11 +31,11 @@
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: eventArr,
-				signifiers: doc.signifiers}, (error, res) => {
-				if (error) {
-					console.log(error);
-					callback(error);
-				} else {
+				signifiers: doc.signifiers
+			};
+			db.put(newUser).then((res) => {
+				if (res) {
+					setUser(newUser);
 					callback(res);
 				}
 			});

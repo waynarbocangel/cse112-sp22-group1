@@ -1,3 +1,5 @@
+import { setUser } from "../userOperations";
+
 /**
  * Finds and update the futureLog passed in.
  * @memberof updateFunctions
@@ -13,8 +15,8 @@
 		} else {
 			let futureLogArr = doc.futureLogs.filter((element) => element.id !== log.id);
 			futureLogArr.push(log);
-
-			db.put({_id: "0000",
+			let newUser = {
+				_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
 				theme: doc.theme,
@@ -29,10 +31,11 @@
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: doc.events,
-				signifiers: doc.signifiers}, (error, res) => {
-				if (error) {
-					callback(error);
-				} else {
+				signifiers: doc.signifiers
+			};
+			db.put(newUser).then((res) => {
+				if (res) {
+					setUser(newUser);
 					callback(res);
 				}
 			});

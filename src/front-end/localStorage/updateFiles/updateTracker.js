@@ -1,3 +1,4 @@
+import { setUser } from "../userOperations";
 
 /**
  * Finds and update the tracker passed in.
@@ -14,8 +15,8 @@
 		} else {
 			let trackerArr = doc.trackers.filter((element) => element.id !== tracker.id);
 			trackerArr.push(tracker);
-
-			return db.put({_id: "0000",
+			let newUser = {
+				_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
 				theme: doc.email,
@@ -30,10 +31,11 @@
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: doc.events,
-				signifiers: doc.signifers}, (error, res) => {
-				if (error) {
-					callback(error);
-				} else {
+				signifiers: doc.signifers
+			};
+			db.put(newUser).then((res) => {
+				if (res) {
+					setUser(newUser);
 					callback(res);
 				}
 			});

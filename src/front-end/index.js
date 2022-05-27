@@ -10,6 +10,7 @@ import { PageHeader } from "./components/header.jsx";
 // CSS imports
 /* eslint-disable */
 import "./index.css";
+localStorage.setupStorage();
 /* eslint-enable */
 
 document.querySelector("body").style.display = "none";

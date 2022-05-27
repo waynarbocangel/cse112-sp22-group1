@@ -1,3 +1,5 @@
+import { setUser } from "../userOperations";
+
 /**
  * Finds and update the dailyLog passed in.
  * @memberof updateFunctions
@@ -13,8 +15,8 @@ export function updateDailyLogPouch (db, log, callback) {
 		} else {
 			let dailyLogArr = doc.dailyLogs.filter((element) => element.id !== log.id);
 			dailyLogArr.push(log);
-
-			return db.put({_id: "0000",
+			let newUser = {
+				_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
 				theme: doc.theme,
@@ -29,10 +31,11 @@ export function updateDailyLogPouch (db, log, callback) {
 				textBlocks: doc.textBlocks,
 				events: doc.events,
 				tasks: doc.tasks,
-				signifiers: doc.signifiers}, (error, res) => {
-				if (error) {
-					callback(error);
-				} else {
+				signifiers: doc.signifiers
+			};
+			db.put(newUser).then((res) => {
+				if (res) {
+					setUser(newUser);
 					callback(res);
 				}
 			});

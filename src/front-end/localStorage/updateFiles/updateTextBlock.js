@@ -11,7 +11,7 @@ import * as localStorage from "../userOperations.js";
 function updateBlock (db, textBlockArr, callback) {
 	localStorage.readUser((err, user) => {
 		if (err === null) {
-			return db.put({
+			let newUser = {
 				_id: "0000",
 				_rev: user._rev,
 				email: user.email,
@@ -28,11 +28,13 @@ function updateBlock (db, textBlockArr, callback) {
 				tasks: user.tasks,
 				events: user.events,
 				signifiers: user.signifiers
-			}, (error, res) => {
+			};
+			db.put(newUser, (error, res) => {
 				if (error) {
 					console.log(error);
 					callback(error);
 				} else {
+					localStorage.setUser(newUser);
 					callback(res);
 				}
 			});

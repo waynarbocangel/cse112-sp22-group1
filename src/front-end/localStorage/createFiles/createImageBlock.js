@@ -1,4 +1,5 @@
 import {makeid} from "./makeId.js";
+import * as localStorage from "../userOperations.js";
 let imageBlockObject = {};
 
 /**
@@ -7,31 +8,18 @@ let imageBlockObject = {};
  * @param {database} db The local pouch database.
  * @param {String} parent The id of the parent of the new imageBlock.
  * @param {String} arrangement arrangement of the imageBlock.
- * @param {Buffer} date image of the imageBlock stored as a buffer.
+ * @param {String} data image of the imageBlock stored as a buffer.
  * @param {doubleParameterCallback} callback Eihter sends the newly created imageBlock or an error if there is one to the callback.
  */
 export function createImageBlockPouch (db, parent, arrangement, data, callback) {
-	db.get("0000", (err, doc) => {
+	localStorage.readUser((err, user) => {
+		/* istanbul ignore next */
 		if (err) {
+			/* istanbul ignore next */
 			callback(err, null);
 		} else {
-			let id = makeid();
-			let arrays = [];
-			Array.prototype.push.apply(arrays, doc.dailyLogs);
-			Array.prototype.push.apply(arrays, doc.monthlyLogs);
-			Array.prototype.push.apply(arrays, doc.futureLogs);
-			Array.prototype.push.apply(arrays, doc.collections);
-			Array.prototype.push.apply(arrays, doc.trackers);
-			Array.prototype.push.apply(arrays, doc.textBlocks);
-			Array.prototype.push.apply(arrays, doc.tasks);
-			Array.prototype.push.apply(arrays, doc.events);
-			Array.prototype.push.apply(arrays, doc.signifiers);
-			Array.prototype.push.apply(arrays, doc.imageBlocks);
-			Array.prototype.push.apply(arrays, doc.audioBlocks);
+			let id = makeid(user);
 
-			while (arrays.filter((element) => element.id === id).length > 0) {
-				id = makeid();
-			}
 			imageBlockObject = {
 				id: id,
 				objectType: "imageBlock",
@@ -40,38 +28,39 @@ export function createImageBlockPouch (db, parent, arrangement, data, callback) 
 				data: data
 			};
 
-			let newImageBlocks = []
-			Array.prototype.push.apply(newImageBlocks, doc.imageBlocks);
+			user.imageBlocks.push(imageBlockObject);
 
-			newImageBlocks.push(imageBlockObject);
-
-			return db.put({
+			let newUser = {
 				_id: "0000",
-				_rev: doc._rev,
-				email: doc.email,
-				theme: doc.theme,
-				index: doc.index,
-				dailyLogs: doc.dailyLogs,
-				monthlyLogs: doc.monthlyLogs,
-				futureLogs: doc.futureLogs,
-				collections: doc.collections,
-				trackers: doc.trackers,
-				imageBlocks: newImageBlocks,
-				audioBlocks: doc.audioBlocks,
-				textBlocks: doc.textBlocks,
-				tasks: doc.tasks,
-				events: doc.events,
-				signifiers: doc.signifiers
-			}).then((res) => {
-				console.log("created imageBlock successfull");
-				console.log(res);
+				_rev: user._rev,
+				email: user.email,
+				theme: user.theme,
+				index: user.index,
+				dailyLogs: user.dailyLogs,
+				monthlyLogs: user.monthlyLogs,
+				futureLogs: user.futureLogs,
+				collections: user.collections,
+				trackers: user.trackers,
+				imageBlocks: user.imageBlocks,
+				audioBlocks: user.audioBlocks,
+				textBlocks: user.textBlocks,
+				tasks: user.tasks,
+				events: user.events,
+				signifiers: user.signifiers
+			};
+
+			return db.put(newUser).then((res) => {
+				/* istanbul ignore next */
+				if (res.ok) {
+					localStorage.setUser(newUser);
+					callback(null, imageBlockObject);
+				}
+				/* istanbul ignore next */
 			}).catch((error) => {
-				console.log(error);
+				/* istanbul ignore next */
 				callback(error, null);
+				return;
 			});
 		}
-	}).then((res) => {
-		console.log(res);
-		callback(null, imageBlockObject);
 	});
 }

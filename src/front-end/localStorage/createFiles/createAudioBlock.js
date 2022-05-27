@@ -1,5 +1,5 @@
 import {makeid} from "./makeId.js";
-let audioBlockObject = {};
+import * as localStorage from "../userOperations.js";
 
 /**
  * Creates and stores a new audioBlock created from the given parameters.
@@ -11,27 +11,16 @@ let audioBlockObject = {};
  * @param {doubleParameterCallback} callback Eihter sends the newly created audioBlock or an error if there is one to the callback.
  */
 export function createAudioBlockPouch (db, parent, arrangement, data, callback) {
-	db.get("0000", (err, doc) => {
+	let audioBlockObject = {};
+	/* istanbul ignore next */
+	localStorage.readUser((err, user) => {
+		/* istanbul ignore next */
 		if (err) {
+			/* istanbul ignore next */
 			callback(err, null);
+			/* istanbul ignore next */
 		} else {
-			let id = makeid();
-			let arrays = [];
-			Array.prototype.push.apply(arrays, doc.dailyLogs);
-			Array.prototype.push.apply(arrays, doc.monthlyLogs);
-			Array.prototype.push.apply(arrays, doc.futureLogs);
-			Array.prototype.push.apply(arrays, doc.collections);
-			Array.prototype.push.apply(arrays, doc.trackers);
-			Array.prototype.push.apply(arrays, doc.textBlocks);
-			Array.prototype.push.apply(arrays, doc.tasks);
-			Array.prototype.push.apply(arrays, doc.events);
-			Array.prototype.push.apply(arrays, doc.signifiers);
-			Array.prototype.push.apply(arrays, doc.imageBlocks);
-			Array.prototype.push.apply(arrays, doc.audioBlocks);
-
-			while (arrays.filter((element) => element.id === id).length > 0) {
-				id = makeid();
-			}
+			let id = makeid(user);
 			audioBlockObject = {
 				id: id,
 				objectType: "audioBlock",
@@ -40,36 +29,36 @@ export function createAudioBlockPouch (db, parent, arrangement, data, callback) 
 				data: data
 			};
 
-			let newAudioBlocks = []
-			Array.prototype.push.apply(newAudioBlocks, doc.audioBlocks);
-
-			newAudioBlocks.push(audioBlockObject);
-
-			return db.put({_id: "0000",
-				_rev: doc._rev,
-				email: doc.email,
-				theme: doc.theme,
-				index: doc.index,
-				dailyLogs: doc.dailyLogs,
-				monthlyLogs: doc.monthlyLogs,
-				futureLogs: doc.futureLogs,
-				collections: doc.collections,
-				trackers: doc.trackers,
-				imageBlocks: doc.imageBlocks,
-				audioBlocks: newAudioBlocks,
-				textBlocks: doc.textBlocks,
-				tasks: doc.tasks,
-				events: doc.events,
-				signifiers: doc.signifiers}).then((res) => {
-				console.log(res);
-			}).
-catch((error) => {
-				console.log(error);
+			user.audioBlocks.push(audioBlockObject);
+			let newUser = {
+				_id: "0000",
+				_rev: user._rev,
+				email: user.email,
+				theme: user.theme,
+				index: user.index,
+				dailyLogs: user.dailyLogs,
+				monthlyLogs: user.monthlyLogs,
+				futureLogs: user.futureLogs,
+				collections: user.collections,
+				trackers: user.trackers,
+				imageBlocks: user.imageBlocks,
+				audioBlocks: user.audioBlocks,
+				textBlocks: user.textBlocks,
+				tasks: user.tasks,
+				events: user.events,
+				signifiers: user.signifiers
+			};
+			return db.put(newUser).then((res) => {
+				/* istanbul ignore next */
+				if (res.ok) {
+					localStorage.setUser(newUser);
+					callback(null, audioBlockObject);
+				}
+				/* istanbul ignore next */
+			}).catch((error) => {
+				/* istanbul ignore next */
 				callback(error, null);
 			});
 		}
-	}).then((res) => {
-		console.log(res);
-		callback(null, audioBlockObject);
 	});
 }

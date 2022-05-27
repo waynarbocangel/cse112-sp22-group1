@@ -11,29 +11,27 @@ export function deleteSignifierPouch (db, id, callback) {
 			callback(err);
 		} else {
 			const newSignifiers = doc.signifiers.filter((signifier) => signifier.id !== id);
+			let newUser = {_id: "0000",
+			_rev: doc._rev,
+			email: doc.email,
+			theme: doc.theme,
+			index: doc.index,
+			dailyLogs: doc.dailyLogs,
+			monthlyLogs: doc.monthlyLogs,
+			futureLogs: doc.futureLogs,
+			collections: doc.collections,
+			trackers: doc.trackers,
+			imageBlocks: doc.imageBlocks,
+			audioBlocks: doc.audioBlocks,
+			textBlocks: doc.textBlocks,
+			tasks: doc.tasks,
+			events: doc.events,
+			signifiers: doc.signifiers};
 
 			doc.signifiers = newSignifiers;
 
-			return db.put({_id: "0000",
-				_rev: doc._rev,
-				email: doc.email,
-				theme: doc.theme,
-				index: doc.index,
-				dailyLogs: doc.dailyLogs,
-				monthlyLogs: doc.monthlyLogs,
-				futureLogs: doc.futureLogs,
-				collections: doc.collections,
-				trackers: doc.trackers,
-				imageBlocks: doc.imageBlocks,
-				audioBlocks: doc.audioBlocks,
-				textBlocks: doc.textBlocks,
-				tasks: doc.tasks,
-				events: doc.events,
-				signifiers: doc.signifiers}, (error, res) => {
-				if (error) {
-					callback(error);
-				} else {
-					console.log(res);
+			return db.put(newUser).then((res) => {
+				if (res.ok) {
 					callback(null);
 				}
 			});

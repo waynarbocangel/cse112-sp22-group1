@@ -1,43 +1,36 @@
 import * as localStorage from "../userOperations.js";
 import {makeid} from "./makeId.js";
-let futureObject = {};
 
 /**
- * Recursive funcion that adds monthlyLogs between start and end dates to futureLog
+ * Recursive function that adds monthlyLogs between start and end dates to futureLog
  * @static
  * @memberof createFunctions
- * @param {Date} start The starting date of the futureLog.
- * @param {Date} endDate The ending date of the futureLog.
- * @param {Object} futureLog The futureLog to add the monthlyLogs to.
+ * @param {Date} startDate The starting date of the futureLog.
+ * @param {Date} end The ending date of the futureLog.
+ * @param {FutureLog} futureLog The futureLog to add the monthlyLogs to.
  * @param {singleParameterCallback} callback Either sends an array of the monthlyLogs added or sends an error, if ther is one, to the callback.
  */
-function addMonth (start, endDate, futureLog, callback) {
-	let startDate = start;
-	let date = startDate.getTime() === futureObject.startDate.getTime() ? new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getUTCDate()) : new Date(startDate.getFullYear(), startDate.getMonth(), 1);
-	/* eslint-disable */
-	let finalDate = (startDate.getMonth() === endDate.getMonth() && startDate.getFullYear() === endDate.getFullYear()) ? endDate : new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
-	/* eslint-disable */
-	localStorage.createMonthlyLog(futureLog.id, [], [], date, finalDate, false, (err, month) => {
+function addMonths (startDate, end, futureLog, callback) {
+	let endDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
+	let nextMonth = new Date(endDate);
+	if (startDate > end) {
+		callback([]);
+		return;
+	} else if (nextMonth.setMonth(nextMonth.getMonth() + 1, 1) > end){
+		endDate = end;
+	}
+	localStorage.createMonthlyLog(futureLog.id, [], [], [], [], startDate, endDate, false, (err, month) => {
+		/* istanbul ignore next */
 		if (err === null) {
-			if (startDate > endDate) {
-				callback([]);
-			} else {
-				if (startDate.getDate() !== new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0).getDate()) {
-					startDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0);
-				}
-				let newStartDate = new Date(startDate);
-				newStartDate.setMonth(startDate.getMonth() + 1);
-				if (startDate.getDate() !== newStartDate.getDate()) {
-					newStartDate.setDate(0);
-				} else if (newStartDate.getDate() !== new Date(newStartDate.getFullYear(), newStartDate.getMonth() + 1, 0).getDate()) {
-					newStartDate = new Date(newStartDate.getFullYear(), newStartDate.getMonth() + 1, 0);
-				}
-				addMonth(newStartDate, endDate, futureLog, (monthsIDArray) => {
-					monthsIDArray.splice(0, 0, {id: month.id, content: [], monthlyLog: month.id});
-					callback(monthsIDArray);
-				});
-			}
+			let newStart = new Date(startDate.getTime());
+			newStart.setDate(1);
+			newStart.setMonth(newStart.getMonth() + 1);
+			addMonths(newStart, end, futureLog, (monthsIDArray) => {
+				monthsIDArray.push({id: month.id, date: month.startDate});
+				callback(monthsIDArray);
+			});
 		} else {
+			/* istanbul ignore next */
 			console.log(err);
 		}
 	});
@@ -49,99 +42,107 @@ function addMonth (start, endDate, futureLog, callback) {
  * @param {database} db The local pouch database.
  * @param {Date} startDate The start date of the futureLog.
  * @param {Date} endDate The end date of the futureLog.
- * @param {Array} months The id's of the months that are included by the futureLog.
- * @param {Array} content The id's of the textBlocks included in the futureLog.
- * @param {Array} trackers The id's of the trackers included by the futureLog.
+ * @param {Array} months The ids of the months that are included by the futureLog.
+ * @param {Array} content The ids of the textBlocks included in the futureLog.
+ * @param {Array} collections The ids of the collections included in the futureLog.
+ * @param {Array} trackers The ids of the trackers included by the futureLog.
  * @param {doubleParameterCallback} callback Eihter sends the newly created futureLog or an error if there is one to the callback.
  */
-export function createFutureLogPouch (db, startDate, endDate, months, trackers, callback) {
-	db.get("0000").then((doc) => {
-		let id = makeid();
-		let arrays = [];
+export function createFutureLogPouch (db, startDate, endDate, months, content, collections, trackers, callback) {
+	let futureObject = {};
+	localStorage.readUser((err, user) => {
+		if (err == null){
+			let id = makeid(user);
 
-		Array.prototype.push.apply(arrays, doc.dailyLogs);
-		Array.prototype.push.apply(arrays, doc.monthlyLogs);
-		Array.prototype.push.apply(arrays, doc.futureLogs);
-		Array.prototype.push.apply(arrays, doc.collections);
-		Array.prototype.push.apply(arrays, doc.trackers);
-		Array.prototype.push.apply(arrays, doc.textBlocks);
-		Array.prototype.push.apply(arrays, doc.tasks);
-		Array.prototype.push.apply(arrays, doc.events);
-		Array.prototype.push.apply(arrays, doc.signifiers);
-		Array.prototype.push.apply(arrays, doc.imageBlocks);
-		Array.prototype.push.apply(arrays, doc.audioBlocks);
+			futureObject = {
+				id: id,
+				objectType: "futureLog",
+				startDate: startDate,
+				endDate: endDate,
+				months: months,
+				content: content,
+				collections: collections,
+				trackers: trackers,
+				recurringTrackers: []
+			};
 
-		while (arrays.filter((element) => element.id === id).length > 0) {
-			id = makeid();
-		}
+			user.futureLogs.push(futureObject);
+			user.index.contents.push(futureObject.id);
 
-		futureObject = {
-			id: id,
-			objectType: "futureLog",
-			startDate: startDate,
-			endDate: endDate,
-			months: months,
-			trackers: trackers
-		};
+			return db.put({_id: "0000",
+				_rev: user._rev,
+				email: user.email,
+				theme: user.theme,
+				index: user.index,
+				dailyLogs: user.dailyLogs,
+				monthlyLogs: user.monthlyLogs,
+				futureLogs: user.futureLogs,
+				collections: user.collections,
+				trackers: user.trackers,
+				imageBlocks: user.imageBlocks,
+				audioBlocks: user.audioBlocks,
+				textBlocks: user.textBlocks,
+				tasks: user.tasks,
+				events: user.events,
+				signifiers: user.signifiers
+			}).then((res) => {
+				/* istanbul ignore next */
+				if (res.ok && months.length == 0) {
+					addMonths (new Date(futureObject.startDate), new Date(futureObject.endDate), futureObject, (monthsIDArray) => {
+						localStorage.readUser((error, loadedUser) => {
+							if (error === null) {
+								monthsIDArray.reverse();
+								futureObject.months = monthsIDArray;
+								loadedUser.futureLogs[loadedUser.futureLogs.length - 1] = futureObject;
+								let newUser = {
+									_id: "0000",
+									_rev: loadedUser._rev,
+									email: loadedUser.email,
+									theme: loadedUser.theme,
+									index: loadedUser.index,
+									dailyLogs: loadedUser.dailyLogs,
+									monthlyLogs: loadedUser.monthlyLogs,
+									futureLogs: loadedUser.futureLogs,
+									collections: loadedUser.collections,
+									trackers: loadedUser.trackers,
+									imageBlocks: loadedUser.imageBlocks,
+									audioBlocks: loadedUser.audioBlocks,
+									textBlocks: loadedUser.textBlocks,
+									tasks: loadedUser.tasks,
+									events: loadedUser.events,
+									signifiers: loadedUser.signifiers
+								};
 
-		doc.futureLogs.push(futureObject);
-		doc.index.contents.push(futureObject.id);
-
-		return db.put({_id: "0000",
-			_rev: doc._rev,
-			email: doc.email,
-			theme: doc.theme,
-			index: doc.index,
-			dailyLogs: doc.dailyLogs,
-			monthlyLogs: doc.monthlyLogs,
-			futureLogs: doc.futureLogs,
-			collections: doc.collections,
-			trackers: doc.trackers,
-			imageBlocks: doc.imageBlocks,
-			audioBlocks: doc.audioBlocks,
-			textBlocks: doc.textBlocks,
-			tasks: doc.tasks,
-			events: doc.events,
-			signifiers: doc.signifiers
-		});
-	}).then((res) => {
-		console.log(res);
-		if (res.ok) {
-			console.log(new Date(futureObject.startDate.getTime()));
-			console.log(new Date(futureObject.endDate.getTime()));
-			addMonth(new Date(futureObject.startDate.getTime()), new Date(futureObject.endDate.getTime()), futureObject, (monthsIDArray) => {
-				db.get("0000").then((doc) => {
-					futureObject.months = monthsIDArray;
-					doc.futureLogs[doc.futureLogs.length - 1] = futureObject;
-					db.put({_id: "0000",
-						_rev: doc._rev,
-						email: doc.email,
-						theme: doc.theme,
-						index: doc.index,
-						dailyLogs: doc.dailyLogs,
-						monthlyLogs: doc.monthlyLogs,
-						futureLogs: doc.futureLogs,
-						collections: doc.collections,
-						trackers: doc.trackers,
-						imageBlocks: doc.imageBlocks,
-						audioBlocks: doc.audioBlocks,
-						textBlocks: doc.textBlocks,
-						tasks: doc.tasks,
-						events: doc.events,
-						signifiers: doc.signifiers
-					}, (err, res2) => {
-						if (err) {
-							callback(err, null);
-						} else if (res2.ok) {
-							callback(null, futureObject);
-						}
+								db.put(newUser).then((monthCreate) => {
+									/* istanbul ignore next */
+									if (monthCreate.ok) {
+										localStorage.setUser(newUser);
+										callback(null, futureObject);
+									}
+									/* istanbul ignore next */
+								}).catch((noUpdate) => {
+									/* istanbul ignore next */
+									callback(noUpdate, null);
+									/* istanbul ignore next */
+									return;
+								});
+								/* istanbul ignore next */
+							} else {
+								/* istanbul ignore next */
+								callback(error, null);
+							}
+						});
 					});
-				});
+				}
+			/* istanbul ignore next */
+			}).catch((err) => {
+				/* istanbul ignore next */
+				callback(err, null);
 			});
+			/* istanbul ignore next */
 		} else {
-			console.log(res);
+			/* istanbul ignore next */
+			callback(err, null);
 		}
-	}).catch((err) => {
-		callback(err, null);
 	});
 }

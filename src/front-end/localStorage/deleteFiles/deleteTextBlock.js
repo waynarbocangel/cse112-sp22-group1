@@ -84,7 +84,6 @@ catch((error) => {
  * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
 export function deleteTextBlockPouch (db, id, callback) {
-	console.log("delete textblock is being deleted");
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);

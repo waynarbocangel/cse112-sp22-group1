@@ -1,3 +1,5 @@
+import { setUser } from "../userOperations";
+
 /**
  * Finds and update the signifier passed in.
  * @memberof updateFunctions
@@ -13,8 +15,8 @@
 		} else {
 			let signifierArr = doc.signifiers.filter((element) => element.id !== signifier.id);
 			signifierArr.push(signifier);
-
-			return db.put({_id: "0000",
+			let newUser = {
+				_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
 				theme: doc.theme,
@@ -29,10 +31,11 @@
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: doc.events,
-				signifiers: signifierArr}, (error, res) => {
-				if (error) {
-					callback(error);
-				} else {
+				signifiers: signifierArr
+			};
+			db.put(newUser).then((res) => {
+				if (res) {
+					setUser(newUser);
 					callback(res);
 				}
 			});
