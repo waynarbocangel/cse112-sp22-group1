@@ -50,7 +50,6 @@ export function createSignifierPouch (db, meaning, symbol, callback) {
 
 			return db.put(newUser).then((res) => {
 				if (res.ok) {
-					localStorage.setUser(newUser);
 					callback(null, signifierObject);
 				}
 				/* istanbul ignore next */

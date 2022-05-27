@@ -1,4 +1,4 @@
-import { setUser } from "../userOperations";
+import { readUser } from "../userOperations";
 
 /**
  * Finds and update the signifier passed in.
@@ -9,36 +9,35 @@ import { setUser } from "../userOperations";
  */
  export function updateSignifierPouch (db, signifier, callback) {
 	console.log(signifier);
-	db.get("0000", (err, doc) => {
+	readUser((err, user) => {
 		if (err) {
 			callback(err);
 		} else {
-			let signifierArr = doc.signifiers.filter((element) => element.id !== signifier.id);
+			let signifierArr = user.signifiers.filter((element) => element.id !== signifier.id);
 			signifierArr.push(signifier);
 			let newUser = {
 				_id: "0000",
-				_rev: doc._rev,
-				email: doc.email,
-				theme: doc.theme,
-				index: doc.index,
-				dailyLogs: doc.dailyLogs,
-				monthlyLogs: doc.monthlyLogs,
-				futureLogs: doc.futureLogs,
-				collections: doc.collections,
-				trackers: doc.trackers,
-				imageBlocks: doc.imageBlocks,
-				audioBlocks: doc.audioBlocks,
-				textBlocks: doc.textBlocks,
-				tasks: doc.tasks,
-				events: doc.events,
+				_rev: user._rev,
+				email: user.email,
+				theme: user.theme,
+				index: user.index,
+				dailyLogs: user.dailyLogs,
+				monthlyLogs: user.monthlyLogs,
+				futureLogs: user.futureLogs,
+				collections: user.collections,
+				trackers: user.trackers,
+				imageBlocks: user.imageBlocks,
+				audioBlocks: user.audioBlocks,
+				textBlocks: user.textBlocks,
+				tasks: user.tasks,
+				events: user.events,
 				signifiers: signifierArr
 			};
 			db.put(newUser).then((res) => {
 				if (res) {
-					setUser(newUser);
 					callback(res);
 				}
-			});
+			}).catch(error => callback(error));
 		}
 	})
 }

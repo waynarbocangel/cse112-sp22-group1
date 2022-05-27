@@ -27,7 +27,7 @@ export let createTextBlockTests = () => {
 					})).resolves.toBe(undefined);
 				});
 			});
-		}, 1000);
+		}, 5000);
 
 		test("Tests create text block with new Task in localStorage", async (done) => {
 			readUser((err, user) => {
@@ -56,7 +56,7 @@ export let createTextBlockTests = () => {
 					})).resolves.toBe(undefined);
 				});
 			});
-		}, 1000);
+		}, 5000);
 
 		test("Tests create text block with previous Task in localStorage", async (done) => {
 			readUser((err, user) => {
@@ -86,7 +86,7 @@ export let createTextBlockTests = () => {
 					})).resolves.toBe(undefined);
 				});
 			});
-		}, 1000);
+		}, 5000);
 
 		test("Tests create text block with new Event in localStorage", async (done) => {
 			readUser((err, user) => {
@@ -104,6 +104,7 @@ export let createTextBlockTests = () => {
 					expect(textBlock.text).toBe("This is a starter test for an event");
 					expect(textBlock.signifiers.length).toBe(0);
 					await expect(db.get("0000").then( async doc => {
+						expect(doc.monthlyLogs.length).toBe(4);
 						expect(doc.textBlocks.length).toBe(4);
 						expect(doc.events.length).toBe(1);
 						event = doc.events[0];
@@ -116,7 +117,7 @@ export let createTextBlockTests = () => {
 					})).resolves.toBe(undefined);
 				});
 			});
-		}, 1000);
+		}, 5000);
 		
-    }, 2000);
+    });
 }

@@ -1,4 +1,4 @@
-import { setUser } from "../userOperations";
+import { readUser } from "../userOperations";
 
 /**
  * Finds and update the collection passed in.
@@ -8,38 +8,40 @@ import { setUser } from "../userOperations";
  * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
  export function updateCollectionPouch (db, collection, callback) {
-	console.log(collection);
-	db.get("0000", (err, doc) => {
+	readUser((err, user) => {
+		/* istanbul ignore next */
 		if (err) {
+			/* istanbul ignore next */
 			callback(err);
 		} else {
-			let collectionArr = doc.collections.filter((element) => element.id !== collection.id);
+			let collectionArr = user.collections.filter((element) => element.id !== collection.id);
 			collectionArr.push(collection);
-			doc.collections = collectionArr;
+			user.collections = collectionArr;
 			let newUser = {
 				_id: "0000",
-				_rev: doc._rev,
-				email: doc.email,
-				theme: doc.theme,
-				index: doc.index,
-				dailyLogs: doc.dailyLogs,
-				monthlyLogs: doc.monthlyLogs,
-				futureLogs: doc.futureLogs,
-				collections: doc.collections,
-				trackers: doc.trackers,
-				imageBlocks: doc.imageBlocks,
-				audioBlocks: doc.audioBlocks,
-				textBlocks: doc.textBlocks,
-				tasks: doc.tasks,
-				events: doc.events,
-				signifiers: doc.signifiers
+				_rev: user._rev,
+				email: user.email,
+				theme: user.theme,
+				index: user.index,
+				dailyLogs: user.dailyLogs,
+				monthlyLogs: user.monthlyLogs,
+				futureLogs: user.futureLogs,
+				collections: user.collections,
+				trackers: user.trackers,
+				imageBlocks: user.imageBlocks,
+				audioBlocks: user.audioBlocks,
+				textBlocks: user.textBlocks,
+				tasks: user.tasks,
+				events: user.events,
+				signifiers: user.signifiers
 			};
-			db.put(newUser).then((res) => {
+
+			return db.put(newUser).then((res) => {
 				if (res) {
-					setUser(newUser);
 					callback(null);
 				}
-			});
+				/* istanbul ignore next */
+			}).catch(error => callback(error));
 		}
 	})
 }

@@ -13,14 +13,15 @@ export let createTrackerTests = () => {
 					expect(tracker.parent).toBe(user.monthlyLogs[0].id);
 					expect(tracker.content.length).toBe(0);
 					await expect(db.get("0000").then(doc => {
+						expect(doc.monthlyLogs.length).toBe(4);
 						expect(doc.trackers.length).toBe(1);
 						expect(doc.trackers[0].id).toBe(tracker.id);
-						expect(doc.monthlyLogs[0].trackers.length).toBe(1);
-						expect(doc.monthlyLogs[0].trackers[0]).toBe(tracker.id);
+						expect(doc.monthlyLogs[doc.monthlyLogs.length - 1].trackers.length).toBe(1);
+						expect(doc.monthlyLogs[doc.monthlyLogs.length - 1].trackers[0]).toBe(tracker.id);
 						done();
 					})).resolves.toBe(undefined);
 				});
 			});
-		}, 10000);
+		}, 5000);
 	});
 };

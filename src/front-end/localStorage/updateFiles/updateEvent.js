@@ -1,4 +1,4 @@
-import { setUser } from "../userOperations";
+import { readUser } from "../userOperations";
 
 /**
  * Finds and update the event passed in.
@@ -9,36 +9,35 @@ import { setUser } from "../userOperations";
  */
  export function updateEventPouch (db, event, callback) {
 	console.log(event);
-	db.get("0000", (err, doc) => {
+	readUser((err, user) => {
 		if (err) {
 			callback(err);
 		} else {
-			let eventArr = doc.events.filter((element) => element.id !== event.id);
+			let eventArr = user.events.filter((element) => element.id !== event.id);
 			eventArr.push(event);
 			let newUser = {
 				_id: "0000",
-				_rev: doc._rev,
-				email: doc.email,
-				theme: doc.theme,
-				index: doc.index,
-				dailyLogs: doc.dailyLogs,
-				monthlyLogs: doc.monthlyLogs,
-				futureLogs: doc.futureLogs,
-				trackers: doc.trackers,
-				collections: doc.collections,
-				imageBlocks: doc.imageBlocks,
-				audioBlocks: doc.audioBlocks,
-				textBlocks: doc.textBlocks,
-				tasks: doc.tasks,
+				_rev: user._rev,
+				email: user.email,
+				theme: user.theme,
+				index: user.index,
+				dailyLogs: user.dailyLogs,
+				monthlyLogs: user.monthlyLogs,
+				futureLogs: user.futureLogs,
+				trackers: user.trackers,
+				collections: user.collections,
+				imageBlocks: user.imageBlocks,
+				audioBlocks: user.audioBlocks,
+				textBlocks: user.textBlocks,
+				tasks: user.tasks,
 				events: eventArr,
-				signifiers: doc.signifiers
+				signifiers: user.signifiers
 			};
 			db.put(newUser).then((res) => {
 				if (res) {
-					setUser(newUser);
 					callback(res);
 				}
-			});
+			}).catch(error => callback(error));
 		}
 	})
 }

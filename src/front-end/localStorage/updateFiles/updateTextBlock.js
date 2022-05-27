@@ -34,7 +34,6 @@ function updateBlock (db, textBlockArr, callback) {
 					console.log(error);
 					callback(error);
 				} else {
-					localStorage.setUser(newUser);
 					callback(res);
 				}
 			});

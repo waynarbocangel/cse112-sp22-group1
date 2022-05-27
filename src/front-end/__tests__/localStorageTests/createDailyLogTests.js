@@ -16,12 +16,13 @@ export let createDailyLogTests = () => {
 					expect(dailyLog.collections.length).toBe(0);
 					expect(dailyLog.trackers.length).toBe(0);
 					await expect(db.get("0000").then(doc => {
+						expect(doc.monthlyLogs.length).toBe(4);
 						expect(doc.dailyLogs.length).toBe(1);
 						expect(doc.dailyLogs[0].id).toBe(dailyLog.id);
 						done();
 					})).resolves.toBe(undefined);
 				});
 			});
-		}, 10000);
+		}, 5000);
 	});
 };

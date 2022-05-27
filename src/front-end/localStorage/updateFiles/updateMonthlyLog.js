@@ -1,4 +1,4 @@
-import { setUser } from "../userOperations";
+import { readUser } from "../userOperations";
 
 /**
  * Finds and update the monthlyLog passed in.
@@ -8,38 +8,36 @@ import { setUser } from "../userOperations";
  * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
  export function updateMonthlyLogPouch (db, log, callback) {
-	console.log(log);
-	db.get("0000", (err, doc) => {
+	readUser((err, user) => {
 		if (err) {
 			callback(err);
 		} else {
-			let monthlyLogArr = doc.monthlyLogs.filter((element) => element.id !== log.id);
+			let monthlyLogArr = user.monthlyLogs.filter((element) => element.id !== log.id);
 			monthlyLogArr.push(log);
 			let newUser = {
 				_id: "0000",
-				_rev: doc._rev,
-				email: doc.email,
-				theme: doc.theme,
-				index: doc.index,
-				dailyLogs: doc.dailyLogs,
+				_rev: user._rev,
+				email: user.email,
+				theme: user.theme,
+				index: user.index,
+				dailyLogs: user.dailyLogs,
 				monthlyLogs: monthlyLogArr,
-				futureLogs: doc.futureLogs,
-				trackers: doc.trackers,
-				collections: doc.collections,
-				imageBlocks: doc.imageBlocks,
-				audioBlocks: doc.audioBlocks,
-				textBlocks: doc.textBlocks,
-				events: doc.events,
-				tasks: doc.tasks,
-				signifiers: doc.signifiers
+				futureLogs: user.futureLogs,
+				trackers: user.trackers,
+				collections: user.collections,
+				imageBlocks: user.imageBlocks,
+				audioBlocks: user.audioBlocks,
+				textBlocks: user.textBlocks,
+				events: user.events,
+				tasks: user.tasks,
+				signifiers: user.signifiers
 			};
 			// Added return here so if updateMonthlyLog breaks maybe its because of this
 			db.put(newUser).then((res) => {
 				if (res) {
-					setUser(newUser);
 					callback(null, log);
 				}
-			});
+			}).catch(error => callback(error));
 		}
 	})
 }

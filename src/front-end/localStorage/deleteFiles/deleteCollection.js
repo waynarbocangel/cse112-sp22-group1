@@ -58,7 +58,6 @@ export function deleteCollectionPouch (db, collection, parent, callback) {
 
 			return db.put(newUser).then((res) => {
 				if (res.ok) {
-					localStorage.setUser(newUser);
 					callback(null);
 				}
 			});

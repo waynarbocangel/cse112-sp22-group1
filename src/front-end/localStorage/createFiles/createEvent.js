@@ -55,7 +55,6 @@ export function createEventPouch (db, title, parent, date, signifiers, callback)
 			return db.put(newUser).then((res) => {
 				/* istanbul ignore next */
 				if (res.ok) {
-					localStorage.setUser(newUser);
 					callback(null, eventObject);
 				}
 				/* istanbul ignore next */

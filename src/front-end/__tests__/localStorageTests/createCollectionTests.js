@@ -14,14 +14,14 @@ export let createCollectionTests = () => {
 					expect(collection.content.length).toBe(0);
 					expect(collection.collections.length).toBe(0);
 					await expect(db.get("0000").then(doc => {
-						expect(doc.monthlyLogs[0].collections.length).toBe(1);
-						expect(doc.monthlyLogs[0].collections[0]).toBe(collection.id);
+						expect(doc.monthlyLogs[doc.monthlyLogs.length - 1].collections.length).toBe(1);
+						expect(doc.monthlyLogs[doc.monthlyLogs.length - 1].collections[0]).toBe(collection.id);
 						expect(doc.collections.length).toBe(1);
 						expect(doc.collections[0].id).toBe(collection.id);
 						done();
 					})).resolves.toBe(undefined);
 				});
 			});
-		}, 10000);
+		}, 5000);
 	});
 };

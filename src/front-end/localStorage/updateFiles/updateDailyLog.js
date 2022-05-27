@@ -1,4 +1,4 @@
-import { setUser } from "../userOperations";
+import { readUser } from "../userOperations";
 
 /**
  * Finds and update the dailyLog passed in.
@@ -9,36 +9,35 @@ import { setUser } from "../userOperations";
  */
 export function updateDailyLogPouch (db, log, callback) {
 	console.log(log);
-	db.get("0000", (err, doc) => {
+	readUser((err, user) => {
 		if (err) {
 			callback(err);
 		} else {
-			let dailyLogArr = doc.dailyLogs.filter((element) => element.id !== log.id);
+			let dailyLogArr = user.dailyLogs.filter((element) => element.id !== log.id);
 			dailyLogArr.push(log);
 			let newUser = {
 				_id: "0000",
-				_rev: doc._rev,
-				email: doc.email,
-				theme: doc.theme,
-				index: doc.index,
+				_rev: user._rev,
+				email: user.email,
+				theme: user.theme,
+				index: user.index,
 				dailyLogs: dailyLogArr,
-				monthlyLogs: doc.monthlyLogs,
-				futureLogs: doc.futureLogs,
-				collections: doc.collections,
-				trackers: doc.trackers,
-				imageBlocks: doc.imageBlocks,
-				audioBlocks: doc.audioBlocks,
-				textBlocks: doc.textBlocks,
-				events: doc.events,
-				tasks: doc.tasks,
-				signifiers: doc.signifiers
+				monthlyLogs: user.monthlyLogs,
+				futureLogs: user.futureLogs,
+				collections: user.collections,
+				trackers: user.trackers,
+				imageBlocks: user.imageBlocks,
+				audioBlocks: user.audioBlocks,
+				textBlocks: user.textBlocks,
+				events: user.events,
+				tasks: user.tasks,
+				signifiers: user.signifiers
 			};
 			db.put(newUser).then((res) => {
 				if (res) {
-					setUser(newUser);
 					callback(res);
 				}
-			});
+			}).catch(error => callback(error));
 		}
 	})
 }

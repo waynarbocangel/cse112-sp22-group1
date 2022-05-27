@@ -1,5 +1,3 @@
-import { setUser } from "../userOperations.js";
-
 /**
  * Creates and stores a new user created from the given parameters.
  * @memberof createFunctions
@@ -27,7 +25,6 @@ export function createUserPouch (db, userObject, callback) {
 	};
 
 	return db.put(newUser).then(() => {
-		setUser(newUser);
 		callback(userObject);
 	}).catch((err) => {
 		callback(err);

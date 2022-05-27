@@ -15,7 +15,7 @@ import { readUser } from "../userOperations.js";
 			callback(err);
 		} else {
 			try {
-				fetch(`${api}/user`, {
+				return fetch(`${api}/user`, {
                     credentials: "includes",
 					headers: {
 						"content-type": "application/json; charset=UTF-8",

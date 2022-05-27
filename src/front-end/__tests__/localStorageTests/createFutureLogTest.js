@@ -25,6 +25,6 @@ export let createFutureLogTests = () => {
 					done();
 				})).resolves.toBe(undefined);
 			});
-		}, 10000);
+		}, 5000);
 	});
 };

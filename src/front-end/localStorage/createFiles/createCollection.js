@@ -34,20 +34,19 @@ export function createCollectionPouch (db, title, parent, content, collections, 
 			};
 
 			user.collections.push(collectionObject);
-
 			if (addToParent) {
 				addToParent.collections.push(collectionObject.id);
 				if (addToParent.objectType == "dailyLog"){
-					user.dailyLogs = user.dailyLogs.filter(dailyLog => {dailyLog.id !== addToParent});
+					user.dailyLogs = user.dailyLogs.filter(dailyLog => dailyLog.id !== addToParent.id);
 					user.dailyLogs.push(addToParent);
 				} else if (addToParent.objectType == "monthlyLog") {
-					user.monthlyLogs = user.monthlyLogs.filter(monthlyLog => {monthlyLog.id !== addToParent});
+					user.monthlyLogs = user.monthlyLogs.filter(monthlyLog => monthlyLog.id !== addToParent.id);
 					user.monthlyLogs.push(addToParent);
 				} else if (addToParent.objectType == "futureLog") {
-					user.futureLogs = user.futureLogs.filter(futureLog => {futureLog.id !== addToParent});
+					user.futureLogs = user.futureLogs.filter(futureLog => futureLog.id !== addToParent.id);
 					user.futureLogs.push(addToParent);
 				} else if (addToParent.objectType == "collection") {
-					user.collections = user.collections.filter(collection => {collection.id !== addToParent});
+					user.collections = user.collections.filter(collection => collection.id !== addToParent.id);
 					user.collections.push(addToParent);
 				}
 			}
@@ -73,7 +72,6 @@ export function createCollectionPouch (db, title, parent, content, collections, 
 
 			return db.put(newUser).then((res) => {
 				if (res.ok) {
-					localStorage.setUser(newUser);
 					callback(null, collectionObject);
 				}
 				/* istanbul ignore next */

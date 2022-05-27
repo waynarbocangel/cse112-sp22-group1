@@ -86,8 +86,9 @@ app.get("/user", express.json({ type: "*/*" }), (req, res) => {
 /* Defines the /user route for updating user information */
 app.put("/user", express.json({ type: "*/*" }), (req, res) => {
     if (req.session.authed) {
-        console.log("Update Called");
+        console.log("Update started");
         updateUser.updateUser(req.session.email, req.session.key, req.body, (user) => {
+            console.log("Update Called");
             if (user) {
                 req.session.email = user.email;
                 res.send(user);

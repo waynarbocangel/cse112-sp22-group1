@@ -11,6 +11,10 @@ import { createAudioBlockTests } from './localStorageTests/createAudioBlockTests
 import { createTextBlockTests } from './localStorageTests/createTextBlockTests.js';
 
 import { deleteCollectionsTests } from './localStorageTests/deleteCollectionTests.js';
+
+import { updateAudioBlockTests } from './localStorageTests/updateAudioBlockTests.js';
+import { updateCollectionTests } from './localStorageTests/updateCollectionTests.js';
+
 import fetch from "node-fetch";
 import fetchCookie from "fetch-cookie";
 
@@ -35,7 +39,10 @@ describe ("All tests for localStorage", () => {
 	createTextBlockTests();
 	createAudioBlockTests();
 
-	deleteCollectionsTests();
+	updateAudioBlockTests();
+	// updateCollectionTests();
+
+	// deleteCollectionsTests();
 	
 
 	afterAll(async () => {

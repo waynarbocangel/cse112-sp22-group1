@@ -1,44 +1,57 @@
-import { setUser } from "../userOperations";
+import { readUser } from "../userOperations";
 
 /**
  * Finds and update the audioBlock passed in.
  * @memberof updateFunctions
  * @param {database} db The local pouch database.
- * @param {Object} audioBlock The audioBlock to be deleted.
+ * @param {Object} audioBlock The audioBlock to be updated.
+ * @param {Object} parent The parent of the audioBlock being updated
  * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
- export function updateAudioBlockPouch (db, audioBlock, callback) {
-	db.get("0000", (err, doc) => {
+ export function updateAudioBlockPouch (db, audioBlock, parent, callback) {
+	readUser((err, user) => {
+		/* istanbul ignore next */
 		if (err) {
+			/* istanbul ignore next */
 			callback(err);
+			/* istanbul ignore next */
 		} else {
 
-			let audioBlockArr = doc.audioBlocks.filter((element) => element.id !== audioBlock.id);
-			audioBlockArr.push(audioBlock);
+			if (parent && audioBlock.parent != parent.id) {
+				parent.content.filter(block => block !== audioBlock.id);
+				user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter(object => object.id !== parent.id);
+				user[`${parent.objectType}s`].push(parent);
+			}
+
+			user.audioBlocks = user.audioBlocks.filter((element) => element.id !== audioBlock.id);
+			user.audioBlocks.push(audioBlock);
+
 			let newUser = {
 				_id: "0000",
-				_rev: doc._rev,
-				email: doc.email,
-				theme: doc.theme,
-				index: doc.index,
-				dailyLogs: doc.dailyLogs,
-				monthlyLogs: doc.monthlyLogs,
-				futureLogs: doc.futureLogs,
-				trackers: doc.trackers,
-				collections: doc.collections,
-				imageBlocks: doc.imageBlocks,
-				audioBlocks: audioBlockArr,
-				textBlocks: doc.textBlocks,
-				tasks: doc.tasks,
-				events: doc.events,
-				signifiers: doc.signifiers
+				_rev: user._rev,
+				email: user.email,
+				theme: user.theme,
+				index: user.index,
+				dailyLogs: user.dailyLogs,
+				monthlyLogs: user.monthlyLogs,
+				futureLogs: user.futureLogs,
+				trackers: user.trackers,
+				collections: user.collections,
+				imageBlocks: user.imageBlocks,
+				audioBlocks: user.audioBlocks,
+				textBlocks: user.textBlocks,
+				tasks: user.tasks,
+				events: user.events,
+				signifiers: user.signifiers
 			};
-			db.put(newUser).then((res) => {
-				if (res) {
-					setUser(newUser);
-					callback(res);
+			return db.put(newUser).then((res) => {
+				/* istanbul ignore next */
+				console.log(res);
+				if (res.ok) {
+					callback(null);
 				}
-			});
+				/* istanbul ignore next */
+			}).catch(error => callback(error));
 		}
-	})
+	});
 }

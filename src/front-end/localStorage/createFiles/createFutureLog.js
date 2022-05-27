@@ -116,7 +116,6 @@ export function createFutureLogPouch (db, startDate, endDate, months, content, c
 								db.put(newUser).then((monthCreate) => {
 									/* istanbul ignore next */
 									if (monthCreate.ok) {
-										localStorage.setUser(newUser);
 										callback(null, futureObject);
 									}
 									/* istanbul ignore next */

@@ -1,6 +1,5 @@
 import * as localStorage from "../../localStorage/userOperations.js";
 import { createUserPouch } from "../../localStorage/createFiles/createUser.js";
-import { user, deleteDB } from "../../localStorage/userOperations.js";
 import { db } from "../localStorage.test.js";
 import { makeRandomString, compareUsers } from "../testFunctions.js";
 
@@ -8,11 +7,13 @@ export let createUserTests = () => {
 	describe ("Tests for local storage create user", () => {
 		test('Create User Success', async (done) => {
 			let createUserFinished = async (userData) => {
-				await expect(compareUsers(userData, user)).toBe(true);
-				done();
+				await expect(db.get("0000").then(async doc => {
+					expect(compareUsers(userData, doc)).toBe(true);
+					done();
+				})).resolves.toBe(undefined);
 			};
 			localStorage.createUser("testLocalStorage@storage.com", "abcd", createUserFinished);
-		});
+		}, 5000);
 	});
 
 	describe("Tests for create user Pouch", () => {
@@ -47,7 +48,6 @@ export let createUserTests = () => {
 			await expect(createUserPouch(db, userToCreate, () => {
 				db.get('0000').then((doc) => {
 					expect(compareUsers(doc, userToCreate)).toBe(false);
-					expect(compareUsers(userToCreate, user)).toBe(false);
 					done();
 				});
 			})).resolves.toBe(undefined);

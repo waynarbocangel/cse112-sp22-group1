@@ -62,7 +62,6 @@ import {updateUserOnline} from "./updateFiles/updateUser.js";
 
 /* eslint-disable */
 export let db = null;
-export let user = null;
 
 /**
  * Sets up the local storage
@@ -73,11 +72,6 @@ export let setupStorage = (database) => {
 		db = database;
 	} else {
 		db = new PouchDB("Users");
-		readUser((error, doc) => {
-			if (error === null) {
-				user = doc;
-			}
-		});
 	}
 }
 /* eslint-enable */
@@ -94,10 +88,6 @@ export let setupStorage = (database) => {
  * @param {Object} err - error if failed, null otherwise
  * @param {Object} res - created / updated object if successful, null otherwise
  */
-
-export function setUser (newUser) {
-	user = newUser;
-}
 
 /**
  * Attempts to authenticate a user session.
@@ -152,24 +142,27 @@ export function updateUserFromMongo (callback){
 
 /**
  * Creates a new audioBlock from the parameters passed in and updates the online db.
- *
- * @param {String} parent The id of the parent of the new audioBlock.
+ * 
+ * @param {Object} parent The parent of the new audioBlock.
+ * @param {Number} index the index of insertion in parent
  * @param {String} arrangement The arrangement of the audio.
  * @param {Buffer} data The audio data stored as a buffer.
  * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {doubleParameterCallback} callback Either sends the audioBlock or an error, if there is one, to the callback.
  */
-export function createAudioBlock (parent, arrangement, data, shouldUpdate, callback) {
-	createAudioBlockPouch(db, parent, arrangement, data, (err, audio) => {
+export function createAudioBlock (parent, index, arrangement, data, shouldUpdate, callback) {
+	createAudioBlockPouch(db, parent, index, arrangement, data, (err, audio) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
 				if (couldNotUpdate) {
 					callback(couldNotUpdate, null);
 					return;
 				}
+				callback(couldNotUpdate, audio);
 			});
+		} else {
+			callback(err, audio);
 		}
-		callback(err, audio);
 	});
 }
 
@@ -193,9 +186,11 @@ export function createCollection (title, parent, content, collections, trackers,
 					callback(couldNotUpdate, null);
 					return;
 				}
+				callback(couldNotUpdate, collection);
 			});
+		} else {
+			callback(err, collection);
 		}
-		callback(err, collection);
 	});
 }
 
@@ -218,9 +213,11 @@ export function createDailyLog (parent, content, collections, trackers, date, sh
 					callback(couldNotUpdate, null);
 					return;
 				}
+				callback(couldNotUpdate, day);
 			});
+		} else {
+			callback(err, day);
 		}
-		callback(err, day);
 	});
 }
 
@@ -242,10 +239,12 @@ export function createEvent (title, parent, date, signifiers, shouldUpdate, call
 					callback(couldNotUpdate, null);
 					return;
 				}
+				callback(couldNotUpdate, event);
 			});
+		} else {
+			callback(error, event);
 		}
-		callback(error, event);
-	})
+	});
 }
 
 /**
@@ -268,32 +267,37 @@ export function createFutureLog (startDate, endDate, months, content, collection
 					callback(couldNotUpdate, null);
 					return;
 				}
+				callback(couldNotUpdate, futureLog);
 			});
+		} else {
+			callback(err, futureLog);
 		}
-		callback(err, futureLog);
-	})
+	});
 }
 
 /**
  * Creates a new imageBlock from the parameters passed in and updates the online db.
  * @function createImageBlock
- * @param {String} parent The id of the parent of the new imageBlock.
+ * @param {Object} parent The parent of the new imageBlock.
+ * @param {Number} index the index of insetion in parent
  * @param {String} arrangement The arrangement of the image.
  * @param {Buffer} data The image data stored as a buffer.
  * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {doubleParamterCallback} callback Either sends the imageBlock or an error, if there is one, to the callback.
  */
- export function createImageBlock (parent, arrangement, data, shouldUpdate, callback) {
-	createImageBlockPouch(db, parent, arrangement, data, (err, image) => {
+export function createImageBlock (parent, index, arrangement, data, shouldUpdate, callback) {
+	createImageBlockPouch(db, parent, index, arrangement, data, (err, image) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
 				if (couldNotUpdate) {
 					callback(couldNotUpdate, null);
 					return;
 				}
+				callback(couldNotUpdate, image);
 			});
+		} else {
+			callback(err, image);
 		}
-		callback(err, image);
 	});
 }
 
@@ -318,10 +322,12 @@ export function createMonthlyLog (parent, days, content, collections, trackers, 
 					callback(couldNotUpdate, null);
 					return;
 				}
+				callback(couldNotUpdate, month);
 			});
+		} else {
+			callback(error, month);
 		}
-		callback(error, month);
-	})
+	});
 }
 
 /**
@@ -340,10 +346,12 @@ export function createSignifier (meaning, symbol, shouldUpdate, callback) {
 					callback(couldNotUpdate, null);
 					return;
 				}
+				callback(couldNotUpdate, signifier);
 			});
+		} else {
+			callback(err, signifier);
 		}
-		callback(err, signifier);
-	})
+	});
 }
 
 /**
@@ -364,10 +372,12 @@ export function createTask (parent, text, complete, signifiers, shouldUpdate, ca
 					callback(couldNotUpdate, null);
 					return;
 				}
+				callback(couldNotUpdate, task);
 			});
+		} else {
+			callback(error, task);
 		}
-		callback(error, task);
-	})
+	});
 }
 
 /**
@@ -392,9 +402,11 @@ export function createTextBlock (parent, index, content, tabLevel, kind, objectR
 					callback(couldNotUpdate, null);
 					return;
 				}
+				callback(couldNotUpdate, textBlock);
 			});
+		} else {
+			callback(error, textBlock);
 		}
-		callback(error, textBlock);
 	});
 }
 
@@ -416,10 +428,12 @@ export function createTracker (title, content, parent, addToParent, shouldUpdate
 					callback(couldNotUpdate, null);
 					return;
 				}
+				callback(couldNotUpdate, tracker);
 			});
+		} else {
+			callback(err, tracker);
 		}
-		callback(err, tracker);
-	})
+	});
 }
 
 /**
@@ -429,7 +443,7 @@ export function createTracker (title, content, parent, addToParent, shouldUpdate
  * @param {String} pwd The new user's password.
  * @param {singleParameterCallback} callback Sends the new user object to the callback.
  */
- export function createUser (email, pwd, callback) {
+export function createUser (email, pwd, callback) {
 	fetch(`${api}/user`, {
 		headers: {
 			"content-type": "application/json; charset=UTF-8",
@@ -478,13 +492,11 @@ export function deleteAudioBlock (audioBlock, shouldUpdate, callback) {
 	deleteAudioBlockPouch(db, audioBlock.id, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate, null);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
+		} else {
+			callback(err);
 		}
-		callback(err);
 	});
 }
 
@@ -499,13 +511,11 @@ export function deleteAudioBlockByID (id, shouldUpdate, callback) {
 	deleteAudioBlockPouch(db, id, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate, null);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
+		} else {
+			callback(err);
 		}
-		callback(err);
 	});
 }
 
@@ -521,17 +531,15 @@ export function deleteCollection (collection, parent, shouldUpdate, callback) {
 	deleteCollectionPouch(db, collection.id, parent, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate, null);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
+		} else {
+			callback(err);
 		}
-		callback(err);
 	});
 }
 
- /**
+/**
  * Deletes the collection with the id passed in.
  *
  * @param {Object} imageBlock The object to be deleted.
@@ -542,13 +550,11 @@ export function deleteCollectionByID (id, shouldUpdate, callback) {
 	deleteCollectionPouch(db, id, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate, null);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
+		} else {
+			callback(err);
 		}
-		callback(err);
 	});
 }
 
@@ -578,7 +584,7 @@ export async function deleteDB (cloud) {
 	} else {
 		updateUserFromMongo((couldNotUpdate) => {
 			if (couldNotUpdate) {
-				callback(couldNotUpdate, null);
+				callback(couldNotUpdate);
 				return;
 			}
 		});
@@ -611,13 +617,11 @@ export function deleteEvent (event, shouldUpdate, callback) {
 	deleteEventPouch(db, event.id, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate, null);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
+		} else {
+			callback(err);
 		}
-		callback(err);
 	});
 }
 
@@ -632,13 +636,11 @@ export function deleteEventByID (id, shouldUpdate, callback) {
 	deleteEventPouch(db, id, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate, null);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
+		} else {
+			callback(err);
 		}
-		callback(err);
 	});
 }
 
@@ -654,13 +656,11 @@ export function deleteEventAtIndex (container, index, shouldUpdate, callback) {
 	deleteEventPouch(db, container.content[index], (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate, null);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
+		} else {
+			callback(err);
 		}
-		callback(err);
 	});
 }
 
@@ -675,13 +675,11 @@ export function deleteFutureLog (futureLog, shouldUpdate, callback) {
 	deleteFutureLogPouch(db, futureLog.id, futureLog.parent, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate, null);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
+		} else {
+			callback(err);
 		}
-		callback(err);
 	});
 }
 
@@ -696,13 +694,11 @@ export function deleteFutureLog (futureLog, shouldUpdate, callback) {
 	deleteImageBlockPouch(db, imageBlock.id, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate, null);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
+		} else {
+			callback(err);
 		}
-		callback(err);
 	});
 }
 
@@ -717,13 +713,11 @@ export function deleteImageBlockByID (id, shouldUpdate, callback) {
 	deleteImageBlockPouch(db, id, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate, null);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
+		} else {
+			callback(err);
 		}
-		callback(err);
 	});
 }
 
@@ -742,13 +736,11 @@ export function deleteSignifier (signifier, shouldUpdate, callback) {
 	deleteSignifierPouch(db, signifier.id, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate, null);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
+		} else {
+			callback(err);
 		}
-		callback(err);
 	});
 }
 
@@ -763,13 +755,11 @@ export function deleteSignifierByID (id, shouldUpdate, callback) {
 	deleteSignifierPouch(db, id, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate, null);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
+		} else {
+			callback(err);
 		}
-		callback(err);
 	});
 }
 
@@ -784,13 +774,11 @@ export function deleteSignifierAtBlock (block, shouldUpdate, callback) {
 	deleteSignifierPouch(db, block.signifier, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate, null);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
+		} else {
+			callback(err);
 		}
-		callback(err);
 	});
 }
 
@@ -805,13 +793,11 @@ export function deleteTask (task, shouldUpdate, callback) {
 	deleteTaskPouch(db, task.id, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate, null);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
+		} else {
+			callback(err);
 		}
-		callback(err);
 	});
 }
 
@@ -826,13 +812,11 @@ export function deleteTaskByID (id, shouldUpdate, callback) {
 	deleteTaskPouch(db, id, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate, null);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
+		} else {
+			callback(err);
 		}
-		callback(err);
 	});
 }
 
@@ -847,13 +831,11 @@ export function deleteTextBlock (block, shouldUpdate, callback) {
 	deleteTextBlockPouch(db, block.id, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate, null);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
+		} else {
+			callback(err);
 		}
-		callback(err);
 	});
 }
 
@@ -868,13 +850,11 @@ export function deleteTextBlockByID (id, shouldUpdate, callback) {
 	deleteTextBlockPouch(db, id, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate, null);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
+		} else {
+			callback(err);
 		}
-		callback(err);
 	});
 }
 
@@ -890,13 +870,11 @@ export function deleteTextBlockFromContainer (container, index, shouldUpdate, ca
 	deleteTextBlockPouch(db, container.contents[index], (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate, null);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
+		} else {
+			callback(err);
 		}
-		callback(err);
 	});
 }
 
@@ -911,13 +889,11 @@ export function deleteTracker (tracker, shouldUpdate, callback) {
 	deleteTrackerPouch(db, tracker.id, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate, null);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
+		} else {
+			callback(err);
 		}
-		callback(err);
 	});
 }
 
@@ -932,13 +908,11 @@ export function deleteTrackerByID (id, shouldUpdate, callback) {
 	deleteTrackerPouch(db, id, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate, null);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
+		} else {
+			callback(err);
 		}
-		callback(err);
 	});
 }
 
@@ -954,13 +928,11 @@ export function deleteTrackerFromContainer (container, index, shouldUpdate, call
 	deleteTrackerPouch(db, container.trackers[index], (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate, null);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
+		} else {
+			callback(err);
 		}
-		callback(err);
 	});
 }
 
@@ -969,290 +941,110 @@ export function deleteTrackerFromContainer (container, index, shouldUpdate, call
  *
  * @param {singleParameterCallback} callback Returns the user object that was deleted.
  */
- export function deleteUser (callback) {
-	deleteUserPouch(db, (user) => {
+export function deleteUser (callback) {
+	deleteUserPouch(db, () => {
 		updateUserFromMongo((couldNotUpdate) => {
-			if (couldNotUpdate) {
-				callback(couldNotUpdate, null);
-				return;
-			}
+			callback(couldNotUpdate);
 		});
-		callback(user);
 	});
 }
 
  // -------------------------------Update Functions----------------------------------
 
- /**
-  * Updates the audioBlock given.
-  *
-  * @param {Object} audioBlock The new version of the imageBlock.
-  * @param {Boolean} shouldUpdate true if we should update the onlin db
-  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
-  */
-export function updateAudioBlock (audioBlock, shouldUpdate, callback) {
-	updateAudioBlockPouch(db, audioBlock, (err) => {
+/**
+ * Updates the audioBlock given.
+ *
+ * @param {Object} audioBlock The new version of the audioBlock.
+ * @param {Object} parent The original parent of the new version of the audioBlock.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
+ */
+export function updateAudioBlock (audioBlock, parent, shouldUpdate, callback) {
+	updateAudioBlockPouch(db, audioBlock, parent, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
-		}
-		callback(err);
-	});
-}
-
- /**
-  * Updates the audioBlock with the id given.
-  *
-  * @param {String} id The id of the new version of the audioBlock.
-  * @param {Boolean} shouldUpdate true if we should update the onlin db
-  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
-  */
-export function updateAudioBlockByID (id, shouldUpdate, callback) {
-	db.get("0000", (err, doc) => {
-		if (err) {
-			callback(err);
 		} else {
-			let audioBlock = doc.userObject.audioBlocks.filter((element) => element.id === id);
-			updateAudioBlockPouch(db, audioBlock[0], (error) => {
-				if (shouldUpdate) {
-					updateUserFromMongo((couldNotUpdate) => {
-						if (couldNotUpdate) {
-							callback(couldNotUpdate);
-							return;
-						}
-					});
-				}
-				callback(error);
-			});
+			callback(err);
 		}
 	});
 }
 
 /**
-  * Updates the collection given.
-  *
-  * @param {Object} collection The new version of the imageBlock.
-  * @param {Boolean} shouldUpdate true if we should update the onlin db
-  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
-  */
- export function updateCollection (collection, shouldUpdate, callback) {
+ * Updates the collection given.
+ *
+ * @param {Object} collection The new version of the imageBlock.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
+ */
+export function updateCollection (collection, shouldUpdate, callback) {
 	updateCollectionPouch(db, collection, (error) => {
 		if (shouldUpdate && !error) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
+		} else {
+			console.log(error);
+			callback(error);
 		}
-		callback(error);
+		
 	});
 }
 
- /**
-  * Updates the collection with the id given.
-  *
-  * @param {String} id The id of the new version of the collection.
-  * @param {Boolean} shouldUpdate true if we should update the onlin db
-  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
-  */
-export function updateCollectionByID (id, shouldUpdate, callback) {
-	db.get("0000", (err, doc) => {
-		if (err) {
-			callback(err);
-		} else {
-			const collection = doc.userObject.collections.filter((element) => element.id === id);
-			updateCollectionPouch(db, collection[0], (error) => {
-				if (shouldUpdate) {
-					updateUserFromMongo((couldNotUpdate) => {
-						if (couldNotUpdate) {
-							callback(couldNotUpdate);
-							return;
-						}
-					});
-				}
-				callback(error);
+/**
+ * Updates the dailtLog given.
+ *
+ * @param {Object} dailyLog The new version of the imageBlock.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
+ */
+export function updateDailyLog (dailyLog, shouldUpdate, callback) {
+	updateDailyLogPouch(db, dailyLog, (err) => {
+		if (shouldUpdate && !err) {
+			updateUserFromMongo((couldNotUpdate) => {
+				callback(couldNotUpdate);
 			});
+		} else {
+			callback(err);
 		}
 	});
 }
 
 /**
-  * Updates the dailtLog given.
-  *
-  * @param {Object} dailyLog The new version of the imageBlock.
-  * @param {Boolean} shouldUpdate true if we should update the onlin db
-  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
-  */
- export function updateDailyLog (dailyLog, shouldUpdate, callback) {
-	updateDailyLogPouch(db, dailyLog, (err) => {
-		if (shouldUpdate && !err) {
-			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate);
-					return;
-				}
-			});
-		}
-		callback(err);
-	});
-}
-
- /**
-  * Updates the dailyLog with the id given.
-  *
-  * @param {String} id The id of the new version of the dailyLog.
-  * @param {Boolean} shouldUpdate true if we should update the onlin db
-  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
-  */
-export function updateDailyLogByID (id, shouldUpdate, callback) {
-	db.get("0000", (err, doc) => {
-		if (err) {
-			callback(err);
-		} else {
-			const dailyLog = doc.userObject.dailyLogs.filter((element) => element.id === id);
-			updateDailyLogPouch(db, dailyLog[0], (error) => {
-				if (shouldUpdate) {
-					updateUserFromMongo((couldNotUpdate) => {
-						if (couldNotUpdate) {
-							callback(couldNotUpdate);
-							return;
-						}
-					});
-				}
-				callback(error);
-			});
-		}
-	});
-}
-
- /**
-  * Updates the event given.
-  *
-  * @param {Object} event The new version of the imageBlock.
-  * @param {Boolean} shouldUpdate true if we should update the onlin db
-  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
-  */
+ * Updates the event given.
+ *
+ * @param {Object} event The new version of the imageBlock.
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
+ * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
+ */
 export function updateEvent (event, shouldUpdate, callback) {
 	updateEventPouch(db, event, (error) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
-		}
-		callback(error);
-	});
-}
-
- /**
-  * Updates the event with the id given.
-  *
-  * @param {String} id The id of the new version of the event.
-  * @param {Boolean} shouldUpdate true if we should update the onlin db
-  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
-  */
-export function updateEventByID (id, shouldUpdate, callback) {
-	db.get("0000", (err, doc) => {
-		if (err) {
-			callback(err);
 		} else {
-			const event = doc.events.filter((element) => element.id === id);
-			updateEventPouch(db, event[0], (error) => {
-				if (shouldUpdate) {
-					updateUserFromMongo((couldNotUpdate) => {
-						if (couldNotUpdate) {
-							callback(couldNotUpdate);
-							return;
-						}
-					});
-				}
-				callback(error);
-			});
-		}
-	});
-}
-
- /**
-  * Updates the event in the container at the index given.
-  *
-  * @param {Array} container The Array where the event should updated in.
-  * @param {Number} index The index at which the event is at in the container.
-  * @param {Boolean} shouldUpdate true if we should update the onlin db
-  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
-  */
-export function updateEventAtIndex (container, index, shouldUpdate, callback) {
-	db.get("0000", (err, doc) => {
-		if (err) {
-			callback(err);
-		} else {
-			const event = doc.events.filter((element) => element.id === container.content[index]);
-			updateEventPouch(db, event[0], (error) => {
-				if (shouldUpdate) {
-					updateUserFromMongo((couldNotUpdate) => {
-						if (couldNotUpdate) {
-							callback(couldNotUpdate);
-							return;
-						}
-					});
-				}
-				callback(error);
-			});
+			callback(error);
 		}
 	});
 }
 
 /**
-  * Updates the futureLog given.
-  *
-  * @param {Object} futureLog The id of the new version of the futureLog.
-  * @param {Boolean} shouldUpdate true if we should update the onlin db
-  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
-  */
- export function updateFutureLog (futureLog, shouldUpdate, callback) {
-	updateFutureLogPouch(db, futureLog, (error) => {
-		if (shouldUpdate) {
-			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate);
-					return;
-				}
-			});
-		}
-		callback(error);
-	});
-}
-
-/**
- * Updates the futureLog with the id given.
+ * Updates the futureLog given.
  *
- * @param {String} id The id of the new version of the futureLog.
+ * @param {Object} futureLog The id of the new version of the futureLog.
  * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
-export function updateFutureLogByID (id, shouldUpdate, callback) {
-	db.get("0000", (err, doc) => {
-		if (err) {
-			callback(err);
-		} else {
-			const futureLog = doc.userObject.futureLogs.filter((element) => element.id === id);
-			updateFutureLogPouch(db, futureLog[0], (error) => {
-				if (shouldUpdate) {
-					updateUserFromMongo((couldNotUpdate) => {
-						if (couldNotUpdate) {
-							callback(couldNotUpdate);
-							return;
-						}
-					});
-				}
-				callback(error);
+export function updateFutureLog (futureLog, shouldUpdate, callback) {
+	updateFutureLogPouch(db, futureLog, (error) => {
+		if (shouldUpdate) {
+			updateUserFromMongo((couldNotUpdate) => {
+				callback(couldNotUpdate);
 			});
+		} else {
+			callback(error);
 		}
 	});
 }
@@ -1268,40 +1060,10 @@ export function updateImageBlock (imageBlock, shouldUpdate, callback) {
 	updateImageBlockPouch(db, imageBlock, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
-		}
-		callback(err);
-	});
-}
-
-/**
- * Updates the imageBlock with the id given.
- *
- * @param {String} id The id of the new version of the imageBlock.
- * @param {Boolean} shouldUpdate true if we should update the onlin db
- * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
- */
-export function updateImageBlockByID (id, shouldUpdate, callback) {
-	db.get("0000", (err, doc) => {
-		if (err) {
-			callback(err);
 		} else {
-			let imageBlock = doc.userObject.imageBlocks.filter((element) => element.id === id);
-			updateImageBlockPouch(db, imageBlock[0], (error) => {
-				if (shouldUpdate) {
-					updateUserFromMongo((couldNotUpdate) => {
-						if (couldNotUpdate) {
-							callback(couldNotUpdate);
-							return;
-						}
-					});
-				}
-				callback(error);
-			});
+			callback(err);
 		}
 	});
 }
@@ -1317,40 +1079,10 @@ export function updateMonthlyLog (monthlyLog, shouldUpdate, callback) {
 	updateMonthlyLogPouch(db, monthlyLog, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
-		}
-		callback(err);
-	});
-}
-
- /**
-  * Updates the monthlyLog with the id given.
-  *
-  * @param {String} id The id of the new version of the monthlyLog.
-  * @param {Boolean} shouldUpdate true if we should update the onlin db
-  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
-  */
-export function updateMonthlyLogByID (id, shouldUpdate, callback) {
-	db.get("0000", (err, doc) => {
-		if (err) {
-			callback(err);
 		} else {
-			const monthlyLog = doc.userObject.monthlyLogs.filter((element) => element.id === id);
-			updateMonthlyLogPouch(db, monthlyLog[0], (error) => {
-				if (shouldUpdate) {
-					updateUserFromMongo((couldNotUpdate) => {
-						if (couldNotUpdate) {
-							callback(couldNotUpdate);
-							return;
-						}
-					});
-				}
-				callback(error);
-			});
+			callback(err);
 		}
 	});
 }
@@ -1366,68 +1098,10 @@ export function updateSignifier (signifier, shouldUpdate, callback) {
 	updateSignifierPouch(db, signifier, (error) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
-		}
-		callback(error);
-	});
-}
-
- /**
-  * Updates the signifier with the id given.
-  *
-  * @param {String} id The id of the new version of the signifier.
-  * @param {Boolean} shouldUpdate true if we should update the onlin db
-  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
-  */
-export function updateSignifierByID (id, shouldUpdate, callback) {
-	db.get("0000", (err, doc) => {
-		if (err) {
-			callback(err);
 		} else {
-			const signifier = doc.userObject.signifiers.filter((element) => element.id === id);
-			updateSignifierPouch(db, signifier[0], (error) => {
-				if (shouldUpdate) {
-					updateUserFromMongo((couldNotUpdate) => {
-						if (couldNotUpdate) {
-							callback(couldNotUpdate);
-							return;
-						}
-					});
-				}
-				callback(error);
-			});
-		}
-	});
-}
-
- /**
-  * Updates the signifier in the block given.
-  *
-  * @param {Object} block The block to update the signifier at.
-  * @param {Boolean} shouldUpdate true if we should update the onlin db
-  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
-  */
-export function updateSignifierAtBlock (block, shouldUpdate, callback) {
-	db.get("0000", (err, doc) => {
-		if (err) {
-			callback(err);
-		} else {
-			const signifier = doc.userObject.signifiers.filter((element) => element.id === block.signifier);
-			updateSignifierPouch(db, signifier[0], (error) => {
-				if (shouldUpdate) {
-					updateUserFromMongo((couldNotUpdate) => {
-						if (couldNotUpdate) {
-							callback(couldNotUpdate);
-							return;
-						}
-					});
-				}
-				callback(error);
-			});
+			callback(error);
 		}
 	});
 }
@@ -1443,40 +1117,10 @@ export function updateTask (task, shouldUpdate, callback) {
 	updateTaskPouch(db, task, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
-		}
-		callback(err);
-	});
-}
-
- /**
-  * Updates the task with the id given.
-  *
-  * @param {String} id The id of the new version of the task.
-  * @param {Boolean} shouldUpdate true if we should update the onlin db
-  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
-  */
-export function updateTaskByID (id, shouldUpdate, callback) {
-	db.get("0000", (err, doc) => {
-		if (err) {
-			callback(err);
 		} else {
-			const task = doc.tasks.filter((element) => element.id === id);
-			updateTaskPouch(db, task[0], (error) => {
-				if (shouldUpdate) {
-					updateUserFromMongo((couldNotUpdate) => {
-						if (couldNotUpdate) {
-							callback(couldNotUpdate);
-							return;
-						}
-					});
-				}
-				callback(error);
-			});
+			callback(err);
 		}
 	});
 }
@@ -1493,70 +1137,10 @@ export function updateTextBlock (block, date, shouldUpdate, callback) {
 	updateTextBlockPouch(db, block, date, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
-		}
-		callback(err);
-	});
-}
-
- /**
-  * Updates the textBlock with the id given.
-  *
-  * @param {String} id The id of the new version of the textBlock.
-  * @param {Date} date The date to be inserted if the update is to make the textBlock have an event with a date.
-  * @param {Boolean} shouldUpdate true if we should update the onlin db
-  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
-  */
-export function updateTextBlockByID (id, date, shouldUpdate, callback) {
-	db.get("0000", (err, doc) => {
-		if (err) {
-			callback(err);
 		} else {
-			const text = doc.userObject.textBlocks.filter((element) => element.id === id);
-			updateTextBlockPouch(db, text[0], date, (error) => {
-				if (shouldUpdate) {
-					updateUserFromMongo((couldNotUpdate) => {
-						if (couldNotUpdate) {
-							callback(couldNotUpdate);
-							return;
-						}
-					});
-				}
-				callback(error);
-			});
-		}
-	});
-}
-
- /**
-  * Updates the textBlock in the container at the index given.
-  *
-  * @param {Array} container The array where the textBlock is at.
-  * @param {Number} index The index in the container where the textBlock is at.
-  * @param {Boolean} shouldUpdate true if we should update the onlin db
-  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
-  */
-export function updateTextBlockFromContainer (container, index, date, shouldUpdate, callback) {
-	db.get("0000", (err, doc) => {
-		if (err) {
 			callback(err);
-		} else {
-			const text = doc.userObject.textBlocks.filter((element) => element.id === container.content[index]);
-			updateTextBlockPouch(db, text[0], date, (error) => {
-				if (shouldUpdate) {
-					updateUserFromMongo((couldNotUpdate) => {
-						if (couldNotUpdate) {
-							callback(couldNotUpdate);
-							return;
-						}
-					});
-				}
-				callback(error);
-			});
 		}
 	});
 }
@@ -1572,13 +1156,11 @@ export function updateTheme (theme, shouldUpdate, callback) {
 	updateThemePouch(db, theme, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
+		} else {
+			callback(err);
 		}
-		callback(err);
 	})
 }
 
@@ -1593,69 +1175,10 @@ export function updateTracker (tracker, shouldUpdate, callback) {
 	updateTrackerPouch(db, tracker, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
-				if (couldNotUpdate) {
-					callback(couldNotUpdate);
-					return;
-				}
+				callback(couldNotUpdate);
 			});
-		}
-		callback(err);
-	});
-}
-
- /**
-  * Updates the tracker with the id given.
-  *
-  * @param {String} id The id of the new version of the tracker.
-  * @param {Boolean} shouldUpdate true if we should update the onlin db
-  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
-  */
-export function updateTrackerByID (id, shouldUpdate, callback) {
-	db.get("0000", (err, doc) => {
-		if (err) {
-			callback(err);
 		} else {
-			const tracker = doc.userObject.trackers.filter((element) => element.id === id);
-			updateTrackerPouch(db, tracker[0], (error) => {
-				if (shouldUpdate) {
-					updateUserFromMongo((couldNotUpdate) => {
-						if (couldNotUpdate) {
-							callback(couldNotUpdate);
-							return;
-						}
-					});
-				}
-				callback(error);
-			});
-		}
-	});
-}
-
- /**
-  * Updates the tracker in the container at the index given.
-  *
-  * @param {Array} container The array where the tracker is at.
-  * @param {Number} index The index in the container where the tracker is at.
-  * @param {Boolean} shouldUpdate true if we should update the onlin db
-  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
-  */
-export function updateTrackerFromContainer (container, index, shouldUpdate, callback) {
-	db.get("0000", (err, doc) => {
-		if (err) {
 			callback(err);
-		} else {
-			const tracker = doc.userObject.trackers.filter((element) => element.id === container.content[index]);
-			updateTrackerPouch(db, tracker[0], (error) => {
-				if (shouldUpdate) {
-					updateUserFromMongo((couldNotUpdate) => {
-						if (couldNotUpdate) {
-							callback(couldNotUpdate);
-							return;
-						}
-					});
-				}
-				callback(error);
-			});
 		}
 	});
 }

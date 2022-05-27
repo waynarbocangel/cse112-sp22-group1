@@ -12,12 +12,13 @@ export let createSignifierTests = () => {
 					expect(signifier.meaning).toBe("Test Signifier");
 					expect(signifier.symbol).toBe("&#128579;");
 					await expect(db.get("0000").then(doc => {
+						expect(doc.monthlyLogs.length).toBe(4);
 						expect(doc.signifiers.length).toBe(2);
 						expect(doc.signifiers[1].id).toBe(signifier.id);
 						done();
 					})).resolves.toBe(undefined);
 				});
 			});
-		}, 10000);
+		}, 5000);
 	});
 };

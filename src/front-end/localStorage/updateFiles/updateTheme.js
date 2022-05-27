@@ -1,4 +1,4 @@
-import { setUser } from "../userOperations";
+import { readUser } from "../userOperations";
 
 /**
  * Finds and update the theme passed in.
@@ -8,35 +8,33 @@ import { setUser } from "../userOperations";
  * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
  export function updateThemePouch (db, theme, callback) {
-	console.log(theme);
-	db.get("0000", (err, doc) => {
+	readUser((err, user) => {
 		if (err) {
 			callback(err);
 		} else {
 			let newUser = {
 				_id: "0000",
-				_rev: doc._rev,
-				email: doc.email,
+				_rev: user._rev,
+				email: user.email,
 				theme: theme,
-				index: doc.index,
-				dailyLogs: doc.dailyLogs,
-				monthlyLogs: doc.monthlyLogs,
-				futureLogs: doc.futureLogs,
-				collections: doc.collections,
-				trackers: doc.trackers,
-				imageBlocks: doc.imageBlocks,
-				audioBlocks: doc.audioBlocks,
-				textBlocks: doc.textBlocks,
-				tasks: doc.tasks,
-				events: doc.events,
-				signifiers: doc.signifiers
+				index: user.index,
+				dailyLogs: user.dailyLogs,
+				monthlyLogs: user.monthlyLogs,
+				futureLogs: user.futureLogs,
+				collections: user.collections,
+				trackers: user.trackers,
+				imageBlocks: user.imageBlocks,
+				audioBlocks: user.audioBlocks,
+				textBlocks: user.textBlocks,
+				tasks: user.tasks,
+				events: user.events,
+				signifiers: user.signifiers
 			};
 			db.put(newUser).then((res) => {
 				if (res) {
-					setUser(newUser);
 					callback(null);
 				}
-			});
+			}).catch(error => callback(error));
 		}
 	})
 }

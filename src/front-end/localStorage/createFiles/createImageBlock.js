@@ -6,12 +6,13 @@ let imageBlockObject = {};
  * Creates and stores a new imageBlock created from the given parameters.
  * @memberof createFunctions
  * @param {database} db The local pouch database.
- * @param {String} parent The id of the parent of the new imageBlock.
+ * @param {Object} parent The parent of the new imageBlock.
+ * @param {Number} index The insert index in parent for block
  * @param {String} arrangement arrangement of the imageBlock.
  * @param {String} data image of the imageBlock stored as a buffer.
  * @param {doubleParameterCallback} callback Eihter sends the newly created imageBlock or an error if there is one to the callback.
  */
-export function createImageBlockPouch (db, parent, arrangement, data, callback) {
+export function createImageBlockPouch (db, parent, index, arrangement, data, callback) {
 	localStorage.readUser((err, user) => {
 		/* istanbul ignore next */
 		if (err) {
@@ -23,11 +24,18 @@ export function createImageBlockPouch (db, parent, arrangement, data, callback) 
 			imageBlockObject = {
 				id: id,
 				objectType: "imageBlock",
-				parent: parent,
+				parent: parent.id,
 				arrangement: arrangement,
 				data: data
 			};
 
+			if (index) {
+				parent.content.splice(index, 0, id);
+			} else {
+				parent.content.push(id);
+			}
+			user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter(object => object.id !== parent.id);
+			user[`${parent.objectType}s`].push(parent);
 			user.imageBlocks.push(imageBlockObject);
 
 			let newUser = {
@@ -52,7 +60,6 @@ export function createImageBlockPouch (db, parent, arrangement, data, callback) 
 			return db.put(newUser).then((res) => {
 				/* istanbul ignore next */
 				if (res.ok) {
-					localStorage.setUser(newUser);
 					callback(null, imageBlockObject);
 				}
 				/* istanbul ignore next */

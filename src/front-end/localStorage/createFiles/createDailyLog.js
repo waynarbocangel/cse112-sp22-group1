@@ -54,7 +54,6 @@ export function createDailyLogPouch (db, parent, content, collections, trackers,
 			return db.put(newUser).then((res) => {
 				if (res.ok) {
 					callback(null, dailyObject);
-					localStorage.setUser(newUser);
 				}
 			/* istanbul ignore next */
 			}).catch((err) => {

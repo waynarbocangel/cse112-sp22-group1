@@ -1,4 +1,4 @@
-import { setUser } from "../userOperations";
+import { readUser } from "../userOperations";
 
 /**
  * Finds and update the futureLog passed in.
@@ -9,7 +9,7 @@ import { setUser } from "../userOperations";
  */
  export function updateFutureLogPouch (db, log, callback) {
 	console.log(log);
-	db.get("0000", (err, doc) => {
+	readUser((err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
@@ -35,10 +35,9 @@ import { setUser } from "../userOperations";
 			};
 			db.put(newUser).then((res) => {
 				if (res) {
-					setUser(newUser);
 					callback(res);
 				}
-			});
+			}).catch(error => callback(error));
 		}
 	})
 }

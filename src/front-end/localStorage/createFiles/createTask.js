@@ -53,7 +53,6 @@ export function createTaskPouch (db, parent, text, complete, signifiers, callbac
 			return db.put(newUser).then((res) => {
 				/* istanbul ignore next */
 				if (res.ok) {
-					localStorage.setUser(newUser);
 					callback(null, taskObject);
 				}
 				/* istanbul ignore next */
