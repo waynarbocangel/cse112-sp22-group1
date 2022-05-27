@@ -106,7 +106,6 @@ const userSchema = {
 			months: [
 				{
 					id: String,
-					content: [String],
 					monthlyLog: String
 				}
 			],
