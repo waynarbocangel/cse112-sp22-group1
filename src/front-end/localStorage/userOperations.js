@@ -106,11 +106,7 @@ export let setupStorage = (database) => {
  */
 export function loginUser (email, pwd, callback) {
 	fetch(`${api}/auth`, {
-<<<<<<< HEAD
         credentials: "include",
-=======
-        credentials: "same-origin",
->>>>>>> d017f45 (frontend: updates frontend to use new backend api)
 		headers: {
 			"content-type": "application/json; charset=UTF-8",
 			"Origin": origin
@@ -127,61 +123,19 @@ export function loginUser (email, pwd, callback) {
 
 /**
  * Retrieves the information from the currently logged in user from the server.
-<<<<<<< HEAD
-=======
  * (needs both front-end and back-end servers to be running)
  * @param {singleParameterCallback} callback The user object on success, an error on failure.
  */
-export function getUser (callback) {
-	fetch(`${api}/user`, {
-        credentials: "same-origin",
-		headers: {
-			"content-type": "application/json; charset=UTF-8",
-			"Origin": origin
-		},
-		method: "GET"
-	}).then((data) => data.json()).then((res) => {
-		callback(res);
-	});
-}
-
-/**
- * Creates a user in the local db.
->>>>>>> d017f45 (frontend: updates frontend to use new backend api)
- * (needs both front-end and back-end servers to be running)
- * @param {singleParameterCallback} callback The user object on success, an error on failure.
- */
-<<<<<<< HEAD
 export function getUser (callback) {
 	fetch(`${api}/user`, {
         credentials: "include",
-=======
-export function createUser (email, pwd, callback) {
-	fetch(`${api}/user`, {
->>>>>>> d017f45 (frontend: updates frontend to use new backend api)
 		headers: {
 			"content-type": "application/json; charset=UTF-8",
 			"Origin": origin
 		},
-<<<<<<< HEAD
 		method: "GET"
 	}).then((data) => data.json()).then((res) => {
 		callback(res);
-=======
-		body: JSON.stringify({
-			email: email,
-			pwd: pwd
-		}),
-		method: "POST"
-	}).then((data) => data.json()).then((userData) => {
-		if (userData.error) {
-			callback(userData);
-		} else {
-			createUserPouch(db, userData, (user) => {
-				callback(user);
-			});
-		}
->>>>>>> d017f45 (frontend: updates frontend to use new backend api)
 	});
 }
 
