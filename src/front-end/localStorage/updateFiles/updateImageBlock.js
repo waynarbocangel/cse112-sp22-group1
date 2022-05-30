@@ -1,11 +1,11 @@
 /**
  * Finds and update the imageBlock passed in.
- *
+ * @memberof updateFunctions
  * @param {database} db The local pouch database.
  * @param {Object} imageBlock The imageBlock to be deleted.
- * @callback (res) Sends an error if there is one to the callback.
+ * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
-export function updateImageBlockPouch (db, imageBlock, callback) {
+ export function updateImageBlockPouch (db, imageBlock, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
@@ -17,7 +17,6 @@ export function updateImageBlockPouch (db, imageBlock, callback) {
 			return db.put({_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
-				pwd: doc.pwd,
 				theme: doc.theme,
 				index: doc.index,
 				dailyLogs: doc.dailyLogs,

@@ -3,13 +3,13 @@ let dailyObject = {};
 
 /**
  * Creates and stores a new dailyLog created from the given parameters.
- *
+ * @memberof createFunctions
  * @param {database} db The local pouch database.
  * @param {String} parent The id of the parent of the new dailyLog.
  * @param {Array} content Array of textBlocks that should appear in dailyLog.
  * @param {Array} trackers Array of trackers that should appear in dailyLog.
  * @param {Date} date The date of the dailyLog.
- * @callback (err,dailyLog) Eihter sends the newly created dailyLog or an error if there is one to the callback.
+ * @param {doubleParameterCallback} callback Eihter sends the newly created dailyLog or an error if there is one to the callback.
  */
 export function createDailyLogPouch (db, parent, content, trackers, date, callback) {
 	db.get("0000", (err, doc) => {
@@ -43,10 +43,10 @@ export function createDailyLogPouch (db, parent, content, trackers, date, callba
 			};
 
 			doc.dailyLogs.push(dailyObject);
-			return db.put({_id: "0000",
+			return db.put({
+				_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
-				pwd: doc.pwd,
 				theme: doc.theme,
 				index: doc.index,
 				dailyLogs: doc.dailyLogs,
@@ -59,16 +59,14 @@ export function createDailyLogPouch (db, parent, content, trackers, date, callba
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: doc.events,
-				signifiers: doc.signifiers}).then((res) => {
-				console.log(res);
-			}).
-catch((error) => {
-				callback(error, null);
+				signifiers: doc.signifiers
 			});
 		}
 	}).then((res) => {
-		if (res.ok) {
+		if (res) {
 			callback(null, dailyObject);
 		}
+	}).catch((error) => {
+		callback(error, null);
 	});
 }

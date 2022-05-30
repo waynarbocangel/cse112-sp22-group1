@@ -1,9 +1,9 @@
 /**
  * Finds and update the dailyLog passed in.
- *
+ * @memberof updateFunctions
  * @param {database} db The local pouch database.
  * @param {Object} dailyLog The dailyLog to be deleted.
- * @callback (res) Sends an error if there is one to the callback.
+ * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
 export function updateDailyLogPouch (db, log, callback) {
 	console.log(log);
@@ -17,7 +17,6 @@ export function updateDailyLogPouch (db, log, callback) {
 			return db.put({_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
-				pwd: doc.pwd,
 				theme: doc.theme,
 				index: doc.index,
 				dailyLogs: dailyLogArr,

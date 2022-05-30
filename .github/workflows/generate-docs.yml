@@ -10,6 +10,7 @@ on:
       - pipeline2.0
       - front-end
       - back-end
+      - dev-ops
 
   pull_request:
     branches:
@@ -18,6 +19,7 @@ on:
       - front-end_drop
       - front-end
       - back-end
+      - dev-ops
 
 jobs:
   generate-docs:

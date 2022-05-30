@@ -1,11 +1,11 @@
 /**
  * Finds and update the futureLog passed in.
- *
+ * @memberof updateFunctions
  * @param {database} db The local pouch database.
  * @param {Object} log The futureLog to be deleted.
- * @callback (res) Sends an error if there is one to the callback.
+ * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
-export function updateFutureLogPouch (db, log, callback) {
+ export function updateFutureLogPouch (db, log, callback) {
 	console.log(log);
 	db.get("0000", (err, doc) => {
 		if (err) {
@@ -17,7 +17,6 @@ export function updateFutureLogPouch (db, log, callback) {
 			db.put({_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
-				pwd: doc.pwd,
 				theme: doc.theme,
 				index: doc.index,
 				dailyLogs: doc.dailyLogs,

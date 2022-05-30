@@ -1,9 +1,9 @@
 /**
  * Finds and deletes the tracker.
- *
+ * @memberof deleteFunctions
  * @param {database} db The local pouch database.
  * @param {String} id The id of the object to be deleted.
- * @callback (res) Sends an error if there is one to the callback.
+ * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
 export function deleteTrackerPouch (db, id, callback) {
 	db.get("0000", (err, doc) => {
@@ -35,7 +35,6 @@ export function deleteTrackerPouch (db, id, callback) {
 				_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
-				pwd: doc.pwd,
 				theme: doc.theme,
 				index: doc.index,
 				dailyLogs: doc.dailyLogs,

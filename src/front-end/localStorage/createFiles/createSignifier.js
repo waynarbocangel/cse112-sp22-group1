@@ -3,11 +3,11 @@ let signifierObject = {};
 
 /**
  * Creates and stores a new signifier created from the given parameters.
- *
+ * @memberof createFunctions
  * @param {database} db The local pouch database.
  * @param {String} meaning The meaning of the signifier.
  * @param {String} symbol The symbol of the signifier.
- * @callback (err,signifier) Eihter sends the newly created signifier or an error if there is one to the callback.
+ * @param {doubleParameterCallback} callback Eihter sends the newly created signifier or an error if there is one to the callback.
  */
 export function createSignifierPouch (db, meaning, symbol, callback) {
 	db.get("0000", (err, doc) => {
@@ -44,7 +44,6 @@ export function createSignifierPouch (db, meaning, symbol, callback) {
 			return db.put({_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
-				pwd: doc.pwd,
 				theme: doc.theme,
 				index: doc.index,
 				dailyLogs: doc.dailyLogs,
@@ -57,10 +56,10 @@ export function createSignifierPouch (db, meaning, symbol, callback) {
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: doc.events,
-				signifiers: doc.signifiers}).then((res) => {
+				signifiers: doc.signifiers
+			}).then((res) => {
 				console.log(res);
-			}).
-catch((error) => {
+			}).catch((error) => {
 				console.log(error);
 				callback(error, null);
 			});

@@ -1,12 +1,12 @@
 
 /**
  * Finds and update the tracker passed in.
- *
+ * @memberof updateFunctions
  * @param {database} db The local pouch database.
  * @param {Object} tracker The tracker to be deleted.
- * @callback (res) Sends an error if there is one to the callback.
+ * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
-export function updateTrackerPouch (db, tracker, callback) {
+ export function updateTrackerPouch (db, tracker, callback) {
 	console.log(tracker);
 	db.get("0000", (err, doc) => {
 		if (err) {
@@ -18,7 +18,6 @@ export function updateTrackerPouch (db, tracker, callback) {
 			return db.put({_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
-				pwd: doc.pwd,
 				theme: doc.email,
 				index: doc.index,
 				dailyLogs: doc.dailyLogs,

@@ -3,12 +3,12 @@ let imageBlockObject = {};
 
 /**
  * Creates and stores a new imageBlock created from the given parameters.
- *
+ * @memberof createFunctions
  * @param {database} db The local pouch database.
  * @param {String} parent The id of the parent of the new imageBlock.
  * @param {String} arrangement arrangement of the imageBlock.
  * @param {Buffer} date image of the imageBlock stored as a buffer.
- * @callback (err,imageBlock) Eihter sends the newly created imageBlock or an error if there is one to the callback.
+ * @param {doubleParameterCallback} callback Eihter sends the newly created imageBlock or an error if there is one to the callback.
  */
 export function createImageBlockPouch (db, parent, arrangement, data, callback) {
 	db.get("0000", (err, doc) => {
@@ -45,10 +45,10 @@ export function createImageBlockPouch (db, parent, arrangement, data, callback) 
 
 			newImageBlocks.push(imageBlockObject);
 
-			return db.put({_id: "0000",
+			return db.put({
+				_id: "0000",
 				_rev: doc._rev,
 				email: doc.email,
-				pwd: doc.pwd,
 				theme: doc.theme,
 				index: doc.index,
 				dailyLogs: doc.dailyLogs,
@@ -61,10 +61,11 @@ export function createImageBlockPouch (db, parent, arrangement, data, callback) 
 				textBlocks: doc.textBlocks,
 				tasks: doc.tasks,
 				events: doc.events,
-				signifiers: doc.signifiers}).then((res) => {
+				signifiers: doc.signifiers
+			}).then((res) => {
+				console.log("created imageBlock successfull");
 				console.log(res);
-			}).
-catch((error) => {
+			}).catch((error) => {
 				console.log(error);
 				callback(error, null);
 			});
