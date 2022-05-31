@@ -9,15 +9,18 @@
     justify-content: space-between;
     padding: 0 0 1rem;
     min-width: 12vw;
-    max-width: 24vw;
+    max-width: 23vw;
     background-color: #FCFCFCCC;
-    
+    position: relative;
     box-shadow: 0 0 10px #00000040;
     margin-top: 0.5vw;
     margin-bottom: 0.5vw;
     margin-left:1vw;
 }
 #titleWrapper{
+    display:flex;
+    flex-wrap: nowrap;
+    vertical-align: middle;
     padding-top: 1vw;
     padding-left: 2.5vw;
     padding-right: 2vw;
@@ -26,6 +29,22 @@
     font-size: 18pt;
     text-align: left;
     text-decoration: underline;
+    max-width: 14vw;
+    flex-grow: 1;
+}
+#buttonwrapper{
+    align-self:center;    
+}
+#deleteButton{
+    cursor: pointer;    
+    font-size: 16px;
+    border: none;
+    color:white;
+    padding: 4px 8px;
+    text-decoration: none;
+    margin: 4px 5px;
+    border-radius: 6px;
+    background-color: #f93154ff;
 }
 #trackerWrapper{
     padding-left: 2.5vw;
