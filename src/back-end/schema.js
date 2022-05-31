@@ -35,7 +35,8 @@ const userSchema = {
      */
 	index: {
 		objectType: String,
-		contents: [String]
+		futureLogs: [String],
+		collections: [String]
 	},
 
 
@@ -102,6 +103,7 @@ const userSchema = {
          * @typedef {Object} FutureLog
          * @property {String} id The future log's id
          * @property {String} objectType The type of object
+		 * @property {String} title The title of the future log
          * @property {Date} startDate The future log start date
          * @property {Date} endDate The future log end date
 		 * @property {Array<String>} content List of ids of textBlocks in the log
@@ -113,6 +115,7 @@ const userSchema = {
 		{
 			id: String,
 			objectType: String,
+			title: String,
 			startDate: Date,
 			endDate: Date,
 			content: [String],

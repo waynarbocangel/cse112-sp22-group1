@@ -10,9 +10,10 @@ let trackerObject = {};
  * @param {Array} content The id's of the textBlocks of the new tracker.
  * @param {String} parent The id of the parent of the tracker.
  * @param {Object} addToParent A parent object to which to add tracker
+ * @param {Boolean} recurring  Tells if it should be recurring in parent
  * @param {doubleParameterCallback} callback Eihter sends the newly created tracker or an error if there is one to the callback.
  */
-export function createTrackerPouch (db, title, content, parent, addToParent, callback) {
+export function createTrackerPouch (db, title, content, parent, addToParent, recurring, callback) {
 	/* istanbul ignore next */
 	localStorage.readUser((err, user) => {
 		/* istanbul ignore next */
@@ -34,20 +35,13 @@ export function createTrackerPouch (db, title, content, parent, addToParent, cal
 			user.trackers.push(trackerObject);
 			
 			if (addToParent) {
-				addToParent.trackers.push(trackerObject.id);
-				if (addToParent.objectType == "dailyLog"){
-					user.dailyLogs = user.dailyLogs.filter(dailyLog => dailyLog.id !== addToParent.id);
-					user.dailyLogs.push(addToParent);
-				} else if (addToParent.objectType == "monthlyLog") {
-					user.monthlyLogs = user.monthlyLogs.filter(monthlyLog => monthlyLog.id !== addToParent.id);
-					user.monthlyLogs.push(addToParent);
-				} else if (addToParent.objectType == "futureLog") {
-					user.futureLogs = user.futureLogs.filter(futureLog => futureLog.id !== addToParent.id);
-					user.futureLogs.push(addToParent);
-				} else if (addToParent.objectType == "collection") {
-					user.collections = user.collections.filter(collection => collection.id !== addToParent.id);
-					user.collections.push(addToParent);
+				if (recurring) {
+					addToParent.recurringTrackers.push(trackerObject.id);
+				} else {
+					addToParent.trackers.push(trackerObject.id);
 				}
+				user[`${addToParent.objectType}s`] = user[`${addToParent.objectType}s`].filter(element => element.id !== addToParent.id);
+				user[`${addToParent.objectType}s`].push(addToParent);
 			}
 			
 			let newUser = {

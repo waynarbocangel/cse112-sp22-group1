@@ -10,10 +10,10 @@ export let updateCollectionTests = () => {
                 let originalCollectionID = originalCollection.id;
                 let originalParent = (user.monthlyLogs.filter(log => log.id === originalCollection.parent))[0];
                 let originalParentID = originalParent.id;
-                user.collections[0].parent = user.monthlyLogs[1].id;
+                user.collections[0].parent = user.monthlyLogs[0].id;
                 user.collections[0].title = "Now Updated Test Collection";
-                let newParentID = user.monthlyLogs[1].id;
-                updateCollection(user.collections[0], originalParent, user.monthlyLogs[1], true, async (err) => {
+                let newParentID = user.monthlyLogs[0].id;
+                updateCollection(user.collections[0], originalParent, user.monthlyLogs[0], true, async (err) => {
                     expect(err === null).toBe(true);
                     await expect(db.get("0000").then(doc => {
                         expect(doc.monthlyLogs.length).toBe(4);

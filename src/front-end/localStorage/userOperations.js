@@ -35,9 +35,11 @@ import {createUserPouch} from "./createFiles/createUser.js";
 // ---------------importing from delete-------------------------------------------
 import {deleteAudioBlockPouch} from "./deleteFiles/deleteAudioBlock.js";
 import {deleteCollectionPouch} from "./deleteFiles/deleteCollection.js";
+import {deleteDailyLogPouch} from "./deleteFiles/deleteDailyLog.js";
 import {deleteEventPouch} from "./deleteFiles/deleteEvent.js";
 import {deleteFutureLogPouch} from "./deleteFiles/deleteFutureLog.js";
 import {deleteImageBlockPouch} from "./deleteFiles/deleteImageBlock.js";
+import {deleteMonthlyLogPouch} from "./deleteFiles/deleteMonthlyLog.js";
 import {deleteSignifierPouch} from "./deleteFiles/deleteSignifier.js";
 import {deleteTaskPouch} from "./deleteFiles/deleteTask.js";
 import {deleteTextBlockPouch} from "./deleteFiles/deleteTextBlock.js";
@@ -231,7 +233,7 @@ export function createDailyLog (parent, content, collections, trackers, date, sh
  * @param {doubleParameterCallback} callback Either sends the event or an error, if there is one, to the callback.
  */
 export function createEvent (title, references, date, shouldUpdate, callback) {
-	createEventPouch(db, title, references, date, signifiers, (error, event) => {
+	createEventPouch(db, title, references, date, (error, event) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
 				if (couldNotUpdate) {
@@ -248,7 +250,8 @@ export function createEvent (title, references, date, shouldUpdate, callback) {
 
 /**
  * Creates a new futureLog from the parameters passed in and updates the online db.
- *
+ * 
+ * @param {String} title The title of the future log.
  * @param {Date} startDate The start date of the new futureLog.
  * @param {Date} endDate The end date of the new futureLog.
  * @param {Array} months The id's of the monthlyLogs included in the new futureLog.
@@ -258,8 +261,8 @@ export function createEvent (title, references, date, shouldUpdate, callback) {
  * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {doubleParameterCallback} callback Either sends the futureLog or an error, if there is one, to the callback.
  */
-export function createFutureLog (startDate, endDate, months, content, collections, trackers, shouldUpdate, callback) {
-	createFutureLogPouch(db, startDate, endDate, months, content, collections, trackers, (err, futureLog) => {
+export function createFutureLog (title, startDate, endDate, months, content, collections, trackers, shouldUpdate, callback) {
+	createFutureLogPouch(db, title, startDate, endDate, months, content, collections, trackers, (err, futureLog) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
 				if (couldNotUpdate) {
@@ -363,7 +366,7 @@ export function createSignifier (meaning, symbol, shouldUpdate, callback) {
  * @param {doubleParameterCallback} callback Either sends the dailyLog or an error, if there is one, to the callback.
  */
 export function createTask (references, text, complete, shouldUpdate, callback) {
-	createTaskPouch(db, references, text, complete, signifiers, (error, task) => {
+	createTaskPouch(db, references, text, complete, (error, task) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
 				if (couldNotUpdate) {
@@ -415,11 +418,12 @@ export function createTextBlock (parent, index, content, tabLevel, kind, objectR
  * @param {Array} content The array of ids of textBlocks that are included in the new tracker.
  * @param {String} parent The id of the parent of the new tracker.
  * @param {Object} addToParent A parent object to update
+ * @param {Boolean} recurring  Tells if it should be recurring in parent
  * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {doubleParameterCallback} callback Either sends the tracker or an error, if there is one, to the callback.
  */
-export function createTracker (title, content, parent, addToParent, shouldUpdate, callback) {
-	createTrackerPouch(db, title, content, parent,  addToParent,(err, tracker) => {
+export function createTracker (title, content, parent, addToParent, recurring, shouldUpdate, callback) {
+	createTrackerPouch(db, title, content, parent, addToParent, recurring, (err, tracker) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
 				if (couldNotUpdate) {
@@ -526,7 +530,7 @@ export function deleteAudioBlockByID (id, shouldUpdate, callback) {
  * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteCollection (collection, parent, shouldUpdate, callback) {
-	deleteCollectionPouch(db, collection.id, parent, (err) => {
+	deleteCollectionPouch(db, collection, parent, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
 				callback(couldNotUpdate);
@@ -545,7 +549,33 @@ export function deleteCollection (collection, parent, shouldUpdate, callback) {
  * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteCollectionByID (id, shouldUpdate, callback) {
-	deleteCollectionPouch(db, id, (err) => {
+	readUser((err, user) => {
+		if (err) {
+			callback(err);
+		} else {
+			deleteCollectionPouch(db, user.collections.filter(collection => collection.id === id)[0], (err) => {
+				if (shouldUpdate) {
+					updateUserFromMongo((couldNotUpdate) => {
+						callback(couldNotUpdate);
+					});
+				} else {
+					callback(err);
+				}
+			});
+		}
+	})
+}
+
+/**
+ * Deletes the collection passed in.
+ *
+ * @param {Object} dailyLog The object to be deleted.
+ * @param {Object} parent The parent of the dailyLog
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
+ * @param {singleParameterCallback} callback Returns an error if there is one.
+ */
+ export function deleteDailyLog (dailyLog, parent, shouldUpdate, callback) {
+	deleteDailyLogPouch(db, dailyLog, parent, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
 				callback(couldNotUpdate);
@@ -719,8 +749,24 @@ export function deleteImageBlockByID (id, shouldUpdate, callback) {
 	});
 }
 
-export function deleteMonthlyLog (monthlyLog, shouldUpdate, callback) {
-
+/**
+ * Deletes the collection passed in.
+ *
+ * @param {Object} monthlyLog The object to be deleted.
+ * @param {Object} parent The parent of the monthlyLog
+ * @param {Boolean} shouldUpdate true if we should update the onlin db
+ * @param {singleParameterCallback} callback Returns an error if there is one.
+ */
+ export function deleteMonthlyLog (monthlyLog, parent, shouldUpdate, callback) {
+	deleteMonthlyLogPouch(db, monthlyLog, parent, (err) => {
+		if (shouldUpdate) {
+			updateUserFromMongo((couldNotUpdate) => {
+				callback(couldNotUpdate);
+			});
+		} else {
+			callback(err);
+		}
+	});
 }
 
 /**
@@ -1191,7 +1237,9 @@ export function updateTracker (tracker, shouldUpdate, parent, addParent, callbac
 			updateUserFromMongo((couldNotUpdate) => {
 				callback(couldNotUpdate);
 			});
+			/* istanbul ignore next */
 		} else {
+			/* istanbul ignore next */
 			callback(err);
 		}
 	});

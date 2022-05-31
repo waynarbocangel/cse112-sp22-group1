@@ -33,7 +33,7 @@ export function createMonthlyLogPouch (db, parent, days, content, collections, t
 				collections: collections,
 				days: days,
 				trackers: trackers,
-				recuringTrackers: []
+				recurringTrackers: []
 			};
 			doc.monthlyLogs.push(monthlyObject);
 			let newUser = {

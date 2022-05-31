@@ -7,7 +7,7 @@ export let createFutureLogTests = () => {
 			let startDate = new Date();
 			let endDate = new Date();
 			endDate.setMonth(endDate.getMonth() + 3);
-			createFutureLog(startDate, endDate, [], [], [],[], true, async (err, futureLog) => {
+			createFutureLog("Testing Future Log", startDate, endDate, [], [], [],[], true, async (err, futureLog) => {
 				expect(err === null).toBe(true);
 				expect(futureLog.startDate.getTime()).toBe(startDate.getTime());
 				expect(futureLog.endDate.getTime()).toBe(endDate.getTime());
@@ -19,6 +19,8 @@ export let createFutureLogTests = () => {
 				expect(futureLog.recurringTrackers.length).toBe(0);
 				await expect(db.get("0000").then(doc => {
 					expect(doc.monthlyLogs.length).toBe(4);
+					expect(doc.index.futureLogs.length).toBe(1);
+					expect(doc.index.futureLogs[0]).toBe(futureLog.id);
 					for(let i = 0; i < futureLog.months.length; i++){
 						expect(doc.monthlyLogs.filter(month => month.id === futureLog.months[i].id).length > 0).toBe(true);
 					}

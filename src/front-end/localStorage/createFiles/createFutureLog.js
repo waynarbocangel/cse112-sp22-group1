@@ -40,6 +40,7 @@ function addMonths (startDate, end, futureLog, callback) {
  * Creates and stores a new futureLog created from the given parameters.
  * @memberof createFunctions
  * @param {database} db The local pouch database.
+ * @param {String} title The title of the future log.
  * @param {Date} startDate The start date of the futureLog.
  * @param {Date} endDate The end date of the futureLog.
  * @param {Array} months The ids of the months that are included by the futureLog.
@@ -48,7 +49,7 @@ function addMonths (startDate, end, futureLog, callback) {
  * @param {Array} trackers The ids of the trackers included by the futureLog.
  * @param {doubleParameterCallback} callback Eihter sends the newly created futureLog or an error if there is one to the callback.
  */
-export function createFutureLogPouch (db, startDate, endDate, months, content, collections, trackers, callback) {
+export function createFutureLogPouch (db, title, startDate, endDate, months, content, collections, trackers, callback) {
 	let futureObject = {};
 	localStorage.readUser((err, user) => {
 		if (err == null){
@@ -57,6 +58,7 @@ export function createFutureLogPouch (db, startDate, endDate, months, content, c
 			futureObject = {
 				id: id,
 				objectType: "futureLog",
+				title: title,
 				startDate: startDate,
 				endDate: endDate,
 				months: months,
@@ -67,7 +69,7 @@ export function createFutureLogPouch (db, startDate, endDate, months, content, c
 			};
 
 			user.futureLogs.push(futureObject);
-			user.index.contents.push(futureObject.id);
+			user.index.futureLogs.splice(0, 0, futureObject.id);
 
 			return db.put({_id: "0000",
 				_rev: user._rev,

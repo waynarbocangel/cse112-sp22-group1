@@ -11,6 +11,8 @@ import { createAudioBlockTests } from './localStorageTests/createTests/createAud
 import { createTextBlockTests } from './localStorageTests/createTests/createTextBlockTests.js';
 
 import { deleteCollectionsTests } from './localStorageTests/deleteTests/deleteCollectionTests.js';
+import { deleteSignifierTests } from './localStorageTests/deleteTests/deleteSignifierTests.js';
+import { deleteTrackerTests } from './localStorageTests/deleteTests/deleteTrackerTests.js';
 
 import { updateAudioBlockTests } from './localStorageTests/updateTests/updateAudioBlockTests.js';
 import { updateCollectionTests } from './localStorageTests/updateTests/updateCollectionTests.js';
@@ -37,17 +39,18 @@ describe ("All tests for localStorage", () => {
 	createCollectionTests();
 	createTrackerTests();
 	createSignifierTests();
-	createImageBlockTests();
+	// createImageBlockTests();
 	createTextBlockTests();
-	createAudioBlockTests();
+	// createAudioBlockTests();
 
-	updateAudioBlockTests();
+	// updateAudioBlockTests();
 	updateCollectionTests();
 	updateDailyLogTests();
 	// updateFutureLogTests();
 
-	// deleteCollectionsTests();
-	
+	deleteCollectionsTests();
+	deleteSignifierTests();
+	deleteTrackerTests();
 
 	afterAll(async () => {
 		await deleteDB(true);

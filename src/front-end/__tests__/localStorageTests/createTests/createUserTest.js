@@ -23,7 +23,8 @@ export let createUserTests = () => {
 				theme: "lightmode",
 				index: {
 					objectType: "index",
-					contents: []
+					futureLogs: [],
+					collections: []
 				},
 				dailyLogs: [],
 				monthlyLogs: [],

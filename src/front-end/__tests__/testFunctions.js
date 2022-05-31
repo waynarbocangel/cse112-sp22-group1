@@ -14,7 +14,8 @@ export function compareUsers(stored, returned) {
 	isEqual = isEqual && (stored.email === returned.email);
 	isEqual = isEqual && (stored.theme === returned.theme);
     isEqual = isEqual && (stored.index.objectType === returned.index.objectType);
-	isEqual = isEqual && (stored.index.contents.length === returned.index.contents.length);
+	isEqual = isEqual && (stored.index.futureLogs.length === returned.index.futureLogs.length);
+	isEqual = isEqual && (stored.index.collections.length === returned.index.collections.length);
 	isEqual = isEqual && (stored.dailyLogs.length === returned.dailyLogs.length);
 	isEqual = isEqual && (stored.monthlyLogs.length === returned.monthlyLogs.length);
 	isEqual = isEqual && (stored.futureLogs.length === returned.futureLogs.length);
@@ -28,8 +29,12 @@ export function compareUsers(stored, returned) {
 	isEqual = isEqual && (stored.signifiers.length === returned.signifiers.length);
 	
 	// Checks index
-	for (let i = 0; i < stored.index.contents.length && isEqual; i++) {
-		isEqual = isEqual && (stored.index.contents[i] == returned.index.contents[i]);
+	for (let i = 0; i < stored.index.futureLogs.length && isEqual; i++) {
+		isEqual = isEqual && (stored.index.futureLogs[i] == returned.index.futureLogs[i]);
+	}
+
+	for (let i = 0; i < stored.index.collections.length && isEqual; i++) {
+		isEqual = isEqual && (stored.index.collections[i] == returned.index.collections[i]);
 	}
 
 	// Checks Daily Logs

@@ -7,9 +7,10 @@ import { readUser } from "../userOperations";
  * @param {Object} tracker The tracker to be deleted.
  * @param {Object} parent The original parent
  * @param {Object} addParent The new parent
+ * @param {Boolean} recurring  Tells if it should be recurring in parent
  * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
- export function updateTrackerPouch (db, tracker, parent, addParent, callback) {
+ export function updateTrackerPouch (db, tracker, parent, addParent, recurring, callback) {
 	readUser((err, user) => {
 		/* istanbul ignore next */
 		if (err) {
@@ -17,12 +18,19 @@ import { readUser } from "../userOperations";
 			callback(err);
 			/* istanbul ignore next */
 		} else {
-			
+
 			if (parent && addParent && tracker.parent != parent.id) {
 				parent.trackers = parent.trackers.filter(block => block !== tracker.id);
+				if (parent.recurringTrackers) {
+					parent.recurringTrackers = parent.recurringTrackers.filter(block => block !== tracker.id);
+				}
 				user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter(object => object.id !== parent.id);
 				user[`${parent.objectType}s`].push(parent);
-				addParent.tracker.push(collection.id);
+				if (recurring) {
+					addParent.recurringTrackers.push(collection.id);
+				} else {
+					addParent.tracker.push(collection.id);
+				}
 				user[`${addParent.objectType}s`] = user[`${addParent.objectType}s`].filter(object => object.id !== addParent.id);
 				user[`${addParent.objectType}s`].push(addParent);
 			} else if ((user.trackers.filter(block => block.id === tracker.id))[0].parent !== tracker.parent) {
