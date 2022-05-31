@@ -241,7 +241,7 @@ const userSchema = {
          * @property {String} id The event's id
          * @property {String} objectType The type of object
          * @property {String} title title of the event
-         * @property {String} parent id of the parent
+         * @property {Array<String>} references id of the references
          * @property {Date} date date of the event (optional)
          * @property {Array<String>} signifiers id of the signifier for the event
          */
@@ -249,7 +249,7 @@ const userSchema = {
 			id: String,
 			objectType: String,
 			title: String,
-			parent: String,
+			references: [String],
 			date: Date,
 			signifiers: [String]
 		}
@@ -261,7 +261,7 @@ const userSchema = {
          * @typedef {Object} Task
          * @property {String} id The task's id
          * @property {String} objectType The type of object
-         * @property {String} parent id of the parent
+         * @property {Array<String>} references id of the references
          * @property {String} text task description
          * @property {Number} complete non zero if task complete
          * @property {Array<String>} signifiers id of the signifier for the task
@@ -269,7 +269,7 @@ const userSchema = {
 		{
 			id: String,
 			objectType: String,
-			parent: String,
+			references: [String],
 			text: String,
 			complete: Number,
 			signifiers: [String]
