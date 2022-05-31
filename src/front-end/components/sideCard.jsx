@@ -14,7 +14,7 @@ let template = <template>
 	<link type="text/css" rel="stylesheet" href="sideCard.css" />
     <article class="card">
         <div id="titleWrapper">
-            <h1 id="title"contenteditable="true"></h1>
+            <h1 id="title" contenteditable="true">Title</h1>
             <div id="buttonwrapper">
                 <button id="deleteButton">Delete</button>
             </div>
@@ -38,9 +38,14 @@ export class SideCard extends HTMLElement {
         super();
         this.attachShadow({ mode: "open" });
 		this.shadowRoot.appendChild(template.content.cloneNode(true));
-        this.setTitle(title);
-        this.tracker = trackers;
-        this.addTracker(trackers)
+        // eslint-disable-next-line no-empty
+        if (title === null) {} else {
+            this.setTitle(title);
+        }
+        // eslint-disable-next-line no-empty
+        if (trackers === null) {} else {
+            this.addTracker(trackers)
+        }
         this.bindDeleteButton();
     }
 
@@ -56,12 +61,14 @@ export class SideCard extends HTMLElement {
 
     addTracker (tracker) {
         console.log(tracker);
+        this.tracker = tracker;
         const trackerTitle = this.shadowRoot.getElementById("trackerTitle");
         trackerTitle.innerText = tracker.title;
         for (let i = 0; i < tracker.content.length; i++) {
             let trackerblock = document.createElement("div");
             let trackertext = document.createElement("div");
             trackertext.classList.add("tracker-text");
+            trackertext.id = "trackerText" + i;
             trackerblock.classList.add("tracker-block");
             trackertext.innerText = tracker.content[i];
             trackerblock.appendChild(trackertext);
@@ -74,6 +81,7 @@ export class SideCard extends HTMLElement {
         this.shadowRoot.getElementById("deleteButton").addEventListener("click", () => {
             let pressed = this.shadowRoot.getElementById("title").innerText + " delete button was pressed!";
             console.log(pressed);
+            this.remove();
         })
     }
 }
