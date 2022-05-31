@@ -1,4 +1,4 @@
-import { readUser } from "../userOperations";
+import { deleteEvent, readUser } from "../userOperations";
 
 /**
  * Finds and update the event passed in.
@@ -31,10 +31,7 @@ import { readUser } from "../userOperations";
 			}
 
 			user.events = user.events.filter((element) => element.id !== event.id);
-
-			if (event.references.length > 0) {	
-				user.events.push(event);
-			}
+			user.events.push(event);
 			
 			let newUser = {
 				_id: "0000",
@@ -58,7 +55,11 @@ import { readUser } from "../userOperations";
 			return db.put(newUser).then((res) => {
 				/* istanbul ignore next */
 				if (res) {
-					callback(res);
+					if (event.references.length === 0) {	
+						deleteEvent(event, false, (failedToDelete) => {
+							callback(failedToDelete);
+						});
+					}
 				}
 				/* istanbul ignore next */
 			}).catch(error => callback(error));

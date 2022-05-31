@@ -64,8 +64,7 @@ function deleteBlock (db, block, id, callback) {
 				signifiers: user.signifiers}).then((res) => {
 				console.log(res);
 				callback(null);
-			}).
-catch((error) => {
+			}).catch((error) => {
 				console.log(error);
 				callback(error);
 			});

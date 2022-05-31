@@ -1,5 +1,5 @@
 // TODO: UNFINISHED, edit schema
-import { readUser } from "../userOperations";
+import { deleteTask, readUser } from "../userOperations";
 
 /**
  * Finds and update the task passed in.
@@ -32,9 +32,7 @@ import { readUser } from "../userOperations";
 			}
 
 			user.tasks = user.tasks.filter((element) => element.id !== task.id);
-			if (task.references.length > 0) {
-				user.tasks.push(task);
-			}
+			user.tasks.push(task);
 
 			let newUser = {
 				_id: "0000",
@@ -58,7 +56,11 @@ import { readUser } from "../userOperations";
 			return db.put(newUser).then((res) => {
 				/* istanbul ignore next */
 				if (res) {
-					callback(res);
+					if (task.references.length > 0) {
+						deleteTask(task, false, (failedDeleteTask) => {
+							callback(failedDeleteTask);
+						});
+					}
 				}
 				/* istanbul ignore next */
 			}).catch(error => callback(error));
