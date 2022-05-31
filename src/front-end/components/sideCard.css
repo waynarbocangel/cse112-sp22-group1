@@ -31,9 +31,11 @@
     text-decoration: underline;
     max-width: 14vw;
     flex-grow: 1;
+    line-height: 2.4vw;
 }
 #buttonwrapper{
-    align-self:center;    
+    margin-top: 1.3vw;
+    align-self:top;    
 }
 #deleteButton{
     cursor: pointer;    
