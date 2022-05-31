@@ -1,5 +1,5 @@
-import { createDailyLog, readUser } from "../../localStorage/userOperations.js";
-import { db } from "../localStorage.test.js";
+import { createDailyLog, readUser } from "../../../localStorage/userOperations.js";
+import { db } from "../../localStorage.test.js";
 
 export let createDailyLogTests = () => {
 	describe(" Tests for creating Daily Log", () => {

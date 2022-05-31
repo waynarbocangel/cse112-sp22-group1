@@ -1,6 +1,6 @@
-import { createAudioBlock, readUser } from "../../localStorage/userOperations.js";
-import { originalAudio as audio } from "./files.js";
-import { db } from "../localStorage.test.js";
+import { createAudioBlock, readUser } from "../../../localStorage/userOperations.js";
+import { originalAudio as audio } from "../files.js";
+import { db } from "../../localStorage.test.js";
 
 export let createAudioBlockTests = () => {
 	describe("Tests for creating Audio Blocks", () => {

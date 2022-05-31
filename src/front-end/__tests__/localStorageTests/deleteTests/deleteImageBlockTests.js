@@ -1,5 +1,5 @@
-import { deleteImageBlock, deleteImageBlockByID, readUser } from "../../localStorage/userOperations.js";
-import { db } from "../localStorage.test.js";
+import { deleteImageBlock, deleteImageBlockByID, readUser } from "../../../localStorage/userOperations.js";
+import { db } from "../../localStorage.test.js";
 
 export let deleteImageBlockTests = () => {
     describe("Tests for deleting ImageBlock", () => {

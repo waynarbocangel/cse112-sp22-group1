@@ -1,3 +1,4 @@
+// TODO: refactor parent??????????
 import { readUser } from "../userOperations";
 
 /**
@@ -8,10 +9,13 @@ import { readUser } from "../userOperations";
  * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
  export function updateSignifierPouch (db, signifier, callback) {
-	console.log(signifier);
+	/* istanbul ignore next */
 	readUser((err, user) => {
+		/* istanbul ignore next */
 		if (err) {
+			/* istanbul ignore next */
 			callback(err);
+			/* istanbul ignore next */
 		} else {
 			let signifierArr = user.signifiers.filter((element) => element.id !== signifier.id);
 			signifierArr.push(signifier);
@@ -33,10 +37,13 @@ import { readUser } from "../userOperations";
 				events: user.events,
 				signifiers: signifierArr
 			};
-			db.put(newUser).then((res) => {
+			
+			return db.put(newUser).then((res) => {
+				/* istanbul ignore next */
 				if (res) {
 					callback(res);
 				}
+				/* istanbul ignore next */
 			}).catch(error => callback(error));
 		}
 	})

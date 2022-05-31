@@ -8,34 +8,90 @@ import {makeid} from "./makeId.js";
  * @param {Date} date The date in case of event creation
  * @param {doubleParameterCallback} callback Callback after sub-component has been handled
  */
-function handleSubComponent (textBlock, date, callback) {
-	if (textBlock.kind === "task" && textBlock.objectReference === null) {
-		/* istanbul ignore next */
-		localStorage.createTask(textBlock.id, textBlock.text, 0, textBlock.signifiers, false, (failedCreateTask, task) => {
+function handleSubComponent (db, textBlock, date, callback) {
+	if (textBlock.objectReference === null) {
+		if (textBlock.kind === "task"){
 			/* istanbul ignore next */
-			if (failedCreateTask) {
+			localStorage.createTask([textBlock.id], textBlock.text, 0, textBlock.signifiers, false, (failedCreateTask, task) => {
 				/* istanbul ignore next */
-				callback(failedCreateTask, null);
-				/* istanbul ignore next */
-			} else {
-				textBlock.objectReference = task.id;
-				callback(null, textBlock);
-			}
-		});
-	} else if (textBlock.kind === "event" && textBlock.objectReference === null) {
-		/* istanbul ignore next */
-		localStorage.createEvent(textBlock.text, textBlock.id, date, textBlock.signifiers, false, (failedCreateEvent, journalEvent) => {
+				if (failedCreateTask) {
+					/* istanbul ignore next */
+					callback(failedCreateTask, null);
+					return;
+					/* istanbul ignore next */
+				} else {
+					textBlock.objectReference = task.id;
+					callback(null, textBlock);
+					return;
+				}
+			});
+		} else if (textBlock.kind === "event"){
 			/* istanbul ignore next */
-			if (failedCreateEvent) {
+			localStorage.createEvent(textBlock.text, [textBlock.id], date, textBlock.signifiers, false, (failedCreateEvent, journalEvent) => {
 				/* istanbul ignore next */
-				callback(failedCreateEvent, null);
-				/* istanbul ignore next */
-			} else {
-				textBlock.objectReference = journalEvent.id;
-				callback(null, textBlock);
-			}
-		});
+				if (failedCreateEvent) {
+					/* istanbul ignore next */
+					callback(failedCreateEvent, null);
+					return;
+					/* istanbul ignore next */
+				} else {
+					textBlock.objectReference = journalEvent.id;
+					callback(null, textBlock);
+					return;
+				}
+			});
+		} else {
+			/* istanbul ignore next */
+			callback(null, textBlock);
+		}
 		/* istanbul ignore next */
+	} else if (textBlock.objectReference) {
+		localStorage.readUser((err, user) => {
+			/* istanbul ignore next */
+			if (err) {
+				/* istanbul ignore next */
+				callback(err, null);
+				/* istanbul ignore next */
+				return;
+			} else if (textBlock.kind === "task") {
+				let task = user.tasks.filter(task => task.id === textBlock.objectReference)[0];
+				task.references.push(textBlock.id);
+				user.tasks = user.tasks.filter(filterTask => filterTask.id !== task.id);
+				user.tasks.push(task);
+			} else if (textBlock.kind === "event") {
+				let event = user.events.filter(event => event.id === textBlock.objectReference)[0];
+				event.references.push(textBlock.id);
+				user.events = user.events.filter(filterevent => filterevent.id !== event.id);
+				user.events.push(event);
+			}
+			let newUser = {
+				_id: "0000",
+				_rev: user._rev,
+				email: user.email,
+				theme: user.theme,
+				index: user.index,
+				dailyLogs: user.dailyLogs,
+				monthlyLogs: user.monthlyLogs,
+				futureLogs: user.futureLogs,
+				collections: user.collections,
+				trackers: user.trackers,
+				imageBlocks: user.imageBlocks,
+				audioBlocks: user.audioBlocks,
+				textBlocks: user.textBlocks,
+				tasks: user.tasks,
+				events: user.events,
+				signifiers: user.signifiers
+			};
+			return db.put(newUser).then((res) => {
+				if (res.ok) {
+					callback(null, textBlock);
+				}				
+				/* istanbul ignore next */	
+			}).catch((error) => {
+				/* istanbul ignore next */
+				callback(error, null);
+			});
+		});
 	} else {
 		/* istanbul ignore next */
 		callback(null, textBlock);
@@ -79,7 +135,7 @@ export function createTextBlockPouch (db, parent, index, content, tabLevel, kind
 			signifiers.forEach(signifier => {textBlockObject.signifiers.push(signifier.id)});
 			
 			// Handles sub components if needed
-			handleSubComponent(textBlockObject, date, (failedSubComponent, textBlock) => {
+			handleSubComponent(db, textBlockObject, date, (failedSubComponent, textBlock) => {
 				/* istanbul ignore next */
 				if (failedSubComponent) {
 					/* istanbul ignore next */

@@ -5,13 +5,31 @@ import { readUser } from "../userOperations";
  * @memberof updateFunctions
  * @param {database} db The local pouch database.
  * @param {Object} tracker The tracker to be deleted.
+ * @param {Object} parent The original parent
+ * @param {Object} addParent The new parent
  * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
- export function updateTrackerPouch (db, tracker, callback) {
+ export function updateTrackerPouch (db, tracker, parent, addParent, callback) {
 	readUser((err, user) => {
+		/* istanbul ignore next */
 		if (err) {
+			/* istanbul ignore next */
 			callback(err);
+			/* istanbul ignore next */
 		} else {
+			
+			if (parent && addParent && tracker.parent != parent.id) {
+				parent.trackers = parent.trackers.filter(block => block !== tracker.id);
+				user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter(object => object.id !== parent.id);
+				user[`${parent.objectType}s`].push(parent);
+				addParent.tracker.push(collection.id);
+				user[`${addParent.objectType}s`] = user[`${addParent.objectType}s`].filter(object => object.id !== addParent.id);
+				user[`${addParent.objectType}s`].push(addParent);
+			} else if ((user.trackers.filter(block => block.id === tracker.id))[0].parent !== tracker.parent) {
+				callback("You are changing the parent without providing the original and old one");
+				return;
+			}
+
 			let trackerArr = user.trackers.filter((element) => element.id !== tracker.id);
 			trackerArr.push(tracker);
 			let newUser = {
@@ -32,10 +50,13 @@ import { readUser } from "../userOperations";
 				events: user.events,
 				signifiers: user.signifers
 			};
-			db.put(newUser).then((res) => {
+			
+			return db.put(newUser).then((res) => {
+				/* istanbul ignore next */
 				if (res) {
 					callback(res);
 				}
+				/* istanbul ignore next */
 			}).catch(error => callback(error));
 		}
 	})

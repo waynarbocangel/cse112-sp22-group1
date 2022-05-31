@@ -1,3 +1,4 @@
+// TODO: UNFINISHED, edit schema
 import { readUser } from "../userOperations";
 
 /**
@@ -5,14 +6,34 @@ import { readUser } from "../userOperations";
  * @memberof updateFunctions
  * @param {database} db The local pouch database.
  * @param {Object} event The event to be deleted.
+ * @param {Object} reference The reference of the event being updated
+ * @param {Object} addReference The new reference of the event
+ * @param {Boolean} force 
  * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
- export function updateEventPouch (db, event, callback) {
-	console.log(event);
+ export function updateEventPouch (db, event, reference, addReference, force, callback) {
+	/* istanbul ignore next */
 	readUser((err, user) => {
+		/* istanbul ignore next */
 		if (err) {
+			/* istanbul ignore next */
 			callback(err);
+			/* istanbul ignore next */
 		} else {
+
+			if (reference && addReference && event.reference != reference.id) {
+				/* TODO */
+				reference.content = reference.content.filter(block => block !== event.id);
+				user.textBlocks = user.textBlocks.filter(object => object.id !== reference.id);
+				user.textBlocks.push(reference);
+				addReference.content.push(event.id);
+				user.textBlocks = user.textBlocks.filter(object => object.id !== addReference.id);
+				user.textBlocks.push(addReference);
+			} else if (!force && (user.events.filter(block => block.id === event.id))[0].reference !== event.reference){
+				callback("You are changing the parent without providing the original and old one");
+				return;
+			}
+
 			let eventArr = user.events.filter((element) => element.id !== event.id);
 			eventArr.push(event);
 			let newUser = {
@@ -33,10 +54,13 @@ import { readUser } from "../userOperations";
 				events: eventArr,
 				signifiers: user.signifiers
 			};
-			db.put(newUser).then((res) => {
+
+			return db.put(newUser).then((res) => {
+				/* istanbul ignore next */
 				if (res) {
 					callback(res);
 				}
+				/* istanbul ignore next */
 			}).catch(error => callback(error));
 		}
 	})

@@ -1,6 +1,6 @@
-import { createImageBlock, readUser } from "../../localStorage/userOperations.js";
-import { originalImage as image } from "./files.js";
-import { db } from "../localStorage.test.js";
+import { createImageBlock, readUser } from "../../../localStorage/userOperations.js";
+import { originalImage as image } from "../files.js";
+import { db } from "../../localStorage.test.js";
 
 export let createImageBlockTests = () => {
 	describe(" Tests for creating Image Blocks", () => {

@@ -1,7 +1,7 @@
-import * as localStorage from "../../localStorage/userOperations.js";
-import { createUserPouch } from "../../localStorage/createFiles/createUser.js";
-import { db } from "../localStorage.test.js";
-import { makeRandomString, compareUsers } from "../testFunctions.js";
+import * as localStorage from "../../../localStorage/userOperations.js";
+import { createUserPouch } from "../../../localStorage/createFiles/createUser.js";
+import { db } from "../../localStorage.test.js";
+import { makeRandomString, compareUsers } from "../../testFunctions.js";
 
 export let createUserTests = () => {
 	describe ("Tests for local storage create user", () => {
@@ -13,7 +13,7 @@ export let createUserTests = () => {
 				})).resolves.toBe(undefined);
 			};
 			localStorage.createUser("testLocalStorage@storage.com", "abcd", createUserFinished);
-		}, 5000);
+		}, 7000);
 	});
 
 	describe("Tests for create user Pouch", () => {

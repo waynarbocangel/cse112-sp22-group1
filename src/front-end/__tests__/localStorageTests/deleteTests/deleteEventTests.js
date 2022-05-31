@@ -1,5 +1,5 @@
-import { deleteEvent, deleteEventByID, readUser } from "../../localStorage/userOperations.js";
-import { db } from "../localStorage.test.js";
+import { deleteEvent, deleteEventByID, readUser } from "../../../localStorage/userOperations.js";
+import { db } from "../../localStorage.test.js";
 
 export let deleteEventTests = () => {
     describe("Tests for deleting Event", () => {

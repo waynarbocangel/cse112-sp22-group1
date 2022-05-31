@@ -5,13 +5,35 @@ import { readUser } from "../userOperations";
  * @memberof updateFunctions
  * @param {database} db The local pouch database.
  * @param {Object} log The monthlyLog to be deleted.
+ * @param {Object} parent The parent of the monthlyLog being updated
+ * @param {Object} addParent The new parent of the monthlyLog
  * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
- export function updateMonthlyLogPouch (db, log, callback) {
+ export function updateMonthlyLogPouch (db, log, parent, addParent, callback) {
+	/* istanbul ignore next */
 	readUser((err, user) => {
+		/* istanbul ignore next */
 		if (err) {
+			/* istanbul ignore next */
 			callback(err);
+			/* istanbul ignore next */
 		} else {
+
+			if (parent && addParent && monthlyLog.parent != parent.id) {
+				parent.months = parent.months.filter(month => month.id !== monthlyLog.id);
+				user.futureLogs = user.futureLogs.filter(object => object.id !== parent.id);
+				user.futureLogs.push(parent);
+				addParent.months.push({
+					id: monthlyLog.id,
+					date: monthlyLog.date
+				});
+				user.futureLogs = user.futureLogs.filter(object => object.id !== addParent.id);
+				user.futureLogs.push(addParent);
+			} else if ((user.monthlyLogs.filter(block => block.id === monthlyLog.id))[0].parent !== monthlyLog.parent){
+				callback("You are changing the parent without providing the original and old one");
+				return;
+			}
+
 			let monthlyLogArr = user.monthlyLogs.filter((element) => element.id !== log.id);
 			monthlyLogArr.push(log);
 			let newUser = {
@@ -32,11 +54,13 @@ import { readUser } from "../userOperations";
 				tasks: user.tasks,
 				signifiers: user.signifiers
 			};
-			// Added return here so if updateMonthlyLog breaks maybe its because of this
-			db.put(newUser).then((res) => {
+			
+			return db.put(newUser).then((res) => {
+				/* istanbul ignore next */
 				if (res) {
 					callback(null, log);
 				}
+				/* istanbul ignore next */
 			}).catch(error => callback(error));
 		}
 	})

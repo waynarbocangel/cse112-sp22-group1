@@ -4,17 +4,37 @@ import { readUser } from "../userOperations";
  * Finds and update the dailyLog passed in.
  * @memberof updateFunctions
  * @param {database} db The local pouch database.
- * @param {Object} dailyLog The dailyLog to be deleted.
+ * @param {Object} dailyLog The dailyLog to be updated.
+ * @param {Object} parent The parent of the dailyLog being updated
+ * @param {Object} addParent The new parent of the dailyLog
  * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
-export function updateDailyLogPouch (db, log, callback) {
-	console.log(log);
+export function updateDailyLogPouch (db, dailyLog, parent, addParent, callback) {
 	readUser((err, user) => {
+		/* istanbul ignore next */
 		if (err) {
+			/* istanbul ignore next */
 			callback(err);
+			/* istanbul ignore next */
 		} else {
-			let dailyLogArr = user.dailyLogs.filter((element) => element.id !== log.id);
-			dailyLogArr.push(log);
+
+			if (parent && addParent && dailyLog.parent !== parent.id) {
+				parent.days = parent.days.filter(day => day.id !== dailyLog.id);
+				user.monthlyLogs = user.monthlyLogs.filter(object => object.id !== parent.id);
+				user.monthlyLogs.push(parent);
+				addParent.days.push({
+					id: dailyLog.id,
+					date: dailyLog.date
+				});
+				user.monthlyLogs = user.monthlyLogs.filter(object => object.id !== addParent.id);
+				user.monthlyLogs.push(addParent);
+			} else if ((user.dailyLogs.filter(block => block.id === dailyLog.id))[0].parent !== dailyLog.parent){
+				callback("You are changing the parent without providing the original and old one");
+				return;
+			}
+			
+			let dailyLogArr = user.dailyLogs.filter((element) => element.id !== dailyLog.id);
+			dailyLogArr.push(dailyLog);
 			let newUser = {
 				_id: "0000",
 				_rev: user._rev,
@@ -33,10 +53,13 @@ export function updateDailyLogPouch (db, log, callback) {
 				tasks: user.tasks,
 				signifiers: user.signifiers
 			};
-			db.put(newUser).then((res) => {
+
+			return db.put(newUser).then((res) => {
+				/* istanbul ignore next */
 				if (res) {
-					callback(res);
+					callback(null);
 				}
+				/* istanbul ignore next */
 			}).catch(error => callback(error));
 		}
 	})

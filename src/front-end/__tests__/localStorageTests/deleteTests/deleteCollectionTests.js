@@ -1,5 +1,5 @@
-import { deleteCollection, readUser } from "../../localStorage/userOperations.js";
-import { db } from "../localStorage.test.js";
+import { deleteCollection, readUser } from "../../../localStorage/userOperations.js";
+import { db } from "../../localStorage.test.js";
 
 export let deleteCollectionsTests = () => {
     describe("Tests for deleting collections", () => {

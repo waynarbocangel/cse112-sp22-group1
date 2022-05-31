@@ -1,5 +1,5 @@
-import { deleteFutureLog, readUser } from "../../localStorage/userOperations.js";
-import { db } from "../localStorage.test.js";
+import { deleteFutureLog, readUser } from "../../../localStorage/userOperations.js";
+import { db } from "../../localStorage.test.js";
 
 export let deleteFutureLogTests = () => {
     describe("Tests for deleting FutureLog", () => {

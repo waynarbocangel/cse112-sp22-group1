@@ -6,9 +6,10 @@ import { readUser } from "../userOperations";
  * @param {database} db The local pouch database.
  * @param {Object} audioBlock The audioBlock to be updated.
  * @param {Object} parent The parent of the audioBlock being updated
+ * @param {Object} addParent The new parent of the audioBlock
  * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
- export function updateAudioBlockPouch (db, audioBlock, parent, callback) {
+ export function updateAudioBlockPouch (db, audioBlock, parent, addParent, callback) {
 	readUser((err, user) => {
 		/* istanbul ignore next */
 		if (err) {
@@ -17,10 +18,16 @@ import { readUser } from "../userOperations";
 			/* istanbul ignore next */
 		} else {
 
-			if (parent && audioBlock.parent != parent.id) {
-				parent.content.filter(block => block !== audioBlock.id);
+			if (parent && addParent && audioBlock.parent != parent.id) {
+				parent.content = parent.content.filter(block => block !== audioBlock.id);
 				user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter(object => object.id !== parent.id);
 				user[`${parent.objectType}s`].push(parent);
+				addParent.content.push(audioBlock.id);
+				user[`${addParent.objectType}s`] = user[`${addParent.objectType}s`].filter(object => object.id !== addParent.id);
+				user[`${addParent.objectType}s`].push(addParent);
+			} else if ((user.audioBlocks.filter(block => block.id === audioBlock.id))[0].parent !== audioBlock.parent){
+				callback("You are changing the parent without providing the original and old one");
+				return;
 			}
 
 			user.audioBlocks = user.audioBlocks.filter((element) => element.id !== audioBlock.id);
@@ -44,9 +51,9 @@ import { readUser } from "../userOperations";
 				events: user.events,
 				signifiers: user.signifiers
 			};
+			
 			return db.put(newUser).then((res) => {
 				/* istanbul ignore next */
-				console.log(res);
 				if (res.ok) {
 					callback(null);
 				}

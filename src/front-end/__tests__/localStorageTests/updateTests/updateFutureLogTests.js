@@ -1,5 +1,5 @@
-import { updateFutureLog, readUser } from "../../localStorage/userOperations.js";
-import { db } from "../localStorage.test.js";
+import { updateFutureLog, readUser } from "../../../localStorage/userOperations.js";
+import { db } from "../../localStorage.test.js";
 
 export let updateFutureLogTests = () => {
     describe("Tests for updating futurelogs", () => {

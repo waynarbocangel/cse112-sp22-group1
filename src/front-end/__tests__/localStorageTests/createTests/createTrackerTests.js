@@ -1,5 +1,5 @@
-import { createTracker, readUser } from "../../localStorage/userOperations.js";
-import { db } from "../localStorage.test.js";
+import { createTracker, readUser } from "../../../localStorage/userOperations.js";
+import { db } from "../../localStorage.test.js";
 
 export let createTrackerTests = () => {
 	describe(" Tests for creating Tracker", () => {

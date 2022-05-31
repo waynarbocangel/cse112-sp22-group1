@@ -1,5 +1,5 @@
-import { createFutureLog } from "../../localStorage/userOperations.js";
-import { db } from "../localStorage.test.js";
+import { createFutureLog } from "../../../localStorage/userOperations.js";
+import { db } from "../../localStorage.test.js";
 
 export let createFutureLogTests = () => {
 	describe(" Tests for creating Future Log", () => {

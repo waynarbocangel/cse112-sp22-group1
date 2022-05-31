@@ -1,5 +1,5 @@
-import { createSignifier, readUser } from "../../localStorage/userOperations.js";
-import { db } from "../localStorage.test.js";
+import { createSignifier, readUser } from "../../../localStorage/userOperations.js";
+import { db } from "../../localStorage.test.js";
 
 export let createSignifierTests = () => {
 	describe(" Tests for creating signifiers", () => {

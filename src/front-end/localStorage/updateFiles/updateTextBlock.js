@@ -9,8 +9,15 @@ import * as localStorage from "../userOperations.js";
  * @param {singleParameterCallback} callback Sends an error to callback if there is one.
  */
 function updateBlock (db, textBlockArr, callback) {
+	/* istanbul ignore next */
 	localStorage.readUser((err, user) => {
-		if (err === null) {
+		/* istanbul ignore next */
+		if (err) {
+			/* istanbul ignore next */
+			callback(err);
+		/* istanbul ignore next */
+		} else {
+
 			let newUser = {
 				_id: "0000",
 				_rev: user._rev,
@@ -29,18 +36,17 @@ function updateBlock (db, textBlockArr, callback) {
 				events: user.events,
 				signifiers: user.signifiers
 			};
-			db.put(newUser, (error, res) => {
-				if (error) {
-					console.log(error);
-					callback(error);
-				} else {
-					callback(res);
-				}
-			});
+			
+			return db.put(newUser).then((res) => {
+				/* istanbul ignore next */
+				if (res.ok) {
+					callback(null);
+				} 
+				/* istanbul ignore next */
+			}).catch(error => callback(error));
 		}
-			console.log(err);
+			/* istanbul ignore next */
 			callback(err);
-
 	});
 }
 
@@ -48,16 +54,30 @@ function updateBlock (db, textBlockArr, callback) {
  * Finds and update the textBlock passed in.
  * @memberof updateFunctions
  * @param {database} db The local pouch database.
- * @param {Object} textBlock The textBlock to be deleted.
+ * @param {Object} textBlock The textBlock to be updated.
+ * @param {Object} date The date
+ * @param {Object} parent The parent of the textBlock being updated
+ * @param {Object} addParent The new parent of the textBlock
  * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
-export function updateTextBlockPouch (db, textBlock, date, callback) {
-	console.log(textBlock);
+export function updateTextBlockPouch (db, textBlock, date, parent, addParent, callback) {
 	db.get("0000", (err, doc) => {
 		if (err) {
 			callback(err);
 		} else {
-			console.log(textBlock);
+
+			if (parent && addParent && textBlock.parent != parent.id) {
+				parent.content = parent.content.filter(block => block !== textBlock.id);
+				user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter(object => object.id !== parent.id);
+				user[`${parent.objectType}s`].push(parent);
+				addParent.content.push(textBlock.id);
+				user[`${addParent.objectType}s`] = user[`${addParent.objectType}s`].filter(object => object.id !== addParent.id);
+				user[`${addParent.objectType}s`].push(addParent);
+			} else if ((user.textBlocks.filter(block => block.id === audioBlock.id))[0].parent !== textBlock.parent){
+				callback("You are changing the parent without providing the original and old one");
+				return;
+			}
+
 			let textBlockArr = doc.textBlocks;
 			let oldBlock = {};
 			for (let i = 0; i < textBlockArr.length; i++) {

@@ -1,5 +1,5 @@
-import { createCollection, readUser } from "../../localStorage/userOperations.js";
-import { db } from "../localStorage.test.js";
+import { createCollection, readUser } from "../../../localStorage/userOperations.js";
+import { db } from "../../localStorage.test.js";
 
 export let createCollectionTests = () => {
 	describe(" Tests for creating Collections", () => {

@@ -1,5 +1,5 @@
-import { deleteAudioBlock, deleteAudioBlockByID, readUser } from "../../localStorage/userOperations.js";
-import { db } from "../localStorage.test.js";
+import { deleteAudioBlock, deleteAudioBlockByID, readUser } from "../../../localStorage/userOperations.js";
+import { db } from "../../localStorage.test.js";
 
 export let deleteAudioBlockTests = () => {
     describe("Tests for deleting AudioBlock", () => {

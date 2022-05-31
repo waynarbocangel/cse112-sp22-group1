@@ -8,10 +8,13 @@ import { readUser } from "../userOperations";
  * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
  export function updateFutureLogPouch (db, log, callback) {
-	console.log(log);
+	/* istanbul ignore next */
 	readUser((err, doc) => {
+		/* istanbul ignore next */
 		if (err) {
+			/* istanbul ignore next */
 			callback(err);
+			/* istanbul ignore next */
 		} else {
 			let futureLogArr = doc.futureLogs.filter((element) => element.id !== log.id);
 			futureLogArr.push(log);
@@ -33,10 +36,13 @@ import { readUser } from "../userOperations";
 				events: doc.events,
 				signifiers: doc.signifiers
 			};
-			db.put(newUser).then((res) => {
+
+			return db.put(newUser).then((res) => {
+				/* istanbul ignore next */
 				if (res) {
 					callback(res);
 				}
+				/* istanbul ignore next */
 			}).catch(error => callback(error));
 		}
 	})
