@@ -6,11 +6,11 @@ import { readUser } from "../userOperations";
  * @memberof updateFunctions
  * @param {database} db The local pouch database.
  * @param {Object} task The task to be deleted.
- * @param {Object} parent The parent of the task being updated
- * @param {Object} addParent The new parent of the task
+ * @param {Object} reference The reference of the task being updated
+ * @param {Object} addreference The new reference of the task
  * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
- export function updateTaskPouch (db, task, parent, addParent, callback) {
+ export function updateTaskPouch (db, task, reference, addReference, callback) {
 	/* istanbul ignore next */
 	readUser((err, user) => {
 		/* istanbul ignore next */
@@ -20,22 +20,22 @@ import { readUser } from "../userOperations";
 			/* istanbul ignore next */
 		} else {
 
-			if (parent && addParent && task.parent != parent.id) {
-				/* TODO */
-				parent.content = parent.content.filter(block => block !== task.id);
-				user.textBlocks = user.textBlocks.filter(object => object.id !== parent.id);
-				user.textBlocks.push(parent);
-				addParent.content.push(task.id);
-				user.textBlocks = user.textBlocks.filter(object => object.id !== addParent.id);
-				user.textBlocks.push(addParent);
-			} else if ((user.tasks.filter(block => block.id === tasks.id))[0].parent !== task.parent){
-				callback("You are changing the parent without providing the original and old one");
-				return;
+			if (reference && task.references.filter(block => block.id === reference.id).length === 0) {
+				reference.objectReference = null;
+				user.textBlocks = user.textBlocks.filter(object => object.id !== reference.id);
+				user.textBlocks.push(reference);
+				if (addReference) {
+					addReference.objectReference = task.id;
+					user.textBlocks = user.textBlocks.filter(object => object.id !== addReference.id);
+					user.textBlocks.push(addReference);
+				}
 			}
 
-			let taskArr = user.tasks.filter((element) => element.id !== task.id);
-			taskArr.push(task);
-			console.log("taskArr is, ", taskArr);
+			user.tasks = user.tasks.filter((element) => element.id !== task.id);
+			if (task.references.length > 0) {
+				user.tasks.push(task);
+			}
+
 			let newUser = {
 				_id: "0000",
 				_rev: user._rev,
@@ -50,7 +50,7 @@ import { readUser } from "../userOperations";
 				imageBlocks: user.imageBlocks,
 				audioBlocks: user.audioBlocks,
 				textBlocks: user.textBlocks,
-				tasks: taskArr,
+				tasks: user.tasks,
 				events: user.events,
 				signifiers: user.signifiers
 			};

@@ -8,10 +8,9 @@ import * as localStorage from "../userOperations.js";
  * @param {Array<String>} references The id of the references of the new task.
  * @param {String} text Description of the task.
  * @param {Number} complete Number to keep track if task is complete or not. (zero for non-complete and non-zero for complete)
- * @param {Array<String>} signifiers The id of the signifier the task is supposed to use.
  * @param {doubleParameterCallback} callback Eihter sends the newly created task or an error if there is one to the callback.
  */
-export function createTaskPouch (db, references, text, complete, signifiers, callback) {
+export function createTaskPouch (db, references, text, complete, callback) {
 	localStorage.readUser((err, user) => {
 		/* istanbul ignore next */
 		if (err) {
@@ -25,8 +24,7 @@ export function createTaskPouch (db, references, text, complete, signifiers, cal
 				objectType: "task",
 				references: references,
 				text: text,
-				complete: complete,
-				signifiers: signifiers
+				complete: complete
 			};
 
 			user.tasks.push(taskObject);

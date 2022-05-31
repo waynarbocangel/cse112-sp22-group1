@@ -243,15 +243,13 @@ const userSchema = {
          * @property {String} title title of the event
          * @property {Array<String>} references id of the references
          * @property {Date} date date of the event (optional)
-         * @property {Array<String>} signifiers id of the signifier for the event
          */
 		{
 			id: String,
 			objectType: String,
 			title: String,
 			references: [String],
-			date: Date,
-			signifiers: [String]
+			date: Date
 		}
 	],
 
@@ -264,15 +262,13 @@ const userSchema = {
          * @property {Array<String>} references id of the references
          * @property {String} text task description
          * @property {Number} complete non zero if task complete
-         * @property {Array<String>} signifiers id of the signifier for the task
          */
 		{
 			id: String,
 			objectType: String,
 			references: [String],
 			text: String,
-			complete: Number,
-			signifiers: [String]
+			complete: Number
 		}
 	],
 

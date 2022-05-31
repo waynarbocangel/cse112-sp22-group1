@@ -227,11 +227,10 @@ export function createDailyLog (parent, content, collections, trackers, date, sh
  * @param {String} title The title of the event.
  * @param {Array<String>} references The id of the references of the new event.
  * @param {Date} date The date of the event. (optional)
- * @param {Array<String>} signifiers The id of the signifier for the new event.
  * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {doubleParameterCallback} callback Either sends the event or an error, if there is one, to the callback.
  */
-export function createEvent (title, references, date, signifiers, shouldUpdate, callback) {
+export function createEvent (title, references, date, shouldUpdate, callback) {
 	createEventPouch(db, title, references, date, signifiers, (error, event) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
@@ -360,11 +359,10 @@ export function createSignifier (meaning, symbol, shouldUpdate, callback) {
  * @param {Array<String>} references The id of the references of the new task.
  * @param {String} text The description of the new task.
  * @param {Number} complete The value to see if task is complete or not (zero if not complete and non-zero if complete).
- * @param {Array<String>} signifiers The id of the signifier for the new task.
  * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {doubleParameterCallback} callback Either sends the dailyLog or an error, if there is one, to the callback.
  */
-export function createTask (references, text, complete, signifiers, shouldUpdate, callback) {
+export function createTask (references, text, complete, shouldUpdate, callback) {
 	createTaskPouch(db, references, text, complete, signifiers, (error, task) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
@@ -1019,13 +1017,13 @@ export function updateDailyLog (dailyLog, parent, addParent, shouldUpdate, callb
  * Updates the event given.
  *
  * @param {Object} event The new version of the event.
- * @param {Object} parent The original parent of the event
- * @param {Object} addParent The new parent of the event
+ * @param {Object} reference The original reference of the event
+ * @param {Object} addReference The new reference of the event
  * @param {Boolean} shouldUpdate true if we should update the online db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
-export function updateEvent (event, parent, addParent, shouldUpdate, callback) {
-	updateEventPouch(db, event, parent, addParent, (error) => {
+export function updateEvent (event, reference, addReference, shouldUpdate, callback) {
+	updateEventPouch(db, event, reference, addReference, (error) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
 				callback(couldNotUpdate);
@@ -1120,13 +1118,13 @@ export function updateSignifier (signifier, shouldUpdate, callback) {
  * Updates the task given.
  *
  * @param {Object} task The id of the new version of the task.
- * @param {Object} parent The original parent of the task
- * @param {Object} addParent The new parent of the task
+ * @param {Object} reference The original reference of the task
+ * @param {Object} addReference The new reference of the task
  * @param {Boolean} shouldUpdate true if we should update the online db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
-export function updateTask (task, shouldUpdate, parent, addParent, callback) {
-	updateTaskPouch(db, task, parent, addParent , (err) => {
+export function updateTask (task, shouldUpdate, reference, addReference, callback) {
+	updateTaskPouch(db, task, reference, addReference , (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
 				callback(couldNotUpdate);

@@ -9,10 +9,9 @@ let eventObject = {};
  * @param {String} title The title of the event.
  * @param {Array<String>} references The id of the references of the new dailyLog.
  * @param {Date} date The date of the event (optional).
- * @param {Array<string>} signifiers The id of the signifier used for the event.
  * @param {doubleParameterCallback} callback Eihter sends the newly created dailyLog or an error if there is one to the callback.
  */
-export function createEventPouch (db, title, references, date, signifiers, callback) {
+export function createEventPouch (db, title, references, date, callback) {
 	localStorage.readUser((err, user) => {
 		/* istanbul ignore next */
 		if (err) {
@@ -26,8 +25,7 @@ export function createEventPouch (db, title, references, date, signifiers, callb
 				objectType: "event",
 				title: title,
 				references: references,
-				date: date,
-				signifiers: signifiers
+				date: date
 			};
 
 

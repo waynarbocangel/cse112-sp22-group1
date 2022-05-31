@@ -4,6 +4,7 @@ import {makeid} from "./makeId.js";
 /**
  * Handles sub-component creation for a given block if needed
  * @memberof createFunctions
+ * @param {database} db
  * @param {Object} textBlock The textblock parent object
  * @param {Date} date The date in case of event creation
  * @param {doubleParameterCallback} callback Callback after sub-component has been handled
@@ -12,7 +13,7 @@ function handleSubComponent (db, textBlock, date, callback) {
 	if (textBlock.objectReference === null) {
 		if (textBlock.kind === "task"){
 			/* istanbul ignore next */
-			localStorage.createTask([textBlock.id], textBlock.text, 0, textBlock.signifiers, false, (failedCreateTask, task) => {
+			localStorage.createTask([textBlock.id], textBlock.text, 0, false, (failedCreateTask, task) => {
 				/* istanbul ignore next */
 				if (failedCreateTask) {
 					/* istanbul ignore next */
@@ -27,7 +28,7 @@ function handleSubComponent (db, textBlock, date, callback) {
 			});
 		} else if (textBlock.kind === "event"){
 			/* istanbul ignore next */
-			localStorage.createEvent(textBlock.text, [textBlock.id], date, textBlock.signifiers, false, (failedCreateEvent, journalEvent) => {
+			localStorage.createEvent(textBlock.text, [textBlock.id], date, false, (failedCreateEvent, journalEvent) => {
 				/* istanbul ignore next */
 				if (failedCreateEvent) {
 					/* istanbul ignore next */

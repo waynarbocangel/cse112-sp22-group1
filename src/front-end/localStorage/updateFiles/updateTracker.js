@@ -30,8 +30,8 @@ import { readUser } from "../userOperations";
 				return;
 			}
 
-			let trackerArr = user.trackers.filter((element) => element.id !== tracker.id);
-			trackerArr.push(tracker);
+			user.trackers = user.trackers.filter((element) => element.id !== tracker.id);
+			user.trackers.push(tracker);
 			let newUser = {
 				_id: "0000",
 				_rev: user._rev,
@@ -42,7 +42,7 @@ import { readUser } from "../userOperations";
 				monthlyLogs: user.monthlyLogs,
 				futureLogs: user.futureLogs,
 				collections: user.collections,
-				trackers: trackerArr,
+				trackers: user.trackers,
 				imageBlocks: user.imageBlocks,
 				audioBlocks: user.audioBlocks,
 				textBlocks: user.textBlocks,
