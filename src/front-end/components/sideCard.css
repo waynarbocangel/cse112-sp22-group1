@@ -10,9 +10,8 @@
     padding: 0 0 1rem;
     min-width: 12vw;
     max-width: 23vw;
-    background-color: #FCFCFCCC;
-    position: relative;
-    box-shadow: 0 0 10px #00000040;
+    background-color: var(--card-backgound);
+    box-shadow: 0 0 10px var(--card-shadow);
     margin-top: 0.5vw;
     margin-bottom: 0.5vw;
     margin-left:1vw;
@@ -46,7 +45,7 @@
     text-decoration: none;
     margin: 4px 5px;
     border-radius: 6px;
-    background-color: #f93154ff;
+    background-color: var(--danger-button-color);
 }
 #trackerWrapper{
     padding-left: 2.5vw;
