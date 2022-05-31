@@ -11,7 +11,6 @@ describe('Testing functionality of side card', () => {
     }
     beforeAll(() =>{
         card = new SideCard(null,null);
-        clickhandler = jest.fn();
     });
     test('check card title is properly set', () =>{
         card.setTitle("Test Title 1");
