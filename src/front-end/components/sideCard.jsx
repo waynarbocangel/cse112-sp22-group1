@@ -14,7 +14,10 @@ let template = <template>
 	<link type="text/css" rel="stylesheet" href="sideCard.css" />
     <article class="card">
         <div id="titleWrapper">
-            <h1 id="title"></h1>
+            <h1 id="title"contenteditable="true"></h1>
+            <div id="buttonwrapper">
+                <button id="deleteButton">Delete</button>
+            </div>
         </div>
         <div id="trackerWrapper">
             <div id="titleBlock">
@@ -38,6 +41,7 @@ export class SideCard extends HTMLElement {
         this.setTitle(title);
         this.tracker = trackers;
         this.addTracker(trackers)
+        this.bindDeleteButton();
     }
 
     /**
@@ -64,6 +68,13 @@ export class SideCard extends HTMLElement {
             trackerblock.appendChild(sixDots.cloneNode(true));
             this.shadowRoot.getElementById("trackerWrapper").appendChild(trackerblock);
         }
+    }
+
+    bindDeleteButton () {
+        this.shadowRoot.getElementById("deleteButton").addEventListener("click", () => {
+            let pressed = this.shadowRoot.getElementById("title").innerText + " delete button was pressed!";
+            console.log(pressed);
+        })
     }
 }
 window.customElements.define("side-card", SideCard);

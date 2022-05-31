@@ -3,7 +3,7 @@
 }
 #container{
     font-family: "SF-Pro";
-    max-width: 26vw;
+    max-width: 25vw;
 }
 .search_bar {
     display: flex;
@@ -46,8 +46,8 @@
 
 #sideCardWrapper{
     display: block;
-    max-width: 28vw;
-    max-height: 90%;
+    max-width: 27vw;
+    max-height: 91.4%;
     overflow-y:hidden;
 }
 
