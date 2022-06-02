@@ -65,6 +65,12 @@ import {updateUserOnline} from "./updateFiles/updateUser.js";
 /* eslint-disable */
 export let db = null;
 
+try {
+	db = new PouchDB("Users");
+} catch (error) {
+	db = null;
+}
+
 /**
  * Sets up the local storage
  * @param {PouchDB} database 
@@ -700,7 +706,7 @@ export function deleteEventAtIndex (container, index, shouldUpdate, callback) {
  * @param {singleParameterCallback} callback Returns an error if there is one.
  */
 export function deleteFutureLog (futureLog, shouldUpdate, callback) {
-	deleteFutureLogPouch(db, futureLog.id, futureLog.parent, (err) => {
+	deleteFutureLogPouch(db, futureLog, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
 				callback(couldNotUpdate);
@@ -868,11 +874,12 @@ export function deleteTaskByID (id, shouldUpdate, callback) {
  * Deletes the textBlock passed in.
  *
  * @param {Object} textBlock The object to be deleted.
+ * @param {Object} parent The parent of the textBlock
  * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Returns an error if there is one.
  */
-export function deleteTextBlock (block, shouldUpdate, callback) {
-	deleteTextBlockPouch(db, block.id, (err) => {
+export function deleteTextBlock (block, parent, shouldUpdate, callback) {
+	deleteTextBlockPouch(db, block, parent, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
 				callback(couldNotUpdate);
@@ -887,17 +894,25 @@ export function deleteTextBlock (block, shouldUpdate, callback) {
  * Deletes the textBlock with the id passed in.
  *
  * @param {String} id The id of the object to be deleted.
+ * @param {Object} parent The parent of the textBlock
  * @param {Boolean} shouldUpdate true if we should update the onlin db
  * @param {singleParameterCallback} callback Returns an error if there is one.
  */
-export function deleteTextBlockByID (id, shouldUpdate, callback) {
-	deleteTextBlockPouch(db, id, (err) => {
-		if (shouldUpdate) {
-			updateUserFromMongo((couldNotUpdate) => {
-				callback(couldNotUpdate);
-			});
-		} else {
+export function deleteTextBlockByID (id, parent, shouldUpdate, callback) {
+	readUser((err, user) => {
+		if (err) {
 			callback(err);
+		} else {
+			let block = user.textBlocks.filter(block => block.id === id);
+			deleteTextBlockPouch(db, block, parent, (err) => {
+				if (shouldUpdate) {
+					updateUserFromMongo((couldNotUpdate) => {
+						callback(couldNotUpdate);
+					});
+				} else {
+					callback(err);
+				}
+			});
 		}
 	});
 }
@@ -1192,7 +1207,7 @@ export function updateTask (task, shouldUpdate, reference, addReference, callbac
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateTextBlock (block, date, shouldUpdate, parent, addParent, callback) {
-	updateTextBlockPouch(db, block, date, parent, addParent, (err) => {
+	BlockPouch(db, block, date, parent, addParent, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
 				callback(couldNotUpdate);

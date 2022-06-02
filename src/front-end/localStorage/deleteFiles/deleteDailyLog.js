@@ -1,4 +1,5 @@
 import * as localStorage from "../userOperations.js";
+import * as aux from "./deleteAuxiliarFunctions.js";
 
 /**
  * Finds and deletes the monthlyLog and all children associated
@@ -9,40 +10,53 @@ import * as localStorage from "../userOperations.js";
  * @param {singleParameterCallback} callback 
  */
 export function deleteDailyLogPouch (db, log, parent, callback) {
-	localStorage.readUser((error, user) => {
-		if (error === null) {
-			callback(error);
+	aux.handleContent(log, (failedContent, preProcessedLog) => {
+		if (failedContent) {
+			callback(failedContent);
 		} else {
-			if (parent) {
-				parent.days = parent.days.filter(reference => reference.id !== log.id);
-				user.monthlyLogs = user.monthlyLogs.filter(month => month.id !== parent.id);
-				user.monthlyLogs.push(parent);
-			}
-			user.dailyLogs = user.dailyLogs.filter(dailyLog => dailyLog.id !== log.id);
-			let newUser = {
-				_id: "0000",
-				_rev: user._rev,
-				email: user.email,
-				theme: user.theme,
-				index: user.index,
-				dailyLogs: user.dailyLogs,
-				monthlyLogs: user.monthlyLogs,
-				futureLogs: user.futureLogs,
-				collections: user.collections,
-				trackers: user.trackers,
-				imageBlocks: user.imageBlocks,
-				audioBlocks: user.audioBlocks,
-				textBlocks: user.textBlocks,
-				tasks: user.tasks,
-				events: user.events,
-				signifiers: user.signifiers
-			}
-
-			return db.put(newUser).then((res) => {
-				if (res.ok) {
-					callback(null);
+			aux.handleTrackers(preProcessedLog, (failedTrackerHandle, processedLog) => {
+				if (failedTrackerHandle) {
+					callback(failedTrackerHandle);
+				} else {
+					localStorage.readUser((err, updatedUser) => {
+						if (err) {
+							callback(err);
+						} else {
+							if (parent) {
+								parent.days = parent.days.filter(reference => reference.id !== processedLog.id);
+								updatedUser.monthlyLogs = updatedUser.monthlyLogs.filter(month => month.id !== parent.id);
+								updatedUser.monthlyLogs.push(parent);
+							}
+							
+							updatedUser.dailyLogs = updatedUser.dailyLogs.filter(dailyLog => dailyLog.id !== processedLog.id);
+							let newUser = {
+								_id: "0000",
+								_rev: updatedUser._rev,
+								email: updatedUser.email,
+								theme: updatedUser.theme,
+								index: updatedUser.index,
+								dailyLogs: updatedUser.dailyLogs,
+								monthlyLogs: updatedUser.monthlyLogs,
+								futureLogs: updatedUser.futureLogs,
+								collections: updatedUser.collections,
+								trackers: updatedUser.trackers,
+								imageBlocks: updatedUser.imageBlocks,
+								audioBlocks: updatedUser.audioBlocks,
+								textBlocks: updatedUser.textBlocks,
+								tasks: updatedUser.tasks,
+								events: updatedUser.events,
+								signifiers: updatedUser.signifiers
+							}
+				
+							return db.put(newUser).then((res) => {
+								if (res.ok) {
+									callback(null);
+								}
+							});
+						}
+					});
 				}
-			});
+			})
 		}
 	});
 }

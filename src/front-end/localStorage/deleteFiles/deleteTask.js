@@ -27,11 +27,10 @@ export function deleteTaskPouch (db, id, callback) {
 				imageBlocks: user.imageBlocks,
 				audioBlocks: user.audioBlocks,
 				textBlocks: user.textBlocks,
-				tasks: newTasks,
+				tasks: user.tasks,
 				events: user.events,
 				signifiers: user.signifiers
 			};
-
 			return db.put(newUser).then((res) => {
 				if (res.ok) {
 					callback(null);

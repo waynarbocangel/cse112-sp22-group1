@@ -19,8 +19,8 @@ import { deleteTask, readUser } from "../userOperations";
 			callback(err);
 			/* istanbul ignore next */
 		} else {
-
-			if (reference && task.references.filter(block => block.id === reference.id).length === 0) {
+			
+			if (reference && task.references.filter(block => block === reference.id).length === 0) {
 				reference.objectReference = null;
 				user.textBlocks = user.textBlocks.filter(object => object.id !== reference.id);
 				user.textBlocks.push(reference);
@@ -56,10 +56,12 @@ import { deleteTask, readUser } from "../userOperations";
 			return db.put(newUser).then((res) => {
 				/* istanbul ignore next */
 				if (res) {
-					if (task.references.length > 0) {
+					if (task.references.length === 0) {
 						deleteTask(task, false, (failedDeleteTask) => {
 							callback(failedDeleteTask);
 						});
+					} else {
+						callback(null);
 					}
 				}
 				/* istanbul ignore next */

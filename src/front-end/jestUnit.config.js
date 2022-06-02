@@ -1,6 +1,7 @@
 module.exports = async () => ({
     "verbose": true,
-    "rootDir": "./__tests__",
+	"rootDir": "./",
+    "roots": ["./__tests__", "./"],
     "transform": {
 		"\\.[jt]sx?$": "babel-jest"
 	},

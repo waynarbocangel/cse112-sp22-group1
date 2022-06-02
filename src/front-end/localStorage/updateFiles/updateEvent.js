@@ -19,7 +19,7 @@ import { deleteEvent, readUser } from "../userOperations";
 			/* istanbul ignore next */
 		} else {
 
-			if (reference && event.references.filter(block => block.id === reference.id).length === 0) {
+			if (reference && event.references.filter(block => block === reference.id).length === 0) {
 				reference.objectReference = null;
 				user.textBlocks = user.textBlocks.filter(object => object.id !== reference.id);
 				user.textBlocks.push(reference);
@@ -59,6 +59,8 @@ import { deleteEvent, readUser } from "../userOperations";
 						deleteEvent(event, false, (failedToDelete) => {
 							callback(failedToDelete);
 						});
+					} else {
+						callback(null);
 					}
 				}
 				/* istanbul ignore next */
