@@ -43,7 +43,7 @@ import { readUser } from "../userOperations";
 					callback(res);
 				}
 				/* istanbul ignore next */
-			}).catch(error => callback(error));
+			}).catch((error) => callback(error));
 		}
 	})
 }

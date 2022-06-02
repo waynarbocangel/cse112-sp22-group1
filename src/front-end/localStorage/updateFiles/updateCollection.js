@@ -17,14 +17,14 @@ import { readUser } from "../userOperations";
 			callback(err);
 		} else {
 
-			if (parent && addParent && collection.parent != parent.id) {
-				parent.collections = parent.collections.filter(block => block !== collection.id);
-				user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter(object => object.id !== parent.id);
+			if (parent && addParent && collection.parent !== parent.id) {
+				parent.collections = parent.collections.filter((block) => block !== collection.id);
+				user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter((object) => object.id !== parent.id);
 				user[`${parent.objectType}s`].push(parent);
 				addParent.collections.push(collection.id);
-				user[`${addParent.objectType}s`] = user[`${addParent.objectType}s`].filter(object => object.id !== addParent.id);
+				user[`${addParent.objectType}s`] = user[`${addParent.objectType}s`].filter((object) => object.id !== addParent.id);
 				user[`${addParent.objectType}s`].push(addParent);
-			} else if ((user.collections.filter(block => block.id === collection.id))[0].parent !== collection.parent) {
+			} else if (user.collections.filter((block) => block.id === collection.id)[0].parent !== collection.parent) {
 				callback("You are changing the parent without providing the original and old one");
 				return;
 			}
@@ -56,7 +56,7 @@ import { readUser } from "../userOperations";
 					callback(null);
 				}
 				/* istanbul ignore next */
-			}).catch(error => callback(error));
+			}).catch((error) => callback(error));
 		}
 	})
 }

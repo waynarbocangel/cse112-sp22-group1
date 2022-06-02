@@ -1,5 +1,6 @@
-import {makeid} from "./makeId.js";
 import * as localStorage from "../userOperations.js";
+import {makeid} from "./makeId.js";
+
 let trackerObject = {};
 
 /**
@@ -33,17 +34,17 @@ export function createTrackerPouch (db, title, content, parent, addToParent, rec
 			};
 
 			user.trackers.push(trackerObject);
-			
+
 			if (addToParent) {
 				if (recurring) {
 					addToParent.recurringTrackers.push(trackerObject.id);
 				} else {
 					addToParent.trackers.push(trackerObject.id);
 				}
-				user[`${addToParent.objectType}s`] = user[`${addToParent.objectType}s`].filter(element => element.id !== addToParent.id);
+				user[`${addToParent.objectType}s`] = user[`${addToParent.objectType}s`].filter((element) => element.id !== addToParent.id);
 				user[`${addToParent.objectType}s`].push(addToParent);
 			}
-			
+
 			let newUser = {
 				_id: "0000",
 				_rev: user._rev,
@@ -69,7 +70,7 @@ export function createTrackerPouch (db, title, content, parent, addToParent, rec
 				}
 			}).catch((error) => {
 				callback(error, null);
-				return;
+
 			});
 		}
 	});

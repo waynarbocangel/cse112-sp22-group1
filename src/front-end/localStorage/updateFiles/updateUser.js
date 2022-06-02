@@ -8,7 +8,7 @@ import { readUser } from "../userOperations.js";
  * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
  export function updateUserOnline (callback) {
-	readUser( (err, user) => {
+	readUser((err, user) => {
 		/* istanbul ignore next */
 		if (err) {
 			/* istanbul ignore next */

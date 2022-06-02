@@ -49,7 +49,7 @@ const userSchema = {
          * @property {Date} date Date of the daily log
          * @property {String} parent ID of the parent
          * @property {Array<String>} content List of id's of textBlocks in the log
-		 * @property {Array<String>} collections List of id's of collections referenced by the log
+         * @property {Array<String>} collections List of id's of collections referenced by the log
          * @property {Array<String>} trackers List of id's of trackers in the log
          */
 		{
@@ -71,12 +71,12 @@ const userSchema = {
          * @property {String} objectType The type of object
          * @property {String} parent ID of the parent
          * @property {Date} startDate The start date for the month
-		 * @property {Date} endDate The end date for the month
-		 * @property {Array<String>} content List of id's of textBlocks in the log
-		 * @property {Array<String>} collections List of id's of collections referenced by the log
+         * @property {Date} endDate The end date for the month
+         * @property {Array<String>} content List of id's of textBlocks in the log
+         * @property {Array<String>} collections List of id's of collections referenced by the log
          * @property {Array<Day>} days List of days in log
          * @property {Array<String>} trackers List of id's of trackers in month
-		 * @property {Array<String>} recurringTrackers List of recuring trackers in days
+         * @property {Array<String>} recurringTrackers List of recuring trackers in days
          */
 		{
 			id: String,
@@ -103,14 +103,14 @@ const userSchema = {
          * @typedef {Object} FutureLog
          * @property {String} id The future log's id
          * @property {String} objectType The type of object
-		 * @property {String} title The title of the future log
+         * @property {String} title The title of the future log
          * @property {Date} startDate The future log start date
          * @property {Date} endDate The future log end date
-		 * @property {Array<String>} content List of ids of textBlocks in the log
-		 * @property {Array<String>} collections List of ids of collections referenced by the log
+         * @property {Array<String>} content List of ids of textBlocks in the log
+         * @property {Array<String>} collections List of ids of collections referenced by the log
          * @property {Array<Month>} months List of months in log
          * @property {Array<String>} trackers List ids of trackers in futureLog
-		 * @property {Array<String>} recurringTrackers List of ids of trackers in months
+         * @property {Array<String>} recurringTrackers List of ids of trackers in months
          */
 		{
 			id: String,
@@ -137,7 +137,7 @@ const userSchema = {
          * @typedef {Object} Tracker
          * @property {String} id The tracker's id
          * @property {String} objectType The type of object
-		 * @property {String} title Title of the tracker
+         * @property {String} title Title of the tracker
          * @property {String} parent ID of the parent
          * @property {Array<String>} content List of id's of textBlocks in the tracker
          */
@@ -147,7 +147,7 @@ const userSchema = {
 			title: String,
 			parent: String,
 			content: [String]
-			
+
 		}
 	],
 
@@ -160,8 +160,8 @@ const userSchema = {
          * @property {String} parent The id of the parent
          * @property {String} title The collection's title
          * @property {Array<String>} content List of ids of the textBlocks in collection
-		 * @property {Array<String>} collections List of ids of collections referenced by the collection
-		 * @property {Array<String>} trackers List of ids of trackers referenced by the colection
+         * @property {Array<String>} collections List of ids of collections referenced by the collection
+         * @property {Array<String>} trackers List of ids of trackers referenced by the colection
          */
 		{
 			id: String,

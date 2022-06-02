@@ -19,21 +19,21 @@ import { readUser } from "../userOperations";
 			/* istanbul ignore next */
 		} else {
 
-			if (parent && addParent && tracker.parent != parent.id) {
-				parent.trackers = parent.trackers.filter(block => block !== tracker.id);
+			if (parent && addParent && tracker.parent !== parent.id) {
+				parent.trackers = parent.trackers.filter((block) => block !== tracker.id);
 				if (parent.recurringTrackers) {
-					parent.recurringTrackers = parent.recurringTrackers.filter(block => block !== tracker.id);
+					parent.recurringTrackers = parent.recurringTrackers.filter((block) => block !== tracker.id);
 				}
-				user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter(object => object.id !== parent.id);
+				user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter((object) => object.id !== parent.id);
 				user[`${parent.objectType}s`].push(parent);
 				if (recurring) {
-					addParent.recurringTrackers.push(collection.id);
+					addParent.recurringTrackers.push(tracker.id);
 				} else {
-					addParent.tracker.push(collection.id);
+					addParent.tracker.push(tracker.id);
 				}
-				user[`${addParent.objectType}s`] = user[`${addParent.objectType}s`].filter(object => object.id !== addParent.id);
+				user[`${addParent.objectType}s`] = user[`${addParent.objectType}s`].filter((object) => object.id !== addParent.id);
 				user[`${addParent.objectType}s`].push(addParent);
-			} else if ((user.trackers.filter(block => block.id === tracker.id))[0].parent !== tracker.parent) {
+			} else if (user.trackers.filter((block) => block.id === tracker.id)[0].parent !== tracker.parent) {
 				callback("You are changing the parent without providing the original and old one");
 				return;
 			}
@@ -58,14 +58,14 @@ import { readUser } from "../userOperations";
 				events: user.events,
 				signifiers: user.signifers
 			};
-			
+
 			return db.put(newUser).then((res) => {
 				/* istanbul ignore next */
 				if (res) {
 					callback(res);
 				}
 				/* istanbul ignore next */
-			}).catch(error => callback(error));
+			}).catch((error) => callback(error));
 		}
 	})
 }

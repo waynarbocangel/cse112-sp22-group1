@@ -16,7 +16,7 @@ function addMonths (startDate, end, futureLog, callback) {
 	if (startDate > end) {
 		callback([]);
 		return;
-	} else if (nextMonth.setMonth(nextMonth.getMonth() + 1, 1) > end){
+	} else if (nextMonth.setMonth(nextMonth.getMonth() + 1, 1) > end) {
 		endDate = end;
 	}
 	localStorage.createMonthlyLog(futureLog.id, [], [], [], [], startDate, endDate, false, (err, month) => {
@@ -52,7 +52,12 @@ function addMonths (startDate, end, futureLog, callback) {
 export function createFutureLogPouch (db, title, startDate, endDate, months, content, collections, trackers, callback) {
 	let futureObject = {};
 	localStorage.readUser((err, user) => {
-		if (err == null){
+		/* istanbul ignore next */
+		if (err) {
+			/* istanbul ignore next */
+			callback(err, null);
+			/* istanbul ignore next */
+		} else {
 			let id = makeid(user);
 
 			futureObject = {
@@ -89,10 +94,15 @@ export function createFutureLogPouch (db, title, startDate, endDate, months, con
 				signifiers: user.signifiers
 			}).then((res) => {
 				/* istanbul ignore next */
-				if (res.ok && months.length == 0) {
-					addMonths (new Date(futureObject.startDate), new Date(futureObject.endDate), futureObject, (monthsIDArray) => {
+				if (res.ok && months.length === 0) {
+					addMonths(new Date(futureObject.startDate), new Date(futureObject.endDate), futureObject, (monthsIDArray) => {
 						localStorage.readUser((error, loadedUser) => {
-							if (error === null) {
+							/* istanbul ignore next */
+							if (error) {
+								/* istanbul ignore next */
+								callback(err, null);
+								/* istanbul ignore next */
+							} else {
 								monthsIDArray.reverse();
 								futureObject.months = monthsIDArray;
 								loadedUser.futureLogs[loadedUser.futureLogs.length - 1] = futureObject;
@@ -125,25 +135,19 @@ export function createFutureLogPouch (db, title, startDate, endDate, months, con
 									/* istanbul ignore next */
 									callback(noUpdate, null);
 									/* istanbul ignore next */
-									return;
+
 								});
-								/* istanbul ignore next */
-							} else {
-								/* istanbul ignore next */
-								callback(error, null);
 							}
 						});
 					});
 				}
 			/* istanbul ignore next */
-			}).catch((err) => {
+			}).catch((error) => {
 				/* istanbul ignore next */
-				callback(err, null);
+				callback(error, null);
 			});
 			/* istanbul ignore next */
-		} else {
-			/* istanbul ignore next */
-			callback(err, null);
 		}
+
 	});
 }

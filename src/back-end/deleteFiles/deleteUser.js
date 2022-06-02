@@ -16,6 +16,7 @@ const deleteUser = (email, callback) => {
 		if (error) {
 			callback(error);
 		} else if (user) {
+
             /* Don't send back the password */
             delete user.pwd;
 			callback(user);

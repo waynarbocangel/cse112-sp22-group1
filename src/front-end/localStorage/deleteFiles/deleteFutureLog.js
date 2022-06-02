@@ -1,11 +1,11 @@
-import * as localStorage from "../userOperations.js";
 import * as aux from "./deleteAuxiliarFunctions.js";
+import * as localStorage from "../userOperations.js";
 
 /**
  * Deletes all days in a monthlyLog
- * 
- * @param {Object} futureLog 
- * @param {doubleParameterCallback} callback 
+ *
+ * @param {Object} futureLog
+ * @param {doubleParameterCallback} callback
  */
  function deleteMonths (futureLog, callback) {
 	if (futureLog.months.length === 0) {
@@ -13,9 +13,9 @@ import * as aux from "./deleteAuxiliarFunctions.js";
 	} else {
 		localStorage.readUser((err, user) => {
 			if (err) {
-				callback (err, null);
+				callback(err, null);
 			} else {
-				localStorage.deleteMonthlyLog(user.monthlyLogs.filter(reference => reference.id === futureLog.months[0].id)[0], futureLog, false, (error) => {
+				localStorage.deleteMonthlyLog(user.monthlyLogs.filter((reference) => reference.id === futureLog.months[0].id)[0], futureLog, false, (error) => {
 					if (error) {
 						callback(error, null);
 					} else {
@@ -52,8 +52,8 @@ export function deleteFutureLogPouch (db, log, callback) {
 								if (err) {
 									callback(err);
 								} else {
-									user.index.futureLogs = user.index.futureLogs.filter(reference => reference.id !== futureLog.id);
-									user.futureLogs = user.futureLogs.filter(reference => reference.id !== futureLog.id);
+									user.index.futureLogs = user.index.futureLogs.filter((reference) => reference.id !== futureLog.id);
+									user.futureLogs = user.futureLogs.filter((reference) => reference.id !== futureLog.id);
 									let newUser = {
 										_id: "0000",
 										_rev: user._rev,
@@ -72,7 +72,7 @@ export function deleteFutureLogPouch (db, log, callback) {
 										events: user.events,
 										signifiers: user.signifiers
 									}
-						
+
 									return db.put(newUser).then((res) => {
 										if (res.ok) {
 											callback(null);

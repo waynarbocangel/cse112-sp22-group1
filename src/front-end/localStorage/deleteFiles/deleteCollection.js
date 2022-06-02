@@ -1,5 +1,5 @@
-import * as localStorage from "../userOperations";
 import * as aux from "./deleteAuxiliarFunctions.js";
+import * as localStorage from "../userOperations";
 
 /**
  * Finds and deletes the collection.
@@ -31,22 +31,22 @@ export function deleteCollectionPouch (db, collection, parent, callback) {
 									Array.prototype.push.apply(userArr, user.monthlyLogs);
 									Array.prototype.push.apply(userArr, user.futureLogs);
 									Array.prototype.push.apply(userArr, user.collections);
-			
+
 									let parentArr = userArr.filter((object) => object.id === processedCollection.parent);
 									if (parentArr.length > 0) {
 										parent = parentArr[0];
 										parent.collections = parent.collections.filter((id) => id !== processedCollection.id);
-									} 
-			
+									}
+
 								} else {
 									parent.collections = parent.collections.filter((id) => id !== processedCollection.id);
 								}
-								user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter(object => object.id !== parent.id);
+								user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter((object) => object.id !== parent.id);
 								user[`${parent.objectType}s`].push(parent);
 							}
-			
+
 							user.collections = user.collections.filter((newCollection) => newCollection.id !== processedCollection.id);
-			
+
 							let newUser = {
 								_id: "0000",
 								_rev: user._rev,
@@ -65,7 +65,7 @@ export function deleteCollectionPouch (db, collection, parent, callback) {
 								events: user.events,
 								signifiers: user.signifiers
 							};
-			
+
 							return db.put(newUser).then((res) => {
 								if (res.ok) {
 									callback(null);

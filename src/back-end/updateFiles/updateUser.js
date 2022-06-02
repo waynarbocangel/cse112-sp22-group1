@@ -18,7 +18,7 @@ const updateUser = (email, key, userObject, callback) => {
 	schema.User.findOne({ email: email }, (error, user) => {
 		if (error) {
 			callback(error);
-		} else if (user){
+		} else if (user) {
 			let newCollections = [];
 			for (let i = 0; i < userObject.collections.length; i++) {
 				let collection = userObject.collections[i];

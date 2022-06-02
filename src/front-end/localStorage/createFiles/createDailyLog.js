@@ -1,5 +1,6 @@
-import {makeid} from "./makeId.js";
 import * as localStorage from "../userOperations.js";
+import {makeid} from "./makeId.js";
+
 let dailyObject = {};
 
 /**
@@ -21,7 +22,7 @@ export function createDailyLogPouch (db, parent, content, collections, trackers,
 			callback(err, null);
 		} else {
 			let id = makeid(user);
-			
+
 			dailyObject = {
 				id: id,
 				objectType: "dailyLog",
@@ -56,11 +57,11 @@ export function createDailyLogPouch (db, parent, content, collections, trackers,
 					callback(null, dailyObject);
 				}
 			/* istanbul ignore next */
-			}).catch((err) => {
+			}).catch((error) => {
 				/* istanbul ignore next */
-				callback(err, null);
+				callback(error, null);
 				/* istanbul ignore next */
-				return;
+
 			});
 		}
 	});

@@ -1,4 +1,3 @@
-// TODO: UNFINISHED, edit schema
 import { deleteTask, readUser } from "../userOperations";
 
 /**
@@ -19,14 +18,14 @@ import { deleteTask, readUser } from "../userOperations";
 			callback(err);
 			/* istanbul ignore next */
 		} else {
-			
-			if (reference && task.references.filter(block => block === reference.id).length === 0) {
+
+			if (reference && task.references.filter((block) => block === reference.id).length === 0) {
 				reference.objectReference = null;
-				user.textBlocks = user.textBlocks.filter(object => object.id !== reference.id);
+				user.textBlocks = user.textBlocks.filter((object) => object.id !== reference.id);
 				user.textBlocks.push(reference);
 				if (addReference) {
 					addReference.objectReference = task.id;
-					user.textBlocks = user.textBlocks.filter(object => object.id !== addReference.id);
+					user.textBlocks = user.textBlocks.filter((object) => object.id !== addReference.id);
 					user.textBlocks.push(addReference);
 				}
 			}
@@ -52,7 +51,7 @@ import { deleteTask, readUser } from "../userOperations";
 				events: user.events,
 				signifiers: user.signifiers
 			};
-			
+
 			return db.put(newUser).then((res) => {
 				/* istanbul ignore next */
 				if (res) {
@@ -65,7 +64,7 @@ import { deleteTask, readUser } from "../userOperations";
 					}
 				}
 				/* istanbul ignore next */
-			}).catch(error => callback(error));
+			}).catch((error) => callback(error));
 		}
 	})
 }

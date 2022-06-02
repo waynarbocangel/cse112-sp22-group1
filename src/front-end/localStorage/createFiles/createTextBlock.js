@@ -11,34 +11,34 @@ import {makeid} from "./makeId.js";
  */
 function handleSubComponent (db, textBlock, date, callback) {
 	if (textBlock.objectReference === null) {
-		if (textBlock.kind === "task"){
+		if (textBlock.kind === "task") {
 			/* istanbul ignore next */
 			localStorage.createTask([textBlock.id], textBlock.text, 0, false, (failedCreateTask, task) => {
 				/* istanbul ignore next */
 				if (failedCreateTask) {
 					/* istanbul ignore next */
 					callback(failedCreateTask, null);
-					return;
+
 					/* istanbul ignore next */
 				} else {
 					textBlock.objectReference = task.id;
 					callback(null, textBlock);
-					return;
+
 				}
 			});
-		} else if (textBlock.kind === "event"){
+		} else if (textBlock.kind === "event") {
 			/* istanbul ignore next */
 			localStorage.createEvent(textBlock.text, [textBlock.id], date, false, (failedCreateEvent, journalEvent) => {
 				/* istanbul ignore next */
 				if (failedCreateEvent) {
 					/* istanbul ignore next */
 					callback(failedCreateEvent, null);
-					return;
+
 					/* istanbul ignore next */
 				} else {
 					textBlock.objectReference = journalEvent.id;
 					callback(null, textBlock);
-					return;
+
 				}
 			});
 		} else {
@@ -55,14 +55,14 @@ function handleSubComponent (db, textBlock, date, callback) {
 				/* istanbul ignore next */
 				return;
 			} else if (textBlock.kind === "task") {
-				let task = user.tasks.filter(task => task.id === textBlock.objectReference)[0];
+				let task = user.tasks.filter((reference) => reference.id === textBlock.objectReference)[0];
 				task.references.push(textBlock.id);
-				user.tasks = user.tasks.filter(filterTask => filterTask.id !== task.id);
+				user.tasks = user.tasks.filter((filterTask) => filterTask.id !== task.id);
 				user.tasks.push(task);
 			} else if (textBlock.kind === "event") {
-				let event = user.events.filter(event => event.id === textBlock.objectReference)[0];
+				let event = user.events.filter((reference) => reference.id === textBlock.objectReference)[0];
 				event.references.push(textBlock.id);
-				user.events = user.events.filter(filterevent => filterevent.id !== event.id);
+				user.events = user.events.filter((filterevent) => filterevent.id !== event.id);
 				user.events.push(event);
 			}
 			let newUser = {
@@ -86,8 +86,8 @@ function handleSubComponent (db, textBlock, date, callback) {
 			return db.put(newUser).then((res) => {
 				if (res.ok) {
 					callback(null, textBlock);
-				}				
-				/* istanbul ignore next */	
+				}
+				/* istanbul ignore next */
 			}).catch((error) => {
 				/* istanbul ignore next */
 				callback(error, null);
@@ -128,13 +128,15 @@ export function createTextBlockPouch (db, parent, index, content, tabLevel, kind
 				objectType: "textBlock",
 				tabLevel: tabLevel,
 				parent: parent.id,
-				kind, kind,
+				kind: kind,
 				objectReference: objectReference,
 				text: content,
 				signifiers: []
 			};
-			signifiers.forEach(signifier => {textBlockObject.signifiers.push(signifier.id)});
-			
+			signifiers.forEach((signifier) => {
+				textBlockObject.signifiers.push(signifier.id)
+			});
+
 			// Handles sub components if needed
 			handleSubComponent(db, textBlockObject, date, (failedSubComponent, textBlock) => {
 				/* istanbul ignore next */
@@ -152,7 +154,7 @@ export function createTextBlockPouch (db, parent, index, content, tabLevel, kind
 							} else {
 								parent.content.splice(index, 0, id);
 							}
-							updatedUser[`${parent.objectType}s`] = updatedUser[`${parent.objectType}s`].filter(object => object.id !== parent.id);
+							updatedUser[`${parent.objectType}s`] = updatedUser[`${parent.objectType}s`].filter((object) => object.id !== parent.id);
 							updatedUser[`${parent.objectType}s`].push(parent);
 							updatedUser.textBlocks.push(textBlock);
 							let newUser = {
@@ -177,11 +179,11 @@ export function createTextBlockPouch (db, parent, index, content, tabLevel, kind
 							return db.put(newUser).then((res) => {
 								if (res.ok) {
 									callback(null, textBlock);
-								}				
-								/* istanbul ignore next */	
-							}).catch((error) => {
+								}
 								/* istanbul ignore next */
-								callback(error, null);
+							}).catch((failedSave) => {
+								/* istanbul ignore next */
+								callback(failedSave, null);
 							});
 						}
 					});

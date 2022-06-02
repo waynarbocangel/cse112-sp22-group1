@@ -19,14 +19,14 @@ import { readUser } from "../userOperations";
 			/* istanbul ignore next */
 		} else {
 
-			if (parent && addParent && imageBlock.parent != parent.id) {
-				parent.content = parent.content.filter(block => block !== imageBlock.id);
-				user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter(object => object.id !== parent.id);
+			if (parent && addParent && imageBlock.parent !== parent.id) {
+				parent.content = parent.content.filter((block) => block !== imageBlock.id);
+				user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter((object) => object.id !== parent.id);
 				user[`${parent.objectType}s`].push(parent);
-				addParent.content.push(audioBlock.id);
-				user[`${addParent.objectType}s`] = user[`${addParent.objectType}s`].filter(object => object.id !== addParent.id);
+				addParent.content.push(imageBlock.id);
+				user[`${addParent.objectType}s`] = user[`${addParent.objectType}s`].filter((object) => object.id !== addParent.id);
 				user[`${addParent.objectType}s`].push(addParent);
-			} else if ((user.imageBlocks.filter(block => block.id === imageBlock.id))[0].parent !== imageBlock.parent){
+			} else if (user.imageBlocks.filter((block) => block.id === imageBlock.id)[0].parent !== imageBlock.parent) {
 				callback("You are changing the parent without providing the original and old one");
 				return;
 			}
@@ -58,7 +58,7 @@ import { readUser } from "../userOperations";
 					callback(res);
 				}
 				/* istanbul ignore next */
-			}).catch(error => callback(error));
+			}).catch((error) => callback(error));
 		}
 	})
 }

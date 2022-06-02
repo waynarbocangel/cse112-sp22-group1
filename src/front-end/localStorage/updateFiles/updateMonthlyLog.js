@@ -19,23 +19,23 @@ import { readUser } from "../userOperations";
 			/* istanbul ignore next */
 		} else {
 
-			if (parent && addParent && monthlyLog.parent != parent.id) {
-				parent.months = parent.months.filter(month => month.id !== monthlyLog.id);
-				user.futureLogs = user.futureLogs.filter(object => object.id !== parent.id);
+			if (parent && addParent && log.parent !== parent.id) {
+				parent.months = parent.months.filter((month) => month.id !== log.id);
+				user.futureLogs = user.futureLogs.filter((object) => object.id !== parent.id);
 				user.futureLogs.push(parent);
 				addParent.months.push({
-					id: monthlyLog.id,
-					date: monthlyLog.date
+					id: log.id,
+					date: log.date
 				});
-				user.futureLogs = user.futureLogs.filter(object => object.id !== addParent.id);
+				user.futureLogs = user.futureLogs.filter((object) => object.id !== addParent.id);
 				user.futureLogs.push(addParent);
-			} else if ((user.monthlyLogs.filter(block => block.id === monthlyLog.id))[0].parent !== monthlyLog.parent){
+			} else if (user.monthlyLogs.filter((block) => block.id === log.id)[0].parent !== log.parent) {
 				callback("You are changing the parent without providing the original and old one");
 				return;
 			}
 
-			let monthlyLogArr = user.monthlyLogs.filter((element) => element.id !== log.id);
-			monthlyLogArr.push(log);
+			user.monthlyLogs = user.monthlyLogs.filter((element) => element.id !== log.id);
+			user.monthlyLogs.push(log);
 			let newUser = {
 				_id: "0000",
 				_rev: user._rev,
@@ -43,7 +43,7 @@ import { readUser } from "../userOperations";
 				theme: user.theme,
 				index: user.index,
 				dailyLogs: user.dailyLogs,
-				monthlyLogs: monthlyLogArr,
+				monthlyLogs: user.monthlyLogs,
 				futureLogs: user.futureLogs,
 				trackers: user.trackers,
 				collections: user.collections,
@@ -54,14 +54,14 @@ import { readUser } from "../userOperations";
 				tasks: user.tasks,
 				signifiers: user.signifiers
 			};
-			
+
 			return db.put(newUser).then((res) => {
 				/* istanbul ignore next */
 				if (res) {
 					callback(null, log);
 				}
 				/* istanbul ignore next */
-			}).catch(error => callback(error));
+			}).catch((error) => callback(error));
 		}
 	})
 }

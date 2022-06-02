@@ -142,7 +142,7 @@ export function getUser (callback) {
 /**
  * Updates the user from the online db.
  */
-export function updateUserFromMongo (callback){
+export function updateUserFromMongo (callback) {
 	updateUserOnline(callback);
 }
 
@@ -150,7 +150,7 @@ export function updateUserFromMongo (callback){
 
 /**
  * Creates a new audioBlock from the parameters passed in and updates the online db.
- * 
+ *
  * @param {Object} parent The parent of the new audioBlock.
  * @param {Number} index the index of insertion in parent
  * @param {String} arrangement The arrangement of the audio.
@@ -256,7 +256,7 @@ export function createEvent (title, references, date, shouldUpdate, callback) {
 
 /**
  * Creates a new futureLog from the parameters passed in and updates the online db.
- * 
+ *
  * @param {String} title The title of the future log.
  * @param {Date} startDate The start date of the new futureLog.
  * @param {Date} endDate The end date of the new futureLog.
@@ -559,13 +559,13 @@ export function deleteCollectionByID (id, shouldUpdate, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			deleteCollectionPouch(db, user.collections.filter(collection => collection.id === id)[0], (err) => {
+			deleteCollectionPouch(db, user.collections.filter((collection) => collection.id === id)[0], (errDel) => {
 				if (shouldUpdate) {
 					updateUserFromMongo((couldNotUpdate) => {
 						callback(couldNotUpdate);
 					});
 				} else {
-					callback(err);
+					callback(errDel);
 				}
 			});
 		}
@@ -594,12 +594,12 @@ export function deleteCollectionByID (id, shouldUpdate, callback) {
 
 /**
  * Deletes all the data in the local db and prints all info of the db.
- * 
- * @param {Bool} cloud tells if should delete 
+ *
+ * @param {Bool} cloud tells if should delete
  */
 export async function deleteDB (cloud) {
 	if (cloud) {
-		fetch(`${api}/user`, {
+		await fetch(`${api}/user`, {
 			headers: {
 				"content-type": "application/json; charset=UTF-8",
 				"Origin": origin
@@ -610,31 +610,29 @@ export async function deleteDB (cloud) {
 			await db.destroy((err, res) => {
 				if (err || res === null) {
 					return err;
-				} else {
-					return userData.error;
 				}
+					return userData.error;
+
 			});
 		});
 	} else {
 		updateUserFromMongo((couldNotUpdate) => {
-			if (couldNotUpdate) {
-				callback(couldNotUpdate);
-				return;
-			}
-		});
-		db.destroy((err, res) => {
-			if (err) {
-				console.log(err);
-			} else {
-				console.log(res);
-			}
-		});
+			if (!couldNotUpdate) {
+				db.destroy((err, res) => {
+					if (err) {
+						console.log(err);
+					} else {
+						console.log(res);
+					}
+				});
 
-		db.info((err, res) => {
-			if (err) {
-				console.log(err);
-			} else {
-				console.log(res);
+				db.info((err, res) => {
+					if (err) {
+						console.log(err);
+					} else {
+						console.log(res);
+					}
+				});
 			}
 		});
 	}
@@ -903,14 +901,14 @@ export function deleteTextBlockByID (id, parent, shouldUpdate, callback) {
 		if (err) {
 			callback(err);
 		} else {
-			let block = user.textBlocks.filter(block => block.id === id);
-			deleteTextBlockPouch(db, block, parent, (err) => {
+			let block = user.textBlocks.filter((reference) => reference.id === id);
+			deleteTextBlockPouch(db, block, parent, (errDel) => {
 				if (shouldUpdate) {
 					updateUserFromMongo((couldNotUpdate) => {
 						callback(couldNotUpdate);
 					});
 				} else {
-					callback(err);
+					callback(errDel);
 				}
 			});
 		}
@@ -1049,7 +1047,7 @@ export function updateCollection (collection, parent, addParent, shouldUpdate, c
 		} else {
 			callback(error);
 		}
-		
+
 	});
 }
 
@@ -1185,7 +1183,7 @@ export function updateSignifier (signifier, shouldUpdate, callback) {
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateTask (task, shouldUpdate, reference, addReference, callback) {
-	updateTaskPouch(db, task, reference, addReference , (err) => {
+	updateTaskPouch(db, task, reference, addReference, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
 				callback(couldNotUpdate);
@@ -1201,13 +1199,13 @@ export function updateTask (task, shouldUpdate, reference, addReference, callbac
  *
  * @param {Object} block The new version of the textBlock.
  * @param {Date} date The date to be inserted if the update is to make the textBlock have an event with a date.
- * @param {Object} parent The original parent of the textBlock 
+ * @param {Object} parent The original parent of the textBlock
  * @param {Object} addParent The new parent of the textBlock
  * @param {Boolean} shouldUpdate true if we should update the online db
  * @param {singleParameterCallback} callback Sends an error, if there is one, to the callback.
  */
 export function updateTextBlock (block, date, shouldUpdate, parent, addParent, callback) {
-	BlockPouch(db, block, date, parent, addParent, (err) => {
+	updateTextBlockPouch(db, block, date, parent, addParent, (err) => {
 		if (shouldUpdate) {
 			updateUserFromMongo((couldNotUpdate) => {
 				callback(couldNotUpdate);

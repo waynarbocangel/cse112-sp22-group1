@@ -1,5 +1,6 @@
-import {makeid} from "./makeId.js";
 import * as localStorage from "../userOperations.js";
+import {makeid} from "./makeId.js";
+
 let signifierObject = {};
 
 /**
@@ -28,7 +29,7 @@ export function createSignifierPouch (db, meaning, symbol, callback) {
 			}
 
 			user.signifiers.push(signifierObject);
-			
+
 			let newUser = {
 				_id: "0000",
 				_rev: user._rev,
@@ -57,7 +58,7 @@ export function createSignifierPouch (db, meaning, symbol, callback) {
 				/* istanbul ignore next */
 				callback(error, null);
 				/* istanbul ignore next */
-				return;
+
 			});
 		}
 	});

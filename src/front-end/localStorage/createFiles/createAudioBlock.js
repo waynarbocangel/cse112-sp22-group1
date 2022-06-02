@@ -1,5 +1,5 @@
-import {makeid} from "./makeId.js";
 import * as localStorage from "../userOperations.js";
+import {makeid} from "./makeId.js";
 
 /**
  * Creates and stores a new audioBlock created from the given parameters.
@@ -34,7 +34,7 @@ export function createAudioBlockPouch (db, parent, index, arrangement, data, cal
 			} else {
 				parent.content.push(id);
 			}
-			user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter(object => object.id !== parent.id);
+			user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter((object) => object.id !== parent.id);
 			user[`${parent.objectType}s`].push(parent);
 			user.audioBlocks.push(audioBlockObject);
 

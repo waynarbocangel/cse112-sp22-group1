@@ -1,12 +1,12 @@
 import * as localStorage from "../userOperations.js";
 
 /**
- * 
+ *
  * @param {Object} collection Any collection (futureLog, monthlyLog, dailyLog, trackers, etc);
- * @param {doubleParameterCallback} callback 
+ * @param {doubleParameterCallback} callback
  */
 export function handleContent (collection, callback) {
-	if (collection.content.length == 0){
+	if (collection.content.length === 0) {
 		callback(null, collection);
 	} else {
 		localStorage.readUser((err, user) => {
@@ -16,7 +16,7 @@ export function handleContent (collection, callback) {
 				callback(err, null);
 				/* istanbul ignore next */
 			} else {
-				localStorage.deleteTextBlock(user.textBlocks.filter(block => block.id === collection.content[0])[0], collection, false, (failedDeleteBlock) => {
+				localStorage.deleteTextBlock(user.textBlocks.filter((block) => block.id === collection.content[0])[0], collection, false, (failedDeleteBlock) => {
 					/* istanbul ignore next */
 					if (failedDeleteBlock) {
 						/* istanbul ignore next */
@@ -32,7 +32,10 @@ export function handleContent (collection, callback) {
 }
 
 export function handleTrackers (collection, callback) {
-	if (collection.trackers.length == 0 && (!collection.recurringTrackers || (collection.recurringTrackers && collection.recurringTrackers.length === 0))){
+	let isNotRecurringTracker = !collection.recurringTrackers
+	let isRecurringTrackerEmpty = collection.recurringTrackers && collection.recurringTrackers.length === 0;
+	let doneRecurring = isNotRecurringTracker || isRecurringTrackerEmpty;
+	if (collection.trackers.length === 0 && doneRecurring) {
 		callback(null, collection);
 	} else {
 		localStorage.deleteTrackerByID(collection.trackers[0], false, (failedDeleteTracker) => {
@@ -41,8 +44,7 @@ export function handleTrackers (collection, callback) {
 				/* istanbul ignore next */
 				callback(failedDeleteTracker, null);
 				/* istanbul ignore next */
-			} else {
-				if (collection.recurringTrackers && collection.recurringTrackers.length > 0) {
+			} else if (collection.recurringTrackers && collection.recurringTrackers.length > 0) {
 					localStorage.deleteTrackerByID(collection.recurringTrackers[0], false, (failedDeleteRecurringTracker) => {
 						/* istanbul ignore next */
 						if (failedDeleteRecurringTracker) {
@@ -56,8 +58,6 @@ export function handleTrackers (collection, callback) {
 				} else {
 					handleTrackers(collection, callback);
 				}
-				
-			}
 		});
 	}
 }

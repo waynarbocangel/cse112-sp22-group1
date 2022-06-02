@@ -1,5 +1,5 @@
+import { makeid } from "./makeId.js";
 import { readUser } from "../userOperations.js";
-import {makeid} from "./makeId.js";
 
 /**
  * Creates and stores a new monthlyLog created from the given parameters.
@@ -55,11 +55,13 @@ export function createMonthlyLogPouch (db, parent, days, content, collections, t
 				signifiers: doc.signifiers
 			};
 			return db.put(newUser).then((res) => {
-				if (res) callback(null,monthlyObject);
+				if (res) {
+					callback(null, monthlyObject);
+				}
 				/* istanbul ignore next */
-			}).catch((err) => {
+			}).catch((error) => {
 				/* istanbul ignore next */
-				callback(err, null);
+				callback(error, null);
 			});
 		}
 	});

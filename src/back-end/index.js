@@ -94,7 +94,7 @@ app.put("/user", express.json({ type: "*/*" }), (req, res) => {
                 res.send(user);
             } else {
                 res.send(JSON.stringify({ error: "couldn't update" }));
-            }   
+            }
         });
     } else {
         res.send(JSON.stringify({ error: "failed authentication" }));

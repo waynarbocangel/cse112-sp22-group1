@@ -19,20 +19,20 @@ export function updateDailyLogPouch (db, dailyLog, parent, addParent, callback) 
 		} else {
 
 			if (parent && addParent && dailyLog.parent !== parent.id) {
-				parent.days = parent.days.filter(day => day.id !== dailyLog.id);
-				user.monthlyLogs = user.monthlyLogs.filter(object => object.id !== parent.id);
+				parent.days = parent.days.filter((day) => day.id !== dailyLog.id);
+				user.monthlyLogs = user.monthlyLogs.filter((object) => object.id !== parent.id);
 				user.monthlyLogs.push(parent);
 				addParent.days.push({
 					id: dailyLog.id,
 					date: dailyLog.date
 				});
-				user.monthlyLogs = user.monthlyLogs.filter(object => object.id !== addParent.id);
+				user.monthlyLogs = user.monthlyLogs.filter((object) => object.id !== addParent.id);
 				user.monthlyLogs.push(addParent);
-			} else if ((user.dailyLogs.filter(block => block.id === dailyLog.id))[0].parent !== dailyLog.parent){
+			} else if (user.dailyLogs.filter((block) => block.id === dailyLog.id)[0].parent !== dailyLog.parent) {
 				callback("You are changing the parent without providing the original and old one");
 				return;
 			}
-			
+
 			let dailyLogArr = user.dailyLogs.filter((element) => element.id !== dailyLog.id);
 			dailyLogArr.push(dailyLog);
 			let newUser = {
@@ -60,7 +60,7 @@ export function updateDailyLogPouch (db, dailyLog, parent, addParent, callback) 
 					callback(null);
 				}
 				/* istanbul ignore next */
-			}).catch(error => callback(error));
+			}).catch((error) => callback(error));
 		}
 	})
 }

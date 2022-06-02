@@ -5,26 +5,24 @@ function handleSubComponent (textBlock, callback) {
 		localStorage.readUser((err, user) => {
 			if (err) {
 				callback(err);
-			} else {
-				if (textBlock.kind === "event") {
-					let event = user.events.filter(event => event.id === textBlock.objectReference)[0];
-					event.references = event.references.filter(reference => reference !== textBlock.id);
+			} else if (textBlock.kind === "event") {
+					let event = user.events.filter((reference) => reference.id === textBlock.objectReference)[0];
+					event.references = event.references.filter((reference) => reference !== textBlock.id);
 					localStorage.updateEvent(event, null, null, false, (error) => {
 						callback(error, textBlock);
 					});
 				} else if (textBlock.kind === "task") {
-					let task = user.tasks.filter(task => task.id === textBlock.objectReference)[0];
-					task.references = task.references.filter(reference => reference !== textBlock.id);
+					let task = user.tasks.filter((reference) => reference.id === textBlock.objectReference)[0];
+					task.references = task.references.filter((reference) => reference !== textBlock.id);
 					localStorage.updateTask(task, null, null, false, (error) => {
 						callback(error, textBlock);
 					});
 				}
-			}
 		});
 	} else {
 		callback(null, textBlock);
 	}
-};
+}
 
 /**
  * Finds and deletes the textBlock.
@@ -44,11 +42,11 @@ export function deleteTextBlockPouch (db, textBlock, parent, callback) {
 					callback(error);
 				} else {
 					if (parent) {
-						parent.content = parent.content.filter(reference => reference !== updatedBlock.id);
-						user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter(month => month.id !== parent.id);
+						parent.content = parent.content.filter((reference) => reference !== updatedBlock.id);
+						user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter((month) => month.id !== parent.id);
 						user[`${parent.objectType}s`].push(parent);
 					}
-					user.textBlocks = user.textBlocks.filter(block => block.id !== updatedBlock.id);
+					user.textBlocks = user.textBlocks.filter((block) => block.id !== updatedBlock.id);
 					return db.put({
 						_id: "0000",
 						_rev: user._rev,
@@ -68,8 +66,8 @@ export function deleteTextBlockPouch (db, textBlock, parent, callback) {
 						signifiers: user.signifiers
 					}).then(() => {
 						callback(null);
-					}).catch((error) => {
-						callback(error);
+					}).catch((err) => {
+						callback(err);
 					});
 				}
 			})

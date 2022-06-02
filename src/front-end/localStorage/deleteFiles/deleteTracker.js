@@ -30,8 +30,8 @@ export function deleteTrackerPouch (db, id, callback) {
 			let parentArr = userArr.filter((object) => object.id === block.parent);
 			let parent = parentArr[0];
 			parent.trackers = parent.trackers.filter((obj) => obj !== block.id);
-			parent.recurringTrackers = parent.recurringTrackers.filter(obj => obj !== block.id);
-			user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter(object => object.id !== parent.id);
+			parent.recurringTrackers = parent.recurringTrackers.filter((obj) => obj !== block.id);
+			user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter((object) => object.id !== parent.id);
 			user[`${parent.objectType}s`].push(parent);
 
 			user.trackers = user.trackers.filter((tracker) => tracker.id !== id);

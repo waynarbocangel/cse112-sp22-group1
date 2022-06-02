@@ -1,5 +1,6 @@
-import {makeid} from "./makeId.js";
 import * as localStorage from "../userOperations.js";
+import {makeid} from "./makeId.js";
+
 let imageBlockObject = {};
 
 /**
@@ -34,7 +35,7 @@ export function createImageBlockPouch (db, parent, index, arrangement, data, cal
 			} else {
 				parent.content.push(id);
 			}
-			user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter(object => object.id !== parent.id);
+			user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter((object) => object.id !== parent.id);
 			user[`${parent.objectType}s`].push(parent);
 			user.imageBlocks.push(imageBlockObject);
 
@@ -66,7 +67,7 @@ export function createImageBlockPouch (db, parent, index, arrangement, data, cal
 			}).catch((error) => {
 				/* istanbul ignore next */
 				callback(error, null);
-				return;
+
 			});
 		}
 	});

@@ -1,3 +1,4 @@
+/* eslint-disable */
 module.exports = async () => ({
     "verbose": true,
 	"rootDir": "./",
@@ -13,3 +14,4 @@ module.exports = async () => ({
 		}
 	}
 });
+/* eslint-enable */

@@ -1,4 +1,3 @@
-// TODO: refactor parent??????????
 import { readUser } from "../userOperations";
 
 /**
@@ -37,14 +36,14 @@ import { readUser } from "../userOperations";
 				events: user.events,
 				signifiers: signifierArr
 			};
-			
+
 			return db.put(newUser).then((res) => {
 				/* istanbul ignore next */
 				if (res) {
 					callback(res);
 				}
 				/* istanbul ignore next */
-			}).catch(error => callback(error));
+			}).catch((error) => callback(error));
 		}
 	})
 }

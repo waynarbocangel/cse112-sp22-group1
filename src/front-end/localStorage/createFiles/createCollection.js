@@ -1,5 +1,6 @@
-import {makeid} from "./makeId.js";
 import * as localStorage from "../userOperations.js";
+import {makeid} from "./makeId.js";
+
 let collectionObject = {};
 
 /**
@@ -36,7 +37,7 @@ export function createCollectionPouch (db, title, parent, content, collections, 
 			user.collections.push(collectionObject);
 			if (addToParent) {
 				addToParent.collections.push(collectionObject.id);
-				user[`${addToParent.objectType}s`] = user[`${addToParent.objectType}s`].filter(element => element.id !== addToParent.id);
+				user[`${addToParent.objectType}s`] = user[`${addToParent.objectType}s`].filter((element) => element.id !== addToParent.id);
 				user[`${addToParent.objectType}s`].push(addToParent);
 			} else if (parent === null) {
 				user.index.collections.push(collectionObject.id);
@@ -70,7 +71,7 @@ export function createCollectionPouch (db, title, parent, content, collections, 
 				/* istanbul ignore next */
 				callback(error, null);
 				/* istanbul ignore next */
-				return;
+
 			});
 		}
 	});

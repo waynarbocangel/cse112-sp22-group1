@@ -17,8 +17,8 @@ export function deleteSignifierPouch (db, id, callback) {
 		} else {
 
 			let newTextBlocks = user.textBlocks;
-			newTextBlocks.forEach(block => {
-				block.signifiers = block.signifiers.filter(signifier => signifier.id !== id);
+			newTextBlocks.forEach((block) => {
+				block.signifiers = block.signifiers.filter((signifier) => signifier.id !== id);
 			});
 			user.textBlocks = newTextBlocks;
 

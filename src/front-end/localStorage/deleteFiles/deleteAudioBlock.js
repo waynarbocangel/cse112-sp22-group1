@@ -29,7 +29,7 @@ export function deleteAudioBlockPouch (db, id, parent, callback) {
 				let parentArr = userArr.filter((object) => object.id === block.parent);
 				parent = parentArr[0];
 			}
-			
+
 			let newContents = parent.content.filter((obj) => obj !== id);
 			parent.content = newContents;
 
@@ -59,8 +59,8 @@ export function deleteAudioBlockPouch (db, id, parent, callback) {
 				if (res.ok) {
 					callback(null);
 				}
-			}).catch((error) => {
-				callback(error);
+			}).catch((err) => {
+				callback(err);
 			});
 		}
 	});

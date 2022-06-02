@@ -18,14 +18,14 @@ import { readUser } from "../userOperations";
 			/* istanbul ignore next */
 		} else {
 
-			if (parent && addParent && audioBlock.parent != parent.id) {
-				parent.content = parent.content.filter(block => block !== audioBlock.id);
-				user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter(object => object.id !== parent.id);
+			if (parent && addParent && audioBlock.parent !== parent.id) {
+				parent.content = parent.content.filter((block) => block !== audioBlock.id);
+				user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter((object) => object.id !== parent.id);
 				user[`${parent.objectType}s`].push(parent);
 				addParent.content.push(audioBlock.id);
-				user[`${addParent.objectType}s`] = user[`${addParent.objectType}s`].filter(object => object.id !== addParent.id);
+				user[`${addParent.objectType}s`] = user[`${addParent.objectType}s`].filter((object) => object.id !== addParent.id);
 				user[`${addParent.objectType}s`].push(addParent);
-			} else if ((user.audioBlocks.filter(block => block.id === audioBlock.id))[0].parent !== audioBlock.parent){
+			} else if (user.audioBlocks.filter((block) => block.id === audioBlock.id)[0].parent !== audioBlock.parent) {
 				callback("You are changing the parent without providing the original and old one");
 				return;
 			}
@@ -51,14 +51,14 @@ import { readUser } from "../userOperations";
 				events: user.events,
 				signifiers: user.signifiers
 			};
-			
+
 			return db.put(newUser).then((res) => {
 				/* istanbul ignore next */
 				if (res.ok) {
 					callback(null);
 				}
 				/* istanbul ignore next */
-			}).catch(error => callback(error));
+			}).catch((error) => callback(error));
 		}
 	});
 }

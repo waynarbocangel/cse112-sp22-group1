@@ -3,7 +3,7 @@
  * @memberof createFunctions
  * @return Returns a randomly generated id of length 30.
  */
-function makeRandomString(){
+function makeRandomString () {
    let length = 30;
    let result = [];
    let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

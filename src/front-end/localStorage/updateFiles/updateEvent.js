@@ -19,20 +19,20 @@ import { deleteEvent, readUser } from "../userOperations";
 			/* istanbul ignore next */
 		} else {
 
-			if (reference && event.references.filter(block => block === reference.id).length === 0) {
+			if (reference && event.references.filter((block) => block === reference.id).length === 0) {
 				reference.objectReference = null;
-				user.textBlocks = user.textBlocks.filter(object => object.id !== reference.id);
+				user.textBlocks = user.textBlocks.filter((object) => object.id !== reference.id);
 				user.textBlocks.push(reference);
 				if (addReference) {
 					addReference.objectReference = event.id;
-					user.textBlocks = user.textBlocks.filter(object => object.id !== addReference.id);
+					user.textBlocks = user.textBlocks.filter((object) => object.id !== addReference.id);
 					user.textBlocks.push(addReference);
 				}
 			}
 
 			user.events = user.events.filter((element) => element.id !== event.id);
 			user.events.push(event);
-			
+
 			let newUser = {
 				_id: "0000",
 				_rev: user._rev,
@@ -55,7 +55,7 @@ import { deleteEvent, readUser } from "../userOperations";
 			return db.put(newUser).then((res) => {
 				/* istanbul ignore next */
 				if (res) {
-					if (event.references.length === 0) {	
+					if (event.references.length === 0) {
 						deleteEvent(event, false, (failedToDelete) => {
 							callback(failedToDelete);
 						});
@@ -64,7 +64,7 @@ import { deleteEvent, readUser } from "../userOperations";
 					}
 				}
 				/* istanbul ignore next */
-			}).catch(error => callback(error));
+			}).catch((error) => callback(error));
 		}
 	})
 }

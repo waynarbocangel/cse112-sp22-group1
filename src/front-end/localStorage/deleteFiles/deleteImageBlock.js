@@ -72,8 +72,8 @@ export function deleteImageBlockPouch (db, id, callback) {
 				if (res.ok) {
 					callback(null);
 				}
-			}).catch((error) => {
-				callback(error)
+			}).catch((err) => {
+				callback(err)
 			});
 		}
 	});

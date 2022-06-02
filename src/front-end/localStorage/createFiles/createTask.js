@@ -1,5 +1,5 @@
-import {makeid} from "./makeId.js";
 import * as localStorage from "../userOperations.js";
+import {makeid} from "./makeId.js";
 
 /**
  * Creates and stores a new task created from the given parameters.
@@ -28,7 +28,7 @@ export function createTaskPouch (db, references, text, complete, callback) {
 			};
 
 			user.tasks.push(taskObject);
-			
+
 			let newUser = {
 				_id: "0000",
 				_rev: user._rev,

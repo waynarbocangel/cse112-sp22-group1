@@ -8,7 +8,7 @@ import { readUser } from "../userOperations";
  * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
  export function updateThemePouch (db, theme, callback) {
-	 /* istanbul ignore next */
+	/* istanbul ignore next */
 	readUser((err, user) => {
 		/* istanbul ignore next */
 		if (err) {
@@ -34,14 +34,14 @@ import { readUser } from "../userOperations";
 				events: user.events,
 				signifiers: user.signifiers
 			};
-			
+
 			return db.put(newUser).then((res) => {
 				/* istanbul ignore next */
 				if (res) {
 					callback(null);
 				}
 				/* istanbul ignore next */
-			}).catch(error => callback(error));
+			}).catch((error) => callback(error));
 		}
 	})
 }
