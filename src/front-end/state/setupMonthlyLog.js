@@ -2,6 +2,7 @@ import * as localStorage from "../localStorage/userOperations.js";
 import { contentWrapper, header } from "../index.js";
 import { CreatorBlock } from "../components/creator.jsx";
 import { DropdownBlock } from "../components/dropdown.jsx";
+import { FileLocation } from "../components/fileLocation.jsx";
 import { TrackerBlock } from "../components/trackerBlock.jsx";
 import { TrackerMenu } from "../components/tracker.jsx";
 import { createEditor } from "../components/blockController.js";
@@ -42,6 +43,16 @@ export function setupMonthlyLog (btn) {
 	});
 	let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 	header.title = `${monthNames[new Date(currentState.date).getMonth()]} ${new Date(currentState.date).getFullYear()}`;
+
+	// Remove all child fileLocations first first
+	let child = header.file.lastElementChild;
+	while (child) {
+		header.file.removeChild(child);
+		child = header.file.lastElementChild;
+	}
+	header.file.appendChild(new FileLocation("Future Log", "futureLog", true))
+	header.file.appendChild(new FileLocation("Monthly Log", "monthlyLog", false))
+
 
 	// Setting navbar buttons
 	for (let i = 0; i < btn.length; i++) {

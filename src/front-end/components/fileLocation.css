@@ -1,0 +1,20 @@
+#fileLocation {
+    display: inline;  
+    margin-right: 8px;
+}
+
+#locationTitle {
+    display: inline;
+}
+
+.template {
+    display: inline;
+}
+
+#fileImg {
+    height: 14px;
+    width: 14px;
+    margin-right: 5px;
+    filter: var(--icon-filter);
+    display: inline;
+}
