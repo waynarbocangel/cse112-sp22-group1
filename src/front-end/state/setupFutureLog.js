@@ -2,6 +2,7 @@ import * as localStorage from "../localStorage/userOperations.js";
 import { contentWrapper, header } from "../index.js";
 import { CreatorBlock } from "../components/creator.jsx";
 import { DropdownBlock } from "../components/dropdown.jsx";
+import { FileLocation } from "../components/fileLocation.jsx";
 import { TrackerBlock } from "../components/trackerBlock.jsx";
 import { TrackerMenu } from "../components/tracker.jsx";
 import { createEditor } from "../components/blockController.js";
@@ -52,7 +53,15 @@ export function setupFutureLog (btn) {
 	document.getElementById("targetMenu").style.display = "block";
 	let futureLogStart = new Date(currentState.startDate);
 	let futureLogEnd = new Date(currentState.endDate);
+
 	header.title = futureLogEnd.getFullYear() === futureLogStart.getFullYear() ? `Future Log ${futureLogStart.getFullYear()}` : `Future Log ${futureLogStart.getFullYear()} - ${futureLogEnd.getFullYear()}`;
+	// Remove all child fileLocations first first
+	let child = header.file.lastElementChild;
+	while (child) {
+		header.file.removeChild(child);
+		child = header.file.lastElementChild;
+	}
+	header.file.appendChild(new FileLocation("Future Log", "futureLog", false))
 
 	// Setting navbar buttons
 	for (let i = 0; i < btn.length; i++) {

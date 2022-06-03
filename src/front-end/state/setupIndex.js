@@ -2,6 +2,7 @@ import * as localStorage from "../localStorage/userOperations.js";
 import { contentWrapper, header } from "../index.js"
 import { CreatorBlock } from "../components/creator.jsx";
 import { DropdownBlock } from "../components/dropdown.jsx";
+import { FileLocation } from "../components/fileLocation.jsx";
 import { currentState } from "./stateManager.js";
 
 /**
@@ -65,6 +66,14 @@ export function setupIndex (btn) {
 		}
 	});
 	header.title = "Index";
+
+	// Remove all child fileLocations first first
+	let child = header.file.lastElementChild;
+	while (child) {
+		header.file.removeChild(child);
+		child = header.file.lastElementChild;
+	}
+	header.file.appendChild(new FileLocation("Index", "index", false))
 
 	// Setting navbar buttons
 	for (let i = 0; i < btn.length; i++) {
