@@ -60,7 +60,6 @@ export class SideCard extends HTMLElement {
     }
 
     addTracker (tracker) {
-        console.log(tracker);
         this.tracker = tracker;
         const trackerTitle = this.shadowRoot.getElementById("trackerTitle");
         trackerTitle.innerText = tracker.title;

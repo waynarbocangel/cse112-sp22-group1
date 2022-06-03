@@ -70,7 +70,7 @@ export class TextBlock extends HTMLElement {
 		this.eventDelete = true;
 		this.signifiers = signifiers
 		this.signifierIcon = this.shadowRoot.getElementById("signifier");
-		this.signifierIcon.innerHTML = this.signifier.symbol;
+		this.signifierIcon.innerHTML = this.signifiers.symbol;
 		this.plus = this.shadowRoot.getElementById("plus");
 		this.more = this.shadowRoot.getElementById("more");
 		this.setupTabLevel();

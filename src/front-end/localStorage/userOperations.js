@@ -616,23 +616,19 @@ export async function deleteDB (cloud) {
 			});
 		});
 	} else {
-		updateUserFromMongo((couldNotUpdate) => {
-			if (!couldNotUpdate) {
-				db.destroy((err, res) => {
-					if (err) {
-						console.log(err);
-					} else {
-						console.log(res);
-					}
-				});
+		db.destroy((err, res) => {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(res);
+			}
+		});
 
-				db.info((err, res) => {
-					if (err) {
-						console.log(err);
-					} else {
-						console.log(res);
-					}
-				});
+		db.info((err, res) => {
+			if (err) {
+				console.log(err);
+			} else {
+				console.log(res);
 			}
 		});
 	}

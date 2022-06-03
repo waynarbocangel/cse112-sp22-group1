@@ -1,4 +1,4 @@
-@font-face {
+:host {
 	font-family:"SF-Pro";
 }
 .card{
@@ -8,12 +8,11 @@
     border-radius: 15px;
     justify-content: space-between;
     padding: 0 0 1rem;
-    width:23vw;
+    width: calc(100% - 98px);
     background-color: var(--card-backgound);
     box-shadow: 0 0 10px var(--card-shadow);
     margin-top: 0.5vw;
     margin-bottom: 0.5vw;
-    margin-left:1vw;
 }
 #titleWrapper{
     display:flex;

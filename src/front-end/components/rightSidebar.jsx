@@ -14,13 +14,8 @@ import {SideCard} from "./sideCard.jsx";
 let template = <template>
     <link type="text/css" rel="stylesheet" href="rightSidebar.css" />
     <article id="container">
-        <span class="search_bar" id="searchBar">
-            <input type="text" placeholder="Search" />
-            <img src="../public/resources/search_icon.png" />
-        </span>
-        <div id="sideCardWrapper">
-
-        </div>
+        <div id="sideCardWrapper"></div>
+        <button id="createNewGoal">New Goal</button>
     </article>
 </template>
 
@@ -29,6 +24,11 @@ export class RightSidebar extends HTMLElement {
         super();
         this.attachShadow({ mode: "open" });
 		this.shadowRoot.appendChild(template.content.cloneNode(true));
+        this.addCard("testing", {id: "abc",
+			objectType: "tracker",
+			title: "testing",
+			parent: "a",
+			content: []});
     }
 
     addCard (title, tracker) {

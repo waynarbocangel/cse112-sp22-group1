@@ -1,3 +1,5 @@
+import { router } from "../state/router.js";
+
 // JSX Engine Import
 /* eslint-disable */
 /** @jsx createElement */
@@ -24,14 +26,14 @@ export class FileLocation extends HTMLElement {
 	/**
 	 * Navbar constructor
 	 */
-	constructor (title, type, slash) {
+	constructor (title, type, collectionID, slash) {
 		super();
 		this.attachShadow({ mode: "open" });
 		this.shadowRoot.appendChild(template.content.cloneNode(true));
-
+		this.collectionID = collectionID;
         this.img = this.shadowRoot.getElementById("fileImg");
         this.locationTitle = this.shadowRoot.getElementById("locationTitle");
-
+		this.type = type;
         if (slash) {
             this.locationTitle.innerHTML = title + " /"
         } else {
@@ -54,6 +56,9 @@ export class FileLocation extends HTMLElement {
 	 */
 	connectedCallback () {
 		// normal open menu button
+		this.locationTitle.onclick = () => {
+			router.navigate(`/${this.type}/${this.collectionID}`);
+		};
 	}
 
 }

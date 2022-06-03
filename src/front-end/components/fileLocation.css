@@ -5,6 +5,14 @@
 
 #locationTitle {
     display: inline;
+    font-size: 17px;
+    cursor: pointer;
+    transition: ease-in-out 0.3s;
+}
+
+#locationTitle:hover {
+    text-decoration: underline;
+    transition: ease-in-out 0.3s;
 }
 
 .template {

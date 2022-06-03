@@ -22,8 +22,8 @@ export function setupIndex (btn) {
 
 			let parentArr = [];
 			console.log(currentState);
-			for (let i = 0; i < currentState.contents.length; i++) {
-				Array.prototype.push.apply(parentArr, userArr.filter((object) => object.id === currentState.contents[i]));
+			for (let i = 0; i < currentState.futureLogs.length; i++) {
+				Array.prototype.push.apply(parentArr, userArr.filter((object) => object.id === currentState.futureLogs[i]));
 			}
 
 			let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];

@@ -9,9 +9,15 @@
 #carousel {
     overflow-x: scroll;
     overflow-y: hidden;
-    height: 118px;
+    height: 138px;
+    display: flex;
     white-space: nowrap;
-    width: 60%;
+    width: 100%;
+}
+
+#carousel item-card {
+    margin: 10px 11px 10px 4.5px;
+    padding-right: 3px;
 }
 
 h1 {

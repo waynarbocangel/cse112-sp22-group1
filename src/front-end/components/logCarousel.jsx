@@ -11,9 +11,7 @@ let template = <template>
 	<link type="text/css" rel="stylesheet" href="logCarousel.css" />
 	<section id="logCarousel">
         <h1 id="sectionTitle"></h1> 
-        <section id="carousel">
-
-        </section>
+        <section id="carousel"></section>
 	</section>
 </template>
 

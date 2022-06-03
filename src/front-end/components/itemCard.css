@@ -1,14 +1,13 @@
-@font-face {
+:host{
 	font-family:"SF-Pro";
 }
 .card{
     font-family: "SF-Pro";
-    display: inline-block;
+    width: fit-content;
     overflow: hidden;
     border-radius: 15px;
     justify-content: space-between;
-    padding: 0 0 1rem;
-    min-width: 12vw;
+    padding: 0 36.5px 1rem;
     background-color: var(--card-backgound);
     
     box-shadow: 0 0 10px var(--card-shadow);
@@ -18,7 +17,9 @@
     padding-right: 1.5vw;
 }
 #title{
-    font-size: 18pt;
+    font-size: 18px;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 2px;
     text-align: center;
     text-decoration: underline;
 }
@@ -31,10 +32,11 @@
 }
 button{
     cursor: pointer;    
-    font-size: 16px;
+    font-size: 14px;
+    font-weight: bold;
     border: none;
     color: white;
-    padding: 4px 8px;
+    padding: 4px 6px;
     text-decoration: none;
     margin: 4px 5px;
     border-radius: 6px;

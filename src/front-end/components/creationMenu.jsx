@@ -12,12 +12,18 @@ import { createElement, createFragment } from "../jsxEngine.js";
 /* eslint-enable */
 
 const futureLogCreator = <form class="future" title="New Future Log">
-    <label>From: <br />
-        <input id="futureFrom" name="future-from" />
-    </label>
-	<label>To: <br />
-        <input id="futureTo" name="future-to" />
-    </label>
+	<label htmlFor="futureTitle">Title:</label>
+	<input id="futureTitle" name="future-title" />
+    <section id="futureTimes">
+		<div>
+			<label htmlFor="futureFrom">From:</label>
+			<input id="futureFrom" name="future-from" />
+		</div>
+		<div>
+			<label htmlFor="futureTo">To:</label>
+			<input id="futureTo" name="future-to" />
+		</div>
+	</section>
 </form>;
 
 const monthlyLogCreator = <form class="monthly" title="New Monthly Log">
@@ -147,6 +153,7 @@ export class CreationMenu extends HTMLElement {
 				this.endPicker.remove();
 				/* eslint-disable */
 			}
+			this.futureTitle = this.shadowRoot.getElementById("futureTitle");
 			this.startPicker = datepicker(this.shadowRoot.getElementById("futureFrom"), {id: 1});
 			this.endPicker = datepicker(this.shadowRoot.getElementById("futureTo"), {id: 1});
 		} else if (kind === "monthlyLog") {
@@ -192,11 +199,13 @@ export class CreationMenu extends HTMLElement {
     createFutureLog () {
         let start = new Date(this.shadowRoot.getElementById("futureFrom").value);
         let end = new Date(this.shadowRoot.getElementById("futureTo").value);
-		if (start && end){
-			localStorage.createFutureLog(start, end, [], [], true, (err, futureLog) => {
+		let title = this.futureTitle.value;
+		if (start && end && title){
+			localStorage.createFutureLog(title, start, end, [], [], [], [], true, (err, futureLog) => {
 				if (err) {
 					console.log(err);
 				} else if (futureLog) {
+					console.log(futureLog);
 					localStorage.readUser((error, user) => {
 						if(error){
 							console.log(error);
@@ -230,7 +239,7 @@ export class CreationMenu extends HTMLElement {
 				}
 			});
 		} else {
-			alert("You must pick a start and end date!")
+			alert("You must give a title and pick a start and end date!")
 			this.loadingWheel.style.display = "none";
 		}
     }

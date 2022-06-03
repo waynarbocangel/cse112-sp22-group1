@@ -47,7 +47,7 @@ export class PageHeader extends HTMLElement {
 		super();
 		this.attachShadow({ mode: "open" });
 		this.shadowRoot.appendChild(template.content.cloneNode(true));
-		this.h1 = this.shadowRoot.getElementById("title_page");
+		this.headerTitle = this.shadowRoot.getElementById("title_page");
 
 		this.file = this.shadowRoot.getElementById("file");
 		// this.futureLog = new FileLocation(" Future Log   ", "futureLog");
@@ -59,7 +59,6 @@ export class PageHeader extends HTMLElement {
 
 
 
-		this.createFutureLog = this.createFutureLog.bind(this);
 		this.futureLogButton = this.shadowRoot.querySelector(".new-button");
 		this.titleHeader = this.shadowRoot.querySelector(".header");
 		this.imgbuttons = this.shadowRoot.querySelectorAll(".imgbutton");
@@ -83,9 +82,9 @@ export class PageHeader extends HTMLElement {
 			navbar.toggle();
 		});
 
-		this.h1.onblur = () => {
-			if (this.h1.contentEditable) {
-				currentState.title = this.h1.innerText;
+		this.headerTitle.onblur = () => {
+			if (this.headerTitle.contentEditable) {
+				currentState.title = this.headerTitle.innerText;
 				localStorage.updateCollection(currentState, true, (err) => {
 					if (err) {
 						console.log(err);
@@ -99,14 +98,14 @@ export class PageHeader extends HTMLElement {
 	 * Makes header content editable
 	 */
 	makeEditable () {
-		this.h1.contentEditable = true;
+		this.headerTitle.contentEditable = true;
 	}
 
 	/**
 	 * Makes header content uneditable
 	 */
 	makeUneditable () {
-		this.h1.contentEditable = false;
+		this.headerTitle.contentEditable = false;
 	}
 
 	set title (title) {
@@ -117,7 +116,7 @@ export class PageHeader extends HTMLElement {
 	 * Gets the header's current title
 	 */
 	get title () {
-		return this.h1.innerText;
+		return this.headerTitle.innerText;
 	}
 
 	/**

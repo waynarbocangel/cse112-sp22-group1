@@ -1,4 +1,4 @@
-import { readUser } from "../userOperations";
+import { readUser } from "../userOperations.js";
 
 /**
  * Finds and update the futureLog passed in.
@@ -9,32 +9,32 @@ import { readUser } from "../userOperations";
  */
  export function updateFutureLogPouch (db, log, callback) {
 	/* istanbul ignore next */
-	readUser((err, doc) => {
+	readUser((err, user) => {
 		/* istanbul ignore next */
 		if (err) {
 			/* istanbul ignore next */
 			callback(err);
 			/* istanbul ignore next */
 		} else {
-			let futureLogArr = doc.futureLogs.filter((element) => element.id !== log.id);
-			futureLogArr.push(log);
+			user.futureLogs = user.futureLogs.filter((element) => element.id !== log.id);
+			user.futureLogs.push(log);
 			let newUser = {
 				_id: "0000",
-				_rev: doc._rev,
-				email: doc.email,
-				theme: doc.theme,
-				index: doc.index,
-				dailyLogs: doc.dailyLogs,
-				monthlyLogs: doc.monthlyLogs,
-				futureLogs: futureLogArr,
-				collections: doc.collections,
-				trackers: doc.trackers,
-				imageBlocks: doc.imageBlocks,
-				audioBlocks: doc.audioBlocks,
-				textBlocks: doc.textBlocks,
-				tasks: doc.tasks,
-				events: doc.events,
-				signifiers: doc.signifiers
+				_rev: user._rev,
+				email: user.email,
+				theme: user.theme,
+				index: user.index,
+				dailyLogs: user.dailyLogs,
+				monthlyLogs: user.monthlyLogs,
+				futureLogs: user.futureLogs,
+				collections: user.collections,
+				trackers: user.trackers,
+				imageBlocks: user.imageBlocks,
+				audioBlocks: user.audioBlocks,
+				textBlocks: user.textBlocks,
+				tasks: user.tasks,
+				events: user.events,
+				signifiers: user.signifiers
 			};
 
 			return db.put(newUser).then((res) => {

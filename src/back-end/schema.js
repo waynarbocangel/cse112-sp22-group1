@@ -9,7 +9,7 @@ const mongoose = require("mongoose");
  * @typedef userSchema
  * @property {String} email The user's email
  * @property {String} pwd The user's password
- * @property {String} teme The user's theme
+ * @property {String} theme The user's theme
  * @property {Index} index The user's index
  * @property {Array<DailyLog>} dailyLogs An array of the user's dailyLogs
  * @property {Array<MonthlyLog>} monthlyLogs An array of the user's monthlyLogs
