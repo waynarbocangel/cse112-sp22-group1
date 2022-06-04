@@ -2,7 +2,6 @@
  * Index module
  * @module index
  */
-import * as localStorage from "./localStorage/userOperations.js";
 import { CreationMenu } from "./components/creationMenu.jsx";
 import { InlineDropdown } from "./components/inlineDropdown.jsx";
 import { NavBar } from "./components/navbar.jsx";

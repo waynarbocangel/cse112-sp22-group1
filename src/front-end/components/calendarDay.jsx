@@ -1,8 +1,12 @@
+import * as localStorage from "../localStorage/userOperations.js";
+
 // JSX Engine Import
 /* eslint-disable */
 /** @jsx createElement */
 /** @jsxFrag createFragment */
 import { createElement, createFragment } from "../jsxEngine.js";
+import { currentState } from "../state/stateManager.js";
+import { router } from "../state/router.js";
 /* eslint-enable */
 
 let today = new Date();
@@ -36,6 +40,8 @@ export class CalendarDay extends HTMLElement {
 		this.eventSection = this.shadowRoot.getElementById("events");
 		this.eventMobile = this.shadowRoot.getElementById("eventsMobile");
 		this.footerSection = this.shadowRoot.getElementById("footer");
+		this.currentDate = date;
+		this.dailyLog = log;
 		if (date) {
 			this.dayTitle.innerHTML = date.getDate();
 			this.content.classList.add("isDate");
@@ -55,7 +61,7 @@ export class CalendarDay extends HTMLElement {
 		}
 		
 		if (log){
-			if (log.content.length == 0 && inRange) {
+			if (log.unlogged && inRange) {
 				this.dayTitle.classList.add("unlogged")
 				this.eventSection.classList.add("unlogged");
 				this.footerSection.appendChild(<button id="create" onClick={this.createLog}>Start Log</button>);
@@ -91,8 +97,8 @@ export class CalendarDay extends HTMLElement {
 	 * Opens the log for this date 
 	 */
 	openLog = () => {
-		if (this.eventMobile.style.display === "none") {
-			alert("Log should be opened");
+		if (!this.eventMobile.style.display || this.eventMobile.style.display === "none") {
+			router.navigate(`/dailyLog/${this.dailyLog.id}`);
 		}
 	}
 
@@ -107,7 +113,24 @@ export class CalendarDay extends HTMLElement {
 	 * Creates new log at a given date
 	 */
 	createLog = () => {
-		alert("Creating log");
+		console.log(currentState);
+		localStorage.createDailyLog(currentState, [], [], currentState.recurringTrackers, this.currentDate, true, (err, dailyLog) => {
+			if (err) {
+				console.log(err);
+			} else {
+				router.navigate(`/dailyLog/${dailyLog.id}`);
+			}
+		});
+	}
+
+	connectedCallback() {
+		this.content.onclick = () => {
+			this.selectDay();
+		}
+
+		this.dayTitle.onclick = () => {
+			this.openLog();
+		}
 	}
 
 	connectedCallback() {

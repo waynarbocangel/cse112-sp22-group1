@@ -47,31 +47,39 @@ export class Calendar extends HTMLElement {
 		let lastDay = new Date(month.getFullYear(), month.getMonth() + 1, 0);
 		let totalLines = Math.ceil((lastDay.getDate() - firstDay.getDate() + firstDay.getDay()) / 7);
 		let shouldMove = false;
+		console.log(logs);
 		let eventsMap = new Map();
 		events.forEach(newEvent => {
 			if (eventsMap.get(newEvent.date.getDate())) {
 				let currentEvents = eventsMap.get(newEvent.date.getDate());
-				console.log(currentEvents);
 				currentEvents.push(newEvent.title);
-				console.log(currentEvents);
 				eventsMap.set(newEvent.date.getDate(), currentEvents);
-				console.log(eventsMap);
 			} else {
 				eventsMap.set(newEvent.date.getDate(), [newEvent.title]);
 			}
 		});
+		let shift = 0;
 		for (let i = 0; i < totalLines; i++) {
 			for (let k = 0; k < 7; k++) {
-				if ((shouldMove && (i + 1 < totalLines) ||  (i + 1 === totalLines && k < lastDay.getDay())) || (i == 0 && k == firstDay.getDay())) {
-					let currentDate = new Date(firstDay.getFullYear(), firstDay.getMonth(), k + (i * 7) + 1);
-					let inRange = (currentDate.getDate() >= start || currentDate.getDate() <= end);
-					let currentLog = inRange ? logs[k + (i * 7)] : null;
-					console.log(inRange);
+				if ((shouldMove && (i + 1 < totalLines) ||  (i + 1 === totalLines && k <= lastDay.getDay())) || (i === 0 && k === firstDay.getDay())) {
+					let currentDate = new Date(firstDay.getFullYear(), firstDay.getMonth(), k - shift + (i * 7) + 1);
+					let inRange = (currentDate.getDate() >= start && currentDate.getDate() <= end);
+					let currentLog = null;
+					if (inRange) {
+						let log = logs.filter(reference => new Date(reference.date).getDate() === currentDate.getDate());
+						console.log(log);
+						if (log.length === 1) {
+							currentLog = log[0];
+						} else {
+							currentLog = {unlogged: true};
+						}
+					}
 					let newBlock = new CalendarDay(this, currentDate, eventsMap.get(currentDate.getDate()), currentLog, inRange);
 					this.days.appendChild(newBlock);
 					shouldMove = true;
 					continue;
 				}
+				shift += 1;
 				this.days.appendChild(new CalendarDay(this, null, undefined, null, false));
 			}
 		}
