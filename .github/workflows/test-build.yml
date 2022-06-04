@@ -35,10 +35,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
       working-directory: ./src/back-end
-    - run: |
-        echo "DB=${{secrets.MONGODB_URI}}
-        SESSION_SECRET=ARandomlyGeneratedStringOfCharactersToKeepSecret
-        HASHKEY=workflowkey" >> .env
+    - run: echo "${{secrets.MONGODB_URI}}" >> .env
       working-directory: ./src/back-end
     - run: node index.js
       working-directory: ./src/back-end
