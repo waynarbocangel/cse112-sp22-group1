@@ -185,7 +185,7 @@ export class InlineDropdown extends HTMLElement {
             this.secondList.lastChild.remove();
         }
         this.secondDropdown.style.top = `${this.dropdown.offsetTop}px`;
-        this.secondDropdown.style.left = `${this.dropdown.offsetWidth+ this.dropdown.offsetLeft+1}px`;
+        this.secondDropdown.style.left = `${this.dropdown.offsetWidth+ this.dropdown.offsetLeft-5}px`;
         let elements = otherDropdownContents["transform"]
         for (let i = 0; i < elements.length; i++) {
             let title = elements[i].title;
