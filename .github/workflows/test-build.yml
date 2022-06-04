@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x, 15.x]
+        node-version: [16.x]
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
@@ -34,9 +34,11 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install
-      working-directory: ./src/unitTests
-    - run: npm test --if-present
-      working-directory: ./src/unitTests
+      working-directory: ./src/back-end
+    - run: node index.js
+      working-directory: ./src/back-end
+    - run: npm test --if-present -- localStorage
+      working-directory: ./src/front-end
     - name: JEST Report
       uses: RedaktionsNetzwerk-Deutschland/action-jest-reporter@v1.0.0
       with:
