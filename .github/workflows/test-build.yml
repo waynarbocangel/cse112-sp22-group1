@@ -27,8 +27,6 @@ jobs:
     strategy:
       matrix:
         node-version: [16.x]
-    env:
-      MONGODB_URI: ${{MONGODB_URI}}
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
@@ -37,7 +35,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
       working-directory: ./src/back-end
-    - run: echo "DB=$MONGODB_URI\nSESSION_SECRET=ARandomlyGeneratedStringOfCharactersToKeepSecret\nHASHKEY=workflowkey" >> .env
+    - run: echo "DB=${{secrets.MONGODB_URI}}\nSESSION_SECRET=ARandomlyGeneratedStringOfCharactersToKeepSecret\nHASHKEY=workflowkey" >> .env
       working-directory: ./src/back-end
     - run: node index.js
       working-directory: ./src/back-end
