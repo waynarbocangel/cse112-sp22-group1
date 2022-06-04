@@ -47,6 +47,7 @@ app.listen("2827", () => {
     let db = process.env.DB;
     console.log(db);
 	console.log("server has started listening to port 2827");
+    console.log(process.env.DB);
 });
 
 /* Defines the route for authenticating a user */
