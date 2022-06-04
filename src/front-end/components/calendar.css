@@ -4,7 +4,8 @@
 
 header{
 	display: grid;
-	grid-template-columns: repeat(7, 129.85px);
+	width: calc(100% - 20px);
+	grid-template-columns: repeat(7, 14.3%);
 	text-align: center;
 }
 
@@ -24,9 +25,16 @@ header h1{
 section {
 	display: grid;
 	background-color: var(--card-background);
-	width: 909px;
+	width: calc(100% - 20px);
+	grid-template-rows: repeat(8, calc(((100vw - 325px) * 0.637) * 0.143));
 	border-radius: 10px;
-	grid-template-columns: repeat(7, 129.85px);
+	grid-template-columns: repeat(7, 14.3%);
+}
+
+section > calendar-day {
+	width: 100%;
+	height: 100%;
+	aspect-ratio: 1 / 1;
 }
 
 section > calendar-day:nth-of-type(n){
@@ -62,17 +70,19 @@ section > calendar-day:last-of-type{
 	--border-bottom-right-radius: 10px;
 }
 
-@media only screen and (max-width: 1024px){
-	header{
-		grid-template-columns: repeat(7, 87px);
-	}
-
-	.days{
+@media only screen and (max-widtH: 1550px) {
+	.days {
 		display: none;
 	}
 
-	.mobileDays{
+	.mobileDays {
 		display: block;
+	}
+}
+
+@media only screen and (max-width: 1024px){
+	header{
+		grid-template-columns: repeat(7, 87px);
 	}
 	
 	section {

@@ -44,7 +44,6 @@ logIn.onclick = (e) => {
                     alert("Wrong username or password");
                 } else {
                     user.pwd = password.value;
-                    console.log(user.index);
                     createUserPouch(db, user, (userData) => {
                         console.log(userData);
                         window.location.href = "/";
