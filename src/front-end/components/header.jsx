@@ -1,6 +1,6 @@
-import * as dropdown from "../fillDropdown.js";
+
 import * as localStorage from "../localStorage/userOperations.js";
-import { navbar } from "../index.js";
+import { adderDropdown, navbar } from "../index.js";
 import { currentState } from "../state/stateManager.js";
 import { FileLocation } from "../components/fileLocation.jsx"
 
@@ -28,7 +28,7 @@ let template = <template>
 				<button class="edit-button">Edit</button>
 			</div>
 			<button class="new-button">New</button>
-		</span> 
+		</span>
 		<span class="search_bar" id="searchBar">
 			<input type="text" placeholder="Search" />
 			<img src="../public/resources/search_icon.png" />
@@ -40,6 +40,7 @@ let template = <template>
  * Class that creates Page Header
  */
 export class PageHeader extends HTMLElement {
+
 	/**
 	 * PageHeader constructor
 	 */
@@ -50,17 +51,20 @@ export class PageHeader extends HTMLElement {
 		this.h1 = this.shadowRoot.getElementById("title_page");
 
 		this.file = this.shadowRoot.getElementById("file");
-		// this.futureLog = new FileLocation(" Future Log   ", "futureLog");
-		// this.monthlyLog = new FileLocation(" Monthly log   ", "monthlyLog");
-		// this.todaysLog = new FileLocation(" Today's log   ", "todaysLog");
-		// this.file.appendChild(this.futureLog);
-		// this.file.appendChild(this.monthlyLog);
-		// this.file.appendChild(this.todaysLog);
 
+		/*
+		 * This.futureLog = new FileLocation(" Future Log   ", "futureLog");
+		 * this.monthlyLog = new FileLocation(" Monthly log   ", "monthlyLog");
+		 * this.todaysLog = new FileLocation(" Today's log   ", "todaysLog");
+		 * this.file.appendChild(this.futureLog);
+		 * this.file.appendChild(this.monthlyLog);
+		 * this.file.appendChild(this.todaysLog);
+		 */
 
 
 		this.createFutureLog = this.createFutureLog.bind(this);
 		this.futureLogButton = this.shadowRoot.querySelector(".new-button");
+		this.editButton = this.shadowRoot.querySelector(".edit-button");
 		this.titleHeader = this.shadowRoot.querySelector(".header");
 		this.imgbuttons = this.shadowRoot.querySelectorAll(".imgbutton");
 		this.menuToggle = this.shadowRoot.querySelector("#menuToggle input");
@@ -75,8 +79,15 @@ export class PageHeader extends HTMLElement {
 		this.futureLogButton.addEventListener("click", () => {
 			const headerTopOffset = this.titleHeader.offsetTop + this.titleHeader.offsetHeight;
 			const headerLeftOffset = this.titleHeader.offsetLeft + this.titleHeader.offsetWidth - 206;
-			/* dropDown window appears to be 206 px, not sure why previous value was 210 */
-			dropdown.openCreationDropdown(headerTopOffset, headerLeftOffset);
+
+			/* DropDown window appears to be 206 px, not sure why previous value was 210 */
+			adderDropdown.openCreationDropdown(headerTopOffset, headerLeftOffset);
+		});
+
+		this.editButton.addEventListener("click", ()=>{
+			const headerTopOffset = this.titleHeader.offsetTop + this.titleHeader.offsetHeight - 100;
+			const headerLeftOffset = this.titleHeader.offsetLeft + this.titleHeader.offsetWidth - 548;
+			adderDropdown.openEditDropdown(headerTopOffset, headerLeftOffset);
 		});
 
 		this.menuToggle.addEventListener("change", () => {
