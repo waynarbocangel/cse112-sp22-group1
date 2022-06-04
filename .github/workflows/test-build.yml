@@ -37,14 +37,12 @@ jobs:
       working-directory: ./src/back-end
     - run: npm install
       working-directory: ./src/front-end
-    - run: |
-          echo $ENVFILE
-          echo "$ENVFILE" >> .env
-      env:
-        ENVFILE: ${{ secrets.MONGODB_URI }}
-      working-directory: ./src/back-end
     - run: node index.js
       working-directory: ./src/back-end
+      env:
+        DB: ${{ secrets.DB }}
+        HASHKEY: ${{ secrets.HASHKEY }}
+        SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
     - run: npm test --if-present -- localStorage
       working-directory: ./src/front-end
     - name: JEST Report
