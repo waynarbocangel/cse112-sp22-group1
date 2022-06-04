@@ -37,7 +37,11 @@ jobs:
       working-directory: ./src/back-end
     - run: npm install
       working-directory: ./src/front-end
-    - run: node index.js
+    - run: |
+        export DB
+        export HASHKEY
+        export SESSION_SECRET 
+        node index.js
       working-directory: ./src/back-end
       env:
         DB: ${{ secrets.DB }}
