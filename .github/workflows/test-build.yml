@@ -40,5 +40,5 @@ jobs:
     - run: |
         node testingServer.js &
         cd ../front-end
-        npm run test --if-present -- localStorage
+        npm run test --if-present -- localStorage.test.js 
       working-directory: ./src/back-end
