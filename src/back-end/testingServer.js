@@ -31,7 +31,7 @@ app.use(session({
 
 
 /* Listen for connection on port 2827 */
-app.listen("2827", () => {
+let server = app.listen("2827", () => {
 	console.log("server has started listening to port 2827");
 });
 
@@ -108,6 +108,7 @@ app.delete("/user", express.json({ type: "*/*" }), (req, res) => {
     if (req.session.authed) {
         res.send(JSON.stringify(user));
 		user = null;
+		server.close();
     } else {
         res.send(JSON.stringify({ error: "failed authentication" }));
     }
