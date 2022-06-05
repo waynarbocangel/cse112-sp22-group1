@@ -38,7 +38,7 @@ jobs:
     - run: npm install
       working-directory: ./src/front-end
     - run: |
-        node testingServer.js
+        node testingServer.js &
         cd ../front-end
         npm run test --if-present -- localStorage
       working-directory: ./src/back-end
