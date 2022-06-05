@@ -37,7 +37,7 @@ let server = app.listen("2827", () => {
 
 /* Defines the route for authenticating a user */
 app.post("/auth", express.json({ type: "*/*" }), (req, res) => {
-	if (req.body.email === user.email && req.body.pwd === user.pwd){
+	if (req.body.email === user.email && req.body.pwd === user.pwd) {
 		req.session.email = req.body.email;
 		req.session.key = user.pwd;
 		req.session.authed = true;
