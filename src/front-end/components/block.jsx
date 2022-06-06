@@ -25,7 +25,7 @@ let blockTemplate = <template>
 	<div id="editorIcons" class="paragraphIcons"><img src="../public/resources/plusIcon.png" class="unfocusedIcons" id="plus" /><img src="../public/resources/sixDotIcon.png" class="unfocusedIcons" id="more" /></div>
 	<div id="checkerContainer" checked=""><div id="taskChecker"></div></div>
 	<div id="textBlock" contentEditable="true" ondrop={()=>false} placeholder='Type "/" to create a block'></div>
-	<aside id="signifiers">&#128540;</aside>
+	<aside id="signifiers" class="paragraphSignifiers"><span>&#128540;</span><button>+</button></aside>
 </template>;
 
 /**
@@ -72,7 +72,7 @@ export class TextBlock extends HTMLElement {
 		this.dateSetter = false;
 		this.eventDelete = true;
 		this.signifiers = signifiers
-		this.signifierIcon = this.shadowRoot.getElementById("signifier");
+		this.signifierRow = this.shadowRoot.getElementById("signifiers");
 		this.plus = this.shadowRoot.getElementById("plus");
 		this.more = this.shadowRoot.getElementById("more");
 		let textBlock = this.shadowRoot.getElementById("textBlock");
@@ -324,6 +324,9 @@ export class TextBlock extends HTMLElement {
 		while (this.editorIcons.classList.length > 0) {
 			this.editorIcons.classList.remove(this.editorIcons.classList[0]);
 		}
+		while (this.signifierRow.classList.length > 0) {
+			this.signifierRow.classList.remove(this.signifierRow.classList[0]);
+		}
 		while (textBlock.classList.length > 0) {
 			textBlock.classList.remove(textBlock.classList[0]);
 		}
@@ -336,6 +339,7 @@ export class TextBlock extends HTMLElement {
 		textBlock.setAttribute("placeholder", "Header 1");
 		textBlock.classList.add("header1");
 		this.editorIcons.classList.add("header1Icons");
+		this.signifierRow.classList.add("h1Signifiers");
 		textBlock.innerHTML = "";
 		this.checkBox.style.display = "none";
 	}
@@ -347,6 +351,9 @@ export class TextBlock extends HTMLElement {
 		let textBlock = this.shadowRoot.getElementById("textBlock");
 		while (this.editorIcons.classList.length > 0) {
 			this.editorIcons.classList.remove(this.editorIcons.classList[0]);
+		}
+		while (this.signifierRow.classList.length > 0) {
+			this.signifierRow.classList.remove(this.signifierRow.classList[0]);
 		}
 		while (textBlock.classList.length > 0) {
 			textBlock.classList.remove(textBlock.classList[0]);
@@ -360,6 +367,7 @@ export class TextBlock extends HTMLElement {
 		textBlock.setAttribute("placeholder", "Header 2");
 		textBlock.classList.add("header2");
 		this.editorIcons.classList.add("header2Icons");
+		this.signifierRow.classList.add("h2Signifiers");
 		textBlock.innerHTML = "";
 		this.checkBox.style.display = "none";
 	}
@@ -371,6 +379,9 @@ export class TextBlock extends HTMLElement {
 		let textBlock = this.shadowRoot.getElementById("textBlock");
 		while (this.editorIcons.classList.length > 0) {
 			this.editorIcons.classList.remove(this.editorIcons.classList[0]);
+		}
+		while (this.signifierRow.classList.length > 0) {
+			this.signifierRow.classList.remove(this.signifierRow.classList[0]);
 		}
 		while (textBlock.classList.length > 0) {
 			textBlock.classList.remove(textBlock.classList[0]);
@@ -384,6 +395,7 @@ export class TextBlock extends HTMLElement {
 		textBlock.setAttribute("placeholder", "Header 3");
 		textBlock.classList.add("header3");
 		this.editorIcons.classList.add("header3Icons");
+		this.signifierRow.classList.add("h3Signifiers");
 		textBlock.innerHTML = "";
 		this.checkBox.style.display = "none";
 	}
@@ -395,6 +407,9 @@ export class TextBlock extends HTMLElement {
 		let textBlock = this.shadowRoot.getElementById("textBlock");
 		while (this.editorIcons.classList.length > 0) {
 			this.editorIcons.classList.remove(this.editorIcons.classList[0]);
+		}
+		while (this.signifierRow.classList.length > 0) {
+			this.signifierRow.classList.remove(this.signifierRow.classList[0]);
 		}
 		while (textBlock.classList.length > 0) {
 			textBlock.classList.remove(textBlock.classList[0]);
@@ -408,6 +423,7 @@ export class TextBlock extends HTMLElement {
 		textBlock.setAttribute("placeholder", "Note");
 		this.classList.add("noteContainer");
 		this.editorIcons.classList.add("noteIcons");
+		this.signifierRow.classList.add("noteSignifiers");
 		textBlock.classList.add("note");
 		textBlock.innerHTML = "";
 		this.checkBox.style.display = "none";
@@ -443,6 +459,7 @@ export class TextBlock extends HTMLElement {
 		textBlock.setAttribute("dateFiller", dateFiller);
 		this.classList.add("eventContainer");
 		this.editorIcons.classList.add("noteIcons");
+		this.signifierRow.classList.add("noteSignifiers");
 		textBlock.classList.add("note");
 		textBlock.classList.add("eventNodateFocused");
 		textBlock.innerHTML = "";
@@ -457,6 +474,9 @@ export class TextBlock extends HTMLElement {
 		while (this.editorIcons.classList.length > 0) {
 			this.editorIcons.classList.remove(this.editorIcons.classList[0]);
 		}
+		while (this.signifierRow.classList.length > 0) {
+			this.signifierRow.classList.remove(this.signifierRow.classList[0]);
+		}
 		while (textBlock.classList.length > 0) {
 			textBlock.classList.remove(textBlock.classList[0]);
 		}
@@ -464,10 +484,12 @@ export class TextBlock extends HTMLElement {
 			this.classList.remove(this.classList[0]);
 		}
 		this.kind = "task";
+		this.classList.add("taskContainer");
 		this.controller.creatingFromBullet = { isTrue: true, kind: this.kind };
 		this.initialHeight = 3;
 		textBlock.classList.add("task");
 		textBlock.setAttribute("placeholder", "Task");
+		this.signifierRow.classList.add("taskSignifiers");
 		textBlock.innerHTML = "";
 		this.editorIcons.classList.add("paragraphIcons");
 		this.checkBox.style.display = "inline";
@@ -482,6 +504,9 @@ export class TextBlock extends HTMLElement {
 		while (this.editorIcons.classList.length > 0) {
 			this.editorIcons.classList.remove(this.editorIcons.classList[0]);
 		}
+		while (this.signifierRow.classList.length > 0) {
+			this.signifierRow.classList.remove(this.signifierRow.classList[0]);
+		}
 		while (textBlock.classList.length > 0) {
 			textBlock.classList.remove(textBlock.classList[0]);
 		}
@@ -493,6 +518,7 @@ export class TextBlock extends HTMLElement {
 		textBlock.classList.add("unstylized");
 		textBlock.setAttribute("placeholder", "Type \"/\" to create a block");
 		textBlock.innerHTML = "";
+		this.signifierRow.classList.add("paragraphSignifiers");
 		this.editorIcons.classList.add("paragraphIcons");
 		this.controller.creatingFromBullet = { isTrue: false, kind: "" };
 		this.checkBox.style.display = "none";
@@ -704,9 +730,9 @@ export class TextBlock extends HTMLElement {
 				this.setupHeader3();
 			} else if (content === "-&nbsp;") {
 				this.setupNote();
-			} else if (content === "--&nbsp;") {
+			} else if (content === "*&nbsp;") {
 				this.setupEvent();
-			} else if (content === "=-&nbsp;") {
+			} else if (content === "[]&nbsp;") {
 				this.setupTask();
 			} else if (content === "<div><br></div>") {
 				this.removeStyles();

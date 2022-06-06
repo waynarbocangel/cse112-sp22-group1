@@ -9,10 +9,28 @@
 #logNotes text-block{
 	display: block;
 	margin: 0;
-	padding: 0 0 8px 0;
+	padding: 0 ;
 	width: 100%;
 	left: 0;
 	right: 0;
+}
+
+#logNotes .noteContainer {
+	margin-top: 7px;
+	margin-bottom: 7px;
+	margin-left: 57px;
+	display: list-item;
+	list-style-type: disc;
+	list-style-position: outside;
+}
+
+#logNotes .eventContainer {
+	margin-top: 7px;
+	margin-bottom: 7px;
+	margin-left: 57px;
+	display: list-item;
+	list-style-type: circle;
+	list-style-position: outside;
 }
 
 h1 {

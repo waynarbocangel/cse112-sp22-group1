@@ -30,7 +30,7 @@
 
 .note{	
 	margin: 0;
-	margin-left: -62px;
+	margin-left: -42px;
 	position: relative;
 	font-size: 18px;
 	line-height: 28px;
@@ -136,7 +136,7 @@
 .noteIcons{
 	position: relative;
 	top: 2px;
-	left: -87px;
+	left: -57px;
 }
 
 .paragraphIcons{
@@ -183,8 +183,60 @@
 	color: #fff;
 }
 
-#signifiers{
-	position: absolute;
-	bottom: 0;
+#signifiers {
+	position: relative;
+}
+
+#signifiers button {
+	border: none;
+	color: var(--normal-font-color);
+	font-size: 18px;
+	opacity: 0.4;
+	cursor: pointer;
+	border-radius: 4px;
+	padding: 0;
+	line-height: 0;
+	width: 20px;
+	height: 20px;
+	margin-left: 10px;
+	border: 1px solid var(--lighter-divider-color);
+	background-color: var(--card-background-dim);
+	box-shadow: 1px 1px 9px 0 var(--card-shadow);
+	transition: 0.3s ease-in-out;
+}
+
+#signifiers button:hover {
+	opacity: 0.7;
+	transition: 0.3s ease-in-out;
+}
+
+.paragraphSignifiers{
 	left: 35px;
+	top: -12px;
+	margin: 0 0 -7px;
+}
+.noteSignifiers{
+	left: calc(35px - 57px);
+	top: 0;
+	margin: 0 0 -7px;
+}
+.taskSignifiers{
+	left: 35px;
+	top: -5px;
+	margin: 0 0 -5px;
+}
+.h1Signifiers{
+	left: 35px;
+	top: -20px;
+	margin: 0 0 -7px;
+}
+.h2Signifiers{
+	left: 35px;
+	top: -13px;
+	margin: 0 0 -7px;
+}
+.h3Signifiers{
+	left: 35px;
+	top: -10px;
+	margin: 0 0 -7px;
 }
