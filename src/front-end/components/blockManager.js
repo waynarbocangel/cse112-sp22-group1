@@ -1,7 +1,6 @@
 import * as shadow from "./shadow.js";
 import { TextBlock, tabSize } from "./block.jsx";
 import { includesClock } from "./blockModel.js";
-import { contentWrapper } from "../index.js";
 
 /**
  * 
@@ -96,94 +95,128 @@ export let bindFunctions = (blockReference) => {
 	 * Sets up textBlock styling for header 1 text
 	 */
 	blockReference.setupHeader1 = () => {
-		blockReference.paddingSize = contentWrapper.getClientRects()[0].x + 38;
-		let textBlock = blockReference.shadowRoot.getElementById("textBlock");
-		while (blockReference.editorIcons.classList.length > 0) {
-			blockReference.editorIcons.classList.remove(blockReference.editorIcons.classList[0]);
+		if (!blockReference.tracker) {
+			if (blockReference.tracker){
+				blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x;
+			} else {
+				blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x + 38;
+			}
+			let textBlock = blockReference.shadowRoot.getElementById("textBlock");
+			while (blockReference.editorIcons.classList.length > 0) {
+				blockReference.editorIcons.classList.remove(blockReference.editorIcons.classList[0]);
+			}
+			while (blockReference.signifierRow.classList.length > 0) {
+				blockReference.signifierRow.classList.remove(blockReference.signifierRow.classList[0]);
+			}
+			while (textBlock.classList.length > 0) {
+				textBlock.classList.remove(textBlock.classList[0]);
+			}
+			while (blockReference.classList.length > 0) {
+				blockReference.classList.remove(blockReference.classList[0]);
+			}
+			if (blockReference.tracker) {
+				blockReference.signifierRow.classList.add("tracker");
+				textBlock.classList.add("tracker");
+			}
+			blockReference.controller.creatingFromBullet = { isTrue: false, kind: "" };
+			blockReference.kind = "h1";
+			blockReference.initialHeight = 0;
+			textBlock.setAttribute("placeholder", "Header 1");
+			textBlock.classList.add("header1");
+			blockReference.editorIcons.classList.add("header1Icons");
+			blockReference.signifierRow.classList.add("h1Signifiers");
+			textBlock.innerHTML = "";
+			blockReference.checkBox.style.display = "none";
 		}
-		while (blockReference.signifierRow.classList.length > 0) {
-			blockReference.signifierRow.classList.remove(blockReference.signifierRow.classList[0]);
-		}
-		while (textBlock.classList.length > 0) {
-			textBlock.classList.remove(textBlock.classList[0]);
-		}
-		while (blockReference.classList.length > 0) {
-			blockReference.classList.remove(blockReference.classList[0]);
-		}
-		blockReference.controller.creatingFromBullet = { isTrue: false, kind: "" };
-		blockReference.kind = "h1";
-		blockReference.initialHeight = 0;
-		textBlock.setAttribute("placeholder", "Header 1");
-		textBlock.classList.add("header1");
-		blockReference.editorIcons.classList.add("header1Icons");
-		blockReference.signifierRow.classList.add("h1Signifiers");
-		textBlock.innerHTML = "";
-		blockReference.checkBox.style.display = "none";
 	}
 
 	/**
 	 * Sets up textBlock styling for header 2 text
 	 */
 	blockReference.setupHeader2 = () => {
-		blockReference.paddingSize = contentWrapper.getClientRects()[0].x + 38;
-		let textBlock = blockReference.shadowRoot.getElementById("textBlock");
-		while (blockReference.editorIcons.classList.length > 0) {
-			blockReference.editorIcons.classList.remove(blockReference.editorIcons.classList[0]);
+		if (!blockReference.tracker) {
+			if (blockReference.tracker){
+				blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x;
+			} else {
+				blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x + 38;
+			}
+			let textBlock = blockReference.shadowRoot.getElementById("textBlock");
+			while (blockReference.editorIcons.classList.length > 0) {
+				blockReference.editorIcons.classList.remove(blockReference.editorIcons.classList[0]);
+			}
+			while (blockReference.signifierRow.classList.length > 0) {
+				blockReference.signifierRow.classList.remove(blockReference.signifierRow.classList[0]);
+			}
+			while (textBlock.classList.length > 0) {
+				textBlock.classList.remove(textBlock.classList[0]);
+			}
+			while (blockReference.classList.length > 0) {
+				blockReference.classList.remove(blockReference.classList[0]);
+			}
+			if (blockReference.tracker) {
+				blockReference.signifierRow.classList.add("tracker");
+				textBlock.classList.add("tracker");
+			}
+			blockReference.controller.creatingFromBullet = { isTrue: false, kind: "" };
+			blockReference.kind = "h2";
+			blockReference.initialHeight = 0;
+			textBlock.setAttribute("placeholder", "Header 2");
+			textBlock.classList.add("header2");
+			blockReference.editorIcons.classList.add("header2Icons");
+			blockReference.signifierRow.classList.add("h2Signifiers");
+			textBlock.innerHTML = "";
+			blockReference.checkBox.style.display = "none";
 		}
-		while (blockReference.signifierRow.classList.length > 0) {
-			blockReference.signifierRow.classList.remove(blockReference.signifierRow.classList[0]);
-		}
-		while (textBlock.classList.length > 0) {
-			textBlock.classList.remove(textBlock.classList[0]);
-		}
-		while (blockReference.classList.length > 0) {
-			blockReference.classList.remove(blockReference.classList[0]);
-		}
-		blockReference.controller.creatingFromBullet = { isTrue: false, kind: "" };
-		blockReference.kind = "h2";
-		blockReference.initialHeight = 0;
-		textBlock.setAttribute("placeholder", "Header 2");
-		textBlock.classList.add("header2");
-		blockReference.editorIcons.classList.add("header2Icons");
-		blockReference.signifierRow.classList.add("h2Signifiers");
-		textBlock.innerHTML = "";
-		blockReference.checkBox.style.display = "none";
 	}
 
 	/**
 	 * Sets up textBlock syling for header 3 text
 	 */
 	blockReference.setupHeader3 = () => {
-		blockReference.paddingSize = contentWrapper.getClientRects()[0].x + 38;
-		let textBlock = blockReference.shadowRoot.getElementById("textBlock");
-		while (blockReference.editorIcons.classList.length > 0) {
-			blockReference.editorIcons.classList.remove(blockReference.editorIcons.classList[0]);
+		if (!blockReference.tracker) {
+			if (blockReference.tracker){
+				blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x;
+			} else {
+				blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x + 38;
+			}
+			let textBlock = blockReference.shadowRoot.getElementById("textBlock");
+			while (blockReference.editorIcons.classList.length > 0) {
+				blockReference.editorIcons.classList.remove(blockReference.editorIcons.classList[0]);
+			}
+			while (blockReference.signifierRow.classList.length > 0) {
+				blockReference.signifierRow.classList.remove(blockReference.signifierRow.classList[0]);
+			}
+			while (textBlock.classList.length > 0) {
+				textBlock.classList.remove(textBlock.classList[0]);
+			}
+			while (blockReference.classList.length > 0) {
+				blockReference.classList.remove(blockReference.classList[0]);
+			}
+			if (blockReference.tracker) {
+				blockReference.signifierRow.classList.add("tracker");
+				textBlock.classList.add("tracker");
+			}
+			blockReference.controller.creatingFromBullet = { isTrue: false, kind: "" };
+			blockReference.kind = "h3";
+			blockReference.initialHeight = 0;
+			textBlock.setAttribute("placeholder", "Header 3");
+			textBlock.classList.add("header3");
+			blockReference.editorIcons.classList.add("header3Icons");
+			blockReference.signifierRow.classList.add("h3Signifiers");
+			textBlock.innerHTML = "";
+			blockReference.checkBox.style.display = "none";
 		}
-		while (blockReference.signifierRow.classList.length > 0) {
-			blockReference.signifierRow.classList.remove(blockReference.signifierRow.classList[0]);
-		}
-		while (textBlock.classList.length > 0) {
-			textBlock.classList.remove(textBlock.classList[0]);
-		}
-		while (blockReference.classList.length > 0) {
-			blockReference.classList.remove(blockReference.classList[0]);
-		}
-		blockReference.controller.creatingFromBullet = { isTrue: false, kind: "" };
-		blockReference.kind = "h3";
-		blockReference.initialHeight = 0;
-		textBlock.setAttribute("placeholder", "Header 3");
-		textBlock.classList.add("header3");
-		blockReference.editorIcons.classList.add("header3Icons");
-		blockReference.signifierRow.classList.add("h3Signifiers");
-		textBlock.innerHTML = "";
-		blockReference.checkBox.style.display = "none";
 	}
 
 	/**
 	 * Sets up textBlock styling for note text and adds bullet
 	 */
 	blockReference.setupNote = () => {
-		blockReference.paddingSize = contentWrapper.getClientRects()[0].x + 53;
+		if (blockReference.tracker){
+			blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x + 19;
+		} else {
+			blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x + 53;
+		}
 		let textBlock = blockReference.shadowRoot.getElementById("textBlock");
 		while (blockReference.editorIcons.classList.length > 0) {
 			blockReference.editorIcons.classList.remove(blockReference.editorIcons.classList[0]);
@@ -196,6 +229,10 @@ export let bindFunctions = (blockReference) => {
 		}
 		while (blockReference.classList.length > 0) {
 			blockReference.classList.remove(blockReference.classList[0]);
+		}
+		if (blockReference.tracker) {
+			blockReference.signifierRow.classList.add("tracker");
+			textBlock.classList.add("tracker");
 		}
 		blockReference.kind = "note";
 		blockReference.controller.creatingFromBullet = { isTrue: true, kind: blockReference.kind };
@@ -213,16 +250,27 @@ export let bindFunctions = (blockReference) => {
 	 * Sets up textBlock styling for event text and handles event date and time parsing
 	 */
 	blockReference.setupEvent = () => {
-		blockReference.paddingSize = contentWrapper.getClientRects()[0].x + 53;
+		if (blockReference.tracker){
+			blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x + 19;
+		} else {
+			blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x + 53;
+		}
 		let textBlock = blockReference.shadowRoot.getElementById("textBlock");
 		while (blockReference.editorIcons.classList.length > 0) {
 			blockReference.editorIcons.classList.remove(blockReference.editorIcons.classList[0]);
+		}
+		while (blockReference.signifierRow.classList.length > 0) {
+			blockReference.signifierRow.classList.remove(blockReference.signifierRow.classList[0]);
 		}
 		while (textBlock.classList.length > 0) {
 			textBlock.classList.remove(textBlock.classList[0]);
 		}
 		while (blockReference.classList.length > 0) {
 			blockReference.classList.remove(blockReference.classList[0]);
+		}
+		if (blockReference.tracker) {
+			blockReference.signifierRow.classList.add("tracker");
+			textBlock.classList.add("tracker");
 		}
 		blockReference.kind = "event";
 		blockReference.controller.creatingFromBullet = { isTrue: true, kind: blockReference.kind };
@@ -251,6 +299,11 @@ export let bindFunctions = (blockReference) => {
 	 * Sets up textBlock styling for task text and adds task check off block
 	 */
 	blockReference.setupTask = () => {
+		if (blockReference.tracker){
+			blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x + 23;
+		} else {
+			blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x + 61;
+		}
 		let textBlock = blockReference.shadowRoot.getElementById("textBlock");
 		while (blockReference.editorIcons.classList.length > 0) {
 			blockReference.editorIcons.classList.remove(blockReference.editorIcons.classList[0]);
@@ -263,6 +316,10 @@ export let bindFunctions = (blockReference) => {
 		}
 		while (blockReference.classList.length > 0) {
 			blockReference.classList.remove(blockReference.classList[0]);
+		}
+		if (blockReference.tracker) {
+			blockReference.signifierRow.classList.add("tracker");
+			textBlock.classList.add("tracker");
 		}
 		blockReference.kind = "task";
 		blockReference.classList.add("taskContainer");
@@ -281,7 +338,11 @@ export let bindFunctions = (blockReference) => {
 	 * is converted to a different one
 	 */
 	blockReference.removeStyles = () => {
-		blockReference.paddingSize = contentWrapper.getClientRects()[0].x + 38;
+		if (blockReference.tracker){
+			blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x;
+		} else {
+			blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x + 38;
+		}
 		let textBlock = blockReference.shadowRoot.getElementById("textBlock");
 		while (blockReference.editorIcons.classList.length > 0) {
 			blockReference.editorIcons.classList.remove(blockReference.editorIcons.classList[0]);
@@ -289,11 +350,16 @@ export let bindFunctions = (blockReference) => {
 		while (blockReference.signifierRow.classList.length > 0) {
 			blockReference.signifierRow.classList.remove(blockReference.signifierRow.classList[0]);
 		}
+		
 		while (textBlock.classList.length > 0) {
 			textBlock.classList.remove(textBlock.classList[0]);
 		}
 		while (blockReference.classList.length > 0) {
 			blockReference.classList.remove(blockReference.classList[0]);
+		}
+		if (blockReference.tracker) {
+			blockReference.signifierRow.classList.add("tracker");
+			textBlock.classList.add("tracker");
 		}
 		blockReference.kind = "paragraph";
 		blockReference.initialHeight = 3;

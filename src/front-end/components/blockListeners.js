@@ -12,20 +12,28 @@ export let bindListeners = (blockReference) => {
 	let textBlock = blockReference.shadowRoot.getElementById("textBlock");
 	textBlock.focus();
 
-	blockReference.plus.onclick = () => {
-		blockReference.controller.currentBlockIndex = blockReference.controller.blockArray.indexOf(blockReference);
-		let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? -100 : textBlock.offsetHeight + 5;
-		if (textBlock.innerText !== "" && textBlock.innerText !== "/") {
-			blockReference.controller.addNewBlock(null);
-		} else {
-			adderDropdown.openTextDropdown(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, blockReference.plus.getBoundingClientRect().left, blockReference.dropdownContents.text);
+	if (blockReference.plus) {
+		blockReference.plus.onclick = () => {
+			blockReference.controller.currentBlockIndex = blockReference.controller.blockArray.indexOf(blockReference);
+			let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? -100 : textBlock.offsetHeight + 5;
+			if (textBlock.innerText !== "" && textBlock.innerText !== "/") {
+				blockReference.controller.addNewBlock(null);
+			} else {
+				adderDropdown.openTextDropdown(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, blockReference.plus.getBoundingClientRect().left, blockReference.dropdownContents.text);
+			}
 		}
 	}
 
 	blockReference.more.onclick = () => {
 		blockReference.controller.currentBlockIndex = blockReference.controller.blockArray.indexOf(blockReference);
 		let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? -100 : textBlock.offsetHeight + 5;
-		adderDropdown.openUtilDropdown(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, blockReference.plus.getBoundingClientRect().left, blockReference.dropdownContents.util);
+		let leftOffset = blockReference.more.getBoundingClientRect().left - 160;
+		let topOffset = blockReference.more.getBoundingClientRect().bottom + 5;
+		if (blockReference.plus) {
+			leftOffset = blockReference.plus.getBoundingClientRect().left;
+			topOffset = textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue;
+		}
+		adderDropdown.openUtilDropdown(topOffset, leftOffset, blockReference.dropdownContents.util);
 	}
 
 	/**
@@ -173,7 +181,6 @@ export let bindListeners = (blockReference) => {
 			}
 			textBlock.setAttribute("dateFiller", dateFiller);
 		}
-
 		if (content === "#&nbsp;") {
 			blockReference.setupHeader1();
 		} else if (content === "##&nbsp;") {
@@ -188,13 +195,19 @@ export let bindListeners = (blockReference) => {
 			blockReference.setupTask();
 		} else if (content === "<div><br></div>") {
 			blockReference.removeStyles();
+		} else if (textBlock.innerText === "/") {
+			let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? -100 : textBlock.offsetHeight + 5;
+			let leftBound = textBlock.getBoundingClientRect().left;
+			if (blockReference.plus) {
+				leftBound = blockReference.plus.getBoundingClientRect().left;
+			}
+			adderDropdown.openTextDropdown(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, leftBound, blockReference.dropdownContents.text);
 		} else if (content === "<br>") {
 			textBlock.innerHTML = "";
+			adderDropdown.hide();
 		} else if (textBlock.textContent !== "") {
 			blockReference.controller.resetPosition = true;
-		} else if (textBlock.textContent === "/") {
-			let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? -100 : textBlock.offsetHeight + 5;
-			adderDropdown.openTextDropdown(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, blockReference.plus.getBoundingClientRect().left, blockReference.dropdownContents.text);
+			adderDropdown.hide();
 		} else {
 			adderDropdown.hide();
 		}
