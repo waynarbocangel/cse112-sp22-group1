@@ -4,10 +4,10 @@
  */
 import * as localStorage from "../localStorage/userOperations.js";
 import * as shadow from "./shadow.js";
-import { includesClock, getDate } from "./blockModel.js";
+import { getDate, includesClock } from "./blockModel.js";
 import { BlockController } from "./blockController.js";
 import { currentState } from "../state/stateManager.js";
-
+import { adderDropdown } from "../index.js";
 // JSX Engine Import
 /* eslint-disable */
 /** @jsx createElement */
@@ -31,6 +31,7 @@ let blockTemplate = <template>
  * Class to create new editor block
  */
 export class TextBlock extends HTMLElement {
+
 	/**
 	 * Editor block constructor
 	 * @param {BlockController} controller - the editor's controller
@@ -372,7 +373,22 @@ export class TextBlock extends HTMLElement {
 		});
 
 		this.plus.onclick = () => {
-			console.log("hello there");
+			let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? -100 : textBlock.offsetHeight + 5;
+            adderDropdown.openTextDropdown(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left);
+		}
+
+		this.more.onclick = () => {
+            let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? -100 : textBlock.offsetHeight + 5;
+            adderDropdown.openUtilDropdown(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left);
+		}
+		textBlock.oninput = () =>{
+			let content = textBlock.innerHTML;
+			if (content === "/") {
+				let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? -100 : textBlock.offsetHeight + 5;
+                adderDropdown.openTextDropdown(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left);
+			} else {
+				adderDropdown.hide();
+			}
 		}
 
 		/**
