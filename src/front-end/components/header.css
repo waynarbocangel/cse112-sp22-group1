@@ -48,6 +48,7 @@ button {
     padding: 0 9px;
     border-radius: 6px;
     margin-left: auto;
+    margin-right: 5px;
     margin-bottom: 15px;
     cursor: pointer;
 }
@@ -76,7 +77,8 @@ h1 {
     display: flex;
     justify-content: flex-end;
     margin-bottom: 17px;
-    margin-left: 5px;
+    margin-left: auto;
+    margin-right: 0;
   }
   
   .search-box input {
@@ -97,7 +99,7 @@ h1 {
     transition: 150ms;
       opacity: 90%;
   }
-  .search-box:hover > input{
+  .search-box:hover > .search-input{
     display: inline-block;
     border-radius: 5px;
     width: 260px;
@@ -109,7 +111,7 @@ h1 {
     outline:none;
   }
 
-  input:focus{
+  .search-input:focus{
     display: inline-block;
     border-radius: 5px;
     width: 260px;
@@ -125,6 +127,64 @@ h1 {
       margin-top: 15px;
       opacity: 60%;
   }
+
+  .search_bar {
+    display: flex;
+    align-items: center;
+    margin: 15px 0 17px 10px;
+    padding: 0 5px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 9px 0 var(--card-shadow);
+    border-color: var(--card-shadow);
+    border-width: 2px;
+    width: calc(36.6% - 95px);
+    border-style: solid;
+    opacity: 60%;
+}
+
+.search_bar img {
+    display: inline-block;
+
+    opacity: 50%;
+    height: 21px;
+
+    vertical-align: middle;
+
+    filter: var(--icon-filter);
+}
+
+.search_bar input{
+
+    background-color: rgba(0, 0, 0, 0);
+    color: var(--normal-font-color);
+    font-size: 20px;
+    opacity: 90%;
+    height: 42px;
+    text-align: left;
+    width: calc(100% - 7px);
+    border: solid;
+    border-radius: 5px;
+    border-color: rgba(0, 0, 0, 0);
+    outline: none;
+}
+
+/* Fade in for search bar */
+.search_bar:hover img {
+    opacity: 50%;
+    transition: opacity 150ms;
+}
+
+.search_bar:hover {
+    transition: 150ms;
+    opacity: 90%;
+    
+}
+
+.search_bar input:focus .search_bar{
+    transition: 150ms;
+    opacity: 90%;
+}
+
 #header_back{
     margin-left: 0;
     margin-right: 5px;

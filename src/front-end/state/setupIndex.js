@@ -13,6 +13,7 @@ export function setupIndex () {
 		if (err) {
 			console.log(err);
 		} else {
+			header.loadSearchbar();
 			let displayToggle = document.createElement("button");
 			displayToggle.id = "displayToggle";
 			displayToggle.innerHTML = "&#x25BC;   Future Logs";
