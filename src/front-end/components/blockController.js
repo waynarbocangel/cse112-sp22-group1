@@ -34,9 +34,9 @@ export class BlockController extends Object {
 	 * @param {*} signifier
 	 * @param {*} callback
 	 */
-	createNewBlock (block, signifier, callback) {
+	createNewBlock (block, signifiers, callback) {
 		if (block.objectType === "textBlock") {
-			let newBlock = new TextBlock(this, block, signifier, (success) => {
+			let newBlock = new TextBlock(this, block, signifiers, (success) => {
 				if (success) {
 					if (this.currentBlockIndex < this.blockArray.length - 1) {
 						this.container.insertBefore(newBlock, this.blockArray[this.currentBlockIndex + 1]);
@@ -61,7 +61,7 @@ export class BlockController extends Object {
 	 * @param {Object} block Stored block
 	 */
 	addNewBlock (block) {
-		let newBlock = new TextBlock(this, block, this.generalSignifier, (success) => {
+		let newBlock = new TextBlock(this, block, [], (success) => {
 			if (success) {
 				if (this.blockArray[this.currentBlockIndex].nextSibling === null) {
 					this.container.appendChild(newBlock);
@@ -128,7 +128,7 @@ export class BlockController extends Object {
  function populateEditorRecursive (controller, items, index, signifiers, callback) {
 	if (index < items.length) {
 		let signifier = signifiers.filter((currentSignifier) => currentSignifier.id === items[index].signifier)[0];
-		controller.createNewBlock(items[index], signifier, (block) => {
+		controller.createNewBlock(items[index], [signifier], (block) => {
 			block.tabLevel = items[index].tabLevel
 			block.setupTabLevel();
 
@@ -239,9 +239,6 @@ export function createEditor (container, parent, subParent, callback) {
 				Array.prototype.push.apply(arrays, doc.collections);
 				Array.prototype.push.apply(arrays, doc.trackers);
 
-				let generalSignifier = doc.signifiers.filter((signifer) => signifer.meaning === "general")[0];
-				controller.generalSignifier = generalSignifier;
-
 				if (parent !== null && parent.objectType !== "index") {
 					let itemArrs = arrays.filter((element) => element.id === parent.id);
 					if (itemArrs.length > 0) {
@@ -272,7 +269,7 @@ export function createEditor (container, parent, subParent, callback) {
 
 						populateEditor(controller, objectArr, doc.signifiers, (res) => {
 							if (res === "done populating items") {
-								let newBlock = new TextBlock(controller, null, generalSignifier, (success) => {
+								let newBlock = new TextBlock(controller, null, [], (success) => {
 									if (success) {
 										container.appendChild(newBlock);
 										controller.blockArray.push(newBlock);
@@ -286,7 +283,7 @@ export function createEditor (container, parent, subParent, callback) {
 						})
 					}
 				} else {
-					let newBlock = new TextBlock(controller, null, generalSignifier, (success) => {
+					let newBlock = new TextBlock(controller, null, [], (success) => {
 						if (success) {
 							container.appendChild(newBlock);
 							controller.blockArray.push(newBlock);

@@ -114,6 +114,7 @@ let recentCaretRange = {node: null, offset: -1};
 
 
 (function () {
+  console.log("hello");
   if (hasSelection || useDocument) {
     // GetSelection exists or document API can be used
     document.addEventListener("selectionchange", (ev) => {

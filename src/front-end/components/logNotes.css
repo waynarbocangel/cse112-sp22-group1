@@ -11,6 +11,7 @@
 	margin: 0;
 	padding: 0 ;
 	width: 100%;
+	/* overflow-x: hidden; */
 	left: 0;
 	right: 0;
 }
@@ -22,6 +23,7 @@
 	display: list-item;
 	list-style-type: disc;
 	list-style-position: outside;
+	width: calc(100% - 57px) !important;
 }
 
 #logNotes .eventContainer {
@@ -31,6 +33,7 @@
 	display: list-item;
 	list-style-type: circle;
 	list-style-position: outside;
+	width: calc(100% - 57px) !important;
 }
 
 h1 {
