@@ -52,13 +52,16 @@
 
 :not(.open) #contentWrapper{
     max-height: 0%;
-    overflow: hidden;
-    transition: max-height .2s ease;
+    display:none;
+    transition: max-height 2s ease-in-out;
+    transition: transform 2s ease-in-out;
 }
 
 .open #contentWrapper {
     max-height: 100% ;
-    overflow: visible;
+    display:block;
+    transition: max-height 2s ease-in-out;
+    transition: transform 2s ease-in-out
 }
 
 #open, #edit {
