@@ -4,8 +4,10 @@
  */
 import * as localStorage from "../localStorage/userOperations.js";
 import * as shadow from "./shadow.js";
+import { getDate, includesClock } from "./blockModel.js";
+import { adderDropdown } from "../index.js";
 import { BlockController } from "./blockController.js";
-import {currentObject} from "../index.js";
+import { currentState } from "../state/stateManager.js";
 
 // JSX Engine Import
 /* eslint-disable */
@@ -18,235 +20,19 @@ const tabSize = 20;
 const paddingSize = 10;
 const protectedKeys = ["Control", "Alt", "CapsLock", "Escape", "PageUp", "PageDown", "End", "Home", "PrintScreen", "Insert", "Delete", "Backspace", "Tab", "Enter", "Meta", "ArrowTop", "ArrowBottom", "ArrowRight", "ArrowLeft", "Shift", " "]
 
-/**
- * Handles instances when event year is a leap year
- *
- * @param {Number} year year in event creation text
- * @returns true if year is leapyear false otherwise
- */
- function isLeapyear (year) {
-	return year % 100 === 0 ? year % 400 === 0 : year % 4 === 0;
-}
-
-/**
- * Calculates the number of days depending on month and year
- *
- * @param {Number} month
- * @param {Number} year
- * @returns the number of days for month and year
- */
-function days (month, year) {
-	if (month === "3" || month === "5" || month === "8" || month === "10") {
-		return 30;
-	} else if (month === "1" && isLeapyear(year)) {
-		return 29;
-	} else if (month === "1") {
-		return 28;
-	}
-	return 31;
-}
-
-/**
- * Returns the next day of the week depending onthe day passed in
- *
- * @param {String} dayName a weekday
- * @param {Boolean} excludeToday boolean to check if current day should be included or not
- * @param {Date} refDate current date
- * @returns the next day of the week
- */
-function getNextDayOfTheWeek (dayName, excludeToday = true, refDate = new Date()) {
-    const dayOfWeek = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"].
-                      indexOf(dayName.toLowerCase());
-    if (dayOfWeek < 0) {
- return;
-}
-    refDate.setHours(0, 0, 0, 0);
-    refDate.setDate((refDate.getDate() + Number(Boolean(excludeToday)) + (dayOfWeek + 7 - refDate.getDay() - Number(Boolean(excludeToday)))) % 7);
-    return refDate;
-}
-
-/**
- * Handles time and parsing from event text for event creation
- *
- * @param {Object} block the textblock instanse to set the time and date for
- * @param {String} text the text to parse the time and date from
- * @param {Boolean} first boolean to check if the text had a time or not
- */
- function includesClock (block, text, first) {
-	for (let i = 0; i < text.length; i++) {
-		if (text.charCodeAt(i) === 56517) {
-			if (first) {
-				block.dateSetter = true;
-			} else {
-				block.hashPressed = true;
-				block.atPressed = false;
-			}
-		}
-
-		if (text.charCodeAt(i) === 56688) {
-			if (first) {
-				block.timeSetter = true;
-			} else {
-				block.atPressed = true;
-				block.hashPressed = false;
-			}
-		}
-	}
-}
-
-/**
- * Gets the date from the textblock text
- *
- * @param {Object} textBlock block to set the time for
- * @param {Boolean} deleteString check to see if the date string shuld be removed from the text
- * @returns date parsed from textBlock text
- */
-function getDate (textBlock, deleteString) {
-	let date = null;
-	let text = textBlock.shadowRoot.querySelector("#textBlock");
-	if (textBlock.dateSetter && deleteString) {
-		let start = 1;
-		for (let i = 0; i < text.textContent.length; i++) {
-			if (text.textContent.charCodeAt(i) === 56517) {
-				start = i + 1;
-				break;
-			}
-		}
-		let end = text.textContent.length;
-		if (textBlock.dateSetter) {
-			let timeIndex = 0;
-			for (let i = 0; i < text.textContent.length; i++) {
-				if (text.textContent.charCodeAt(i) === 56688) {
-					timeIndex = i;
-					break;
-				}
-			}
-			if (timeIndex >= end) {
-				end = timeIndex;
-			}
-		}
-		let newString = text.textContent.substring(start, end);
-		newString = newString.replaceAll(" ", "");
-		let valid = false;
-		let dayArray = ["today", "tomorrow", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
-		if (dayArray.includes(newString.toLowerCase())) {
-			valid = true;
-		} else {
-			valid = true;
-			if (newString.length > 10 || newString.length < 10) {
-				valid = false;
-			} else if (newString.charAt(0).match(/[^01]/g)) {
-				valid = false;
-			} else if (newString.charAt(0) === "1" && newString.charAt(1).match(/[^01]/g)) {
-				valid = false;
-			} else if (newString.charAt(1).match(/[^0123456789]/g)) {
-				valid = false;
-			} else if (newString.charAt(2) !== "/" || newString.charAt(5) !== "/") {
-				valid = false;
-			} else if (newString.charAt(6).match(/[^0123456789]/g) || newString.charAt(7).match(/[^0123456789]/g) || newString.charAt(8).match(/[^0123456789]/g) || newString.charAt(9).match(/[^0123456789]/g)) {
-				valid = false;
-			} else if (newString.charAt(0) === "0" && newString.charAt(1) === "2" && newString.charAt(3).match(/[^012]/g)) {
-				valid = false;
-			} else if (newString.charAt(3).match(/[^0123]/g)) {
-				valid = false;
-			} else if (newString.charAt(4).match(/[^0123456789]/g)) {
-				valid = false;
-			} else if (days((newString.substring(0, 2), newString.substring(6)) === "28" || days(newString.substring(0, 2), newString.substring(6)) === "29") && newString.charAt(3).match(/[^012]/g)) {
-				valid = false;
-			} else if (days(newString.substring(0, 2), newString.substring(6)) === "31" && newString.charAt(3) === "3" && newString.charAt(4).match(/[^01]/g)) {
-				valid = false;
-			} else if (days(newString.substring(0, 2), newString.substring(6)) === "30" && newString.charAt(3) === "3" && newString.charAt(4).match(/[^0]/g)) {
-				valid = false;
-			} else if (days(newString.substring(0, 2), newString.substring(6)) === "28" && newString.charAt(3) === "2" && newString.charAt(4).match(/[^012345678]/g)) {
-				valid = false;
-			}
-		}
-		if (!valid && deleteString) {
-			newString = `${text.textContent.substring(0, start - 2)}${text.textContent.substring(end + 1)}`;
-			console.log("\n\n\n\n\n\n\n\n\n");
-			text.innerHTML = newString;
-			textBlock.timeSetter = false;
-			textBlock.atPressed = false;
-		} else if (dayArray.includes(newString.toLowerCase())) {
-				if (newString.toLowerCase() === "today") {
-					date = new Date();
-				} else if (newString.toLowerCase() === "tomorrow") {
-					date = new Date();
-					date.setDate(date.getDate() + 1);
-				} else {
-					date = getNextDayOfTheWeek(newString);
-				}
-			} else {
-				date = new Date(newString);
-			}
-	}
-
-	if (textBlock.timeSetter && deleteString) {
-		let start = 1;
-		for (let i = 0; i < text.textContent.length; i++) {
-			if (text.textContent.charCodeAt(i) === 56688) {
-				start = i + 1;
-				break;
-			}
-		}
-		let end = text.textContent.length;
-		if (textBlock.dateSetter) {
-			let dateIndex = 0;
-			for (let i = 0; i < text.textContent.length; i++) {
-				if (text.textContent.charCodeAt(i) === 56517) {
-					dateIndex = i;
-					break;
-				}
-			}
-			if (dateIndex >= end) {
-				end = dateIndex;
-			}
-		}
-		let newString = text.textContent.substring(start, end);
-		newString = newString.replaceAll(" ", "");
-		console.log(newString);
-		let valid = true;
-		if (newString.length !== 5) {
-			valid = false;
-		} else if (newString.charAt(0).match(/[^012]/g)) {
-				valid = false;
-			} else if (newString.charAt(0) === "2" && newString.charAt(1).match(/[^0123]/g)) {
-				valid = false;
-			} else if (newString.charAt(1).match(/[^0123456789]/g)) {
-				valid = false;
-			} else if (newString.charAt(2) !== ":") {
-				valid = false;
-			} else if (newString.charAt(3).match(/[^012345]/g)) {
-				valid = false;
-			} else if (newString.charAt(4).match(/[^0123456789]/g)) {
-				valid = false;
-			}
-		if (!valid && deleteString) {
-			newString = `${text.textContent.substring(0, start - 2)}${text.textContent.substring(end + 1)}`;
-			text.innerHTML = newString;
-			textBlock.timeSetter = false;
-			textBlock.atPressed = false;
-		} else {
-			if (date === null) {
-				date = new Date();
-			}
-			date.setHours(newString.substring(0, 2), newString.substring(3));
-		}
-	}
-	return date;
-}
-
 let blockTemplate = <template>
 	<link type="text/css" rel="stylesheet" href="./block.css" />
-	<div id="editorIcons" class="paragraphIcons"><img src="../public/resources/plusIcon.png" class="unfocusedIcons" id="plus" /><img src="../public/resources/sixDotIcon.png" class="unfocusedIcons" id="more" /><div id="signifier"></div></div>
+	<div id="editorIcons" class="paragraphIcons"><img src="../public/resources/plusIcon.png" class="unfocusedIcons" id="plus" /><img src="../public/resources/sixDotIcon.png" class="unfocusedIcons" id="more" /></div>
 	<div id="checkerContainer" checked=""><div id="taskChecker"></div></div>
 	<div id="textBlock" contentEditable="true" ondrop={()=>false} placeholder='Type "/" to create a block'></div>
+	<aside id="signifiers">&#128540;</aside>
 </template>;
 
 /**
  * Class to create new editor block
  */
 export class TextBlock extends HTMLElement {
+
 	/**
 	 * Editor block constructor
 	 * @param {BlockController} controller - the editor's controller
@@ -254,7 +40,7 @@ export class TextBlock extends HTMLElement {
 	 * @param {Object} signifier - the editor's current signifier
 	 * @param {singleParameterCallback} callback - callback for the end of the constructor function
 	 */
-	constructor (controller, itemObject, signifier, callback) {
+	constructor (controller, itemObject, signifiers, callback) {
 		super();
 		this.attachShadow({ mode: "open" });
 		this.shadowRoot.appendChild(blockTemplate.content.cloneNode(true));
@@ -285,11 +71,164 @@ export class TextBlock extends HTMLElement {
 		this.timeSetter = false;
 		this.dateSetter = false;
 		this.eventDelete = true;
-		this.signifier = signifier
+		this.signifiers = signifiers
 		this.signifierIcon = this.shadowRoot.getElementById("signifier");
-		this.signifierIcon.innerHTML = this.signifier.symbol;
 		this.plus = this.shadowRoot.getElementById("plus");
 		this.more = this.shadowRoot.getElementById("more");
+		let textBlock = this.shadowRoot.getElementById("textBlock");
+		this.dropdownContents = {
+			"text": [
+			{
+                title: "Heading 1",
+				icon: "../public/resources/h1_icon.png",
+                listener: ()=>{
+					this.setupHeader1();
+					adderDropdown.hide();
+                }
+            }, {
+                title: "Heading 2",
+                icon: "../public/resources/h2_icon.png",
+                listener: ()=>{
+					this.setupHeader2();
+					adderDropdown.hide();
+                }
+            }, {
+                title: "Heading 3",
+                icon: "../public/resources/h3_icon.png",
+                listener: ()=>{
+					this.setupHeader3();
+					adderDropdown.hide();
+                }
+            }, {
+                title: "Note",
+                icon: "../public/resources/note_icon.png",
+                listener: ()=>{
+					this.setupNote();
+					adderDropdown.hide();
+                }
+            }, {
+                title: "Event",
+                icon: "../public/resources/event_icon.png",
+                listener: ()=>{
+					this.setupEvent();
+					adderDropdown.hide();
+                }
+            }, {
+                title: "Task",
+                icon: "../public/resources/task_icon.png",
+                listener: ()=>{
+					this.setupTask();
+					adderDropdown.hide();
+                }
+            }, {
+                title: "Paragraph",
+                icon: "../public/resources/paragraph_icon.png",
+				listener: ()=>{
+					adderDropdown.hide();
+				}
+            }
+		],
+		"transform": [
+			{
+				title: "Heading 1",
+				icon: "../public/resources/h1_icon.png",
+				listener: ()=>{
+					let content = textBlock.innerText;
+					this.setupHeader1();
+					textBlock.innerText = content;
+					adderDropdown.hide();
+					adderDropdown.hideSecondDropdown();
+				}
+			}, {
+				title: "Heading 2",
+				icon: "../public/resources/h2_icon.png",
+				listener: ()=>{
+					let content = textBlock.innerText;
+					this.setupHeader2();
+					textBlock.innerText = content;
+					adderDropdown.hide();
+					adderDropdown.hideSecondDropdown();
+				}
+			}, {
+				title: "Heading 3",
+				icon: "../public/resources/h3_icon.png",
+				listener: ()=>{
+					let content = textBlock.innerText;
+					this.setupHeader3();
+					textBlock.innerText = content;
+					adderDropdown.hide();
+					adderDropdown.hideSecondDropdown();
+				}
+			}, {
+				title: "Note",
+				icon: "../public/resources/note_icon.png",
+				listener: ()=>{
+					let content = textBlock.innerText;
+					this.setupNote();
+					textBlock.innerText = content;
+					adderDropdown.hide();
+					adderDropdown.hideSecondDropdown();
+				}
+			}, {
+				title: "Event",
+				icon: "../public/resources/event_icon.png",
+				listener: ()=>{
+					let content = textBlock.innerText;
+					this.setupEvent();
+					textBlock.innerText = content;
+					adderDropdown.hide();
+					adderDropdown.hideSecondDropdown();
+				}
+			}, {
+				title: "Task",
+				icon: "../public/resources/task_icon.png",
+				listener: ()=>{
+					let content = textBlock.innerText;
+					this.setupTask();
+					textBlock.innerText = content;
+					adderDropdown.hide();
+					adderDropdown.hideSecondDropdown();
+				}
+			}, {
+				title: "Paragraph",
+				icon: "../public/resources/paragraph_icon.png",
+				listener: ()=>{
+					let content = textBlock.innerText;
+					this.removeStyles();
+					textBlock.innerText = content;
+					adderDropdown.hide();
+					adderDropdown.hideSecondDropdown();
+				}
+			}
+		],
+		"util": [
+			{
+				title: "Delete",
+				icon: "../public/resources/delete_icon.png",
+				listener: () => {
+					if (this.controller.blockArray.length > 1) {
+						this.controller.removeBlock();
+					} else {
+						this.removeStyles();
+					}
+					adderDropdown.hide();
+					adderDropdown.hideSecondDropdown();
+				}
+			}, {
+				title: "Duplicate",
+				icon: "../public/resources/copy_icon.png",
+				listener: ()=>{
+
+				}
+			}, {
+				title: "Turn into",
+				icon: "../public/resources/turn_into_icon.png",
+				listener: ()=>{
+					adderDropdown.openSecondDropdown(this.dropdownContents.transform);
+				}
+			}
+		]
+		}
 		this.setupTabLevel();
 		setTimeout(() => {
 			callback(true);
@@ -299,7 +238,7 @@ export class TextBlock extends HTMLElement {
 	/**
 	 * Keeps track of current location of textBlock
 	 */
-	 setCurrentSpot () {
+	setCurrentSpot () {
 		let container = this.shadowRoot.getElementById("textBlock");
 		let range = shadow.getRange(this.shadowRoot);
 		if (range === null) {
@@ -328,7 +267,7 @@ export class TextBlock extends HTMLElement {
 	 * @param {Boolean} up - whether the cursor should move up or down
 	 */
 	moveToSpot (newSpotToMove, up) {
-		let newSpot = newSpotToMove
+		let newSpot = newSpotToMove;
 		let container = this.shadowRoot.getElementById("textBlock");
 		if (container.childNodes.length > 0) {
 			if (!this.controller.resetPosition) {
@@ -589,7 +528,28 @@ export class TextBlock extends HTMLElement {
 		});
 
 		this.plus.onclick = () => {
-			console.log("hello there");
+			this.controller.currentBlockIndex = this.controller.blockArray.indexOf(this);
+			let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? -100 : textBlock.offsetHeight + 5;
+			if (textBlock.innerText !== "" && textBlock.innerText !== "/") {
+				this.controller.addNewBlock(null);
+			} else {
+				adderDropdown.openTextDropdown(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left, this.dropdownContents.text);
+			}
+		}
+
+		this.more.onclick = () => {
+			this.controller.currentBlockIndex = this.controller.blockArray.indexOf(this);
+            let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? -100 : textBlock.offsetHeight + 5;
+            adderDropdown.openUtilDropdown(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left, this.dropdownContents.util);
+		}
+		textBlock.oninput = () =>{
+			let content = textBlock.innerHTML;
+			if (content === "/") {
+				let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? -100 : textBlock.offsetHeight + 5;
+                adderDropdown.openTextDropdown(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left, this.dropdownContents.text);
+			} else {
+				adderDropdown.hide();
+			}
 		}
 
 		/**
@@ -691,7 +651,7 @@ export class TextBlock extends HTMLElement {
 					}, 150);
 				}
 			} else if (textBlock.textContent !== "") {
-				localStorage.createTextBlock(this.controller.parent.id, this.controller.subParent, this.controller.currentBlockIndex, textBlock.textContent, this.tabLevel, this.kind, null, this.signifier.id, date, true, (err, block) => {
+				localStorage.createTextBlock(this.controller.parent, this.controller.subParent, this.controller.currentBlockIndex, textBlock.textContent, this.tabLevel, this.kind, null, this.signifiers, date, true, (err, block) => {
 					if (err) {
 						console.log(err);
 					} else {
@@ -835,7 +795,7 @@ export class TextBlock extends HTMLElement {
 					alert("New Collection will be created");
 					e.preventDefault();
 				} else if (content === "/tracker") {
-					localStorage.createTracker("Practice Tracker", [], currentObject.id, (err, tracker) => {
+					localStorage.createTracker("Practice Tracker", [], currentState.id, (err, tracker) => {
 						if (err) {
 							console.log(err);
 						} else {

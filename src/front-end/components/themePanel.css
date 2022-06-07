@@ -1,0 +1,35 @@
+:host {
+    display: block;
+    font-family: "SF-Pro";
+}
+
+form {
+    margin: 0;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+    align-content: center;
+}
+
+label {
+    text-align: center;
+    font-size: 16pt;
+    margin-bottom: 30px;
+    cursor: pointer;
+}
+
+.themeImg {
+    width: 250px;
+    margin-top: 10px;
+    border-radius: 5px;
+    transition: 0.2s;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"]:checked + img.themeImg {
+    box-shadow: 0 0 0 8px var(--content-foreground-color);
+    transition: 0.2s;
+}

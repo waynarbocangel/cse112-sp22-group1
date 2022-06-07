@@ -1,0 +1,222 @@
+:host{
+	font-family: 'SF-Pro';
+}
+
+section {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	aspect-ratio: 1 / 1;
+	margin: 0;
+	color: var(--normal-font-color);
+	transition: 0.2s ease-in-out;
+	background-color: var(--card-background);
+	border-top: var(--border-top);
+	border-right: var(--border-right);
+	border-bottom: var(--border-bottom);
+	border-left: var(--border-left);
+	border-top-left-radius: var(--top-left-radius);
+	border-top-right-radius: var(--top-right-radius);
+	border-bottom-left-radius: var(--bottom-left-radius);
+	border-bottom-right-radius: var(--bottom-right-radius);
+}
+
+.dim {
+	background-color: var(--card-background-dim);
+}
+.dimmer {
+	background-color: var(--card-background-dimmer);
+}
+
+.isDate{
+	cursor: text;
+}
+
+section #title {
+	position: relative;
+	font-size: 20px;
+	font-weight: 600;
+	top: 8.08px;
+	left: 9px;
+	height: 36px;
+	width: 36px !important;
+	text-align: center;
+	line-height: 35px;
+	margin: 0 0 11px;
+	cursor: pointer;
+	width: auto;
+}
+
+.extend, .unlogged {
+	opacity: 0.3;
+}
+
+#events {
+	display: block;
+}
+
+#eventsMobile {
+	display: none;
+	position: absolute;
+	justify-content: space-between;
+	width: calc(100% - 40px);
+	left: calc(50% - ((100% - 40px) / 2));
+	bottom: 10px;
+}
+
+main {
+	overflow-y: scroll;
+	overscroll-behavior: auto contain;
+	height: calc(100% - 35px);
+	transition: 0.3s ease-in-out;
+	scrollbar-width: none;
+}
+
+::-webkit-scrollbar{
+	display: none;
+}
+
+main .event {
+	position: relative;
+	font-size: 15px;
+	font-weight: 400;
+	margin: 0 10.925px 5px;
+	padding: 2px 5px;
+	color: var(--highlighted-font-color);
+	border-radius: 5px;
+	background-color: var(--primary-button-color);
+}
+
+aside .eventCircle {
+	width: 11px;
+	height: 11px;
+	background-color: var(--secondary-button-color);
+	border-radius: 50%;
+	opacity: 0.53;
+}
+
+footer {
+	position: absolute;
+	bottom: 0;
+	left: 10px;
+	width: calc(100% - 20px);
+	text-align: center;
+	transition: 0.2s ease-in-out;
+	display: block;
+}
+
+footer button {
+	font-size: 14px;
+	line-height: 18px;
+	border-radius: 6px;
+	height: 25px;
+	border: none;
+	opacity: 0;
+	transition: 0.2s ease-in-out;
+	cursor: pointer;
+}
+
+footer #open{
+	background-color: var(--primary-button-color);
+	color: var(--highlighted-font-color);
+	margin-right: 5px;
+}
+
+
+footer #peak{
+	background-color: var(--secondary-button-color);
+	color: var(--highlighted-font-color);
+	margin-left: 5px;
+}
+
+#create, #extend{
+	background-color: var(--primary-button-color);
+	color: var(--highlighted-font-color);
+}
+
+@media only screen and (min-width: 1024.1px){
+	.isDate:hover {
+		box-shadow: 1px 1px 9px 0 var(--card-shadow);
+		transition: 0.2s ease-in-out;
+		z-index: 1;
+	}
+	
+	.isDate:hover > footer{
+		bottom: 10px;
+		transition: 0.2s ease-in-out;
+	}
+	
+	.isDate:hover > footer button {
+		opacity: 0.95;
+		transition: 0.2s ease-in-out;
+	}
+	
+	.isDate:hover > main {
+		height: calc(100% - 35px - 23px - 30px);
+		transition: 0.1s ease-in-out;
+	}
+
+	section .today {
+		background-color: var(--primary-button-color);
+		border-radius: 50%;
+		color: var(--highlighted-font-color);
+	}
+
+	footer button:hover {
+		box-shadow: 2px 2px 9px 0 var(--card-shadow);
+		opacity: 1;
+		transition: 0.2s ease-in-out;
+	}
+}
+
+@media only screen and (max-width: 1024px){
+	section{
+		width: 87px;
+		height: 87px;
+	}
+
+	.isDate{
+		cursor: pointer;
+	}
+
+	.isSelected {
+		background-color: var(--primary-button-color);
+		box-shadow: 1px 1px 9px 0 var(--card-shadow);
+		transition: 0.2s ease-in-out;
+		z-index: 1;
+	}
+
+	.isSelected #title {
+		color: var(--highlighted-font-color) !important;
+	}
+
+	.isSelected .eventCircle{
+		background-color: var(--highlighted-font-color);
+		opacity: 0.9 !important;
+	}
+
+	section #title{
+		font-size: 28px;
+		left: calc(50% - 18px);
+		top: 18.53px;
+		height: 28px;
+		line-height: 28px;
+	}
+
+	section .today {
+		border-radius: 0;
+		color: var(--primary-button-color);
+	}
+
+	#events {
+		display: none;
+	}
+
+	#eventsMobile {
+		display: flex;
+	}
+
+	#footer{
+		display: none;
+	}
+}
