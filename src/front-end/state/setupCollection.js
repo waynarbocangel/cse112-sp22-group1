@@ -67,6 +67,9 @@ export function setupCollection () {
 				}
 			}
 			header.file.appendChild(new FileLocation(currentState.title, "collection", currentState.id, false));
+			let viewPort = document.getElementById("contentWrapper");
+			console.log(viewPort.getClientRects());
+			viewPort.style.height = `${window.innerHeight - viewPort.getClientRects()[0].y}px`;
 		}
 	});
 }

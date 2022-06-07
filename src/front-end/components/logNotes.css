@@ -1,6 +1,7 @@
 #logNotes {
     border: none;
-    overflow: auto;
+    overflow: hidden;
+	height: max-content;
     outline: none;
     display: block;
     z-index: -1;

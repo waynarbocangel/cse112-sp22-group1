@@ -86,10 +86,14 @@ page-header {
 
 log-component {
 	width: 63.7%;	
+	height: 100%;
+	overflow: auto;
 }
 
 right-sidebar{
 	width: 36.3%;
+	height: 100%;
+	overflow: auto;
 }
 
 .noteContainer {
