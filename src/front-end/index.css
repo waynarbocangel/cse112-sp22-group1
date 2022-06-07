@@ -29,32 +29,33 @@ div {
 	margin-top: 21px;
 }
 
+main{
+	position: relative;
+	margin-left: 325px;
+	width: calc(100% - 325px);
+	transition: cubic-bezier(0.77,0.2,0.05,1.0) 0.5s;
+}
+
 #contentWrapper {
 	border: none;
 	overflow: hidden;
 	outline: none;
 	display: flex;
-	margin-left: 325px;
+	max-width: 1720px;
+	margin-left: auto;
+	margin-right: auto;
 	padding: 0;
-	margin-right: 0;
 	position: relative;
 	z-index: -1;
-	transition: cubic-bezier(0.77,0.2,0.05,1.0) 0.5s;
 }
 
 index-drop-down {
 	width: 100%;
 }
 
-.centerContent {
-	margin-left: 187px !important;
-	margin-right: 138px !important;
-	transition: cubic-bezier(0.77,0.2,0.05,1.0) 0.5s;
-}
-
-.centerHeader {
-	margin-left: 187px !important;
-	margin-right: 138px !important;
+.centerMain {
+	margin-left: 25px !important;
+	width: 100%;
 	transition: cubic-bezier(0.77,0.2,0.05,1.0) 0.5s;
 }
 
@@ -78,10 +79,11 @@ creator-block {
 
 page-header {
 	display: block;
-    margin-left: 325px;
+	max-width: 1720px;
+    margin-left: auto;
+	margin-right: auto;
     margin-top: 20px;
     text-align: left;
-	transition: cubic-bezier(0.77,0.2,0.05,1.0) 0.5s;
 }
 
 log-component {
@@ -112,6 +114,15 @@ right-sidebar{
 	display: list-item;
 	list-style-type: circle;
 	list-style-position: outside;
+}
+
+@media only screen and (max-width:2045px) {
+	.centerMain {
+		margin-left: 187px !important;
+		width: calc(100% - 325px);
+		transition: cubic-bezier(0.77,0.2,0.05,1.0) 0.5s;
+	}
+
 }
 
 /*
@@ -196,11 +207,3 @@ nav-bar {
     border-radius: 6px;
     cursor: pointer;
 }
-
-/* Text editor, to be integrated */
-
-main {
-	margin-left: 100px;
-	margin-top: 100px;
-}
-

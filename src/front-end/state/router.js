@@ -28,9 +28,6 @@ const stateSwitch = (id, setupFunction) => {
 	getCurrentObject(id);
 
 	setTimeout(() => {
-		if (document.getElementById("trackerWrapper").childNodes.length > 0) {
-			document.getElementById("trackerWrapper").removeChild(document.getElementById("trackerWrapper").childNodes[0]);
-		}
 		while (document.getElementById("contentWrapper").childNodes.length > 0) {
 			document.getElementById("contentWrapper").removeChild(document.getElementById("contentWrapper").childNodes[0]);
 		}
