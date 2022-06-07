@@ -24,7 +24,7 @@ export function setupCollection () {
 		header.file.removeChild(child);
 		child = header.file.lastElementChild;
 	}
-
+	header.loadSearchbar();
 	localStorage.readUser((err, user) => {
 		if (err) {
 			console.log(err);

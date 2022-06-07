@@ -21,20 +21,25 @@ let template = <template>
 			<span></span>
 			<span></span>
 		</div>
-		<section class="header">
+		<section id="header" class="header">
 			<div>
 				<h1 id="title_page">Template Page Title</h1>
 				<button class="edit-button">Edit</button>
 			</div>
 			<button class="new-button">New</button>
-			<aside class="search-box d-flex justify-center align-center">
-              	<input type="text" placeholder="Search..."/>
-             	<a class="p-20 cursor-pointer"><img class="search-btn max-h-20" src="../public/resources/search_icon.png" alt="search" /></a>
-			</aside>
 		</section>
 	</div>
 </template>
 
+let searchBar = <aside class="search_bar" id="searchBar">
+	<input class="search_input" type="text" placeholder="Search" />
+	<img class="search_icon"src="../public/resources/search_icon.png" />
+</aside>
+
+let searchExpand = <aside id="searchExpand" class="search-box d-flex justify-center align-center">
+	<input class="search-input" type="text" placeholder="Search..."/>
+	<a class="p-20 cursor-pointer"><img class="search-btn max-h-20" src="../public/resources/search_icon.png" alt="search" /></a>
+</aside>
 
 /**
  * Class that creates Page Header
@@ -57,7 +62,6 @@ export class PageHeader extends HTMLElement {
 		this.titleHeader = this.shadowRoot.querySelector(".header");
 		this.imgbuttons = this.shadowRoot.querySelectorAll(".imgbutton");
 		this.menuToggle = this.shadowRoot.querySelector("#menuToggle input");
-		this.searchBar = this.shadowRoot.getElementById("searchBar");
 
 	}
 
@@ -66,8 +70,8 @@ export class PageHeader extends HTMLElement {
 	 */
 	connectedCallback () {
 		this.futureLogButton.addEventListener("click", () => {
-			const headerTopOffset = this.futureLogButton.getBoundingClientRect().top - this.futureLogButton.getBoundingClientRect().width;
-			const headerLeftOffset = this.futureLogButton.getBoundingClientRect().left - this.futureLogButton.getBoundingClientRect().width - 140;
+			const headerTopOffset = this.futureLogButton.getBoundingClientRect().top + this.futureLogButton.getBoundingClientRect().height + 16;
+			const headerLeftOffset = this.futureLogButton.getBoundingClientRect().left - this.futureLogButton.getBoundingClientRect().width - 80;
 
 			/* DropDown window appears to be 206 px, not sure why previous value was 210 */
 			adderDropdown.openCreationDropdown(headerTopOffset, headerLeftOffset);
@@ -102,6 +106,27 @@ export class PageHeader extends HTMLElement {
 			}
 		};
 	}
+
+	loadSearchbar () {
+		if (currentState.objectType === "index") {
+			if (this.shadowRoot.getElementById("searchBar")) {
+				this.shadowRoot.getElementById("header").removeChild(searchBar);
+			}
+			this.shadowRoot.getElementById("header").removeChild(this.futureLogButton);
+			this.shadowRoot.getElementById("header").appendChild(searchExpand);
+			this.futureLogButton.style.marginLeft = "10px";
+			this.shadowRoot.getElementById("header").appendChild(this.futureLogButton);
+			this.shadowRoot.getElementById("header").style.width = "90%";
+		} else {
+			if (this.shadowRoot.getElementById("searchExpand")) {
+				this.shadowRoot.getElementById("header").removeChild(searchExpand);
+			}
+			this.futureLogButton.style.marginLeft = "auto";
+			this.shadowRoot.getElementById("header").appendChild(searchBar);
+			this.shadowRoot.getElementById("header").style.width = "96%";
+		}
+	}
+
 
 	/**
 	 * Makes header content editable
