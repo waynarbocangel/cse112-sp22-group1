@@ -38,6 +38,13 @@ img{
 	margin-left:10px;
 	filter: var(--icon-filter)
 }
+
+aside{
+	font-size: 20px;
+	align-self:top;
+	margin-top:7px;
+	margin-left:10px;
+}
 li{
 	border-radius: 6px;
 	display: flex;

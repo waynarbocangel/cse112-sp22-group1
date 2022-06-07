@@ -8,7 +8,7 @@ import {creationDropdownContents,editDropdownContents, otherDropdownContents} fr
 /* eslint-enable */
 
 import { currentState } from "../state/stateManager.js";
-
+import {readUser} from "../localStorage/userOperations.js"
 
 let template = <template>
     <link type="text/css" rel="stylesheet" href="inlineDropdown.css" />
@@ -201,6 +201,32 @@ export class InlineDropdown extends HTMLElement {
         }
 
         this.showSecondDropdown();
+    }
+
+    openSignifierDropdown(x,y) {
+        while (this.list.firstChild) {
+            this.list.lastChild.remove();
+        }
+        readUser((err,user)=>{
+            if(err) console.log(err);
+            this.setPosition(x,y);
+            let signifiers = user.signifiers;
+            for (let i = 0; i < signifiers.length; i++) {
+                let title = signifiers[i].meaning;
+                let newButton = document.createElement("button");
+                newButton.innerHTML = title;
+                let icon = document.createElement("aside");
+                console.log(signifiers[i].symbol.substring(3))
+                icon.innerHTML = signifiers[i].symbol;
+                let listWrapper = document.createElement("li");
+                listWrapper.appendChild(icon);
+                listWrapper.appendChild(newButton);
+                this.list.appendChild(listWrapper);
+                //listWrapper.onclick = elements[i].listener;
+            }
+            this.show();
+            this.hideSecondDropdown();
+        })        
     }
 }
 
