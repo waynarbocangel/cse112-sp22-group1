@@ -4,7 +4,7 @@
 /** @jsxFrag createFragment */
 import { createElement, createFragment } from "../jsxEngine.js";
 
-import {creationDropdownContents,editDropdownContents, otherDropdownContents} from "./dropdownContents.js";
+import {creationDropdownContents,editDropdownContents} from "./dropdownContents.js";
 /* eslint-enable */
 
 import { currentState } from "../state/stateManager.js";
@@ -150,28 +150,28 @@ export class InlineDropdown extends HTMLElement {
         this.fillDropdown(creationDropdownContents[currentState.objectType]);
     }
     
-    openUtilDropdown(x, y) {
-        if (otherDropdownContents["util"] === undefined) {
+    openUtilDropdown(x, y, contents) {
+        if (contents === undefined) {
             return;
         }
     
         this.setPosition(x, y);
     
-        this.fillDropdown(otherDropdownContents["util"]);
+        this.fillDropdown(contents);
     }
 
-    openTextDropdown(x,y) {
-        if (otherDropdownContents["text"] === undefined) {
+    openTextDropdown(x,y,contents) {
+        if (contents === undefined) {
             return;
         }
     
         this.setPosition(x, y);
     
-        this.fillDropdown(otherDropdownContents["text"]);
+        this.fillDropdown(contents);
     }
 
     openEditDropdown(x,y) {
-        if (otherDropdownContents["text"] === undefined) {
+        if (editDropdownContents[currentState.objectType] === undefined) {
             return;
         }
     
@@ -180,13 +180,13 @@ export class InlineDropdown extends HTMLElement {
         this.fillDropdown(editDropdownContents[currentState.objectType]);
     }
 
-    openSecondDropdown() {
+    openSecondDropdown(contents) {
         while (this.secondList.firstChild) {
             this.secondList.lastChild.remove();
         }
         this.secondDropdown.style.top = `${this.dropdown.offsetTop}px`;
         this.secondDropdown.style.left = `${this.dropdown.offsetWidth+ this.dropdown.offsetLeft-5}px`;
-        let elements = otherDropdownContents["transform"]
+        let elements = contents;
         for (let i = 0; i < elements.length; i++) {
             let title = elements[i].title;
             let newButton = document.createElement("button");

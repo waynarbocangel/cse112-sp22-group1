@@ -5,9 +5,10 @@
 import * as localStorage from "../localStorage/userOperations.js";
 import * as shadow from "./shadow.js";
 import { getDate, includesClock } from "./blockModel.js";
+import { adderDropdown } from "../index.js";
 import { BlockController } from "./blockController.js";
 import { currentState } from "../state/stateManager.js";
-import { adderDropdown } from "../index.js";
+
 // JSX Engine Import
 /* eslint-disable */
 /** @jsx createElement */
@@ -74,6 +75,156 @@ export class TextBlock extends HTMLElement {
 		this.signifierIcon = this.shadowRoot.getElementById("signifier");
 		this.plus = this.shadowRoot.getElementById("plus");
 		this.more = this.shadowRoot.getElementById("more");
+		let textBlock = this.shadowRoot.getElementById("textBlock");
+		this.dropdownContents = {
+			"text": [
+			{
+                title: "Heading 1",
+				icon: "../public/resources/h1_icon.png",
+                listener: ()=>{
+					this.setupHeader1();
+					adderDropdown.hide();
+                }
+            }, {
+                title: "Heading 2",
+                icon: "../public/resources/h2_icon.png",
+                listener: ()=>{
+					this.setupHeader2();
+					adderDropdown.hide();
+                }
+            }, {
+                title: "Heading 3",
+                icon: "../public/resources/h3_icon.png",
+                listener: ()=>{
+					this.setupHeader3();
+					adderDropdown.hide();
+                }
+            }, {
+                title: "Note",
+                icon: "../public/resources/note_icon.png",
+                listener: ()=>{
+					this.setupNote();
+					adderDropdown.hide();
+                }
+            }, {
+                title: "Event",
+                icon: "../public/resources/event_icon.png",
+                listener: ()=>{
+					this.setupEvent();
+					adderDropdown.hide();
+                }
+            }, {
+                title: "Task",
+                icon: "../public/resources/task_icon.png",
+                listener: ()=>{
+					this.setupTask();
+					adderDropdown.hide();
+                }
+            }, {
+                title: "Paragraph",
+                icon: "../public/resources/paragraph_icon.png",
+				listener: ()=>{
+					adderDropdown.hide();
+				}
+            }
+		],
+		"transform": [
+			{
+				title: "Heading 1",
+				icon: "../public/resources/h1_icon.png",
+				listener: ()=>{
+					let content = textBlock.innerText;
+					this.setupHeader1();
+					textBlock.innerText = content;
+					adderDropdown.hide();
+					adderDropdown.hideSecondDropdown();
+				}
+			}, {
+				title: "Heading 2",
+				icon: "../public/resources/h2_icon.png",
+				listener: ()=>{
+					let content = textBlock.innerText;
+					this.setupHeader2();
+					textBlock.innerText = content;
+					adderDropdown.hide();
+					adderDropdown.hideSecondDropdown();
+				}
+			}, {
+				title: "Heading 3",
+				icon: "../public/resources/h3_icon.png",
+				listener: ()=>{
+					let content = textBlock.innerText;
+					this.setupHeader3();
+					textBlock.innerText = content;
+					adderDropdown.hide();
+					adderDropdown.hideSecondDropdown();
+				}
+			}, {
+				title: "Note",
+				icon: "../public/resources/note_icon.png",
+				listener: ()=>{
+					let content = textBlock.innerText;
+					this.setupNote();
+					textBlock.innerText = content;
+					adderDropdown.hide();
+					adderDropdown.hideSecondDropdown();
+				}
+			}, {
+				title: "Event",
+				icon: "../public/resources/event_icon.png",
+				listener: ()=>{
+					let content = textBlock.innerText;
+					this.setupEvent();
+					textBlock.innerText = content;
+					adderDropdown.hide();
+					adderDropdown.hideSecondDropdown();
+				}
+			}, {
+				title: "Task",
+				icon: "../public/resources/task_icon.png",
+				listener: ()=>{
+					let content = textBlock.innerText;
+					this.setupTask();
+					textBlock.innerText = content;
+					adderDropdown.hide();
+					adderDropdown.hideSecondDropdown();
+				}
+			}, {
+				title: "Paragraph",
+				icon: "../public/resources/paragraph_icon.png",
+				listener: ()=>{
+					let content = textBlock.innerText;
+					this.removeStyles();
+					textBlock.innerText = content;
+					adderDropdown.hide();
+					adderDropdown.hideSecondDropdown();
+				}
+			}
+		],
+		"util": [
+			{
+				title: "Delete",
+				icon: "../public/resources/delete_icon.png",
+				listener: () => {
+					if (this.controller.currentBlockIndex !== 0) {
+						this.controller.removeBlock();
+					}
+				}
+			}, {
+				title: "Duplicate",
+				icon: "../public/resources/copy_icon.png",
+				listener: ()=>{
+
+				}
+			}, {
+				title: "Turn into",
+				icon: "../public/resources/turn_into_icon.png",
+				listener: ()=>{
+					adderDropdown.openSecondDropdown(this.dropdownContents.transform);
+				}
+			}
+		]
+		}
 		this.setupTabLevel();
 		setTimeout(() => {
 			callback(true);
@@ -374,18 +525,22 @@ export class TextBlock extends HTMLElement {
 
 		this.plus.onclick = () => {
 			let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? -100 : textBlock.offsetHeight + 5;
-            adderDropdown.openTextDropdown(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left);
+			if (textBlock.innerText !== "" && textBlock.innerText !== "/") {
+				this.controller.addNewBlock(null);
+			} else {
+				adderDropdown.openTextDropdown(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left, this.dropdownContents.text);
+			}
 		}
 
 		this.more.onclick = () => {
             let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? -100 : textBlock.offsetHeight + 5;
-            adderDropdown.openUtilDropdown(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left);
+            adderDropdown.openUtilDropdown(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left, this.dropdownContents.util);
 		}
 		textBlock.oninput = () =>{
 			let content = textBlock.innerHTML;
 			if (content === "/") {
 				let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? -100 : textBlock.offsetHeight + 5;
-                adderDropdown.openTextDropdown(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left);
+                adderDropdown.openTextDropdown(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left, this.dropdownContents.text);
 			} else {
 				adderDropdown.hide();
 			}
