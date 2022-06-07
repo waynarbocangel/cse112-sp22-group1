@@ -10,7 +10,7 @@
 	display: block;
 	margin: 0;
 	padding: 0 ;
-	width: 100%;
+	width: calc(100% - var(--block-tab-level));
 	/* overflow-x: hidden; */
 	left: 0;
 	right: 0;
@@ -23,7 +23,7 @@
 	display: list-item;
 	list-style-type: disc;
 	list-style-position: outside;
-	width: calc(100% - 57px) !important;
+	width: calc(100% - 57px - var(--block-tab-level)) !important;
 }
 
 #logNotes .eventContainer {
@@ -33,7 +33,7 @@
 	display: list-item;
 	list-style-type: circle;
 	list-style-position: outside;
-	width: calc(100% - 57px) !important;
+	width: calc(100% - 57px - var(--block-tab-level)) !important;
 }
 
 h1 {

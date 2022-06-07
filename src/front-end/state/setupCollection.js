@@ -14,7 +14,7 @@ export function setupCollection () {
 	contentWrapper.appendChild(new RightSidebar(currentState.trackers));
 	header.title = currentState.title;
 
-	createEditor(contentWrapper, currentState, null, (success) => {
+	createEditor(contentWrapper, currentState, (success) => {
 		console.log(success);
 	});
 

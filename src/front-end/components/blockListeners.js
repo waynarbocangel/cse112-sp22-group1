@@ -1,6 +1,6 @@
 import * as localStorage from "../localStorage/userOperations.js";
 import { includesClock, getDate } from "./blockModel.js";
-import { TextBlock, paddingSize, protectedKeys, tabSize } from "./block.jsx";
+import { TextBlock, protectedKeys, tabSize } from "./block.jsx";
 import { adderDropdown } from "../index.js";
 import { currentState } from "../state/stateManager.js";
 /**
@@ -252,10 +252,10 @@ export let bindListeners = (blockReference) => {
 		if (key === "Backspace" || key === "Delete") {
 			let tabLevelNotZero = blockReference.tabLevel > 0;
 			let calculatedTab = blockReference.tabLevel * tabSize;
-			let currentSpotBlock = blockReference.currentPointerSpot - calculatedTab === paddingSize;
-			let currentSpotNote = blockReference.currentPointerSpot - calculatedTab === paddingSize + 20 && blockReference.classList.contains("noteContainer");
+			let currentSpotBlock = blockReference.currentPointerSpot - calculatedTab === blockReference.paddingSize;
+			let currentSpotNote = (blockReference.currentPointerSpot - calculatedTab === blockReference.paddingSize + tabSize) && blockReference.classList.contains("noteContainer");
 			let isAtBegining = currentSpotBlock || currentSpotNote;
-			if (textBlock.innerHTML === "" && textBlock.getAttribute("placeholder") === "Type \"/\" to create a block" && blockReference.controller.blockArray.length > 1) {
+			if (!tabLevelNotZero && textBlock.innerText === "" && textBlock.getAttribute("placeholder") === "Type \"/\" to create a block" && blockReference.controller.blockArray.length > 1) {
 				blockReference.controller.removeBlock();
 			} else if ((textBlock.innerHTML === "" || textBlock.innerHTML === "<br>") && blockReference.tabLevel === 0) {
 				blockReference.removeStyles();

@@ -12,10 +12,10 @@ import { bindDropdown } from "./blockDropdownManager.js";
 /** @jsx createElement */
 /** @jsxFrag createFragment */
 import { createElement, createFragment } from "../jsxEngine.js";
+import { contentWrapper } from "../index.js";
 /* eslint-enable */
 
-export let tabSize = 20;
-export let paddingSize = 10;
+export let tabSize = 40;
 export let protectedKeys = ["Control", "Alt", "CapsLock", "Escape", "PageUp", "PageDown", "End", "Home", "PrintScreen", "Insert", "Delete", "Backspace", "Tab", "Enter", "Meta", "ArrowTop", "ArrowBottom", "ArrowRight", "ArrowLeft", "Shift", " "]
 
 let blockTemplate = <template>
@@ -38,8 +38,9 @@ export class TextBlock extends HTMLElement {
 	 * @param {Object} signifier - the editor's current signifier
 	 * @param {singleParameterCallback} callback - callback for the end of the constructor function
 	 */
-	constructor (controller, itemObject, signifiers, callback) {
+	constructor (controller, itemObject, signifiers, callback, tracker=null) {
 		super();
+		this.paddingSize = contentWrapper.getClientRects()[0].x + 38;
 		this.attachShadow({ mode: "open" });
 		this.shadowRoot.appendChild(blockTemplate.content.cloneNode(true));
 		this.characterIndex = 0;
@@ -53,8 +54,8 @@ export class TextBlock extends HTMLElement {
 		this.checkBox.style.display = "none";
 		this.currentPointerSpot = 0;
 		this.editorIcons = this.shadowRoot.getElementById("editorIcons");
-		this.currentPointerHeight = 2;
 		this.signifierRow = this.shadowRoot.getElementById("signifiers");
+		this.currentPointerHeight = 2;
 		bindFunctions(this);
 		bindDropdown(this);
 		if (this.controller.creatingFromBullet.isTrue) {
@@ -66,6 +67,7 @@ export class TextBlock extends HTMLElement {
 				this.setupTask();
 			}
 		}
+		this.tracker = tracker;
 		this.tabLevel = controller.currentTabLevel;
 		this.atPressed = false;
 		this.hashPressed = false;

@@ -1,6 +1,7 @@
 import * as shadow from "./shadow.js";
-import { TextBlock, paddingSize, tabSize } from "./block.jsx";
+import { TextBlock, tabSize } from "./block.jsx";
 import { includesClock } from "./blockModel.js";
+import { contentWrapper } from "../index.js";
 
 /**
  * 
@@ -15,10 +16,9 @@ export let bindFunctions = (blockReference) => {
 		let selection = blockReference.shadowRoot.getSelection();
 		setTimeout(() => {
 			let range = !selection ? null : selection.getRangeAt(0);
-			console.log(range);
 			if (range === null) {
 				let computedTab = blockReference.tabLevel * tabSize;
-				blockReference.currentPointerSpot = computedTab + paddingSize;
+				blockReference.currentPointerSpot = computedTab + blockReference.paddingSize;
 				blockReference.currentPointerHeight = blockReference.initialHeight;
 			} else {
 				let computedTab = blockReference.tabLevel * tabSize;
@@ -29,10 +29,11 @@ export let bindFunctions = (blockReference) => {
 				blockReference.hashPressed = false;
 				includesClock(blockReference, container.innerText.slice(0, range.endOffset), false);
 				blockReference.characterIndex = range.endOffset;
-				blockReference.currentPointerSpot = range.getClientRects()[0] === undefined ? computedTab + paddingSize : range.getClientRects()[0].x;
+				blockReference.currentPointerSpot = range.getClientRects()[0] === undefined ? computedTab + blockReference.paddingSize : range.getClientRects()[0].x;
 				blockReference.currentPointerHeight = range.getClientRects()[0] === undefined ? blockReference.initialHeight : range.getClientRects()[0].y - container.getBoundingClientRect().top;
+				console.log(blockReference.currentPointerSpot);
 			}
-		}, 0.1);
+		}, 1);
 	}
 
 	/**
@@ -95,6 +96,7 @@ export let bindFunctions = (blockReference) => {
 	 * Sets up textBlock styling for header 1 text
 	 */
 	blockReference.setupHeader1 = () => {
+		blockReference.paddingSize = contentWrapper.getClientRects()[0].x + 38;
 		let textBlock = blockReference.shadowRoot.getElementById("textBlock");
 		while (blockReference.editorIcons.classList.length > 0) {
 			blockReference.editorIcons.classList.remove(blockReference.editorIcons.classList[0]);
@@ -123,6 +125,7 @@ export let bindFunctions = (blockReference) => {
 	 * Sets up textBlock styling for header 2 text
 	 */
 	blockReference.setupHeader2 = () => {
+		blockReference.paddingSize = contentWrapper.getClientRects()[0].x + 38;
 		let textBlock = blockReference.shadowRoot.getElementById("textBlock");
 		while (blockReference.editorIcons.classList.length > 0) {
 			blockReference.editorIcons.classList.remove(blockReference.editorIcons.classList[0]);
@@ -151,6 +154,7 @@ export let bindFunctions = (blockReference) => {
 	 * Sets up textBlock syling for header 3 text
 	 */
 	blockReference.setupHeader3 = () => {
+		blockReference.paddingSize = contentWrapper.getClientRects()[0].x + 38;
 		let textBlock = blockReference.shadowRoot.getElementById("textBlock");
 		while (blockReference.editorIcons.classList.length > 0) {
 			blockReference.editorIcons.classList.remove(blockReference.editorIcons.classList[0]);
@@ -179,6 +183,7 @@ export let bindFunctions = (blockReference) => {
 	 * Sets up textBlock styling for note text and adds bullet
 	 */
 	blockReference.setupNote = () => {
+		blockReference.paddingSize = contentWrapper.getClientRects()[0].x + 53;
 		let textBlock = blockReference.shadowRoot.getElementById("textBlock");
 		while (blockReference.editorIcons.classList.length > 0) {
 			blockReference.editorIcons.classList.remove(blockReference.editorIcons.classList[0]);
@@ -208,6 +213,7 @@ export let bindFunctions = (blockReference) => {
 	 * Sets up textBlock styling for event text and handles event date and time parsing
 	 */
 	blockReference.setupEvent = () => {
+		blockReference.paddingSize = contentWrapper.getClientRects()[0].x + 53;
 		let textBlock = blockReference.shadowRoot.getElementById("textBlock");
 		while (blockReference.editorIcons.classList.length > 0) {
 			blockReference.editorIcons.classList.remove(blockReference.editorIcons.classList[0]);
@@ -275,6 +281,7 @@ export let bindFunctions = (blockReference) => {
 	 * is converted to a different one
 	 */
 	blockReference.removeStyles = () => {
+		blockReference.paddingSize = contentWrapper.getClientRects()[0].x + 38;
 		let textBlock = blockReference.shadowRoot.getElementById("textBlock");
 		while (blockReference.editorIcons.classList.length > 0) {
 			blockReference.editorIcons.classList.remove(blockReference.editorIcons.classList[0]);
@@ -307,7 +314,7 @@ export let bindFunctions = (blockReference) => {
 		let computedTab = blockReference.tabLevel * tabSize;
 		blockReference.style.left = computedTab + "px";
 		blockReference.controller.currentTabLevel = blockReference.tabLevel;
-		blockReference.style.setProperty("--block-tab-level", `${computedTab}px`)
+		blockReference.style.setProperty("--block-tab-level", `${computedTab}px`);
 		blockReference.setCurrentSpot();
 	}
 

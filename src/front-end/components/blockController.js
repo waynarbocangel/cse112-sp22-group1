@@ -14,9 +14,9 @@ export class BlockController extends Object {
 	/**
 	 * @param {HTMLElement} container
 	 * @param {Object} parent
-	 * @param {String} subParent
+	 * @param {Object} tracker
 	 */
-	constructor (container, parent, subParent) {
+	constructor (container, parent, tracker=null) {
 		super();
 		this.blockArray = [];
 		this.creatingFromBullet = {isTrue: false, kind: ""};
@@ -25,7 +25,7 @@ export class BlockController extends Object {
 		this.currentBlockIndex = 0;
 		this.container = container;
 		this.parent = parent;
-		this.subParent = subParent;
+		this.tracker = tracker;
 	}
 
 	/**
@@ -50,7 +50,7 @@ export class BlockController extends Object {
 					newBlock.focus();
 					callback(newBlock);
 				}
-			});
+			}, this.tracker);
 		} else if (block.objectType === "imageBlock") {
 			console.log("it was image");
 		}
@@ -74,7 +74,7 @@ export class BlockController extends Object {
 				}
 				newBlock.focus();
 			}
-		});
+		}, this.tracker);
 	}
 
 
@@ -219,12 +219,10 @@ export function populateEditor (controller, items, signifiers, callback) {
  *
  * @param {Array} container The html content wrapper to add the editor to.
  * @param {Object} parent The id of the parent of the textBlock being created.
- * @param {String} subParent The id of the child within the parent's content list.
  * @param {response} callback Either sends an error if there is one or sends back the block controller to the callback.
  */
-export function createEditor (container, parent, subParent, callback) {
-	console.log(subParent);
-	let controller = new BlockController(container, parent, subParent);
+export function createEditor (container, parent, callback, tracker=null) {
+	let controller = new BlockController(container, parent, tracker);
 	setTimeout(() => {
 		let itemObject = null;
 		let objectArr = [];
@@ -246,24 +244,11 @@ export function createEditor (container, parent, subParent, callback) {
 
 						let tempArr = doc.textBlocks;
 
-						if (!subParent) {
-							if (!itemObject.content) {
-								itemObject.content = [];
-							}
-							for (let i = 0; i < itemObject.content.length; i++) {
-								Array.prototype.push.apply(objectArr, tempArr.filter((element) => element.id === itemObject.content[i]));
-							}
-
-						} else if (itemObject.objectType === "monthlyLog") {
-							let day = itemObject.days.filter((currentDay) => currentDay.dailyLog === subParent)[0];
-							for (let i = 0; i < day.content.length; i++) {
-								Array.prototype.push.apply(objectArr, tempArr.filter((element) => element.id === day.content[i]));
-							}
-						} else if (itemObject.objectType === "futureLog") {
-							let month = itemObject.months.filter((currentMonth) => currentMonth.monthlyLog === subParent)[0];
-							for (let i = 0; i < month.content.length; i++) {
-								Array.prototype.push.apply(objectArr, tempArr.filter((element) => element.id === month.content[i]));
-							}
+						if (!itemObject.content) {
+							itemObject.content = [];
+						}
+						for (let i = 0; i < itemObject.content.length; i++) {
+							Array.prototype.push.apply(objectArr, tempArr.filter((element) => element.id === itemObject.content[i]));
 						}
 
 
@@ -278,7 +263,7 @@ export function createEditor (container, parent, subParent, callback) {
 										newBlock.focus();
 									}
 									callback(controller);
-								});
+								}, tracker);
 							}
 						})
 					}
@@ -295,7 +280,7 @@ export function createEditor (container, parent, subParent, callback) {
 							console.log("newBlock not being created");
 						}
 						callback(controller);
-					});
+					}, tracker);
 				}
 			}
 		})
