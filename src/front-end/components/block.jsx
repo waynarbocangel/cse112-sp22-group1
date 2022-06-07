@@ -206,9 +206,13 @@ export class TextBlock extends HTMLElement {
 				title: "Delete",
 				icon: "../public/resources/delete_icon.png",
 				listener: () => {
-					if (this.controller.currentBlockIndex !== 0) {
+					if (this.controller.blockArray.length > 1) {
 						this.controller.removeBlock();
+					} else {
+						this.removeStyles();
 					}
+					adderDropdown.hide();
+					adderDropdown.hideSecondDropdown();
 				}
 			}, {
 				title: "Duplicate",
@@ -524,6 +528,7 @@ export class TextBlock extends HTMLElement {
 		});
 
 		this.plus.onclick = () => {
+			this.controller.currentBlockIndex = this.controller.blockArray.indexOf(this);
 			let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? -100 : textBlock.offsetHeight + 5;
 			if (textBlock.innerText !== "" && textBlock.innerText !== "/") {
 				this.controller.addNewBlock(null);
@@ -533,6 +538,7 @@ export class TextBlock extends HTMLElement {
 		}
 
 		this.more.onclick = () => {
+			this.controller.currentBlockIndex = this.controller.blockArray.indexOf(this);
             let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? -100 : textBlock.offsetHeight + 5;
             adderDropdown.openUtilDropdown(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left, this.dropdownContents.util);
 		}
