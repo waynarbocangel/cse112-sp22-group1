@@ -8,7 +8,7 @@ import { getDate, includesClock } from "./blockModel.js";
 import { adderDropdown } from "../index.js";
 import { BlockController } from "./blockController.js";
 import { currentState } from "../state/stateManager.js";
-import { adderDropdown } from "../index.js";
+
 // JSX Engine Import
 /* eslint-disable */
 /** @jsx createElement */
