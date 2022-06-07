@@ -228,6 +228,16 @@ export class InlineDropdown extends HTMLElement {
             this.hideSecondDropdown();
         })        
     }
+
+    openSideCardDropdown(x,y,contents){
+        if (contents === undefined) {
+            return;
+        }
+    
+        this.setPosition(x, y);
+    
+        this.fillDropdown(contents);
+    }
 }
 
 window.customElements.define("inline-dropdown", InlineDropdown);
