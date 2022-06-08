@@ -62,8 +62,12 @@ export class FileLocation extends HTMLElement {
 	connectedCallback () {
 		// Normal open menu button
 		this.locationTitle.onclick = () => {
-			if (this.type !== "index") {
+			// if (this.type !== "index") {
+			// 	router.navigate(`/${this.type}/${this.collectionID}`);
+			if (this.collectionID) {
 				router.navigate(`/${this.type}/${this.collectionID}`);
+			} else {
+				router.navigate("/");
 			}
 		};
 	}
