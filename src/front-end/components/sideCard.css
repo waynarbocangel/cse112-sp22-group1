@@ -1,5 +1,5 @@
 :host {
-	font-family:"SF-Pro";
+	font-family: system-ui;
 }
 .card{
     font-family: system-ui;
@@ -9,7 +9,7 @@
     justify-content: space-between;
     padding: 0 0 1rem;
     width: calc(100% - 98px);
-    background-color: var(--card-backgound);
+    background-color: var(--card-background);
     box-shadow: 0 0 10px var(--card-shadow);
     margin-top: 0.5vw;
     margin-bottom: 0.5vw;
