@@ -46,7 +46,7 @@ main{
 	margin-right: auto;
 	padding: 0;
 	position: relative;
-	z-index: -1;
+	z-index: 0;
 }
 
 index-drop-down {
@@ -190,11 +190,15 @@ nav-bar {
 	margin: 10px auto;
 }
 
+index-drop-down:first-of-type{
+	margin-top: -15px;
+}
+
 #displayToggle{
 	float: right;
 	color: var(--highlighted-font-color);
 	margin-top: 20px;
-	margin-right: 130px;
+	right: 0;
     background-color: var(--secondary-button-color);
 	user-select: none;
     vertical-align: middle;
@@ -205,5 +209,6 @@ nav-bar {
     height: 31px;
     padding: 0 9px;
     border-radius: 6px;
+	position: absolute;
     cursor: pointer;
 }

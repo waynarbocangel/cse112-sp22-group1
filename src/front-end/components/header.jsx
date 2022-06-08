@@ -26,7 +26,12 @@ let template = <template>
 				<h1 id="title_page">Template Page Title</h1>
 				<button class="edit-button">Edit</button>
 			</div>
+			<aside class="search-box d-flex justify-center align-center">
+              	<input type="text" placeholder="Search..."/>
+             	<a class="p-20 cursor-pointer"><img class="search-btn max-h-20" src="../public/resources/search_icon.png" alt="search" /></a>
+			</aside>
 			<button class="new-button">New</button>
+			
 		</section>
 	</div>
 </template>
