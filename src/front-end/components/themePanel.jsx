@@ -216,7 +216,7 @@ const themeColors = {
         "--signifiers-background": "rgba(234, 199, 172, 1)",
         "--itemcard-font-filter": "",
         "--text-filter": "invert()",
-        "--icon-filter": "invert()"
+        "--icon-filter": ""
     },
 
     nightOwl: {
@@ -333,28 +333,28 @@ let template = <template>
             <input type="radio" name="themeradio" id="coolDark" /><img class="themeImg" src="../../public/resources/coolDark.png" />
         </label>
         <label>The Light Side <br />
-            <input type="radio" name="themeradio" id="theLightSide" /><img class="themeImg" src="../../public/resources/highContrast.png" />
+            <input type="radio" name="themeradio" id="theLightSide" /><img class="themeImg" src="../../public/resources/theLightSide.png" />
         </label>
         <label>The Dark Side <br />
-            <input type="radio" name="themeradio" id="theDarkSide" /><img class="themeImg" src="../../public/resources/snazzyLight.png" />
+            <input type="radio" name="themeradio" id="theDarkSide" /><img class="themeImg" src="../../public/resources/theDarkSide.png" />
         </label>
         <label>Snazzy Light <br />
-            <input type="radio" name="themeradio" id="snazzyLight" /><img class="themeImg" src="../../public/resources/classyLight.png" />
+            <input type="radio" name="themeradio" id="snazzyLight" /><img class="themeImg" src="../../public/resources/snazzyLight.png" />
         </label>
         <label>High Contrast <br />
-            <input type="radio" name="themeradio" id="highContrast" /><img class="themeImg" src="../../public/resources/nightOwl.png" />
+            <input type="radio" name="themeradio" id="highContrast" /><img class="themeImg" src="../../public/resources/highContrast.png" />
         </label>
         <label>Comfy Panda <br />
-            <input type="radio" name="themeradio" id="comfyPanda" /><img class="themeImg" src="../../public/resources/nightOwl.png" />
+            <input type="radio" name="themeradio" id="comfyPanda" /><img class="themeImg" src="../../public/resources/comfyPanda.png" />
         </label>
         <label>Night Owl <br />
             <input type="radio" name="themeradio" id="nightOwl" /><img class="themeImg" src="../../public/resources/nightOwl.png" />
         </label>
         <label>Sunny Beach <br />
-            <input type="radio" name="themeradio" id="sunnyBeach" /><img class="themeImg" src="../../public/resources/nightOwl.png" />
+            <input type="radio" name="themeradio" id="sunnyBeach" /><img class="themeImg" src="../../public/resources/sunnyBeach.png" />
         </label>
         <label>Dark Forest <br />
-            <input type="radio" name="themeradio" id="darkForest" /><img class="themeImg" src="../../public/resources/nightOwl.png" />
+            <input type="radio" name="themeradio" id="darkForest" /><img class="themeImg" src="../../public/resources/darkForest.png" />
         </label>
     </form>
 </template>
