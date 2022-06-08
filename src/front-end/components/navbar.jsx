@@ -265,8 +265,7 @@ export class NavBar extends HTMLElement {
 	navToggle (navShown) {
 		this.mainNav.classList.toggle("open", !navShown);
 		this.mainNav.classList.toggle("closed", navShown);
-		document.getElementById("contentWrapper").classList.toggle("centerContent");
-		document.querySelector("page-header").classList.toggle("centerHeader");
+		document.querySelector("main").classList.toggle("centerMain");
 		this.closedNav.classList.toggle("open", navShown);
 		this.closedNav.classList.toggle("closed", !navShown);
 		console.log(navShown);

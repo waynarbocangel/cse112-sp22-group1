@@ -37,6 +37,9 @@ export function setupMonthlyLog () {
 			let parent = user.futureLogs.filter((reference) => reference.id === currentState.parent)[0];
 			header.file.appendChild(new FileLocation(parent.title, "futureLog", currentState.parent, true));
 			header.file.appendChild(new FileLocation(`${months[currentDate.getMonth()]} ${currentDate.getFullYear()}`, "monthlyLog", currentState.id, false));
+			let viewPort = document.getElementById("contentWrapper");
+			console.log(viewPort.getClientRects());
+			viewPort.style.height = `${window.innerHeight - viewPort.getClientRects()[0].y}px`;
 		}
 	});
 }
