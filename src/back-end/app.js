@@ -10,12 +10,13 @@ const security = require(`${__dirname}/security/securityFunctions.js`);
 
 /* Initialize Express */
 const app = express();
-app.use(express.json({ limit: "50mb", extended: true }));
-app.use(express.urlencoded({ limit: "50mb", extended: true }));
+app.use(express.json({limit: "50mb", extended: true}));
+app.use(express.urlencoded({limit: "50mb", extended: true}));
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", constants.accessControlOrigin);
+	res.header("Access-Control-Allow-Origin", constants.accessControlOrigin);
     res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
     res.header("Access-Control-Allow-Headers", "Content-Type");
+    res.header("Access-Control-Allow-Credentials", "true");
 
     /* https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin#cors_and_caching */
     if (constants.accessControlOrigin !== "*") {
@@ -26,6 +27,7 @@ app.use((req, res, next) => {
 app.use(session({
     secret: constants.sessionSecret,
     saveUninitialized: false,
+    proxy: constants.reverseProxy,
     cookie: constants.sessionCookieObject,
     resave: false,
     name: "sessionAuth"

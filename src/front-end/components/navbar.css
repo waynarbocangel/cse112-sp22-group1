@@ -1,0 +1,257 @@
+/* used for more vertical screen sizes */
+.navigation {
+    display: none; 
+}
+
+/* open version of nav */
+.nav-bar {
+    position: fixed;
+    width: 275px;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    display: block;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
+    background-color: var(--sidebar-background);
+}
+
+/* exclusively for the collapsed version of nav */
+.collapsed-nav {
+    position: fixed;
+    width: 40px;
+    height: 100%;
+    margin-top: 20px;
+    padding-left: 20px;
+    display: block;
+    background-color: transparent;
+}
+
+button {
+    display: block;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    width: 170px;
+    height: 40px;
+    margin: 0px auto 42px auto;
+    cursor: pointer;
+    text-align: left;
+}
+
+/* different sizing for buttons */
+button img {
+    height: 100%;
+    filter: var(--icon-filter);
+    opacity: 80%;
+    margin-right: 14px;
+    margin-bottom: -7px;
+    width: 27px;
+    height: 27px;
+}
+
+button h1 {
+    display:inline-block;
+    font-family: "SF-Pro";
+    font-weight: bold;
+    font-size: 18px;
+    font-weight: 700;
+    opacity: 80%;
+    line-height: 18px;
+    filter: var(--icon-filter);
+}
+
+
+/* all different button hover mechanics */
+button:hover img {
+    opacity: 100%;
+    transition: opacity 25ms;
+}
+
+button:hover p {
+    opacity: 100%;
+    transition: opacity 25ms;
+}
+
+button:hover p2 {
+    opacity: 100%;
+    transition: opacity 25ms;
+}
+
+button:hover h1 {
+    opacity: 100%;
+    transition: opacity 25ms;
+}
+
+/* Differentiates two bottom buttons  */
+#bottom {
+    position: absolute;
+    bottom: 20px;
+    margin-bottom: 0px;
+    width: 100%;
+}
+
+/* Differentiates header  */
+#top {
+    margin-bottom: -10px;
+    margin-top: 55px;
+    margin-left: 53px;
+}
+
+/* home button shifted to incorporate the collapse button to the right */
+#home {
+    width: 150px;
+    display: inline-block;
+}
+
+/* Used exclusively for the collapse button right of the Home button */
+#collapse {
+    width: 30px;
+    display: inline-block;
+}
+
+#collapseImage {
+    height: 16px;
+    width: 10px;
+    margin-bottom: 1px;
+}
+
+#uncollapse {
+    height: 20px;
+}
+
+#uncollapseImage {
+    height: 20px;
+    width: 25px;
+    margin-bottom: 0px;
+}
+
+
+/* the properties below describe the change of the two bottom navbar buttons */
+#user {
+    position: static;
+    height: 40px;
+    margin-bottom: 22px;
+}
+
+#help {
+    position: static;
+    height: 40px;
+    margin-bottom: 17px;
+}
+
+#retrospective {
+    width: 180px;
+    margin-left: 52.5px;
+}
+
+/* Both of the below properties of the main navbar switch the state to open and closed */
+/* for the non-receded version of the navBar */
+#mainNav.closed {
+    transform: translate(-100%, 0);
+    transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+}
+
+#mainNav.open {
+    transform-origin: 0 0;
+    transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+}
+
+/* Both of the below properties of closedNav switch the state to open and closed */
+/* for the closed version of the navBar */
+#closedNav.closed {
+    /* display: none; */
+    transform: translate(-100%, 0);
+    transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+}
+
+#closedNav.open {
+    /* display: block; */
+    transform-origin: 0 0;
+    transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+}
+
+/* Purpose of the code below is to change components with a smaller screen */
+/* I left the code below to have a framework for future work */ 
+@media only screen and (max-width:1100px) {
+    #menu {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        box-shadow: 0 0 2px #85888C;
+        top: 0;
+        left: 0;
+        margin: 0;
+        padding: 0;
+        background-color: var(--navbar-background-color);
+        -webkit-font-smoothing: antialiased;
+    }
+
+    #menu.closed {
+        transform: translate(-100%, 0);
+        transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+    }
+
+    #menu.open {
+        transform-origin: 0 0;
+        transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
+    }
+
+    .nav-bar {
+        display:none;
+        height: 0px;
+    }
+    .collapsed-nav {
+        display: none;
+    }
+
+    .navigation {
+        display: block;
+        padding: none;
+        margin: none;
+        width: 30vh;
+        top: 0;
+        left: 0;
+        position:fixed;
+    }
+
+    #phoneCollapse {
+        position:absolute;
+        top:0px;
+        right:0px;
+    }
+
+    button {
+        margin-bottom: 60px;
+    }
+
+    #phoneHome {
+        margin-top: 140px;
+    }
+    #phoneCollapse {
+        margin-top: 60px;
+        margin-right: 40px;
+        width: 20px;
+    }
+}
+
+/* Purpose of the code below is to change components with a smaller screen */
+/* I left the code below to have a framework for future work */ 
+@media only screen and (max-height: 1200px){
+    #homeMenu {
+        
+    }
+    #userMenu {
+
+    }
+}
+
+/* Purpose of the code below is to change components with a smaller screen */
+/* I left the code below to have a framework for future work */ 
+@media only screen and (max-height: 800px){
+    #homeMenu {
+    }
+
+    #userMenu {
+    }
+}

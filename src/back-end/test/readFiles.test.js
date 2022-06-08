@@ -20,24 +20,25 @@ describe("readUser() Tests", () => {
      * @param {String} email The email of the user to create.
      */
     const createEmptyUser = (email) => ({
-            email: email,
-            theme: "lightmode",
-            index: {
-                objectType: "index",
-                contents: []
-            },
-            dailyLogs: [],
-            monthlyLogs: [],
+        email: email,
+        theme: "lightmode",
+        index: {
+            objectType: "index",
             futureLogs: [],
-            trackers: [],
-            collections: [],
-            imageBlocks: [],
-            audioBlocks: [],
-            textBlocks: [],
-            events: [],
-            tasks: [],
-            signifiers: []
-        });
+            collections: []
+        },
+        dailyLogs: [],
+        monthlyLogs: [],
+        futureLogs: [],
+        trackers: [],
+        collections: [],
+        imageBlocks: [],
+        audioBlocks: [],
+        textBlocks: [],
+        events: [],
+        tasks: [],
+        signifiers: []
+    });
 
     /**
      * Removes Mongo userIds from userdata.
@@ -131,6 +132,7 @@ describe("readUser() Tests", () => {
         const insertedUser = createEmptyUser("user@example.com");
         insertedUser.dailyLogs.push({
             id: "DEADBEEF",
+            collections: ["BEEFBEEF", "CAFECAFE"],
             objectType: "signifier",
             date: JSON.parse(JSON.stringify(new Date(0))),
             parent: "CAFEBEEF",
@@ -149,15 +151,18 @@ describe("readUser() Tests", () => {
             id: "DEADBEEF",
             objectType: "signifier",
             parent: "CAFEBEEF",
-            date: JSON.parse(JSON.stringify(new Date(0))),
+            startDate: JSON.parse(JSON.stringify(new Date(0))),
+            endDate: JSON.parse(JSON.stringify(new Date(2000 * 200))),
+            content: ["BEEFCAFE"],
+            collections: ["AAAAAAA"],
             days: [
                 {
                     id: "CAFECAFE",
-                    content: ["Some content", "other content", "more content"],
-                    dailyLog: "BEEFBEEF"
+                    date: JSON.parse(JSON.stringify(new Date(0)))
                 }
             ],
-            trackers: ["First Tracker", "Second Tracker", "Third Tracker"]
+            trackers: ["First Tracker", "Second Tracker", "Third Tracker"],
+            recurringTrackers: ["TRACEKRS TRACKERS"]
         });
         await insertUser(insertedUser);
         let user = await readUser(insertedUser.email, ENCRYPTION_KEY);
@@ -170,16 +175,19 @@ describe("readUser() Tests", () => {
         insertedUser.futureLogs.push({
             id: "DEADBEEF",
             objectType: "signifier",
+            title: "The Lorax",
             startDate: JSON.parse(JSON.stringify(new Date(0))),
             endDate: JSON.parse(JSON.stringify(new Date(100000000))),
+            content: ["CFEFVED", "ASDASFDF"],
+            collections: ["72132432", "34235325"],
             months: [
                 {
                     id: "CAFECAFE",
-                    content: ["Some content", "other content", "more content"],
-                    monthlyLog: "BEEFBEEF"
+                    date: JSON.parse(JSON.stringify(new Date(787878)))
                 }
             ],
-            trackers: ["First Tracker", "Second Tracker", "Third Tracker"]
+            trackers: ["First Tracker", "Second Tracker", "Third Tracker"],
+            recurringTrackers: ["Hoop", "la"]
         });
         await insertUser(insertedUser);
         let user = await readUser(insertedUser.email, ENCRYPTION_KEY);
@@ -209,7 +217,9 @@ describe("readUser() Tests", () => {
             objectType: "signifier",
             title: "Collection",
             parent: "CAFEBEEF",
-            content: ["First", "Second", "Third"]
+            content: ["First", "Second", "Third"],
+            collections: ["342q34234", "34234243"],
+            trackers: ["34254235", "455423544"]
         });
         await insertUser(insertedUser);
         let user = await readUser(insertedUser.email, ENCRYPTION_KEY);
@@ -245,11 +255,10 @@ describe("readUser() Tests", () => {
             objectType: "signifier",
             tabLevel: 0,
             parent: "BEEFBEEF",
-            subParent: "CAFECAFE",
             kind: "Event",
             objectReference: "DEADEAD",
             text: "This is some text",
-            signifier: "orange"
+            signifiers: ["orange", "purple"]
         });
         await insertUser(insertedUser);
         let user = await readUser(insertedUser.email, ENCRYPTION_KEY);
@@ -263,9 +272,8 @@ describe("readUser() Tests", () => {
             id: "CAFEBEEF",
             objectType: "signifier",
             title: "A title",
-            parent: "DEADBEEF",
-            date: JSON.parse(JSON.stringify(new Date())),
-            signifier: "Orange"
+            references: ["DEADBEEF"],
+            date: JSON.parse(JSON.stringify(new Date()))
         });
         await insertUser(insertedUser);
         let user = await readUser(insertedUser.email, ENCRYPTION_KEY);
@@ -278,10 +286,9 @@ describe("readUser() Tests", () => {
         insertedUser.tasks.push({
             id: "CAFEBEEF",
             objectType: "task",
-            parent: "DEADBEEF",
+            references: ["DEADBEEF"],
             text: "A task",
-            complete: 0,
-            signifier: "AAAAAAAAAAAAAAAAAAAAAAAAa"
+            complete: 0
         });
         await insertUser(insertedUser);
         let user = await readUser(insertedUser.email, ENCRYPTION_KEY);
@@ -307,6 +314,7 @@ describe("readUser() Tests", () => {
         const insertedUser = createEmptyUser("user@example.com");
         insertedUser.dailyLogs.push({
             id: "DEADBEEF",
+            collections: ["BEEFBEEF", "CAFECAFE"],
             objectType: "signifier",
             date: JSON.parse(JSON.stringify(new Date(0))),
             parent: "CAFEBEEF",
@@ -317,29 +325,35 @@ describe("readUser() Tests", () => {
             id: "DEADBEEF",
             objectType: "signifier",
             parent: "CAFEBEEF",
-            date: JSON.parse(JSON.stringify(new Date(0))),
+            startDate: JSON.parse(JSON.stringify(new Date(0))),
+            endDate: JSON.parse(JSON.stringify(new Date(2000 * 200))),
+            content: ["BEEFCAFE"],
+            collections: ["AAAAAAA"],
             days: [
                 {
                     id: "CAFECAFE",
-                    content: ["Some content", "other content", "more content"],
-                    dailyLog: "BEEFBEEF"
+                    date: JSON.parse(JSON.stringify(new Date(0)))
                 }
             ],
-            trackers: ["First Tracker", "Second Tracker", "Third Tracker"]
+            trackers: ["First Tracker", "Second Tracker", "Third Tracker"],
+            recurringTrackers: ["TRACEKRS TRACKERS"]
         });
         insertedUser.futureLogs.push({
             id: "DEADBEEF",
             objectType: "signifier",
+            title: "The Lorax",
             startDate: JSON.parse(JSON.stringify(new Date(0))),
             endDate: JSON.parse(JSON.stringify(new Date(100000000))),
+            content: ["CFEFVED", "ASDASFDF"],
+            collections: ["72132432", "34235325"],
             months: [
                 {
                     id: "CAFECAFE",
-                    content: ["Some content", "other content", "more content"],
-                    monthlyLog: "BEEFBEEF"
+                    date: JSON.parse(JSON.stringify(new Date(787878)))
                 }
             ],
-            trackers: ["First Tracker", "Second Tracker", "Third Tracker"]
+            trackers: ["First Tracker", "Second Tracker", "Third Tracker"],
+            recurringTrackers: ["Hoop", "la"]
         });
         insertedUser.trackers.push({
             id: "DEADBEEF",
@@ -353,34 +367,26 @@ describe("readUser() Tests", () => {
             objectType: "signifier",
             title: "Collection",
             parent: "CAFEBEEF",
-            content: ["First", "Second", "Third"]
+            content: ["First", "Second", "Third"],
+            collections: ["342q34234", "34234243"],
+            trackers: ["34254235", "455423544"]
+        });
+        insertedUser.events.push({
+            id: "CAFEBEEF",
+            objectType: "signifier",
+            title: "A title",
+            references: ["DEADBEEF"],
+            date: JSON.parse(JSON.stringify(new Date()))
         });
         insertedUser.textBlocks.push({
             id: "DEADBEEF",
             objectType: "signifier",
             tabLevel: 0,
             parent: "BEEFBEEF",
-            subParent: "CAFECAFE",
             kind: "Event",
             objectReference: "DEADEAD",
             text: "This is some text",
-            signifier: "orange"
-        });
-        insertedUser.events.push({
-            id: "CAFEBEEF",
-            objectType: "signifier",
-            title: "A title",
-            parent: "DEADBEEF",
-            date: JSON.parse(JSON.stringify(new Date())),
-            signifier: "Orange"
-        });
-        insertedUser.tasks.push({
-            id: "CAFEBEEF",
-            objectType: "task",
-            parent: "DEADBEEF",
-            text: "A task",
-            complete: 0,
-            signifier: "AAAAAAAAAAAAAAAAAAAAAAAAa"
+            signifiers: ["orange", "purple"]
         });
         insertedUser.signifiers.push({
             id: "CAFEBEEF",
@@ -396,14 +402,14 @@ describe("readUser() Tests", () => {
 
     test("User does not exist", (done) => {
         readUser("user@example.com", ENCRYPTION_KEY).
-        then(() => {
-            expect(true).toBe(false);
-            done();
-        }).
-        catch((err) => {
-            expect(err.message).toBe("User does not exist!");
-            done();
-        });
+            then(() => {
+                expect(true).toBe(false);
+                done();
+            }).
+            catch((err) => {
+                expect(err.message).toBe("User does not exist!");
+                done();
+            });
     });
 
     test("User password isn't returned", async () => {

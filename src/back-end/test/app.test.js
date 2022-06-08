@@ -472,10 +472,15 @@ describe("Test UPDATE /user route", () => {
         let cookie = await getAuthCookie(user);
         expect(cookie).not.toBe(null);
 
-        insertedUser.index = { objectType: "index", contents: ["One", "Two", "Three"] };
+        insertedUser.index = {
+            objectType: "index",
+            futureLogs: ["hoo", "haa", "hey"],
+            collections: ["huh", "what is it good 4?"]
+        };
         insertedUser.theme = "darkmode";
         insertedUser.dailyLogs.push({
             id: "DEADBEEF",
+            collections: ["BEEFBEEF", "CAFECAFE"],
             objectType: "signifier",
             date: JSON.parse(JSON.stringify(new Date(0))),
             parent: "CAFEBEEF",
@@ -486,29 +491,42 @@ describe("Test UPDATE /user route", () => {
             id: "DEADBEEF",
             objectType: "signifier",
             parent: "CAFEBEEF",
-            date: JSON.parse(JSON.stringify(new Date(0))),
+            startDate: JSON.parse(JSON.stringify(new Date(0))),
+            endDate: JSON.parse(JSON.stringify(new Date(2000 * 200))),
+            content: ["BEEFCAFE"],
+            collections: ["AAAAAAA"],
             days: [
                 {
                     id: "CAFECAFE",
-                    content: ["Some content", "other content", "more content"],
-                    dailyLog: "BEEFBEEF"
+                    date: JSON.parse(JSON.stringify(new Date(0)))
                 }
             ],
-            trackers: ["First Tracker", "Second Tracker", "Third Tracker"]
+            trackers: ["First Tracker", "Second Tracker", "Third Tracker"],
+            recurringTrackers: ["TRACEKRS TRACKERS"]
+        });
+        insertedUser.tasks.push({
+            id: "CAFEBEEF",
+            objectType: "task",
+            references: ["DEADBEEF"],
+            text: "A task",
+            complete: 0
         });
         insertedUser.futureLogs.push({
             id: "DEADBEEF",
             objectType: "signifier",
+            title: "The Lorax",
             startDate: JSON.parse(JSON.stringify(new Date(0))),
             endDate: JSON.parse(JSON.stringify(new Date(100000000))),
+            content: ["CFEFVED", "ASDASFDF"],
+            collections: ["72132432", "34235325"],
             months: [
                 {
                     id: "CAFECAFE",
-                    content: ["Some content", "other content", "more content"],
-                    monthlyLog: "BEEFBEEF"
+                    date: JSON.parse(JSON.stringify(new Date(787878)))
                 }
             ],
-            trackers: ["First Tracker", "Second Tracker", "Third Tracker"]
+            trackers: ["First Tracker", "Second Tracker", "Third Tracker"],
+            recurringTrackers: ["Hoop", "la"]
         });
         insertedUser.trackers.push({
             id: "DEADBEEF",
@@ -522,34 +540,26 @@ describe("Test UPDATE /user route", () => {
             objectType: "signifier",
             title: "Collection",
             parent: "CAFEBEEF",
-            content: ["First", "Second", "Third"]
+            content: ["First", "Second", "Third"],
+            collections: ["342q34234", "34234243"],
+            trackers: ["34254235", "455423544"]
+        });
+        insertedUser.events.push({
+            id: "CAFEBEEF",
+            objectType: "signifier",
+            title: "A title",
+            references: ["DEADBEEF"],
+            date: JSON.parse(JSON.stringify(new Date()))
         });
         insertedUser.textBlocks.push({
             id: "DEADBEEF",
             objectType: "signifier",
             tabLevel: 0,
             parent: "BEEFBEEF",
-            subParent: "CAFECAFE",
             kind: "Event",
             objectReference: "DEADEAD",
             text: "This is some text",
-            signifier: "orange"
-        });
-        insertedUser.events.push({
-            id: "CAFEBEEF",
-            objectType: "signifier",
-            title: "A title",
-            parent: "DEADBEEF",
-            date: JSON.parse(JSON.stringify(new Date())),
-            signifier: "Orange"
-        });
-        insertedUser.tasks.push({
-            id: "CAFEBEEF",
-            objectType: "task",
-            parent: "DEADBEEF",
-            text: "A task",
-            complete: 0,
-            signifier: "AAAAAAAAAAAAAAAAAAAAAAAAa"
+            signifiers: ["orange", "purple"]
         });
         insertedUser.signifiers.push({
             id: "CAFEBEEF",
