@@ -1,8 +1,9 @@
 import * as localStorage from "../localStorage/userOperations.js";
 import { adderDropdown, contentWrapper, creationMenu, header } from "../index.js"
+import { FileLocation } from "../components/fileLocation.jsx";
 import { IndexDropdown } from "../components/indexDropdown.jsx";
 import { currentState } from "./stateManager.js";
-import { FileLocation } from "../components/fileLocation.jsx";
+
 
 /**
  * Sets up the index page with the futureLogs and collections of the user.
