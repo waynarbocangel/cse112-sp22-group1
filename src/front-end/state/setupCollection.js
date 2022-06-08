@@ -3,7 +3,6 @@ import { contentWrapper, header } from "../index.js";
 import { FileLocation } from "../components/fileLocation.jsx";
 import { Log } from "../components/log.jsx";
 import { RightSidebar } from "../components/rightSidebar.jsx";
-import { createEditor } from "../components/blockController.js";
 import { currentState } from "./stateManager.js";
 
 /**
@@ -13,10 +12,6 @@ export function setupCollection () {
 	contentWrapper.appendChild(new Log(currentState));
 	contentWrapper.appendChild(new RightSidebar(currentState.trackers));
 	header.title = currentState.title;
-
-	createEditor(contentWrapper, currentState, (success) => {
-		console.log(success);
-	});
 
 	header.makeEditable();
 	let child = header.file.lastElementChild;
@@ -37,6 +32,9 @@ export function setupCollection () {
 			Array.prototype.push.apply(userArr, user.futureLogs);
 			Array.prototype.push.apply(userArr, user.collections);
 			let currentParent = userArr.filter((reference) => reference.id === currentState.parent)[0];
+			if (!currentParent) {
+				header.file.appendChild(new FileLocation("Index", "index", null, true));
+			}
 			while (currentParent && level < 3) {
 				if (currentParent.objectType === "futureLog") {
 					header.file.appendChild(new FileLocation(currentParent.title, "futureLog", currentParent.id, true));
