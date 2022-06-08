@@ -1,7 +1,9 @@
 import * as localStorage from "../localStorage/userOperations.js";
 import { adderDropdown, contentWrapper, creationMenu, header } from "../index.js"
+import { FileLocation } from "../components/fileLocation.jsx";
 import { IndexDropdown } from "../components/indexDropdown.jsx";
 import { currentState } from "./stateManager.js";
+
 
 /**
  * Sets up the index page with the futureLogs and collections of the user.
@@ -14,6 +16,12 @@ export function setupIndex () {
 			console.log(err);
 		} else {
 			header.loadSearchbar();
+			let child = header.file.lastElementChild;
+			while (child) {
+				header.file.removeChild(child);
+				child = header.file.lastElementChild;
+			}
+			header.file.appendChild(new FileLocation("Index", "index", null, false));
 			let displayToggle = document.createElement("button");
 			displayToggle.id = "displayToggle";
 			displayToggle.innerHTML = "&#x25BC;   Future Logs";
@@ -119,9 +127,6 @@ export function setupIndex () {
 				adderDropdown.openUtilDropdown(TopOffset, LeftOffset, dropdownContent);
 			}
 
-			let viewPort = document.getElementById("contentWrapper");
-			console.log(viewPort.getClientRects());
-			viewPort.style.height = `${window.innerHeight - viewPort.getClientRects()[0].y}px`;
 		}
 	});
 	header.title = "Index";
