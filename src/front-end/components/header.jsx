@@ -1,7 +1,11 @@
 
 import * as localStorage from "../localStorage/userOperations.js";
-import { adderDropdown, navbar } from "../index.js";
+import { adderDropdown, navbar, setSearch } from "../index.js";
 import { currentState } from "../state/stateManager.js";
+import { refreshDailyLog } from "../state/setupDailyLog.js";
+import { refreshMonthlyLog } from "../state/setupMonthlyLog.js";
+import { refreshFutureLog } from "../state/setupFutureLog.js";
+import { refreshIndex } from "../state/setupIndex.js";
 import { FileLocation } from "../components/fileLocation.jsx"
 
 // JSX Engine Import
@@ -119,6 +123,7 @@ export class PageHeader extends HTMLElement {
 			this.shadowRoot.getElementById("header").appendChild(this.futureLogButton);
 			this.shadowRoot.getElementById("header").style.width = "100%";
 			document.querySelector("main").style.width = "calc(100% - 375px)";
+			this.searchBar = searchExpand;
 		} else {
 			if (this.shadowRoot.getElementById("searchExpand")) {
 				this.shadowRoot.getElementById("header").removeChild(searchExpand);
@@ -127,10 +132,42 @@ export class PageHeader extends HTMLElement {
 			this.shadowRoot.getElementById("header").insertAdjacentElement("afterend", searchBar);
 			this.shadowRoot.getElementById("header").style.width = "63.7%";
 			document.querySelector("main").style.width = "calc(100% - 325px)";
+			this.searchBar = searchBar;
+			this.searchButton = this.shadowRoot.querySelector(".search_icon");
 		}
+
+		if (this.searchButton) {
+			this.searchButton.addEventListener("click", ()=> {
+				setSearch(this.searchBar.firstChild.value);
+				
+				if(currentState.objectType == "dailyLog") {
+					refreshDailyLog();
+				} else if (currentState.objectType == "monthlyLog") {
+					refreshMonthlyLog();
+				} else if (currentState.objectType == "futureLog") {
+					refreshFutureLog();
+				}
+			});
+		}
+
+		this.searchBar.firstChild.addEventListener("keypress", (e) => {
+			if(e.key == "Enter"){
+				setSearch(this.searchBar.firstChild.value);
+            	if(currentState.objectType == "dailyLog") {
+                	refreshDailyLog();
+            	} else if (currentState.objectType == "monthlyLog") {
+					refreshMonthlyLog();
+				} else if (currentState.objectType == "futureLog") {
+					refreshFutureLog();
+				} else if (currentState.objectType == "index") {
+					refreshIndex();
+				}
+			}
+        });
 	}
 
 
+		
 	/**
 	 * Makes header content editable
 	 */

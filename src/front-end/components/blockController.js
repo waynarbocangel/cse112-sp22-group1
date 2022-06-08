@@ -5,6 +5,7 @@
  */
 import * as localStorage from "../localStorage/userOperations.js";
 import { TextBlock } from "./block.jsx";
+import { search } from "../index.js";
 
 /**
  * Controller for TextBlock object
@@ -226,6 +227,7 @@ export function createEditor (container, parent, callback, tracker = null) {
 	setTimeout(() => {
 		let itemObject = null;
 		let objectArr = [];
+		let filteredArr = [];
 		localStorage.readUser((err, doc) => {
 			if (err) {
 				callback(err);
@@ -251,8 +253,10 @@ export function createEditor (container, parent, callback, tracker = null) {
 							Array.prototype.push.apply(objectArr, tempArr.filter((element) => element.id === itemObject.content[i]));
 						}
 
+                        // Filter with the contents of the search bar
+                        Array.prototype.push.apply(filteredArr, objectArr.filter((element) => element.text.includes(search)));
 
-						populateEditor(controller, objectArr, doc.signifiers, (res) => {
+						populateEditor(controller, filteredArr, doc.signifiers, (res) => {
 							if (res === "done populating items") {
 								let newBlock = new TextBlock(controller, null, [], (success) => {
 									if (success) {
