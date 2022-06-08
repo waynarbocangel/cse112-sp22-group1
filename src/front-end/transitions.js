@@ -64,5 +64,5 @@ export function unfade (element, callback) {
 			}
 		}, 15);
 	}, 220);
-	
+
 }

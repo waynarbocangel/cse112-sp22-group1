@@ -16,13 +16,13 @@ document.querySelector("body").style.display = "none";
 
 export let search = "";
 
-export function setSearch(value) {
+export function setSearch (value) {
     search = value;
-};
+}
 
-export function getSearch() {
+export function getSearch () {
     return search;
-};
+}
 
 /**
  * The index page navbar

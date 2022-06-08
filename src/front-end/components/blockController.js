@@ -253,8 +253,8 @@ export function createEditor (container, parent, callback, tracker = null) {
 							Array.prototype.push.apply(objectArr, tempArr.filter((element) => element.id === itemObject.content[i]));
 						}
 
-                        // filter with the contents of the search bar
-                        Array.prototype.push.apply(filteredArr, objectArr.filter((element) => (element.text).includes(search)));
+                        // Filter with the contents of the search bar
+                        Array.prototype.push.apply(filteredArr, objectArr.filter((element) => element.text.includes(search)));
 
 						populateEditor(controller, filteredArr, doc.signifiers, (res) => {
 							if (res === "done populating items") {

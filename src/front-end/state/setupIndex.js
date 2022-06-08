@@ -35,7 +35,7 @@ export function setupIndex () {
 				Array.prototype.push.apply(parentArr, userArr.filter((object) => object.id === currentState.futureLogs[i]));
 			}
 
-			// filter with the contents of the search bar
+			// Filter with the contents of the search bar
 			Array.prototype.push.apply(filteredArr, parentArr.filter((element) => element.title.includes(search)));
 			console.log(filteredArr);
 
@@ -164,7 +164,7 @@ export function refreshIndex () {
 				Array.prototype.push.apply(parentArr, userArr.filter((object) => object.id === currentState.futureLogs[i]));
 			}
 
-			// filter with the contents of the search bar
+			// Filter with the contents of the search bar
 			Array.prototype.push.apply(filteredArr, parentArr.filter((element) => element.title.includes(search)));
 			console.log(filteredArr);
 

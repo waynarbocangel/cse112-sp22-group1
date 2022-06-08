@@ -57,13 +57,9 @@ export function refreshMonthlyLog () {
 	contentWrapper.appendChild(new Log(currentState));
 	contentWrapper.appendChild(new RightSidebar(currentState.trackers));
 
-	localStorage.readUser((err, user) => {
-		if (err) {
-			console.log(err);
-		} else {
-			let viewPort = document.getElementById("contentWrapper");
-			console.log(viewPort.getClientRects());
-			viewPort.style.height = `${window.innerHeight - viewPort.getClientRects()[0].y}px`;
-		}
-	});
+	setTimeout(() => {
+		let viewPort = document.getElementById("contentWrapper");
+		console.log(viewPort.getClientRects());
+		viewPort.style.height = `${window.innerHeight - viewPort.getClientRects()[0].y}px`;
+	}, 10);
 }
