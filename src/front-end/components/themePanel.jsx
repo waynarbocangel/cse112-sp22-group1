@@ -7,8 +7,6 @@ const themeColors = {
         "--normal-font-color": "#000000",
         "--highlighted-font-color": "#FFFFFF",
         "--dim-font-color": "#C1C1C1",
-        "--icon-filter": "",
-        "--highlighted-icon-filter": "invert()",
 
         "--primary-button-color": "rgba(51, 181, 229, 1)",
         "--secondary-button-color": "rgba(255, 187, 51, 1)",
@@ -30,7 +28,10 @@ const themeColors = {
 
         "--dropdown-background-color": "#f7f2ec",
         "--dropdown-foreground-color": "#000000",
-        "--dropdown-hover-color": "#dfdcd8"
+        "--dropdown-hover-color": "#dfdcd8",
+
+        "--icon-filter": "",
+        "--highlighted-icon-filter": "invert()"
     },
 
     coolDark: {
@@ -57,7 +58,9 @@ const themeColors = {
         "--calendar-font-color": "rgba(96, 96, 96, 1)",
         "--calendar-today-font-color": "rgba(255, 255, 255, 1)",
         "--sidebar-font-color": "rgba(255, 255, 255)",
-        "--card-font-color": "rgb(255, 255, 255)"
+        "--card-font-color": "rgb(255, 255, 255)",
+
+        "--icon-filter": "invert()"
     },
 
     theLightSide: {
@@ -84,7 +87,9 @@ const themeColors = {
         "--calendar-font-color": "rgba(0, 0, 0, 1)",
         "--calendar-today-font-color": "rgba(255, 255, 255, 1)",
         "--sidebar-font-color": "rgb(0, 0, 0)",
-        "--card-font-color": "rgb(0, 0, 0)"
+        "--card-font-color": "rgb(0, 0, 0)",
+
+        "--icon-filter": ""
     },
 
     theDarkSide: {
@@ -111,7 +116,9 @@ const themeColors = {
         "--calendar-font-color": "rgba(96, 96, 96, 1)",
         "--calendar-today-font-color": "rgb(255, 255, 255)",
         "--sidebar-font-color": "rgb(255, 255, 255)",
-        "--card-font-color": "rgb(255, 255, 255)"
+        "--card-font-color": "rgb(255, 255, 255)",
+
+        "--icon-filter": "invert()"
     },
 
     snazzyLight: {
@@ -138,7 +145,9 @@ const themeColors = {
         "--calendar-font-color": "rgba(0, 0, 0, 1)",
         "--calendar-today-font-color": "rgba(255, 255, 255, 1)",
         "--sidebar-font-color": "rgb(0, 0, 0)",
-        "--card-font-color": "rgb(0, 0, 0)"
+        "--card-font-color": "rgb(0, 0, 0)",
+
+        "--icon-filter": ""
     },
 
     highContrast: {
@@ -165,7 +174,9 @@ const themeColors = {
         "--calendar-font-color": "rgba(0, 0, 0, 1)",
         "--calendar-today-font-color": "rgba(255, 255, 255, 1)",
         "--sidebar-font-color": "rgb(0, 0, 0)",
-        "--card-font-color": "rgb(0, 0, 0)"
+        "--card-font-color": "rgb(0, 0, 0)",
+
+        "--icon-filter": "invert()"
     },
 
     comfyPanda: {
@@ -192,7 +203,9 @@ const themeColors = {
         "--calendar-font-color": "rgba(0, 0, 0, 1)",
         "--calendar-today-font-color": "rgba(255, 255, 255, 1)",
         "--sidebar-font-color": "rgb(0, 0, 0)",
-        "--card-font-color": "rgb(0, 0, 0)"
+        "--card-font-color": "rgb(0, 0, 0)",
+
+        "--icon-filter": "invert()"
     },
 
     nightOwl: {
@@ -219,7 +232,9 @@ const themeColors = {
         "--calendar-font-color": "rgba(96, 96, 96, 1)",
         "--calendar-today-font-color": "rgba(255, 255, 255, 1)",
         "--sidebar-font-color": "rgb(255, 255, 255)",
-        "--card-font-color": "rgb(255, 255, 255)"
+        "--card-font-color": "rgb(255, 255, 255)",
+
+        "--icon-filter": "invert()"
     },
 
     sunnyBeach: {
@@ -246,7 +261,9 @@ const themeColors = {
         "--calendar-font-color": "rgba(255, 255, 255, 1)",
         "--calendar-today-font-color": "rgba(0, 0, 0, 1)",
         "--sidebar-font-color": "rgb(255, 255, 255)",
-        "--card-font-color": "rgb(255, 255, 255)"
+        "--card-font-color": "rgb(255, 255, 255)",
+
+        "--icon-filter": ""
     },
 
     darkForest: {
@@ -273,7 +290,9 @@ const themeColors = {
         "--calendar-font-color": "rgba(255, 255, 255, 1)",
         "--calendar-today-font-color": "rgba(0, 0, 0, 1)",
         "--sidebar-font-color": "rgb(255, 255, 255)",
-        "--card-font-color": "rgb(255, 255, 255)"
+        "--card-font-color": "rgb(255, 255, 255)",
+
+        "--icon-filter": "invert()"
     }
 }
 

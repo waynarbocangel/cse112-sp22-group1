@@ -1,3 +1,7 @@
+:host {
+    font-family: "SF-Pro";
+}
+
 #logCarousel {
     border: none;
     overflow: auto;

@@ -8,7 +8,7 @@
     border-radius: 15px;
     justify-content: space-between;
     padding: 0.3em 1em 1em;
-    background-color: var(--card-backgound);
+    background-color: var(--card-background);
     
     box-shadow: 0 0 10px var(--card-shadow);
 }
