@@ -15,9 +15,11 @@
 #carousel::-webkit-scrollbar {
     width: 8px;
     height: 8px;
-    display: none;
+    display:none;
 }
-
+#logCarousel:hover > #carousel::-webkit-scrollbar{
+    display:block;
+}
 #carousel {
     overflow-x: auto;
     overflow-y: hidden;
