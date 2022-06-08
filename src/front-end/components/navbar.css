@@ -42,7 +42,7 @@ button {
 /* different sizing for buttons */
 button img {
     height: 100%;
-    filter: var(--icon-filter);
+    filter: var(--text-filter);
     opacity: 80%;
     margin-right: 14px;
     margin-bottom: -7px;
@@ -58,7 +58,7 @@ button h1 {
     font-weight: 700;
     opacity: 80%;
     line-height: 18px;
-    filter: var(--icon-filter);
+    filter: var(--text-filter);
 }
 
 

@@ -19,6 +19,7 @@ export function setupIndex () {
 			let displayToggle = document.createElement("button");
 			displayToggle.id = "displayToggle";
 			displayToggle.innerHTML = "&#x25BC;   Future Logs";
+			displayToggle.style.color = "var(--secondary-button-font-color)";
 			let userArr = [];
 			Array.prototype.push.apply(userArr, user.futureLogs);
 

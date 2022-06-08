@@ -11,6 +11,9 @@ const themeColors = {
         "--primary-button-color": "rgba(51, 181, 229, 1)",
         "--secondary-button-color": "rgba(255, 187, 51, 1)",
         "--danger-button-color": "rgba(249, 49, 84, 1)",
+        
+        "--primary-button-font-color": "rgba(255, 255, 255, 1)",
+        "--secondary-button-font-color": "rgba(255, 255, 255, 1)",
 
         "--card-shadow": "rgba(0, 0, 0, 0.25)",
         "--card-background": "rgba(252, 252, 252, 0.8)",
@@ -30,7 +33,9 @@ const themeColors = {
         "--dropdown-foreground-color": "#000000",
         "--dropdown-hover-color": "#dfdcd8",
 
+        "--card-font-filter": "",
         "--icon-filter": "",
+        "--text-filter": "",
         "--highlighted-icon-filter": "invert()"
     },
 
@@ -60,6 +65,8 @@ const themeColors = {
         "--sidebar-font-color": "rgba(255, 255, 255)",
         "--card-font-color": "rgb(255, 255, 255)",
 
+        "--card-font-filter": "",
+        "--text-filter": "invert()",
         "--icon-filter": "invert()"
     },
 
@@ -89,6 +96,8 @@ const themeColors = {
         "--sidebar-font-color": "rgb(0, 0, 0)",
         "--card-font-color": "rgb(0, 0, 0)",
 
+        "--card-font-filter": "",
+        "--text-filter": "",
         "--icon-filter": ""
     },
 
@@ -118,6 +127,8 @@ const themeColors = {
         "--sidebar-font-color": "rgb(255, 255, 255)",
         "--card-font-color": "rgb(255, 255, 255)",
 
+        "--card-font-filter": "",
+        "--text-filter": "invert()",
         "--icon-filter": "invert()"
     },
 
@@ -147,6 +158,8 @@ const themeColors = {
         "--sidebar-font-color": "rgb(0, 0, 0)",
         "--card-font-color": "rgb(0, 0, 0)",
 
+        "--card-font-filter": "",
+        "--text-filter": "",
         "--icon-filter": ""
     },
 
@@ -176,7 +189,9 @@ const themeColors = {
         "--sidebar-font-color": "rgb(0, 0, 0)",
         "--card-font-color": "rgb(0, 0, 0)",
 
-        "--icon-filter": ""
+        "--card-font-filter": "invert()",
+        "--text-filter": "",
+        "--icon-filter": "invert()"
     },
 
     comfyPanda: {
@@ -205,6 +220,8 @@ const themeColors = {
         "--sidebar-font-color": "rgb(0, 0, 0)",
         "--card-font-color": "rgb(0, 0, 0)",
 
+        "--card-font-filter": "",
+        "--text-filter": "invert()",
         "--icon-filter": "invert()"
     },
 
@@ -234,6 +251,8 @@ const themeColors = {
         "--sidebar-font-color": "rgb(255, 255, 255)",
         "--card-font-color": "rgb(255, 255, 255)",
 
+        "--card-font-filter": "",
+        "--text-filter": "invert()",
         "--icon-filter": "invert()"
     },
 
@@ -263,6 +282,8 @@ const themeColors = {
         "--sidebar-font-color": "rgb(255, 255, 255)",
         "--card-font-color": "rgb(255, 255, 255)",
 
+        "--card-font-filter": "",
+        "--text-filter": "",
         "--icon-filter": ""
     },
 
@@ -292,6 +313,8 @@ const themeColors = {
         "--sidebar-font-color": "rgb(255, 255, 255)",
         "--card-font-color": "rgb(255, 255, 255)",
 
+        "--card-font-filter": "",
+        "--text-filter": "invert()",
         "--icon-filter": "invert()"
     }
 }
