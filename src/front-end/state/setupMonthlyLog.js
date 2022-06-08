@@ -1,5 +1,5 @@
 import * as localStorage from "../localStorage/userOperations.js";
-import { contentWrapper, header } from "../index.js";
+import { contentWrapper, header, setSearch } from "../index.js";
 
 /*
  * Import { CreatorBlock } from "../components/creator.jsx";
@@ -15,7 +15,7 @@ import { currentState } from "./stateManager.js";
  * Sets up the monthlyLog page with the dailyLogs, textBlocks, and trackers of the user.
  */
 export function setupMonthlyLog () {
-
+	setSearch("");
 	contentWrapper.appendChild(new Log(currentState));
 	contentWrapper.appendChild(new RightSidebar(currentState.trackers));
 

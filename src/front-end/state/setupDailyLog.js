@@ -1,5 +1,5 @@
 import * as localStorage from "../localStorage/userOperations.js";
-import { contentWrapper, header } from "../index.js";
+import { contentWrapper, header, setSearch } from "../index.js";
 import { FileLocation } from "../components/fileLocation.jsx";
 import { Log } from "../components/log.jsx";
 import { RightSidebar } from "../components/rightSidebar.jsx";
@@ -10,6 +10,7 @@ import { currentState } from "./stateManager.js";
  * Sets up the daillyLog page with the textBlocks, and trackers of the user.
  */
 export function setupDailyLog () {
+	setSearch("");
 	contentWrapper.appendChild(new Log(currentState));
 	contentWrapper.appendChild(new RightSidebar(currentState.trackers));
 	let currentDate = new Date(currentState.date);

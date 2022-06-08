@@ -1,4 +1,4 @@
-import { contentWrapper, header } from "../index.js";
+import { contentWrapper, header, setSearch } from "../index.js";
 // Import { DropdownBlock } from "../components/dropdown.jsx";
 import { FileLocation } from "../components/fileLocation.jsx";
 import { Log } from "../components/log.jsx";
@@ -12,7 +12,7 @@ import { currentState } from "./stateManager.js";
  * Sets up the futureLog page with the mothlyLogs, textBlocks, and trackers of the user.
  */
 export function setupFutureLog () {
-
+	setSearch("")
 	contentWrapper.appendChild(new Log(currentState));
 	contentWrapper.appendChild(new RightSidebar(currentState.trackers));
 
