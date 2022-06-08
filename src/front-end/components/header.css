@@ -1,5 +1,5 @@
 :host {
-    font-family: "SF-Pro";
+    font-family: system-ui;
 }
 
 /* Top navigation */
@@ -17,7 +17,7 @@
 }
 
 .header {
-    font-family: "SF-Pro";
+    font-family: system-ui;
     position: relative;
     height: 56px;
     margin-top: 23px;

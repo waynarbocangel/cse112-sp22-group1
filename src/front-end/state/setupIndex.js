@@ -135,5 +135,5 @@ export function setupIndex () {
 		child = header.file.lastElementChild;
 	}
 	header.file.appendChild(new FileLocation("Index", "index", currentState.id, false));
-	
+
 }

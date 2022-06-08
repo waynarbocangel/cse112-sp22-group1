@@ -1,3 +1,7 @@
+:host {
+    font-family: system-ui;
+}
+
 /* used for more vertical screen sizes */
 .navigation {
     display: none; 

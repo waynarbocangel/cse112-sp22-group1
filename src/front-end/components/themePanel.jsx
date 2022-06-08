@@ -3,10 +3,8 @@ const themeColors = {
     minimalLight: {
         "--body-background": "#FFFFFF",
         "--sidebar-background": "#FCFCFCFF",
-        "--sidebar-background-dim": "rgba(246, 246, 246",
         "--normal-font-color": "#000000",
         "--highlighted-font-color": "#FFFFFF",
-        "--dim-font-color": "#C1C1C1",
 
         "--primary-button-color": "rgba(51, 181, 229, 1)",
         "--secondary-button-color": "rgba(255, 187, 51, 1)",
@@ -23,20 +21,9 @@ const themeColors = {
         "--divider-color": "rgba(0, 0, 0, 0.1)",
         "--lighter-divider-color": "rgba(140, 140, 140, 0.1)",
 
-        "--tracker-background-color": "#2B2D42",
-        "--tracker-foreground-color": "#FFFFFF",
-        "--tracker-border-color": "#48486f",
-
-        "--navbar-foreground-color": "#FFFFFF",
-
-        "--dropdown-background-color": "#f7f2ec",
-        "--dropdown-foreground-color": "#000000",
-        "--dropdown-hover-color": "#dfdcd8",
-
-        "--card-font-filter": "",
+        "--itemcard-font-filter": "",
         "--icon-filter": "",
-        "--text-filter": "",
-        "--highlighted-icon-filter": "invert()"
+        "--text-filter": ""
     },
 
     coolDark: {
@@ -65,7 +52,7 @@ const themeColors = {
         "--sidebar-font-color": "rgba(255, 255, 255)",
         "--card-font-color": "rgb(255, 255, 255)",
 
-        "--card-font-filter": "",
+        "--itemcard-font-filter": "",
         "--text-filter": "invert()",
         "--icon-filter": "invert()"
     },
@@ -96,7 +83,7 @@ const themeColors = {
         "--sidebar-font-color": "rgb(0, 0, 0)",
         "--card-font-color": "rgb(0, 0, 0)",
 
-        "--card-font-filter": "",
+        "--itemcard-font-filter": "",
         "--text-filter": "",
         "--icon-filter": ""
     },
@@ -127,7 +114,7 @@ const themeColors = {
         "--sidebar-font-color": "rgb(255, 255, 255)",
         "--card-font-color": "rgb(255, 255, 255)",
 
-        "--card-font-filter": "",
+        "--itemcard-font-filter": "",
         "--text-filter": "invert()",
         "--icon-filter": "invert()"
     },
@@ -158,8 +145,8 @@ const themeColors = {
         "--sidebar-font-color": "rgb(0, 0, 0)",
         "--card-font-color": "rgb(0, 0, 0)",
 
-        "--card-font-filter": "",
-        "--text-filter": "",
+        "--itemcard-font-filter": "",
+        "--text-filter": "invert()",
         "--icon-filter": ""
     },
 
@@ -189,7 +176,7 @@ const themeColors = {
         "--sidebar-font-color": "rgb(0, 0, 0)",
         "--card-font-color": "rgb(0, 0, 0)",
 
-        "--card-font-filter": "invert()",
+        "--itemcard-font-filter": "invert()",
         "--text-filter": "",
         "--icon-filter": "invert()"
     },
@@ -220,7 +207,7 @@ const themeColors = {
         "--sidebar-font-color": "rgb(0, 0, 0)",
         "--card-font-color": "rgb(0, 0, 0)",
 
-        "--card-font-filter": "",
+        "--itemcard-font-filter": "",
         "--text-filter": "invert()",
         "--icon-filter": "invert()"
     },
@@ -251,7 +238,7 @@ const themeColors = {
         "--sidebar-font-color": "rgb(255, 255, 255)",
         "--card-font-color": "rgb(255, 255, 255)",
 
-        "--card-font-filter": "",
+        "--itemcard-font-filter": "",
         "--text-filter": "invert()",
         "--icon-filter": "invert()"
     },
@@ -282,7 +269,7 @@ const themeColors = {
         "--sidebar-font-color": "rgb(255, 255, 255)",
         "--card-font-color": "rgb(255, 255, 255)",
 
-        "--card-font-filter": "",
+        "--itemcard-font-filter": "invert()",
         "--text-filter": "",
         "--icon-filter": ""
     },
@@ -313,7 +300,7 @@ const themeColors = {
         "--sidebar-font-color": "rgb(255, 255, 255)",
         "--card-font-color": "rgb(255, 255, 255)",
 
-        "--card-font-filter": "",
+        "--itemcard-font-filter": "",
         "--text-filter": "invert()",
         "--icon-filter": "invert()"
     }
