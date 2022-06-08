@@ -2,7 +2,7 @@
 	font-family:"SF-Pro";
 }
 .card{
-    font-family: "SF-Pro";
+    font-family: system-ui;
     display: inline-block;
     overflow: auto;
     border-radius: 15px;
@@ -122,7 +122,7 @@
 }
 
 #trackerTitle {
-	font-family: "SF-Pro";
+    font-family: system-ui;
 	border: none;
 	overflow: auto;
 	outline: none;

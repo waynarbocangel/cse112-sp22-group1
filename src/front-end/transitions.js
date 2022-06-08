@@ -59,5 +59,5 @@ export function unfade (element, callback) {
 		if (end && callback) {
 			callback();
 		}
-	}, 10);
+	}, 15);
 }

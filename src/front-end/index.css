@@ -1,8 +1,4 @@
 @import "./theme.css";
-@font-face {
-	font-family: "SF-Pro";
-	src: url("./public/fonts/SF-Pro.ttf");
-}
 
 html {
 	overflow: hidden;
