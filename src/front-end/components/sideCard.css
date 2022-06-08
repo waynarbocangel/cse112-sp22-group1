@@ -49,10 +49,41 @@
     background-color: var(--secondary-button-color);
 }
 #trackerWrapper{
-    padding-left: 2.5vw;
-    padding-right: 2vw;
+    margin-left: 2.5vw;
+    margin-right: 2.5vw;
     padding-bottom: 1vw;
+    text-align: left;
 }
+
+#trackerWrapper text-block{
+	display: block;
+	margin: 0;
+	padding: 0 ;
+	width: calc(100% - var(--block-tab-level));
+	left: 0;
+	right: 0;
+}
+
+#trackerWrapper .noteContainer {
+	margin-top: 7px;
+	margin-bottom: 7px;
+	margin-left: 19px;
+	display: list-item;
+	list-style-type: disc;
+	list-style-position: outside;
+	width: calc(100% - 19px - var(--block-tab-level)) !important;
+}
+
+#trackerWrapper .eventContainer {
+	margin-top: 7px;
+	margin-bottom: 7px;
+	margin-left: 19px;
+	display: list-item;
+	list-style-type: circle;
+	list-style-position: outside;
+	width: calc(100% - 19px - var(--block-tab-level)) !important;
+}
+
 #titleblock > * {
     vertical-align:middle; 
 }

@@ -9,8 +9,15 @@ import { createElement, createFragment } from "../jsxEngine.js";
 
 let template = <template>
 	<link type="text/css" rel="stylesheet" href="generalSettingsPanel.css" />
-    <div class="profile">Profile placeholder</div>
+	<label for="email">Email:</label>
+	<input id="email" name="email" />
+	<label for="passord">Change Password:</label>
+	<span>
+		<input id="password" name="password" placeholder="New Password" />
+		<button id="passwordConfirm" >Confirm</button>
+	</span>
     <button id="logout"> Logout </button>
+	<button id="deleteUser"> Delete Account </button>
 </template>
 
 export class GeneralSettingsPanel extends HTMLElement {
@@ -18,12 +25,16 @@ export class GeneralSettingsPanel extends HTMLElement {
         super();
         this.attachShadow({mode: "open"});
         this.shadowRoot.appendChild(template.content.cloneNode(true));
-
-        let themeRadios = this.shadowRoot.querySelectorAll("input[type=radio]");
-        for (let themeRadio of themeRadios) {
-            themeRadio.addEventListener("change", () => this.updateTheme(themeRadio.id));
-        }
-
+		this.email = this.shadowRoot.getElementById("email");
+		this.password = this.shadowRoot.getElementById("password");
+		this.confirmPasswordChange = this.shadowRoot.getElementById("passwordConfirm");
+		localStorage.readUser((err, user) => {
+			if (err) {
+				console.log(err);
+			} else {
+				this.email.value = user.email;
+			}
+		});
 		this.logoutButton = this.shadowRoot.getElementById("logout");
 
     }

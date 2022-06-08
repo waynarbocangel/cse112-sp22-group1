@@ -43,9 +43,6 @@ mongoose.set("useCreateIndex", true);
 
 /* Listen for connection on port 2827 */
 app.listen("2827", () => {
-    console.log("Environment");
-    let db = process.env.DB;
-    console.log(db);
 	console.log("server has started listening to port 2827");
 });
 
