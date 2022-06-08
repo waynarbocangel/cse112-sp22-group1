@@ -1,7 +1,9 @@
 import * as localStorage from "../localStorage/userOperations.js";
 import { adderDropdown, contentWrapper, creationMenu, header } from "../index.js"
+import { FileLocation } from "../components/fileLocation.jsx"
 import { IndexDropdown } from "../components/indexDropdown.jsx";
 import { currentState } from "./stateManager.js";
+
 
 /**
  * Sets up the index page with the futureLogs and collections of the user.
@@ -125,4 +127,12 @@ export function setupIndex () {
 		}
 	});
 	header.title = "Index";
+	// Remove all child fileLocations first first
+	let child = header.file.lastElementChild;
+	while (child) {
+		header.file.removeChild(child);
+		child = header.file.lastElementChild;
+	}
+	header.file.appendChild(new FileLocation("Index", "index", currentState.id, false));
+	
 }
