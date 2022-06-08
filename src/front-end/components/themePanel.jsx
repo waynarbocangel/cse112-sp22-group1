@@ -176,7 +176,7 @@ const themeColors = {
         "--sidebar-font-color": "rgb(0, 0, 0)",
         "--card-font-color": "rgb(0, 0, 0)",
 
-        "--icon-filter": "invert()"
+        "--icon-filter": ""
     },
 
     comfyPanda: {
