@@ -1,5 +1,5 @@
 :host {
-    font-family:"SF-Pro";
+    font-family: systemu-i;
     user-select: none; 
     -webkit-user-select: none;
     -moz-user-select: none; 
@@ -11,7 +11,8 @@
 
 #wrapper {
     padding-bottom: 0;
-    width: calc(100% - 70px);
+    width: 100%;
+    border-bottom: 1px solid var(--divider-color);
     
 }
 
@@ -19,15 +20,15 @@
     font-family: "SF-Pro";
     font-size: 16px;
     color: #9b9b9b;
+    margin-top: 5px;
     margin-bottom: 0px; 
 }
 
 #title {
     display: inline-block;
     font-family: "SF-Pro";
-    font-size: 25pt;
+    font-size: 31px;
     font-weight: bold;
-    letter-spacing: 1.2px;
     cursor: pointer;
     border-bottom: 3px solid var(--content-foreground-color); /*rgba(0,0,0,0.4);*/
     transition: 0.2s;
@@ -65,9 +66,9 @@
 }
 
 #open, #edit {
-    font-size: 12pt;
+    font-size: 14px;
     font-weight: bold;
-    font-family: SF-Pro;
+    font-family: system-ui;
     border-radius: 8px;
     cursor: pointer;
     margin-left: 12px;

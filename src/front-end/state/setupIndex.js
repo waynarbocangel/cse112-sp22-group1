@@ -126,6 +126,9 @@ export function setupIndex () {
 				adderDropdown.openUtilDropdown(TopOffset, LeftOffset, dropdownContent);
 			}
 
+			let viewPort = document.getElementById("contentWrapper");
+			console.log(viewPort.getClientRects());
+			viewPort.style.height = `${window.innerHeight - viewPort.getClientRects()[0].y}px`;
 		}
 	});
 	header.title = "Index";

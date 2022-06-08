@@ -22,6 +22,7 @@ const themeColors = {
     lightmode: {
         "--body-background": "#FFFFFF",
         "--sidebar-background": "#FCFCFCFF",
+        "--sidebar-background-dim": "rgba(246, 246, 246",
         "--normal-font-color": "#000000",
         "--highlighted-font-color": "#FFFFFF",
         "--dim-font-color": "#C1C1C1",

@@ -5,6 +5,13 @@
     display: block;
     z-index: -1;
     margin-bottom: 30px;
+    scrollbar-width: 5px;
+}
+
+#carousel::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    display: none;
 }
 
 #carousel {
@@ -14,6 +21,7 @@
     display: flex;
     white-space: nowrap;
     width: 100%;
+    scrollbar-width: 8px;
 }
 
 #carousel item-card {

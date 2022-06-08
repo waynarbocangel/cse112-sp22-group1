@@ -26,5 +26,9 @@ export function setupFutureLog () {
 		child = header.file.lastElementChild;
 	}
 	header.file.appendChild(new FileLocation(currentState.title, "futureLog", currentState.id, false));
-
+	setTimeout(() => {
+		let viewPort = document.getElementById("contentWrapper");
+		console.log(viewPort.getClientRects());
+		viewPort.style.height = `${window.innerHeight - viewPort.getClientRects()[0].y}px`;
+	}, 10);
 }
