@@ -35,7 +35,7 @@ const createUser = (email, pwdHash, key, callback) => {
 			const newUser = new schema.User({
 				email: email,
 				pwd: pwdHash,
-				theme: "lightmode",
+				theme: "minimalLight",
 				index: {
 					objectType: "index",
 					futureLogs: [],

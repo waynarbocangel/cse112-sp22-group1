@@ -1,3 +1,7 @@
+:host {
+    font-family: system-ui;
+}
+
 /* used for more vertical screen sizes */
 .navigation {
     display: none; 
@@ -42,7 +46,7 @@ button {
 /* different sizing for buttons */
 button img {
     height: 100%;
-    filter: var(--icon-filter);
+    filter: var(--text-filter);
     opacity: 80%;
     margin-right: 14px;
     margin-bottom: -7px;
@@ -52,13 +56,13 @@ button img {
 
 button h1 {
     display:inline-block;
-    font-family: "SF-Pro";
+    font-family: system-ui;
     font-weight: bold;
     font-size: 18px;
     font-weight: 700;
     opacity: 80%;
     line-height: 18px;
-    filter: var(--icon-filter);
+    filter: var(--text-filter);
 }
 
 

@@ -1,3 +1,7 @@
+:host {
+    font-family: system-ui;
+}
+
 #logCarousel {
     border: none;
     overflow: auto;
@@ -59,7 +63,7 @@ button {
 h1 {
     height: 18px;
     font-size: 19px;
-    font-family: "SF-Pro";
+    font-family: system-ui;
     font-weight: bold;
 }
 ::-webkit-scrollbar {
