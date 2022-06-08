@@ -162,6 +162,11 @@ h1 {
     filter: var(--icon-filter);
 }
 
+.search_bar img:hover{
+    opacity: 90%;
+    transition: opacity 150ms;
+}
+
 .search_bar input{
 
     background-color: rgba(0, 0, 0, 0);
@@ -178,10 +183,6 @@ h1 {
 }
 
 /* Fade in for search bar */
-.search_bar:hover img {
-    opacity: 50%;
-    transition: opacity 150ms;
-}
 
 .search_bar:hover {
     transition: 150ms;

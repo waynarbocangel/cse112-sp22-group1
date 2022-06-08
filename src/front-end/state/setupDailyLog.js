@@ -49,3 +49,43 @@ export function setupDailyLog () {
 		}
 	});
 }
+
+
+export function refreshDailyLog() {
+    let oldChild = contentWrapper.lastElementChild;
+    while (oldChild) {
+        contentWrapper.removeChild(oldChild);
+        oldChild = contentWrapper.lastElementChild;
+    }
+
+    contentWrapper.appendChild(new Log(currentState));
+    contentWrapper.appendChild(new RightSidebar(currentState.trackers));
+    let currentDate = new Date(currentState.date);
+    let day = `${currentDate.getDate()}`;
+    if (currentDate.getDate() % 10 === 1) {
+        day = `${day}st`;
+    } else if (currentDate.getDate() % 10 === 2) {
+        day = `${day}nd`
+    } else if (currentDate.getDate() % 10 === 3) {
+        day = `${day}rd`
+    } else {
+        day = `${day}th`
+    }
+    let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    // FutureLogEnd.getFullYear() === futureLogStart.getFullYear() ? `Future Log ${futureLogStart.getFullYear()}` : `Future Log ${futureLogStart.getFullYear()} - ${futureLogEnd.getFullYear()}`;
+
+    localStorage.readUser((err, user) => {
+        if (err) {
+            console.log(err);
+        } else {
+            let month = user.monthlyLogs.filter((reference) => reference.id === currentState.parent)[0];
+            let futureLog = user.futureLogs.filter((reference) => reference.id === month.parent)[0];
+            // header.file.appendChild(new FileLocation(futureLog.title, "futureLog", month.parent, true));
+            // header.file.appendChild(new FileLocation(`${months[currentDate.getMonth()]} ${currentDate.getFullYear()}`, "monthlyLog", currentState.parent, true));
+            // header.file.appendChild(new FileLocation(`${months[currentDate.getMonth()]} ${day}, ${currentDate.getFullYear()}`, "dailyLog", currentState.id, false));
+            let viewPort = document.getElementById("contentWrapper");
+            console.log(viewPort.getClientRects());
+            viewPort.style.height = `${window.innerHeight - viewPort.getClientRects()[0].y}px`;
+        }
+    });
+}

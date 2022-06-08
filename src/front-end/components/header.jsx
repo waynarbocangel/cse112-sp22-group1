@@ -1,7 +1,8 @@
 
 import * as localStorage from "../localStorage/userOperations.js";
-import { adderDropdown, navbar } from "../index.js";
+import { adderDropdown, navbar, setSearch } from "../index.js";
 import { currentState } from "../state/stateManager.js";
+import { refreshDailyLog } from "../state/setupDailyLog.js";
 import { FileLocation } from "../components/fileLocation.jsx"
 
 // JSX Engine Import
@@ -127,10 +128,29 @@ export class PageHeader extends HTMLElement {
 			this.shadowRoot.getElementById("header").insertAdjacentElement("afterend", searchBar);
 			this.shadowRoot.getElementById("header").style.width = "63.7%";
 			document.querySelector("main").style.width = "calc(100% - 325px)";
+			this.searchBar = searchBar;
+			this.searchButton = this.shadowRoot.querySelector(".search_icon");
 		}
+
+		this.searchButton.addEventListener("click", ()=> {
+			setSearch(this.searchBar.firstChild.value);
+			if(currentState.objectType == "dailyLog") {
+				refreshDailyLog();
+			}
+		});
+
+		this.searchBar.firstChild.addEventListener("keypress", (e) => {
+			if(e.key == "Enter"){
+				setSearch(this.searchBar.firstChild.value);
+            	if(currentState.objectType == "dailyLog") {
+                	refreshDailyLog();
+            	}
+			}
+        });
 	}
 
 
+		
 	/**
 	 * Makes header content editable
 	 */
