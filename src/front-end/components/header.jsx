@@ -120,6 +120,7 @@ export class PageHeader extends HTMLElement {
 			this.shadowRoot.getElementById("header").appendChild(this.futureLogButton);
 			this.shadowRoot.getElementById("header").style.width = "100%";
 			document.querySelector("main").style.width = "calc(100% - 375px)";
+			this.searchBar = searchExpand;
 		} else {
 			if (this.shadowRoot.getElementById("searchExpand")) {
 				this.shadowRoot.getElementById("header").removeChild(searchExpand);
@@ -132,12 +133,14 @@ export class PageHeader extends HTMLElement {
 			this.searchButton = this.shadowRoot.querySelector(".search_icon");
 		}
 
-		this.searchButton.addEventListener("click", ()=> {
-			setSearch(this.searchBar.firstChild.value);
-			if(currentState.objectType == "dailyLog") {
-				refreshDailyLog();
-			}
-		});
+		if(this.searchButton) {
+			this.searchButton.addEventListener("click", ()=> {
+				setSearch(this.searchBar.firstChild.value);
+				if(currentState.objectType == "dailyLog") {
+					refreshDailyLog();
+				}
+			});
+		}
 
 		this.searchBar.firstChild.addEventListener("keypress", (e) => {
 			if(e.key == "Enter"){
