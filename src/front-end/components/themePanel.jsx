@@ -21,6 +21,7 @@ const themeColors = {
         "--divider-color": "rgba(0, 0, 0, 0.1)",
         "--lighter-divider-color": "rgba(140, 140, 140, 0.1)",
 
+        "--signifiers-background": "rgba(236, 236, 236)",
         "--itemcard-font-filter": "",
         "--icon-filter": "",
         "--text-filter": ""
@@ -52,6 +53,7 @@ const themeColors = {
         "--sidebar-font-color": "rgba(255, 255, 255)",
         "--card-font-color": "rgb(255, 255, 255)",
 
+        "--signifiers-background": "rgb(36, 36, 36)",
         "--itemcard-font-filter": "",
         "--text-filter": "invert()",
         "--icon-filter": "invert()"
@@ -83,6 +85,7 @@ const themeColors = {
         "--sidebar-font-color": "rgb(0, 0, 0)",
         "--card-font-color": "rgb(0, 0, 0)",
 
+        "--signifiers-background": "rgba(232, 232, 232, 1)",
         "--itemcard-font-filter": "",
         "--text-filter": "",
         "--icon-filter": ""
@@ -90,7 +93,7 @@ const themeColors = {
 
     theDarkSide: {
         "--body-background": "#262626FF",
-        "--sidebar-background": "#242424FF",
+        "--sidebar-background": "#262626FF",
         "--normal-font-color": "#FFFFFFFF",
 
         "--highlighted-font-color": "#FFFFFFFF",
@@ -114,6 +117,7 @@ const themeColors = {
         "--sidebar-font-color": "rgb(255, 255, 255)",
         "--card-font-color": "rgb(255, 255, 255)",
 
+        "--signifiers-background": "rgb(28, 28, 28)",
         "--itemcard-font-filter": "",
         "--text-filter": "invert()",
         "--icon-filter": "invert()"
@@ -145,6 +149,7 @@ const themeColors = {
         "--sidebar-font-color": "rgb(0, 0, 0)",
         "--card-font-color": "rgb(0, 0, 0)",
 
+        "--signifiers-background": "rgba(216, 216, 218, 1)",
         "--itemcard-font-filter": "",
         "--text-filter": "invert()",
         "--icon-filter": ""
@@ -176,6 +181,7 @@ const themeColors = {
         "--sidebar-font-color": "rgb(0, 0, 0)",
         "--card-font-color": "rgb(0, 0, 0)",
 
+        "--signifiers-background": "rgba(239, 239, 0, 1)",
         "--itemcard-font-filter": "invert()",
         "--text-filter": "",
         "--icon-filter": "invert()"
@@ -207,6 +213,7 @@ const themeColors = {
         "--sidebar-font-color": "rgb(0, 0, 0)",
         "--card-font-color": "rgb(0, 0, 0)",
 
+        "--signifiers-background": "rgba(234, 199, 172, 1)",
         "--itemcard-font-filter": "",
         "--text-filter": "invert()",
         "--icon-filter": "invert()"
@@ -238,6 +245,7 @@ const themeColors = {
         "--sidebar-font-color": "rgb(255, 255, 255)",
         "--card-font-color": "rgb(255, 255, 255)",
 
+        "--signifiers-background": "rgba(28, 45, 76, 1)",
         "--itemcard-font-filter": "",
         "--text-filter": "invert()",
         "--icon-filter": "invert()"
@@ -248,7 +256,7 @@ const themeColors = {
         "--sidebar-background": "#F9D199FF",
         "--normal-font-color": "#000000FF",
 
-        "--highlighted-font-color": "#FFFFFFFF",
+        "--highlighted-font-color": "#000000FF",
         "--primary-button-color": "rgba(187, 219, 247, 1)",
         "--secondary-button-color": "rgba(249, 209, 153, 1)",
 
@@ -269,6 +277,7 @@ const themeColors = {
         "--sidebar-font-color": "rgb(255, 255, 255)",
         "--card-font-color": "rgb(255, 255, 255)",
 
+        "--signifiers-background": "rgba(230, 221, 214, 1)",
         "--itemcard-font-filter": "invert()",
         "--text-filter": "",
         "--icon-filter": ""
@@ -300,6 +309,7 @@ const themeColors = {
         "--sidebar-font-color": "rgb(255, 255, 255)",
         "--card-font-color": "rgb(255, 255, 255)",
 
+        "--signifiers-background": "rgba(26, 50, 31, 1)",
         "--itemcard-font-filter": "",
         "--text-filter": "invert()",
         "--icon-filter": "invert()"

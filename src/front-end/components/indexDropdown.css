@@ -17,7 +17,7 @@
 }
 
 #timeframe {
-    font-family: "SF-Pro";
+    font-family: system-ui;
     font-size: 16px;
     color: #9b9b9b;
     margin-top: 5px;
@@ -26,7 +26,7 @@
 
 #title {
     display: inline-block;
-    font-family: "SF-Pro";
+    font-family: system-ui;
     font-size: 31px;
     font-weight: bold;
     cursor: pointer;

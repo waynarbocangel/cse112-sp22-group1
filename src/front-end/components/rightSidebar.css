@@ -3,7 +3,7 @@
 }
 
 #container{
-    font-family: "SF-Pro";
+    font-family: system-ui;
     max-width: 100%;
     text-align: center;
     margin: 10px 0 0;

@@ -10,7 +10,7 @@
 }
 
 #textBlock {
-	font-family: "SF-Pro";
+	font-family: system-ui;
 	border: none;
 	overflow: hidden;
 	word-break: break-all;
@@ -234,9 +234,10 @@
 	line-height: 0;
 	width: 20px;
 	height: 20px;
+	padding-bottom: 4px;
 	margin-left: 10px;
 	border: 1px solid var(--lighter-divider-color);
-	background-color: var(--card-background-dim);
+	background-color: var(--signifiers-background);
 	box-shadow: 1px 1px 9px 0 var(--card-shadow);
 	transition: 0.3s ease-in-out;
 }
