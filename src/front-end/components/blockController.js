@@ -16,7 +16,7 @@ export class BlockController extends Object {
 	 * @param {Object} parent
 	 * @param {Object} tracker
 	 */
-	constructor (container, parent, tracker=null) {
+	constructor (container, parent, tracker = null) {
 		super();
 		this.blockArray = [];
 		this.creatingFromBullet = {isTrue: false, kind: ""};
@@ -221,7 +221,7 @@ export function populateEditor (controller, items, signifiers, callback) {
  * @param {Object} parent The id of the parent of the textBlock being created.
  * @param {response} callback Either sends an error if there is one or sends back the block controller to the callback.
  */
-export function createEditor (container, parent, callback, tracker=null) {
+export function createEditor (container, parent, callback, tracker = null) {
 	let controller = new BlockController(container, parent, tracker);
 	setTimeout(() => {
 		let itemObject = null;

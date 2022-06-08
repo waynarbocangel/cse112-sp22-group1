@@ -1,37 +1,15 @@
 import { adderDropdown } from "../index.js";
-import { TextBlock } from "./block.jsx";
 
 /**
- * 
- * @param {TextBlock} blockReference 
+ *
+ * @param {TextBlock} blockReference
  */
-export let bindDropdown = ( blockReference ) => {
+export let bindDropdown = (blockReference) => {
 	let textBlock = blockReference.shadowRoot.getElementById("textBlock");
-	if (!blockReference.tracker) {
+	if (blockReference.tracker) {
 		blockReference.dropdownContents = {
 			"text": [
 				{
-					title: "Heading 1",
-					icon: "../public/resources/h1_icon.png",
-					listener: ()=>{
-						blockReference.setupHeader1();
-						adderDropdown.hide();
-					}
-				}, {
-					title: "Heading 2",
-					icon: "../public/resources/h2_icon.png",
-					listener: ()=>{
-						blockReference.setupHeader2();
-						adderDropdown.hide();
-					}
-				}, {
-					title: "Heading 3",
-					icon: "../public/resources/h3_icon.png",
-					listener: ()=>{
-						blockReference.setupHeader3();
-						adderDropdown.hide();
-					}
-				}, {
 					title: "Note",
 					icon: "../public/resources/note_icon.png",
 					listener: ()=>{
@@ -62,36 +40,6 @@ export let bindDropdown = ( blockReference ) => {
 			],
 			"transform": [
 				{
-					title: "Heading 1",
-					icon: "../public/resources/h1_icon.png",
-					listener: ()=>{
-						let content = textBlock.innerText;
-						blockReference.setupHeader1();
-						textBlock.innerText = content;
-						adderDropdown.hide();
-						adderDropdown.hideSecondDropdown();
-					}
-				}, {
-					title: "Heading 2",
-					icon: "../public/resources/h2_icon.png",
-					listener: ()=>{
-						let content = textBlock.innerText;
-						blockReference.setupHeader2();
-						textBlock.innerText = content;
-						adderDropdown.hide();
-						adderDropdown.hideSecondDropdown();
-					}
-				}, {
-					title: "Heading 3",
-					icon: "../public/resources/h3_icon.png",
-					listener: ()=>{
-						let content = textBlock.innerText;
-						blockReference.setupHeader3();
-						textBlock.innerText = content;
-						adderDropdown.hide();
-						adderDropdown.hideSecondDropdown();
-					}
-				}, {
 					title: "Note",
 					icon: "../public/resources/note_icon.png",
 					listener: ()=>{
@@ -149,9 +97,9 @@ export let bindDropdown = ( blockReference ) => {
 				}, {
 					title: "Duplicate",
 					icon: "../public/resources/copy_icon.png",
-					listener: ()=>{
-	
-					}
+					/* eslint-disable */
+					listener: ()=>{}
+					/* eslint-enable */
 				}, {
 					title: "Turn into",
 					icon: "../public/resources/turn_into_icon.png",
@@ -165,6 +113,27 @@ export let bindDropdown = ( blockReference ) => {
 		blockReference.dropdownContents = {
 			"text": [
 				{
+					title: "Heading 1",
+					icon: "../public/resources/h1_icon.png",
+					listener: ()=>{
+						blockReference.setupHeader1();
+						adderDropdown.hide();
+					}
+				}, {
+					title: "Heading 2",
+					icon: "../public/resources/h2_icon.png",
+					listener: ()=>{
+						blockReference.setupHeader2();
+						adderDropdown.hide();
+					}
+				}, {
+					title: "Heading 3",
+					icon: "../public/resources/h3_icon.png",
+					listener: ()=>{
+						blockReference.setupHeader3();
+						adderDropdown.hide();
+					}
+				}, {
 					title: "Note",
 					icon: "../public/resources/note_icon.png",
 					listener: ()=>{
@@ -195,6 +164,36 @@ export let bindDropdown = ( blockReference ) => {
 			],
 			"transform": [
 				{
+					title: "Heading 1",
+					icon: "../public/resources/h1_icon.png",
+					listener: ()=>{
+						let content = textBlock.innerText;
+						blockReference.setupHeader1();
+						textBlock.innerText = content;
+						adderDropdown.hide();
+						adderDropdown.hideSecondDropdown();
+					}
+				}, {
+					title: "Heading 2",
+					icon: "../public/resources/h2_icon.png",
+					listener: ()=>{
+						let content = textBlock.innerText;
+						blockReference.setupHeader2();
+						textBlock.innerText = content;
+						adderDropdown.hide();
+						adderDropdown.hideSecondDropdown();
+					}
+				}, {
+					title: "Heading 3",
+					icon: "../public/resources/h3_icon.png",
+					listener: ()=>{
+						let content = textBlock.innerText;
+						blockReference.setupHeader3();
+						textBlock.innerText = content;
+						adderDropdown.hide();
+						adderDropdown.hideSecondDropdown();
+					}
+				}, {
 					title: "Note",
 					icon: "../public/resources/note_icon.png",
 					listener: ()=>{
@@ -252,9 +251,9 @@ export let bindDropdown = ( blockReference ) => {
 				}, {
 					title: "Duplicate",
 					icon: "../public/resources/copy_icon.png",
-					listener: ()=>{
-	
-					}
+					/* eslint-disable */
+					listener: ()=>{}
+					/* eslint-enable */
 				}, {
 					title: "Turn into",
 					icon: "../public/resources/turn_into_icon.png",
@@ -265,5 +264,5 @@ export let bindDropdown = ( blockReference ) => {
 			]
 		}
 	}
-	
+
 }

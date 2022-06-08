@@ -20,11 +20,12 @@
     font-family: "SF-Pro";
     position: relative;
     height: 56px;
-    margin-top: 16px;
+    margin-top: 23px;
     width: 100%;
     display: flex;
     align-items: center;
     border-bottom: solid 1px var(--divider-color);
+    justify-content: space-between;
 }
 
 .header > div{
@@ -120,30 +121,31 @@ h1 {
     outline:none;
 }
 
-input:focus{
+.search-box input:focus{
     border-radius: 5px;
     width: 260px;
     color: var(--normal-font-color);
     font-size: 20px;
     padding: 8px;
     outline:none;
-  }
-  .search-btn{
-      width: 30px;
-      margin-top: 15px;
-      opacity: 60%;
-  }
+}
+.search-btn{
+    cursor: pointer;
+    height: 26px;
+    padding: 13px 8px 5px;
+    opacity: 60%;
+}
 
-  .search_bar {
+.search_bar {
     display: flex;
     align-items: center;
-    margin: 15px 0 17px 10px;
+    margin: 15px 49px 10px;
     padding: 0 5px;
     border-radius: 5px;
     box-shadow: 1px 1px 9px 0 var(--card-shadow);
     border-color: var(--card-shadow);
     border-width: 2px;
-    width: calc(36.6% - 95px);
+    width: calc(36.3% - 110px);
     border-style: solid;
     opacity: 60%;
 }
@@ -189,11 +191,6 @@ input:focus{
 .search_bar input:focus .search_bar{
     transition: 150ms;
     opacity: 90%;
-}
-.search-btn{
-    height: 28px;
-    padding: 12px 8px 4px;
-    opacity: 60%;
 }
 
 #header_back{

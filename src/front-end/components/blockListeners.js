@@ -1,11 +1,12 @@
 import * as localStorage from "../localStorage/userOperations.js";
-import { includesClock, getDate } from "./blockModel.js";
-import { TextBlock, protectedKeys, tabSize } from "./block.jsx";
+import { getDate, includesClock } from "./blockModel.js";
+import { protectedKeys, tabSize } from "./block.jsx";
 import { adderDropdown } from "../index.js";
 import { currentState } from "../state/stateManager.js";
+
 /**
- * 
- * @param {TextBlock} blockReference 
+ *
+ * @param {TextBlock} blockReference
  */
 export let bindListeners = (blockReference) => {
 
@@ -205,7 +206,7 @@ export let bindListeners = (blockReference) => {
 		} else if (content === "<br>") {
 			textBlock.innerHTML = "";
 			adderDropdown.hide();
-		} else if (textBlock.textContent !== "") {
+		} else if (textBlock.textContent) {
 			blockReference.controller.resetPosition = true;
 			adderDropdown.hide();
 		} else {
@@ -230,13 +231,11 @@ export let bindListeners = (blockReference) => {
 				localStorage.updateTextBlock(blockReference.item, date, true, null, null, (res) => {
 					if (res) {
 						console.log(res);
-					} else {
-
 					}
 				})
 			}, 150);
 		}
-		
+
 		blockReference.setCurrentSpot();
 		for (let i = 0; i < blockReference.editorIcons.childNodes.length - 1; i++) {
 			blockReference.editorIcons.childNodes[i].classList.remove("unfocusedIcons");
@@ -266,7 +265,7 @@ export let bindListeners = (blockReference) => {
 			let tabLevelNotZero = blockReference.tabLevel > 0;
 			let calculatedTab = blockReference.tabLevel * tabSize;
 			let currentSpotBlock = blockReference.currentPointerSpot - calculatedTab === blockReference.paddingSize;
-			let currentSpotNote = (blockReference.currentPointerSpot - calculatedTab === blockReference.paddingSize + tabSize) && blockReference.classList.contains("noteContainer");
+			let currentSpotNote = blockReference.currentPointerSpot - calculatedTab === blockReference.paddingSize + tabSize && blockReference.classList.contains("noteContainer");
 			let isAtBegining = currentSpotBlock || currentSpotNote;
 			if (!tabLevelNotZero && textBlock.innerText === "" && textBlock.getAttribute("placeholder") === "Type \"/\" to create a block" && blockReference.controller.blockArray.length > 1) {
 				blockReference.controller.removeBlock();

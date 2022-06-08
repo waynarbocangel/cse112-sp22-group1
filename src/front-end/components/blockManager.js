@@ -1,12 +1,12 @@
-import * as shadow from "./shadow.js";
-import { TextBlock, tabSize } from "./block.jsx";
 import { includesClock } from "./blockModel.js";
+import { tabSize } from "./block.jsx";
 
 /**
- * 
- * @param {TextBlock} blockReference reference to current block 
+ *
+ * @param {TextBlock} blockReference reference to current block
  */
 export let bindFunctions = (blockReference) => {
+
 	/**
 	 * Keeps track of current location of textBlock
 	 */
@@ -14,7 +14,7 @@ export let bindFunctions = (blockReference) => {
 		let container = blockReference.shadowRoot.getElementById("textBlock");
 		let selection = blockReference.shadowRoot.getSelection();
 		setTimeout(() => {
-			let range = !selection ? null : selection.getRangeAt(0);
+			let range = selection ? selection.getRangeAt(0) : null;
 			if (range === null) {
 				let computedTab = blockReference.tabLevel * tabSize;
 				blockReference.currentPointerSpot = computedTab + blockReference.paddingSize;
@@ -50,7 +50,7 @@ export let bindFunctions = (blockReference) => {
 			}
 			container.focus();
 			let selection = blockReference.shadowRoot.getSelection();
-			let range = !selection ? null : selection.getRangeAt(0);
+			let range = selection ? selection.getRangeAt(0) : null;
 			console.log(newSpot);
 			console.log(newSpot);
 			setTimeout(() => {
@@ -96,7 +96,7 @@ export let bindFunctions = (blockReference) => {
 	 */
 	blockReference.setupHeader1 = () => {
 		if (!blockReference.tracker) {
-			if (blockReference.tracker){
+			if (blockReference.tracker) {
 				blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x;
 			} else {
 				blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x + 38;
@@ -135,7 +135,7 @@ export let bindFunctions = (blockReference) => {
 	 */
 	blockReference.setupHeader2 = () => {
 		if (!blockReference.tracker) {
-			if (blockReference.tracker){
+			if (blockReference.tracker) {
 				blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x;
 			} else {
 				blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x + 38;
@@ -174,7 +174,7 @@ export let bindFunctions = (blockReference) => {
 	 */
 	blockReference.setupHeader3 = () => {
 		if (!blockReference.tracker) {
-			if (blockReference.tracker){
+			if (blockReference.tracker) {
 				blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x;
 			} else {
 				blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x + 38;
@@ -212,7 +212,7 @@ export let bindFunctions = (blockReference) => {
 	 * Sets up textBlock styling for note text and adds bullet
 	 */
 	blockReference.setupNote = () => {
-		if (blockReference.tracker){
+		if (blockReference.tracker) {
 			blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x + 19;
 		} else {
 			blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x + 53;
@@ -250,7 +250,7 @@ export let bindFunctions = (blockReference) => {
 	 * Sets up textBlock styling for event text and handles event date and time parsing
 	 */
 	blockReference.setupEvent = () => {
-		if (blockReference.tracker){
+		if (blockReference.tracker) {
 			blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x + 19;
 		} else {
 			blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x + 53;
@@ -299,7 +299,7 @@ export let bindFunctions = (blockReference) => {
 	 * Sets up textBlock styling for task text and adds task check off block
 	 */
 	blockReference.setupTask = () => {
-		if (blockReference.tracker){
+		if (blockReference.tracker) {
 			blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x + 23;
 		} else {
 			blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x + 61;
@@ -338,7 +338,7 @@ export let bindFunctions = (blockReference) => {
 	 * is converted to a different one
 	 */
 	blockReference.removeStyles = () => {
-		if (blockReference.tracker){
+		if (blockReference.tracker) {
 			blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x;
 		} else {
 			blockReference.paddingSize = blockReference.controller.container.getClientRects()[0].x + 38;
@@ -350,7 +350,7 @@ export let bindFunctions = (blockReference) => {
 		while (blockReference.signifierRow.classList.length > 0) {
 			blockReference.signifierRow.classList.remove(blockReference.signifierRow.classList[0]);
 		}
-		
+
 		while (textBlock.classList.length > 0) {
 			textBlock.classList.remove(textBlock.classList[0]);
 		}
