@@ -72,6 +72,7 @@ const updateUser = async (email, key, userObject) => {
 		throw new Error("User does not exist!");
 	}
 	user.index = userCopy.index;
+	user.email = email;
 	user.theme = userCopy.theme;
 	user.dailyLogs = userCopy.dailyLogs;
 	user.monthlyLogs = userCopy.monthlyLogs;

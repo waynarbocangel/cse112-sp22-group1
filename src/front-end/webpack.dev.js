@@ -8,6 +8,9 @@ const chokidar = require("chokidar");
 
 /* eslint-disable */
 module.exports = merge(common, {
+	entry: {
+		"componentTesting": "./testers.js"
+	},
 	mode: "development",
     output: {
         path: path.join(__dirname, "/dist"),
@@ -29,6 +32,10 @@ module.exports = merge(common, {
 			filename: "login.html",
             template: "./login/login.html",
 			chunks: ["login"]
+        }), new html({
+			filename: "testers.html",
+            template: "./testers.html",
+			chunks: ["componentTesting"]
         }), new miniCSS({filename: () => "[name].css"}), new CopyPlugin({
             patterns: [{ from: "./components/*.css", to: "[name].css", info: { minified: false } }]
         })
@@ -42,7 +49,7 @@ module.exports = merge(common, {
 			});
 		},
 		historyApiFallback: {
-			rewrites: [{from: /^\/login/, to: "/login.html"}]
+			rewrites: [{from: /^\/login/, to: "/login.html"}, {from: /^\/testing/, to: "/testers.html"}]
 		}
 	}
 });

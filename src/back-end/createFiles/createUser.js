@@ -57,7 +57,8 @@ const createUser = async (email, pwd, key) => {
 		theme: "lightmode",
 		index: {
 			objectType: "index",
-			contents: []
+			futureLogs: [],
+			collections: []
 		},
 		dailyLogs: [],
 		monthlyLogs: [],

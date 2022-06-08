@@ -1,0 +1,40 @@
+#container{
+    height: 35px;
+}
+
+#title{
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    border-bottom: 2px solid rgba(255,255,255,0.4);
+    transition: 0.2s;
+    font-size: 18px;
+    line-height: 28px;
+    margin: 7px 0 12px;
+    vertical-align: top;
+}
+
+#title:hover{
+    border-bottom: 2px solid rgba(255,255,255,0.9);
+    transition: 0.2s;
+}
+
+#editorIcons{
+    position: relative;
+    display: inline;
+    vertical-align: top;
+    top: 10px;
+}
+
+#editorIcons img{
+    margin-right: 7px;
+    height: 15px;
+    cursor: pointer;
+    filter: var(--icon-filter);
+}
+
+@media screen and (max-width: 700px) {
+    .plus{
+        position: absolute;
+    }
+}
