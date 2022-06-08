@@ -43,3 +43,27 @@ export function setupMonthlyLog () {
 		}
 	});
 }
+
+/**
+ * Used to refresh the contents of the contentwrapper
+ */
+export function refreshMonthlyLog () {
+    let oldChild = contentWrapper.lastElementChild;
+    while (oldChild) {
+        contentWrapper.removeChild(oldChild);
+        oldChild = contentWrapper.lastElementChild;
+    }
+
+	contentWrapper.appendChild(new Log(currentState));
+	contentWrapper.appendChild(new RightSidebar(currentState.trackers));
+
+	localStorage.readUser((err, user) => {
+		if (err) {
+			console.log(err);
+		} else {
+			let viewPort = document.getElementById("contentWrapper");
+			console.log(viewPort.getClientRects());
+			viewPort.style.height = `${window.innerHeight - viewPort.getClientRects()[0].y}px`;
+		}
+	});
+}

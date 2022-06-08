@@ -3,6 +3,9 @@ import * as localStorage from "../localStorage/userOperations.js";
 import { adderDropdown, navbar, setSearch } from "../index.js";
 import { currentState } from "../state/stateManager.js";
 import { refreshDailyLog } from "../state/setupDailyLog.js";
+import { refreshMonthlyLog } from "../state/setupMonthlyLog.js";
+import { refreshFutureLog } from "../state/setupFutureLog.js";
+import { refreshIndex } from "../state/setupIndex.js";
 import { FileLocation } from "../components/fileLocation.jsx"
 
 // JSX Engine Import
@@ -133,11 +136,16 @@ export class PageHeader extends HTMLElement {
 			this.searchButton = this.shadowRoot.querySelector(".search_icon");
 		}
 
-		if(this.searchButton) {
+		if (this.searchButton) {
 			this.searchButton.addEventListener("click", ()=> {
 				setSearch(this.searchBar.firstChild.value);
+				
 				if(currentState.objectType == "dailyLog") {
 					refreshDailyLog();
+				} else if (currentState.objectType == "monthlyLog") {
+					refreshMonthlyLog();
+				} else if (currentState.objectType == "futureLog") {
+					refreshFutureLog();
 				}
 			});
 		}
@@ -147,7 +155,13 @@ export class PageHeader extends HTMLElement {
 				setSearch(this.searchBar.firstChild.value);
             	if(currentState.objectType == "dailyLog") {
                 	refreshDailyLog();
-            	}
+            	} else if (currentState.objectType == "monthlyLog") {
+					refreshMonthlyLog();
+				} else if (currentState.objectType == "futureLog") {
+					refreshFutureLog();
+				} else if (currentState.objectType == "index") {
+					refreshIndex();
+				}
 			}
         });
 	}

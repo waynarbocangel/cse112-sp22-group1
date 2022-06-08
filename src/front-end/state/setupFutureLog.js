@@ -32,3 +32,24 @@ export function setupFutureLog () {
 		viewPort.style.height = `${window.innerHeight - viewPort.getClientRects()[0].y}px`;
 	}, 10);
 }
+
+
+/**
+ * Sets up the futureLog page with the mothlyLogs, textBlocks, and trackers of the user.
+ */
+ export function refreshFutureLog () {
+	let oldChild = contentWrapper.lastElementChild;
+    while (oldChild) {
+        contentWrapper.removeChild(oldChild);
+        oldChild = contentWrapper.lastElementChild;
+    }
+
+	contentWrapper.appendChild(new Log(currentState));
+	contentWrapper.appendChild(new RightSidebar(currentState.trackers));
+
+	setTimeout(() => {
+		let viewPort = document.getElementById("contentWrapper");
+		console.log(viewPort.getClientRects());
+		viewPort.style.height = `${window.innerHeight - viewPort.getClientRects()[0].y}px`;
+	}, 10);
+}

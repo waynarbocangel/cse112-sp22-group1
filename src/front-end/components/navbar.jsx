@@ -128,7 +128,6 @@ export class NavBar extends HTMLElement {
 
 		// collapsed menu button
 		this.uncollapse.addEventListener("click", () => {
-			console.log("test")
 			this.navToggle(this.navShown)
 
 		});
@@ -206,7 +205,6 @@ export class NavBar extends HTMLElement {
 				let date = new Date()
 				// if we find it then navigate
 				for(let i = 0; i < user.monthlyLogs.length; i++) {
-					console.log(date)
 					let start = new Date(user.monthlyLogs[i].startDate)
 					let end = new Date(user.monthlyLogs[i].endDate)
 					if (start < date && end > date) {
