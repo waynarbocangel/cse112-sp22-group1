@@ -78,6 +78,7 @@ export function displayCollection () {
 }
 
 export function setupIndex () {
+	setSearch("");
 	let child = header.file.lastElementChild;
 	while (child) {
 		header.file.removeChild(child);
