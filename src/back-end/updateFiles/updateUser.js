@@ -1,3 +1,5 @@
+const constants = require("../constants");
+
 /**
  * Mongo Update Functions
  * @namespace mongoUpdate
@@ -10,15 +12,21 @@ const schema = require(`${__dirname}/../schema.js`);
  * Updated the user from the local db to send to the online db.
  * @memberof mongoUpdate
  * @param {String} email The email of the user to update.
- * @param {String} key The encryption key of the user's data.
+ * @param {String} currentKey The encryption currentKey of the user's data.
  * @param {Object} userObject The new version of user to replace in the online db.
  * @callback (response) Either sends the user replaced in the online db or an error, if there is one, to the callback.
  */
-const updateUser = (email, key, userObject, callback) => {
+const updateUser = (email, currentKey, userObject, callback) => {
 	schema.User.findOne({ email: email }, (error, user) => {
 		if (error) {
 			callback(error);
 		} else if (user) {
+			console.log(userObject);
+			let key = currentKey;
+			if (userObject.pwd) {
+				user.pwd = security.passHash(userObject.pwd);
+				key = security.passHash(security.encrypt(userObject.pwd, constants.sessionSecret));
+			}
 			let newCollections = [];
 			for (let i = 0; i < userObject.collections.length; i++) {
 				let collection = userObject.collections[i];
@@ -67,6 +75,7 @@ const updateUser = (email, key, userObject, callback) => {
 				tracker.title = security.encrypt(tracker.title, key);
 				newTrackers.push(tracker);
 			}
+
 			user.index = userObject.index;
 			user.email = userObject.email;
 			user.theme = userObject.theme;

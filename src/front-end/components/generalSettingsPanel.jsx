@@ -40,6 +40,56 @@ export class GeneralSettingsPanel extends HTMLElement {
     }
 
 	connectedCallback () {
+		this.email.onkeydown = (e) => {
+			let key = e.key || e.keyCode;
+			if (key === "Enter") {
+				localStorage.readUser((err, user) => {
+					if (err) {
+						console.log(err);
+					} else {
+						user.email = this.email.value;
+						localStorage.updateUser(user, true, (err) => {
+							if (err) {
+								console.log(err);
+							}
+						});
+					}
+				});
+			}
+		};
+
+		this.email.onblur = () => {
+			localStorage.readUser((err, user) => {
+				if (err) {
+					console.log(err);
+				} else if (user.email !== this.email.value){
+					user.email = this.email.value;
+					localStorage.updateUser(user, true, (err) => {
+						if (err) {
+							console.log(err);
+						}
+					});
+				}
+			});
+		};
+
+		this.confirmPasswordChange.onclick = () => {
+			if (this.password.value) {
+				localStorage.readUser((err, user) => {
+					if (err) {
+						console.log(err);
+					} else {
+						user.pwd = this.password.value;
+						localStorage.updateUser(user, true, (err) => {
+							if(err){
+								console.log(err);
+							}
+						})
+					}
+				})
+			}
+		};
+
 		this.logoutButton.onclick = () => {
 			if (navigator.onLine) {
 				localStorage.deleteDB();

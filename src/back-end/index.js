@@ -92,6 +92,11 @@ app.put("/user", express.json({ type: "*/*" }), (req, res) => {
             console.log("Update Called");
             if (user) {
                 req.session.email = user.email;
+                console.log(req.session.key);
+                if (req.body.pwd) {
+                    req.session.key = security.passHash(security.encrypt(req.body.pwd, constants.sessionSecret));
+                    console.log(req.session.key);
+                }
                 res.send(user);
             } else {
                 res.send(JSON.stringify({ error: "couldn't update" }));
