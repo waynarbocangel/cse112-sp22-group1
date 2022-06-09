@@ -7,7 +7,7 @@ import { readUser } from "../userOperations.js";
  * @param {database} db The local pouch database.
  * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
- export function updateUserOnline (callback, pwd=null) {
+ export function updateUserOnline (callback, pwd = null) {
 	readUser((err, user) => {
 		/* istanbul ignore next */
 		if (err) {

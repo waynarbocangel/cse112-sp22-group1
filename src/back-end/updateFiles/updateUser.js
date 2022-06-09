@@ -1,5 +1,3 @@
-const constants = require("../constants");
-
 /**
  * Mongo Update Functions
  * @namespace mongoUpdate
@@ -18,8 +16,17 @@ const schema = require(`${__dirname}/../schema.js`);
  * @resolve The updated user.
  * @reject An error.
  */
-const updateUser = async (email, key, userObject) => {
+const updateUser = async (email, currentKey, userObject) => {
 	let userCopy = JSON.parse(JSON.stringify(userObject));
+	let user = await schema.User.findOne({ email: email }).exec();
+	if (user === null) {
+		throw new Error("User does not exist!");
+	}
+	let key = currentKey;
+	if (userCopy.pwd) {
+		user.pwd = security.passHash(userCopy.pwd);
+		key = security.passHash(userCopy.email + userCopy.pwd);
+	}
 	let newCollections = [];
 	for (let i = 0; i < userCopy.collections.length; i++) {
 		let collection = userCopy.collections[i];
@@ -68,11 +75,6 @@ const updateUser = async (email, key, userObject) => {
 		tracker.title = security.encrypt(tracker.title, key);
 		newTrackers.push(tracker);
 	}
-
-	let user = await schema.User.findOne({ email: email }).exec();
-	if (user === null) {
-		throw new Error("User does not exist!");
-	}
 	user.index = userCopy.index;
 	user.email = email;
 	user.theme = userCopy.theme;
@@ -87,7 +89,6 @@ const updateUser = async (email, key, userObject) => {
 	user.tasks = newTasks;
 	user.events = newEvents;
 	user.signifiers = newSignifiers;
-
 	await user.save();
 	user = await readUser.readUser(user.email, key);
 	return user;

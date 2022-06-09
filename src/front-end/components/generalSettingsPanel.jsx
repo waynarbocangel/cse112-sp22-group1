@@ -36,6 +36,7 @@ export class GeneralSettingsPanel extends HTMLElement {
 			}
 		});
 		this.logoutButton = this.shadowRoot.getElementById("logout");
+		this.deleteButton = this.shadowRoot.getElementById("deleteUser");
 
     }
 
@@ -96,6 +97,13 @@ export class GeneralSettingsPanel extends HTMLElement {
 				window.location.href = "/login";
 			} else if (confirm("You're logging out while offline, all your local changes will be deleted if you continue!")) {
 				localStorage.deleteDB();
+				window.location.href = "/login";
+			}
+		}
+
+		this.deleteButton.onclick = async () => {
+			if (confirm("This action is irreversible, are you sure you want to delete this account?")) {
+				await localStorage.deleteDB(true);
 				window.location.href = "/login";
 			}
 		}

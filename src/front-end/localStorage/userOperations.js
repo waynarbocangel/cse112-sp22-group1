@@ -142,7 +142,7 @@ export function getUser (callback) {
 /**
  * Updates the user from the online db.
  */
-export function updateUserFromMongo (callback, pwd=null) {
+export function updateUserFromMongo (callback, pwd = null) {
 	updateUserOnline(callback, pwd);
 }
 
@@ -607,8 +607,8 @@ export async function deleteDB (cloud) {
 			credentials: "include",
 			method: "DELETE"
 		}).then((data) => data.json()).then(async (userData) => {
-			await db.destroy((err, res) => {
-				if (err || res === null) {
+			await db.destroy((err) => {
+				if (err) {
 					return err;
 				}
 				document.cookie = "";
@@ -1257,7 +1257,7 @@ export function updateTracker (tracker, shouldUpdate, parent, addParent, callbac
 	});
 }
 
-export function updateUser(updatedUser, shouldUpdate, callback) {
+export function updateUser (updatedUser, shouldUpdate, callback) {
 	readUser((err, user) => {
 		if (err) {
 			callback(err);
@@ -1272,7 +1272,7 @@ export function updateUser(updatedUser, shouldUpdate, callback) {
 						}, updatedUser.pwd ? updatedUser.pwd : null);
 					}
 				}
-			}).catch(error => {
+			}).catch((error) => {
 				callback(error);
 			})
 		}
