@@ -71,6 +71,7 @@ createAccount.addEventListener("click", (e) => {
 	} else {
 		createUser(email.value, password.value, (user) => {
 			if (user.error !== undefined) {
+				console.log(user.error)
 				displayError(user.error);
 			} else if (user.email === undefined) {
 				displayError("Wrong username or password");

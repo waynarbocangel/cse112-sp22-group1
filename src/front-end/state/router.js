@@ -24,7 +24,7 @@ export const router = new Navigo("/", { hash: true });
  * @param {String} newState The url to render.
  * @param {Function} setupFunction A function to setup a view.
  */
-const stateSwitch = (id, setupFunction) => {
+export let stateSwitch = (id, setupFunction) => {
 	getCurrentObject(id);
 
 	setTimeout(() => {
