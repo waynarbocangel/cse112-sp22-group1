@@ -23,6 +23,7 @@ div {
 #dropdownContainer {
 	width: 100%;
 	margin-top: 21px;
+	overflow-y: auto;
 }
 
 main{
@@ -52,7 +53,8 @@ index-drop-down {
 
 .centerMain {
 	margin-left: 25px !important;
-	width: 100%;
+	margin-right: 0;
+	width: 100% !important;
 	transition: cubic-bezier(0.77,0.2,0.05,1.0) 0.5s;
 }
 
@@ -116,7 +118,7 @@ right-sidebar{
 @media only screen and (max-width:2045px) {
 	.centerMain {
 		margin-left: 187px !important;
-		width: calc(100% - 325px);
+		width: calc(100% - 325px) !important;
 		transition: cubic-bezier(0.77,0.2,0.05,1.0) 0.5s;
 	}
 
