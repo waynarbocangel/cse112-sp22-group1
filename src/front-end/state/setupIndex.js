@@ -1,5 +1,5 @@
 import * as localStorage from "../localStorage/userOperations.js";
-import { adderDropdown, contentWrapper, creationMenu, header, search } from "../index.js"
+import { adderDropdown, contentWrapper, creationMenu, header, search, setSearch} from "../index.js"
 import { FileLocation } from "../components/fileLocation.jsx";
 import { IndexDropdown } from "../components/indexDropdown.jsx";
 import { currentState } from "./stateManager.js";
@@ -11,6 +11,7 @@ import { currentState } from "./stateManager.js";
 
 
 export function setupIndex () {
+	setSearch("");
 	localStorage.readUser((err, user) => {
 		if (err) {
 			console.log(err);
@@ -30,24 +31,19 @@ export function setupIndex () {
 			Array.prototype.push.apply(userArr, user.futureLogs);
 
 			let parentArr = [];
-			let filteredArr = [];
 			for (let i = 0; i < currentState.futureLogs.length; i++) {
 				Array.prototype.push.apply(parentArr, userArr.filter((object) => object.id === currentState.futureLogs[i]));
 			}
-
-			// Filter with the contents of the search bar
-			Array.prototype.push.apply(filteredArr, parentArr.filter((element) => element.title.includes(search)));
-			console.log(filteredArr);
 
 			let dropdownContainer = document.createElement("section");
 			dropdownContainer.id = "dropdownContainer";
 			contentWrapper.appendChild(dropdownContainer);
 			console.log(currentState.futureLogs);
 			let dropdowns = [];
-			for (let i = 0; i < filteredArr.length; i++) {
+			for (let i = 0; i < parentArr.length; i++) {
 				console.log("inside for loop");
-				if (filteredArr[i].objectType === "futureLog") {
-					let dropdown = new IndexDropdown(filteredArr[i]);
+				if (parentArr[i].objectType === "futureLog") {
+					let dropdown = new IndexDropdown(parentArr[i]);
 					if (i === 0) {
 						dropdown.toggleItems();
 					}
@@ -165,7 +161,7 @@ export function refreshIndex () {
 			}
 
 			// Filter with the contents of the search bar
-			Array.prototype.push.apply(filteredArr, parentArr.filter((element) => element.title.includes(search)));
+			Array.prototype.push.apply(filteredArr, parentArr.filter((element) => element.title.toLowerCase().includes(search.toLowerCase())));
 			console.log(filteredArr);
 
 			let dropdownContainer = document.createElement("section");
